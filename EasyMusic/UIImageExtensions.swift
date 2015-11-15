@@ -10,8 +10,7 @@ import UIKit
 
 extension UIImage {
     class func safeImage(named name: String) -> UIImage! {
-        let bundle = NSBundle(identifier: "com.pinkchicken.EasyMusic")
-        let image = UIImage(named: name, inBundle: bundle, compatibleWithTraitCollection: nil)
+        let image = UIImage(named: name, inBundle: NSBundle.safeMainBundle(), compatibleWithTraitCollection: nil)
         safeAssert(image != nil, String("missing image %@", name))
         return image
     }

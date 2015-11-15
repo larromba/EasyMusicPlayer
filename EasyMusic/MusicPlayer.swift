@@ -51,7 +51,7 @@ class MusicPlayer: NSObject {
         commandCenter.nextTrackCommand.addTarget(self, action: safeSelector("next"))
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: safeSelector("applicationWillTerminate"),
+            selector: safeSelector(Constants.Notifications.ApplicationWillTerminate),
             name: UIApplicationWillTerminateNotification,
             object: nil)
         

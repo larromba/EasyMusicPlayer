@@ -12,12 +12,19 @@ import MediaPlayer
 
 class ControlsViewTests: XCTestCase {
     var controlsView: ControlsView!
+    var playPressedExpectation: XCTestExpectation!
+    var stopPressedExpectation: XCTestExpectation!
+    var prevPressedExpectation: XCTestExpectation!
+    var nextPressedExpectation: XCTestExpectation!
+    var shufflePressedExpectation: XCTestExpectation!
+    var sharePressedExpectation: XCTestExpectation!
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         controlsView = ControlsView()
+        controlsView.delegate = self
     }
     
     override func tearDown() {
@@ -154,5 +161,62 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
         controlsView.enableShare(enabled)
         XCTAssert(controlsView.shareButton.enabled == enabled)
+    }
+    
+    func testControlsViewDelegatePlayPressed() {
+        let mockButton = UIButton()
+        playPressedExpectation = expectationWithDescription("ControlsViewDelegate:playPressed")
+        controlsView.playButtonPressed(mockButton)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testControlsViewDelegateStopPressed() {
+        let mockButton = UIButton()
+        stopPressedExpectation = expectationWithDescription("ControlsViewDelegate:stopPressed")
+        controlsView.stopButtonPressed(mockButton)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testControlsViewDelegatePrevPressed() {
+        let mockButton = UIButton()
+        prevPressedExpectation = expectationWithDescription("ControlsViewDelegate:prevPressed")
+        controlsView.prevButtonPressed(mockButton)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testControlsViewDelegateNextPressed() {
+        let mockButton = UIButton()
+        nextPressedExpectation = expectationWithDescription("ControlsViewDelegate:nextPressed")
+        controlsView.nextButtonPressed(mockButton)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testControlsViewDelegateShufflePressed() {
+        let mockButton = UIButton()
+        shufflePressedExpectation = expectationWithDescription("ControlsViewDelegate:shufflePressed")
+        controlsView.shuffleButtonPressed(mockButton)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+}
+
+// MARK: - ControlsViewDelegate
+extension ControlsViewTests: ControlsViewDelegate {
+    func playPressed(sender: ControlsView) {
+        playPressedExpectation.fulfill()
+    }
+    func stopPressed(sender: ControlsView) {
+        stopPressedExpectation.fulfill()
+    }
+    func prevPressed(sender: ControlsView) {
+        prevPressedExpectation.fulfill()
+    }
+    func nextPressed(sender: ControlsView) {
+        nextPressedExpectation.fulfill()
+    }
+    func shufflePressed(sender: ControlsView) {
+        shufflePressedExpectation.fulfill()
+    }
+    func sharePressed(sender: ControlsView) {
+        sharePressedExpectation.fulfill()
     }
 }

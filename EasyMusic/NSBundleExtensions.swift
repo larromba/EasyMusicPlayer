@@ -10,6 +10,14 @@ import Foundation
 
 extension NSBundle {
     class func appName() -> String! {
-        return NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleDisplayName") as! String
+        return NSBundle.mainBundle().objectForInfoDictionaryKey(Constants.BundleKeys.BundleDisplayName) as! String
+    }
+    
+    class func bundleIdentifier() -> String! {
+        return NSBundle.mainBundle().objectForInfoDictionaryKey(Constants.BundleKeys.BundleIdentifier) as! String
+    }
+    
+    class func safeMainBundle() -> NSBundle! {
+        return NSBundle(identifier: Constants.Strings.MainBundleIdentifier)
     }
 }

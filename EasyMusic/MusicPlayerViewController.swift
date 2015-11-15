@@ -23,7 +23,7 @@ class MusicPlayerViewController: UIViewController {
         scrobbleView.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: safeSelector("applicationDidBecomeActive"),
+            selector: safeSelector(Constants.Notifications.ApplicationDidBecomeActive),
             name: UIApplicationDidBecomeActiveNotification,
             object: nil)
     }

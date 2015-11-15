@@ -21,8 +21,7 @@ extension UIView {
     }
     
     private func createViewFromNib() -> UIView! {
-        let bundle = NSBundle(forClass: self.dynamicType)
-        let nib = UINib(nibName: self.className(), bundle: bundle)
+        let nib = UINib(nibName: self.className(), bundle: NSBundle.safeMainBundle())
         let view = nib.instantiateWithOwner(self, options: nil).first as! UIView
         return view
     }

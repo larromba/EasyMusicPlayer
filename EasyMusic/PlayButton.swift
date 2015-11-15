@@ -17,20 +17,12 @@ enum PlayButtonState {
 class PlayButton: UIButton {
     private(set) var buttonState: PlayButtonState!
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        buttonState = PlayButtonState.Play
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        buttonState = PlayButtonState.Play
+    override func awakeFromNib() {
+        setButtonState(PlayButtonState.Play)
     }
     
     override func prepareForInterfaceBuilder() {
-        buttonState = PlayButtonState.Play
+        setButtonState(PlayButtonState.Play)
     }
     
     // MARK: - Public
@@ -39,11 +31,11 @@ class PlayButton: UIButton {
         buttonState = state
         switch state {
         case .Play:
-            setBackgroundImage(UIImage.safeImage(named: "PlayButton"),
+            setBackgroundImage(UIImage.safeImage(named: Constants.ImageNames.PlayButton),
                 forState: UIControlState.Normal)
             break
         case .Pause:
-            setBackgroundImage(UIImage.safeImage(named: "PauseButton"),
+            setBackgroundImage(UIImage.safeImage(named: Constants.ImageNames.PauseButton),
                 forState: UIControlState.Normal)
             break
         }
