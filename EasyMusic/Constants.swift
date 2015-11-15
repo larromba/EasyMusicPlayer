@@ -22,7 +22,7 @@ struct Constants {
     struct ImageNames {
         static let Placeholder = "ImagePlaceholder"
         static let PlayButton = "PlayButton"
-        static let PauseButton = "PlayButton"
+        static let PauseButton = "PauseButton"
     }
     
     struct Strings {

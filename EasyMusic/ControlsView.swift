@@ -26,12 +26,12 @@ protocol ControlsViewDelegate {
 
 @IBDesignable
 class ControlsView: UIView {
-    @IBOutlet weak var playButton: PlayButton!
-    @IBOutlet weak var stopButton: UIButton!
-    @IBOutlet weak var prevButton: UIButton!
-    @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var shuffleButton: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet private(set) weak var playButton: PlayButton!
+    @IBOutlet private(set) weak var stopButton: UIButton!
+    @IBOutlet private(set) weak var prevButton: UIButton!
+    @IBOutlet private(set) weak var nextButton: UIButton!
+    @IBOutlet private(set) weak var shuffleButton: UIButton!
+    @IBOutlet private(set) weak var shareButton: UIButton!
     
     var delegate: ControlsViewDelegate?
     

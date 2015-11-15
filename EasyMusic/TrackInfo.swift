@@ -9,10 +9,10 @@
 import UIKit
 
 class TrackInfo: NSObject {
-    var artist: String?
-    var title: String?
-    var duration: NSTimeInterval?
-    var artwork: UIImage?
+    private(set) var artist: String?
+    private(set) var title: String?
+    private(set) var duration: NSTimeInterval?
+    private(set) var artwork: UIImage?
     
     init(var artist: String?, var title: String?, duration: NSTimeInterval, var artwork: UIImage?) {
         super.init()

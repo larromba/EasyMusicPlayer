@@ -30,7 +30,7 @@ class MusicPlayer: NSObject {
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: NSTimer?
     
-    var delegate: MusicPlayerDelegate?
+    private(set) var delegate: MusicPlayerDelegate?
     var isPlaying: Bool! {
         guard player != nil else {
             return false
@@ -120,7 +120,7 @@ class MusicPlayer: NSObject {
         }
         
         let track = tracks[trackIndex]
-        let url: NSURL = track.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
+        let url = track.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
         if player == nil || player!.url!.absoluteString != url.absoluteString {
             _ = try! player = AVAudioPlayer(contentsOfURL: url)
         }
@@ -159,7 +159,7 @@ class MusicPlayer: NSObject {
     }
     
     func previous() {
-        pause()
+        stop()
         
         var newIndex = trackIndex - 1
         if newIndex < 0 {
@@ -179,13 +179,18 @@ class MusicPlayer: NSObject {
             return
         }
         
-        pause()
+        stop()
         trackIndex = trackIndex + 1
         play()
     }
     
     func shuffle() -> Bool {
-        let query = MPMediaQuery.songsQuery()
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            let query = MPMediaQuery.mockSongsQuery()
+        #else
+            let query = MPMediaQuery.songsQuery()
+        #endif
+
         if query.items?.count == 0 {
             // if we have no songs, bail
             return false

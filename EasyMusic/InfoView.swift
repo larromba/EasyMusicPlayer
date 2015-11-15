@@ -10,10 +10,10 @@ import UIKit
 
 @IBDesignable
 class InfoView: UIView {
-    @IBOutlet var artist: UILabel!
-    @IBOutlet var track: UILabel!
-    @IBOutlet var time: UILabel!
-    @IBOutlet var artwork: UIImageView!
+    @IBOutlet private(set) var artist: UILabel!
+    @IBOutlet private(set) var track: UILabel!
+    @IBOutlet private(set) var time: UILabel!
+    @IBOutlet private(set) var artwork: UIImageView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

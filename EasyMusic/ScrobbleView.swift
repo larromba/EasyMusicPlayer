@@ -15,7 +15,7 @@ protocol ScrobbleViewDelegate {
 @IBDesignable
 class ScrobbleView: UIView {
     @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
-    @IBOutlet weak var barView: UIView!
+    @IBOutlet private(set) weak var barView: UIView!
     
     var delegate: ScrobbleViewDelegate?
     var enabled: Bool! = false
@@ -58,7 +58,7 @@ class ScrobbleView: UIView {
     
     // MARK: - private
     
-    func moveScrobblerToPoint(point: CGFloat) {
+    private func moveScrobblerToPoint(point: CGFloat) {
         let w = CGRectGetWidth(bounds)
         let x = w - point
         trailingEdgeConstraint.constant = x

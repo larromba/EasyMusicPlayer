@@ -9,9 +9,9 @@
 import Foundation
 
 class TracksInfo: NSObject {
-    var trackInfo: TrackInfo!
-    var trackIndex: Int!
-    var totalTracks: Int!
+    private(set) var trackInfo: TrackInfo!
+    private(set) var trackIndex: Int!
+    private(set) var totalTracks: Int!
     
     init(trackInfo: TrackInfo, trackIndex: Int, totalTracks: Int) {
         super.init()

@@ -9,19 +9,19 @@
 import UIKit
 
 class MusicPlayerViewController: UIViewController {
-    lazy var musicPlayer: MusicPlayer! = MusicPlayer(delegate: self)
+    private lazy var musicPlayer: MusicPlayer! = MusicPlayer(delegate: self)
     private let shareManager: ShareManager! = ShareManager()
     
-    @IBOutlet weak var scrobbleView: ScrobbleView!
-    @IBOutlet weak var infoView: InfoView!
-    @IBOutlet weak var controlsView: ControlsView!
+    @IBOutlet private(set) weak var scrobbleView: ScrobbleView!
+    @IBOutlet private(set) weak var infoView: InfoView!
+    @IBOutlet private(set) weak var controlsView: ControlsView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         controlsView.delegate = self
         scrobbleView.delegate = self
-        
+                
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constants.Notifications.ApplicationDidBecomeActive),
             name: UIApplicationDidBecomeActiveNotification,

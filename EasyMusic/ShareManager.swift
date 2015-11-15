@@ -11,7 +11,7 @@ import Social
 
 class ShareManager: NSObject {
     weak var presenter: UIViewController?
-    var trackInfo: TrackInfo?
+    private var trackInfo: TrackInfo?
     
     // MARK: - public
     

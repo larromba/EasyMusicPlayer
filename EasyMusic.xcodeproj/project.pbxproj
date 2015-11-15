@@ -12,6 +12,7 @@
 		7F4090571BF91BD000F449FD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090561BF91BD000F449FD /* Log.swift */; };
 		7F40905A1BF928E800F449FD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090591BF928E800F449FD /* Constants.swift */; };
 		7F40905F1BF92F7A00F449FD /* PlayButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F40905E1BF92F7A00F449FD /* PlayButtonTests.swift */; };
+		7F4090631BF93CC700F449FD /* Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090621BF93CC700F449FD /* Simulator.swift */; };
 		7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* TrackInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* TrackInfo.swift */; };
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
@@ -84,6 +85,7 @@
 		7F4090561BF91BD000F449FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		7F4090591BF928E800F449FD /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7F40905E1BF92F7A00F449FD /* PlayButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayButtonTests.swift; sourceTree = "<group>"; };
+		7F4090621BF93CC700F449FD /* Simulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Simulator.swift; sourceTree = "<group>"; };
 		7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareManager.swift; sourceTree = "<group>"; };
 		7F7932001BEA7C7E00E2C153 /* ScrobbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrobbleView.swift; sourceTree = "<group>"; };
 		7F7A5CFB1BE8D5A600D2BC9E /* TrackInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackInfo.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			children = (
 				7FF5B31C1BE654220044FCE5 /* MusicPlayer.swift */,
 				7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */,
+				7F4090621BF93CC700F449FD /* Simulator.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -537,6 +540,7 @@
 				7F8187B81BF2011C00BAF398 /* UIViewExtensions.swift in Sources */,
 				7FCFE90C1BF2535400981545 /* TracksInfo.swift in Sources */,
 				7F4090551BF7E44900F449FD /* PlayButton.swift in Sources */,
+				7F4090631BF93CC700F449FD /* Simulator.swift in Sources */,
 				7F8187B51BF1FB9F00BAF398 /* ScrobbleView.swift in Sources */,
 				7F8187BB1BF208F500BAF398 /* NSObjectExtensions.swift in Sources */,
 				7F7A5CFC1BE8D5A600D2BC9E /* TrackInfo.swift in Sources */,
