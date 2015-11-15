@@ -1,0 +1,9 @@
+# xcode.gitignore
+
+.DS_Store
+Pods/
+build/
+*.xcworkspace/
+xcuserdata/
+Podfile.lock
+Pods.xcodeproj
