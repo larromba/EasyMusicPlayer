@@ -10,8 +10,8 @@ import Foundation
 import Social
 
 class ShareManager: NSObject {
-    weak var presenter: UIViewController?
-    private var trackInfo: TrackInfo?
+    private(set) weak var presenter: UIViewController!
+    private(set) var trackInfo: TrackInfo!
     
     // MARK: - public
     
@@ -24,7 +24,7 @@ class ShareManager: NSObject {
                 self.shareViaService(service!)
             }
         }
-        self.presenter?.presentViewController(choices, animated: true, completion: nil)
+        self.presenter.presentViewController(choices, animated: true, completion: nil)
     }
     
     // MARK: - private
@@ -33,16 +33,16 @@ class ShareManager: NSObject {
         if SLComposeViewController.isAvailableForServiceType(serviceType) {
             let share = SLComposeViewController(forServiceType: serviceType)
             let text = String(format: localized("share format"),
-                trackInfo!.artist!,
-                trackInfo!.title!,
+                trackInfo.artist,
+                trackInfo.title,
                 NSBundle.appName())
             share.setInitialText(text)
-            presenter!.presentViewController(share, animated: true, completion: nil)
+            presenter.presentViewController(share, animated: true, completion: nil)
         } else {
             let alert = UIAlertController.createAlertWithTitle(localized("accounts error title"),
                 message: localized("accounts error msg"),
                 buttonTitle: localized("accounts error button"))
-            presenter!.presentViewController(alert, animated: true, completion: nil)
+            presenter.presentViewController(alert, animated: true, completion: nil)
         }
     }
     

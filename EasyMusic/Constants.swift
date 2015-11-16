@@ -28,4 +28,16 @@ struct Constants {
     struct Strings {
         static let MainBundleIdentifier = "com.pinkchicken.EasyMusic"
     }
+    
+    struct Paths {
+        static let DummyAudio = "/Users/larromba/Documents/Business/Pink Chicken/personal/EasyMusic/TestTunes/Bounce.mp3"
+    }
+    
+    struct Environment {
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+        static let Simulator = true
+        #else
+        static let Simulator = false
+        #endif
+    }
 }

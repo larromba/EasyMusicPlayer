@@ -10,6 +10,12 @@ import Foundation
 
 public func safeAssert(condition: Bool, _ msg: String) {
     if condition == false {
-        print(msg)
+        log(msg)
     }
+}
+
+public func log(msg: String) {
+    #if DEBUG
+        print(msg)
+    #endif
 }

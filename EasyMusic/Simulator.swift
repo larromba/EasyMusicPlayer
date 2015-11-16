@@ -10,6 +10,8 @@ import MediaPlayer
 
 extension MPMediaQuery {
     public class func mockSongsQuery() -> MPMediaQuery {
+        log("MPMediaQuery: mocking songs query")
+        
         let item1 = MockMediaItem()
         item1.title = "Title 1"
         item1.artist = "Artist 1"
@@ -65,7 +67,9 @@ class MockMediaItem: MPMediaItem {
     
     override func valueForProperty(property: String) -> AnyObject? {
         if property == MPMediaItemPropertyAssetURL {
-            return NSURL(fileURLWithPath: "/Users/larromba/Documents/Business/Pink Chicken/personal/EasyMusic/TestTunes/Bounce.mp3")
+            let path = Constants.Paths.DummyAudio
+            log(String("returning dummy audio file. If errors are found, please check path " + path))
+            return NSURL(fileURLWithPath: path)
         }
         
         return nil

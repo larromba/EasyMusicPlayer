@@ -62,6 +62,12 @@ class MusicPlayer: NSObject {
     deinit {
         enableAudioSession(false)
         
+        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
+        commandCenter.pauseCommand.removeTarget(self)
+        commandCenter.playCommand.removeTarget(self)
+        commandCenter.previousTrackCommand.removeTarget(self)
+        commandCenter.nextTrackCommand.removeTarget(self)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: UIApplicationWillTerminateNotification,
             object: nil)
@@ -80,9 +86,9 @@ class MusicPlayer: NSObject {
     
     private func setRemoteTrackInfo(track: TrackInfo) {        
         let songInfo: [String: AnyObject] = [
-            MPMediaItemPropertyTitle: track.title!,
-            MPMediaItemPropertyArtist: track.artist!,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: track.artwork!),
+            MPMediaItemPropertyTitle: track.title,
+            MPMediaItemPropertyArtist: track.artist,
+            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: track.artwork),
             MPNowPlayingInfoPropertyPlaybackRate: Float(1.0)
         ]
 

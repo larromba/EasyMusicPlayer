@@ -171,6 +171,7 @@
 			children = (
 				7F4090561BF91BD000F449FD /* Log.swift */,
 				7F4090591BF928E800F449FD /* Constants.swift */,
+				7F4090621BF93CC700F449FD /* Simulator.swift */,
 			);
 			name = Global;
 			sourceTree = "<group>";
@@ -211,7 +212,6 @@
 			children = (
 				7FF5B31C1BE654220044FCE5 /* MusicPlayer.swift */,
 				7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */,
-				7F4090621BF93CC700F449FD /* Simulator.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
