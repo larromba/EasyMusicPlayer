@@ -25,17 +25,17 @@ class PlayButton: UIButton {
         setButtonState(PlayButtonState.Play)
     }
     
-    // MARK: - Public
+    // MARK: - internal
     
     func setButtonState(state: PlayButtonState) {
         buttonState = state
         switch state {
         case .Play:
-            setBackgroundImage(UIImage.safeImage(named: Constants.ImageNames.PlayButton),
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PlayButton),
                 forState: UIControlState.Normal)
             break
         case .Pause:
-            setBackgroundImage(UIImage.safeImage(named: Constants.ImageNames.PauseButton),
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PauseButton),
                 forState: UIControlState.Normal)
             break
         }

@@ -82,7 +82,7 @@ class ControlsView: UIView {
         delegate?.sharePressed(self)
     }
     
-    // MARK: - public
+    // MARK: - internal
     
     func setControlsPlaying() {
         playButton.setButtonState(PlayButtonState.Pause)

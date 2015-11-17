@@ -51,7 +51,7 @@ class MusicPlayer: NSObject {
         commandCenter.nextTrackCommand.addTarget(self, action: safeSelector("next"))
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: safeSelector(Constants.Notifications.ApplicationWillTerminate),
+            selector: safeSelector(Constant.Notification.ApplicationWillTerminate),
             name: UIApplicationWillTerminateNotification,
             object: nil)
         
@@ -108,6 +108,16 @@ class MusicPlayer: NSObject {
         playbackCheckTimer = nil
     }
     
+    private func tracksQuery() -> MPMediaQuery! {
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            let query = MPMediaQuery.mockSongsQuery()
+        #else
+            let query = MPMediaQuery.songsQuery()
+        #endif
+        
+        return query
+    }
+    
     // MARK: - notifications
     
     func applicationWillTerminate() {
@@ -118,7 +128,7 @@ class MusicPlayer: NSObject {
         delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
-    // MARK: - public
+    // MARK: - internal
     
     func play() {
         guard tracks.count > 0 else {
@@ -126,14 +136,18 @@ class MusicPlayer: NSObject {
         }
         
         let track = tracks[trackIndex]
-        let url = track.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
-        if player == nil || player!.url!.absoluteString != url.absoluteString {
-            _ = try! player = AVAudioPlayer(contentsOfURL: url)
-        }
-
-        if player == nil {
+        let url = track.valueForProperty(MPMediaItemPropertyAssetURL) as? NSURL
+        if url == nil {
             delegate?.changedState(self, state: MusicPlayerState.Error)
             return
+        }
+        
+        if player == nil || player!.url!.absoluteString != url!.absoluteString {
+            _ = try! player = AVAudioPlayer(contentsOfURL: url!)
+            if player == nil {
+                delegate?.changedState(self, state: MusicPlayerState.Error)
+                return
+            }
         }
         
         player!.delegate = self
@@ -190,14 +204,12 @@ class MusicPlayer: NSObject {
         play()
     }
     
+    /** 
+     @return true if suffle completes successfully
+     */
     func shuffle() -> Bool {
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
-            let query = MPMediaQuery.mockSongsQuery()
-        #else
-            let query = MPMediaQuery.songsQuery()
-        #endif
-
-        if query.items?.count == 0 {
+        let query = tracksQuery()
+        if query.items == nil || query.items!.count == 0 {
             // if we have no songs, bail
             return false
         }
@@ -252,5 +264,12 @@ class MusicPlayer: NSObject {
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         delegate?.changedState(self, state: MusicPlayerState.Finished)
+    }
+}
+
+// MARK: - Testing
+extension MusicPlayer {
+    func _injectPlayer(player: AVAudioPlayer) {
+        self.player = player
     }
 }

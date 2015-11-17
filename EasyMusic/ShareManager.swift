@@ -13,7 +13,7 @@ class ShareManager: NSObject {
     private(set) weak var presenter: UIViewController!
     private(set) var trackInfo: TrackInfo!
     
-    // MARK: - public
+    // MARK: - internal
     
     func shareTrackInfo(trackInfo: TrackInfo, presenter: UIViewController) {
         self.presenter = presenter

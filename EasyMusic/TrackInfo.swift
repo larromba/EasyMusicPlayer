@@ -26,7 +26,7 @@ class TrackInfo: NSObject {
         }
         
         if artwork == nil {
-            artwork = UIImage.safeImage(named: Constants.ImageNames.Placeholder)
+            artwork = UIImage.safeImage(named: Constant.Image.Placeholder)
         }
         
         self.artist = artist

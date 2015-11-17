@@ -8,36 +8,33 @@
 
 import Foundation
 
-struct Constants {
-    struct Notifications {
+struct Constant {
+    struct Notification {
         static let ApplicationDidBecomeActive = "applicationDidBecomeActive"
         static let ApplicationWillTerminate = "applicationWillTerminate"
     }
     
-    struct BundleKeys {
+    struct Bundle {
         static let BundleDisplayName = "CFBundleDisplayName"
         static let BundleIdentifier = "CFBundleIdentifier"
+        static let HardCodedMainBundleIdentifier = "com.pinkchicken.EasyMusic"
     }
     
-    struct ImageNames {
+    struct Image {
         static let Placeholder = "ImagePlaceholder"
         static let PlayButton = "PlayButton"
         static let PauseButton = "PauseButton"
     }
     
-    struct Strings {
+    struct String {
         static let MainBundleIdentifier = "com.pinkchicken.EasyMusic"
     }
     
-    struct Paths {
+    struct Path {
         static let DummyAudio = "/Users/larromba/Documents/Business/Pink Chicken/personal/EasyMusic/TestTunes/Bounce.mp3"
     }
     
-    struct Environment {
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
-        static let Simulator = true
-        #else
-        static let Simulator = false
-        #endif
+    struct Storyboard {
+         static let Main = "Main"
     }
 }

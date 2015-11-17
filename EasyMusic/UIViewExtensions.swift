@@ -9,16 +9,18 @@
 import UIKit
 
 extension UIView {
-    func loadXib() {
+    public func loadXib() {
         let view = createViewFromNib()
         view.frame = bounds
         view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         addSubview(view)
     }
     
-    func nibView() -> UIView? {
+    public func nibView() -> UIView? {
         return subviews.first
     }
+    
+    // MARK: - private
     
     private func createViewFromNib() -> UIView! {
         let nib = UINib(nibName: self.className(), bundle: NSBundle.safeMainBundle())

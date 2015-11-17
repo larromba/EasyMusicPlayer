@@ -29,7 +29,7 @@ class InfoView: UIView {
         clearTrackInfo()
     }
  
-    // MARK: - Public
+    // MARK: - internal
     
     func setTrackInfo(trackInfo: TrackInfo) {
         artist.text = trackInfo.artist
@@ -50,7 +50,7 @@ class InfoView: UIView {
             stringFromTimeInterval(time))
     }
     
-    // MARK: - Private
+    // MARK: - private
     
     private func stringFromTimeInterval(timeInterval: NSTimeInterval) -> String {
         let interval = Int(timeInterval)

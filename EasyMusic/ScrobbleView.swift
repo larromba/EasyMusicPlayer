@@ -65,7 +65,7 @@ class ScrobbleView: UIView {
         layoutIfNeeded()
     }
     
-    // MARK: - Public
+    // MARK: - internal
     
     func scrobbleToPercentage(percentage: Float) {
         let w = CGRectGetWidth(bounds)

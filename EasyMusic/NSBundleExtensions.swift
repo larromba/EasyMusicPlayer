@@ -9,15 +9,15 @@
 import Foundation
 
 extension NSBundle {
-    class func appName() -> String! {
-        return NSBundle.mainBundle().objectForInfoDictionaryKey(Constants.BundleKeys.BundleDisplayName) as! String
+    public class func appName() -> String! {
+        return NSBundle.mainBundle().objectForInfoDictionaryKey(Constant.Bundle.BundleDisplayName) as! String
     }
     
-    class func bundleIdentifier() -> String! {
-        return NSBundle.mainBundle().objectForInfoDictionaryKey(Constants.BundleKeys.BundleIdentifier) as! String
+    public class func bundleIdentifier() -> String! {
+        return NSBundle.mainBundle().objectForInfoDictionaryKey(Constant.Bundle.BundleIdentifier) as! String
     }
     
-    class func safeMainBundle() -> NSBundle! {
-        return NSBundle(identifier: Constants.Strings.MainBundleIdentifier)
+    public class func safeMainBundle() -> NSBundle! {
+        return NSBundle(identifier: Constant.Bundle.HardCodedMainBundleIdentifier)
     }
 }
