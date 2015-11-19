@@ -11,6 +11,7 @@ import UIKit
 class PlayerViewController: UIViewController {
     private lazy var musicPlayer: MusicPlayer! = MusicPlayer(delegate: self)
     private let shareManager: ShareManager! = ShareManager()
+    private var AlertController = UIAlertController.self
     
     @IBOutlet private(set) weak var scrobbleView: ScrobbleView!
     @IBOutlet private(set) weak var infoView: InfoView!
@@ -54,21 +55,21 @@ class PlayerViewController: UIViewController {
     // MARK: - private
 
     private func noMusicError() -> UIAlertController {
-        let alert = UIAlertController.createAlertWithTitle(localized("no music error title"),
+        let alert = AlertController.createAlertWithTitle(localized("no music error title"),
             message: localized("no music error msg"),
             buttonTitle: localized("no music error button"))
         return alert
     }
     
     private func playerError() -> UIAlertController {
-        let alert = UIAlertController.createAlertWithTitle(localized("player error title"),
+        let alert = AlertController.createAlertWithTitle(localized("player error title"),
             message: localized("player error msg"),
             buttonTitle: localized("player error button"))
         return alert
     }
     
     private func finishedPlaylistAlert() -> UIAlertController {
-        let alert = UIAlertController.createAlertWithTitle(localized("finished alert title"),
+        let alert = AlertController.createAlertWithTitle(localized("finished alert title"),
             message: localized("finished alert msg"),
             buttonTitle: localized("finished alert button"))
         return alert
@@ -85,7 +86,7 @@ class PlayerViewController: UIViewController {
     }
     
     private func checkTracksAvailable() {
-        if musicPlayer.hasTracks() == false {
+        if musicPlayer.trackManager.tracks.count == 0 {
             showError(noMusicError())
         } else {
             controlsView.setControlsStopped()
@@ -97,11 +98,9 @@ class PlayerViewController: UIViewController {
 // MARK: - MusicPlayerDelegate
 extension PlayerViewController: MusicPlayerDelegate {
     func changedState(sender: MusicPlayer, state: MusicPlayerState) {
-        let tracksInfo = sender.tracksInfo()
-
         if state == MusicPlayerState.Playing {
             controlsView.setControlsPlaying()
-            infoView.setTrackInfo(tracksInfo.trackInfo)
+            infoView.setTrackInfo(sender.trackInfo())
             scrobbleView.enabled = true
         } else if state ==  MusicPlayerState.Paused {
             controlsView.setControlsPaused()
@@ -113,14 +112,17 @@ extension PlayerViewController: MusicPlayerDelegate {
             controlsView.setControlsStopped()
             scrobbleView.enabled = false
             showAlert(finishedPlaylistAlert())
+        } else if state == MusicPlayerState.NoMusic {
+            showError(noMusicError())
         } else {
             showError(playerError())
         }
         
-        if tracksInfo.trackIndex == 0 {
+        let trackManager = sender.trackManager
+        if trackManager.trackIndex == 0 {
             controlsView.enablePrevious(false)
         }
-        if (tracksInfo.trackIndex == tracksInfo.totalTracks - 1) {
+        if (trackManager.trackIndex == trackManager.tracks.count - 1) {
             controlsView.enableNext(false)
         }
     }
@@ -167,12 +169,7 @@ extension PlayerViewController: ControlsViewDelegate {
     
     func shufflePressed(sender: ControlsView) {
         musicPlayer.stop()
-        
-        if musicPlayer.shuffle() == false {
-            showError(noMusicError())
-            return
-        }
-        
+        musicPlayer.shuffle()
         musicPlayer.play()
     }
     
@@ -191,5 +188,11 @@ extension PlayerViewController {
     }
     func _injectControlsView(controlsView: ControlsView) {
         self.controlsView = controlsView
+    }
+    func _injectScrobbleView(scrobbleView: ScrobbleView) {
+        self.scrobbleView = scrobbleView
+    }
+    func _injectAlertController(alertController: UIAlertController.Type) {
+        AlertController = alertController
     }
 }

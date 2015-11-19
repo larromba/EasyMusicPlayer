@@ -25,11 +25,13 @@ class TrackInfoTests: XCTestCase {
         let title = "title"
         let duration = 9.0
         let artwork = UIImage()
-        let trackInfo = TrackInfo(artist: artist, title: title, duration: duration, artwork: artwork)
+        let url = NSURL(string: "")!
+        let trackInfo = TrackInfo(artist: artist, title: title, duration: duration, artwork: artwork, url: url)
         
         XCTAssert(trackInfo.artist == artist)
         XCTAssert(trackInfo.title == title)
         XCTAssert(trackInfo.duration == duration)
         XCTAssert(trackInfo.artwork == artwork)
+        XCTAssert(trackInfo.url == url)
     }
 }

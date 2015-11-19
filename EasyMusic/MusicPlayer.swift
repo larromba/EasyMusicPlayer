@@ -15,6 +15,7 @@ enum MusicPlayerState {
     case Paused
     case Stopped
     case Finished
+    case NoMusic
     case Error
     case Unknown
 }
@@ -25,8 +26,7 @@ protocol MusicPlayerDelegate {
 }
 
 class MusicPlayer: NSObject {
-    private var tracks: [MPMediaItem]! = []
-    private var trackIndex: Int! = 0
+    private(set) var trackManager: TrackManager! = TrackManager()
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: NSTimer?
     
@@ -108,16 +108,6 @@ class MusicPlayer: NSObject {
         playbackCheckTimer = nil
     }
     
-    private func tracksQuery() -> MPMediaQuery! {
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
-            let query = MPMediaQuery.mockSongsQuery()
-        #else
-            let query = MPMediaQuery.songsQuery()
-        #endif
-        
-        return query
-    }
-    
     // MARK: - notifications
     
     func applicationWillTerminate() {
@@ -131,19 +121,19 @@ class MusicPlayer: NSObject {
     // MARK: - internal
     
     func play() {
-        guard tracks.count > 0 else {
+        guard trackManager.tracks.count > 0 else {
+            delegate?.changedState(self, state: MusicPlayerState.NoMusic)
             return
         }
         
-        let track = tracks[trackIndex]
-        let url = track.valueForProperty(MPMediaItemPropertyAssetURL) as? NSURL
-        if url == nil {
+        let track = trackManager.currentTrack()
+        if track.url == nil {
             delegate?.changedState(self, state: MusicPlayerState.Error)
             return
         }
         
-        if player == nil || player!.url!.absoluteString != url!.absoluteString {
-            _ = try! player = AVAudioPlayer(contentsOfURL: url!)
+        if player == nil || player!.url!.absoluteString != track.url!.absoluteString {
+            _ = try! player = AVAudioPlayer(contentsOfURL: track.url!)
             if player == nil {
                 delegate?.changedState(self, state: MusicPlayerState.Error)
                 return
@@ -181,78 +171,29 @@ class MusicPlayer: NSObject {
     func previous() {
         stop()
         
-        var newIndex = trackIndex - 1
-        if newIndex < 0 {
-            newIndex = 0
+        if trackManager.cuePrevious() == false {
             player!.currentTime = 0.0
         }
-        
-        trackIndex = newIndex
        
         play()
     }
     
     func next() {
-        let newIndex = trackIndex + 1
-        if newIndex >= tracks.count {
-            stop()
+        stop()
+        
+        if trackManager.cueNext() == false {
             return
         }
         
-        stop()
-        trackIndex = trackIndex + 1
         play()
     }
-    
-    /** 
-     @return true if suffle completes successfully
-     */
-    func shuffle() -> Bool {
-        let query = tracksQuery()
-        if query.items == nil || query.items!.count == 0 {
-            // if we have no songs, bail
-            return false
-        }
-        
-        let mItems = NSMutableArray(array: query.items!)
-        
-        for var i = 0; i < mItems.count - 1; ++i {
-            let remainingCount = mItems.count - i;
-            let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
-            mItems.exchangeObjectAtIndex(i, withObjectAtIndex: exchangeIndex)
-        }
-        
-        tracks = mItems as AnyObject as? [MPMediaItem]
-        trackIndex = 0
-        
-        return true
-    }
-    
-    func hasTracks() -> Bool! {
-        return tracks.count > 0
+
+    func shuffle() {
+        trackManager.shuffleTracks()
     }
     
     func trackInfo() -> TrackInfo! {
-        let track = tracks[trackIndex]
-        
-        var artwork: UIImage?
-        if track.artwork != nil {
-            artwork = track.artwork!.imageWithSize(CGSizeMake(30, 30));
-        }
-        
-        let trackInfo = TrackInfo(
-            artist: track.artist,
-            title: track.title,
-            duration: track.playbackDuration,
-            artwork: artwork)
-        return trackInfo
-    }
-    
-    func tracksInfo() -> TracksInfo {
-        return TracksInfo(
-            trackInfo: trackInfo(),
-            trackIndex: trackIndex,
-            totalTracks: tracks!.count)
+        return trackManager.currentTrack()
     }
     
     func skipTo(time: NSTimeInterval) {
@@ -265,11 +206,26 @@ extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         delegate?.changedState(self, state: MusicPlayerState.Finished)
     }
+    
+    func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
+        delegate?.changedState(self, state: MusicPlayerState.Error)
+    }
+    
+    func audioPlayerBeginInterruption(player: AVAudioPlayer) {
+        delegate?.changedState(self, state: MusicPlayerState.Paused)
+    }
+    
+    func audioPlayerEndInterruption(player: AVAudioPlayer, withOptions flags: Int) {
+        delegate?.changedState(self, state: MusicPlayerState.Playing)
+    }
 }
 
 // MARK: - Testing
 extension MusicPlayer {
     func _injectPlayer(player: AVAudioPlayer) {
         self.player = player
+    }
+    func _injectTrackManager(trackManager: TrackManager) {
+        self.trackManager = trackManager
     }
 }

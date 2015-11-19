@@ -1,5 +1,5 @@
 //
-//  Functions.swift
+//  GCD.swift
 //  EasyMusic
 //
 //  Created by Lee Arromba on 17/11/2015.

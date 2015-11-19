@@ -13,8 +13,9 @@ class TrackInfo: NSObject {
     private(set) var title: String!
     private(set) var duration: NSTimeInterval! = 0
     private(set) var artwork: UIImage!
+    private(set) var url: NSURL!
     
-    init(var artist: String?, var title: String?, duration: NSTimeInterval, var artwork: UIImage?) {
+    init(var artist: String?, var title: String?, duration: NSTimeInterval, var artwork: UIImage?, url: NSURL) {
         super.init()
         
         if artist == nil || artist!.characters.count == 0 {
@@ -33,5 +34,6 @@ class TrackInfo: NSObject {
         self.title = title
         self.duration = duration
         self.artwork = artwork
+        self.url = url
     }
 }
