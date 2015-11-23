@@ -10,28 +10,18 @@ import XCTest
 @testable import EasyMusic
 
 class TrackInfoTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     func testInitValid() {
         let artist = "artist"
         let title = "title"
         let duration = 9.0
         let artwork = UIImage()
         let url = NSURL(string: "")!
-        let trackInfo = TrackInfo(artist: artist, title: title, duration: duration, artwork: artwork, url: url)
+        let track = Track(artist: artist, title: title, duration: duration, artwork: artwork, url: url)
         
-        XCTAssert(trackInfo.artist == artist)
-        XCTAssert(trackInfo.title == title)
-        XCTAssert(trackInfo.duration == duration)
-        XCTAssert(trackInfo.artwork == artwork)
-        XCTAssert(trackInfo.url == url)
+        XCTAssert(track.artist == artist)
+        XCTAssert(track.title == title)
+        XCTAssert(track.duration == duration)
+        XCTAssert(track.artwork == artwork)
+        XCTAssert(track.url == url)
     }
 }

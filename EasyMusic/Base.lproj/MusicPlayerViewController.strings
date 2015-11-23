@@ -1,18 +1,18 @@
-/* 
-  MusicPlayer.strings
-  EasyMusic
-
-  Created by Lee Arromba on 12/11/2015.
-  Copyright © 2015 Lee Arromba. All rights reserved.
-*/
+/*
+ MusicPlayerViewController.strings
+ EasyMusic
+ 
+ Created by Lee Arromba on 12/11/2015.
+ Copyright © 2015 Lee Arromba. All rights reserved.
+ */
 
 "no music error title" = "Error";
 "no music error msg" = "You have no music!";
 "no music error button" = "OK";
 
-"player error title" = "Error";
-"player error msg" = "Couldn't play track";
-"player error button" = "OK";
+"track error title" = "Error";
+"track error msg" = "Couldn't play track %@";
+"track error button" = "OK";
 
 "finished alert title" = "End";
 "finished alert msg" = "Your playlist finished";

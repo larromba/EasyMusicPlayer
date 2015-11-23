@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import MediaPlayer
 
 @IBDesignable
 class InfoView: UIView {
-    @IBOutlet private(set) var artist: UILabel!
-    @IBOutlet private(set) var track: UILabel!
-    @IBOutlet private(set) var time: UILabel!
-    @IBOutlet private(set) var artwork: UIImageView!
+    @IBOutlet private(set) var artistLabel: UILabel!
+    @IBOutlet private(set) var trackLabel: UILabel!
+    @IBOutlet private(set) var timeLabel: UILabel!
+    @IBOutlet private(set) var artworkImageView: UIImageView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,26 +27,37 @@ class InfoView: UIView {
     }
     
     override func awakeFromNib() {
-        clearTrackInfo()
+        clearInfo()
     }
  
     // MARK: - internal
     
-    func setTrackInfo(trackInfo: TrackInfo) {
-        artist.text = trackInfo.artist
-        track.text = trackInfo.title
-        artwork.image = trackInfo.artwork
+    func setInfoFromTrack(track: Track) {
+        artistLabel.text = track.artist
+        trackLabel.text = track.title
+        artworkImageView.image = track.artwork
+        
+        let songInfo: [String: AnyObject] = [
+            MPMediaItemPropertyTitle: track.title,
+            MPMediaItemPropertyArtist: track.artist,
+            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: track.artwork),
+            MPNowPlayingInfoPropertyPlaybackRate: Float(1.0)
+        ]
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
     }
     
-    func clearTrackInfo() {
+    func clearInfo() {
         setTime(0.0, duration: 0.0)
-        artist.text = nil
-        track.text = nil
-        artwork.image = nil
+        
+        artistLabel.text = nil
+        trackLabel.text = nil
+        artworkImageView.image = nil
+        
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = nil
     }
     
     func setTime(time: NSTimeInterval, duration: NSTimeInterval) {
-        self.time.text = String(
+        self.timeLabel.text = String(
             format: localized("time format"),
             stringFromTimeInterval(time))
     }

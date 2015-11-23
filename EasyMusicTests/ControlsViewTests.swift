@@ -12,24 +12,12 @@ import MediaPlayer
 
 class ControlsViewTests: XCTestCase {
     var controlsView: ControlsView!
-    var playPressedExpectation: XCTestExpectation!
-    var stopPressedExpectation: XCTestExpectation!
-    var prevPressedExpectation: XCTestExpectation!
-    var nextPressedExpectation: XCTestExpectation!
-    var shufflePressedExpectation: XCTestExpectation!
-    var sharePressedExpectation: XCTestExpectation!
+    var controlsExpectation: XCTestExpectation!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
         controlsView = ControlsView()
         controlsView.delegate = self
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
     }
     
     func testIsStoppedStateOnInit() {
@@ -164,36 +152,56 @@ class ControlsViewTests: XCTestCase {
     }
     
     func testControlsViewDelegatePlayPressed() {
+        /**
+         expectations
+         - delegate method called on button press
+         */
         let mockButton = UIButton()
-        playPressedExpectation = expectationWithDescription("ControlsViewDelegate:playPressed")
+        controlsExpectation = expectationWithDescription("ControlsViewDelegate.playPressed(_)")
         controlsView.playButtonPressed(mockButton)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
     func testControlsViewDelegateStopPressed() {
+        /**
+         expectations
+         - delegate method called on button press
+         */
         let mockButton = UIButton()
-        stopPressedExpectation = expectationWithDescription("ControlsViewDelegate:stopPressed")
+        controlsExpectation = expectationWithDescription("ControlsViewDelegate.stopPressed(_)")
         controlsView.stopButtonPressed(mockButton)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
     func testControlsViewDelegatePrevPressed() {
+        /**
+         expectations
+         - delegate method called on button press
+         */
         let mockButton = UIButton()
-        prevPressedExpectation = expectationWithDescription("ControlsViewDelegate:prevPressed")
+        controlsExpectation = expectationWithDescription("ControlsViewDelegate.prevPressed(_)")
         controlsView.prevButtonPressed(mockButton)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
     func testControlsViewDelegateNextPressed() {
+        /**
+         expectations
+         - delegate method called on button press
+         */
         let mockButton = UIButton()
-        nextPressedExpectation = expectationWithDescription("ControlsViewDelegate:nextPressed")
+        controlsExpectation = expectationWithDescription("ControlsViewDelegate.nextPressed(_)")
         controlsView.nextButtonPressed(mockButton)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
     func testControlsViewDelegateShufflePressed() {
+        /**
+         expectations
+         - delegate method called on button press
+         */
         let mockButton = UIButton()
-        shufflePressedExpectation = expectationWithDescription("ControlsViewDelegate:shufflePressed")
+        controlsExpectation = expectationWithDescription("ControlsViewDelegate.shufflePressed(_)")
         controlsView.shuffleButtonPressed(mockButton)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
@@ -202,21 +210,21 @@ class ControlsViewTests: XCTestCase {
 // MARK: - ControlsViewDelegate
 extension ControlsViewTests: ControlsViewDelegate {
     func playPressed(sender: ControlsView) {
-        playPressedExpectation.fulfill()
+        controlsExpectation.fulfill()
     }
     func stopPressed(sender: ControlsView) {
-        stopPressedExpectation.fulfill()
+        controlsExpectation.fulfill()
     }
     func prevPressed(sender: ControlsView) {
-        prevPressedExpectation.fulfill()
+        controlsExpectation.fulfill()
     }
     func nextPressed(sender: ControlsView) {
-        nextPressedExpectation.fulfill()
+        controlsExpectation.fulfill()
     }
     func shufflePressed(sender: ControlsView) {
-        shufflePressedExpectation.fulfill()
+        controlsExpectation.fulfill()
     }
     func sharePressed(sender: ControlsView) {
-        sharePressedExpectation.fulfill()
+        controlsExpectation.fulfill()
     }
 }

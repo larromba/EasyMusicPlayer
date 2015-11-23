@@ -6,10 +6,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InfoView" customModule="EasyMusic" customModuleProvider="target">
             <connections>
-                <outlet property="artist" destination="ZfL-ha-Gb2" id="GOA-GE-Xep"/>
-                <outlet property="artwork" destination="pUZ-ec-YGB" id="xns-Rv-Q9i"/>
-                <outlet property="time" destination="Jcv-wa-chp" id="FTf-mR-zoc"/>
-                <outlet property="track" destination="2qf-8v-yco" id="11S-YZ-QP2"/>
+                <outlet property="artistLabel" destination="ZfL-ha-Gb2" id="AP7-wi-G2j"/>
+                <outlet property="artworkImageView" destination="pUZ-ec-YGB" id="mMj-zX-zFO"/>
+                <outlet property="timeLabel" destination="Jcv-wa-chp" id="Fuw-lq-wTq"/>
+                <outlet property="trackLabel" destination="2qf-8v-yco" id="8Lu-sc-s4Z"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

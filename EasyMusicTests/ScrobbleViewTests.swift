@@ -11,25 +11,20 @@ import XCTest
 
 private var mockPoint: CGPoint!
 
-class MockTouch : UITouch {
-    override func locationInView(view: UIView?) -> CGPoint {
-        return mockPoint
-    }
-}
-
 class ScrobbleViewTests: XCTestCase {
     var scrobbleView: ScrobbleView!
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        scrobbleView = ScrobbleView(frame: CGRectMake(0, 0, 100, 0))
+    var scrobbleViewExpectation: XCTestExpectation!
+
+    class MockTouch : UITouch {
+        override func locationInView(view: UIView?) -> CGPoint {
+            return mockPoint
+        }
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    override func setUp() {
+        super.setUp()        
+        scrobbleView = ScrobbleView(frame: CGRectMake(0, 0, 100, 0))
+        scrobbleView.delegate = self
     }
     
     func testScrobble50() {
@@ -89,5 +84,29 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) != 90.0)
+    }
+    
+    func testTouchesEnded() {
+        /**
+        expectations
+        - delegate method is called
+        */
+        scrobbleViewExpectation = expectationWithDescription("ScrobbleViewDelegate.touchEndedAtPercentage(_, _)")
+        
+        let mockTouch = UITouch()
+        let mockEvent = UIEvent()
+        
+        scrobbleView.enabled = true
+        scrobbleView.touchesEnded(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
+        
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+}
+
+// MARK: - ScrobbleViewDelegate
+extension ScrobbleViewTests: ScrobbleViewDelegate {
+    func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) { }
+    func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float) {
+        scrobbleViewExpectation.fulfill()
     }
 }

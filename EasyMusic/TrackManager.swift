@@ -10,17 +10,17 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
-    private(set) var tracks: [TrackInfo]! = []
+    private(set) var tracks: [Track]! = []
     private(set) var trackIndex: Int! = 0
     
-    func createPlaylist() -> [TrackInfo]! {
+    func createPlaylist() -> [Track]! {
         #if (arch(i386) || arch(x86_64)) && os(iOS)
             
             let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
             let tracks = [
-                TrackInfo(artist: "Artist 1", title: "Title 1", duration: 219, artwork: nil, url: url),
-                TrackInfo(artist: "Artist 2", title: "Title 2", duration: 219, artwork: nil, url: url),
-                TrackInfo(artist: "Artist 3", title: "Title 3", duration: 219, artwork: nil, url: url)]
+                Track(artist: "Artist 1", title: "Title 1", duration: 219, artwork: nil, url: url),
+                Track(artist: "Artist 2", title: "Title 2", duration: 219, artwork: nil, url: url),
+                Track(artist: "Artist 3", title: "Title 3", duration: 219, artwork: nil, url: url)]
             return tracks
             
         #else
@@ -58,11 +58,11 @@ class TrackManager {
             mItems.exchangeObjectAtIndex(i, withObjectAtIndex: exchangeIndex)
         }
         
-        tracks = mItems as AnyObject as? [TrackInfo]
+        tracks = mItems as AnyObject as? [Track]
         trackIndex = 0
     }
     
-    func currentTrack() -> TrackInfo! {
+    func currentTrack() -> Track! {
         return tracks[trackIndex]
     }
     

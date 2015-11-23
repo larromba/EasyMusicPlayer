@@ -8,7 +8,7 @@
 
 "share format" = "%@ - %@ (via %@)";
 "accounts error title" = "Accounts";
-"accounts error msg" = "Please check the social accounts in your settings are correctly setup and try again";
+"accounts error msg" = "Please check your social accounts are correctly setup and try again";
 "accounts error button" = "OK";
 "share sheet title" = "Share";
 "share sheet desc" = "Where do you want to share?";

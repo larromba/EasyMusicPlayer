@@ -10,9 +10,13 @@
 "no music error msg" = "You have no music!";
 "no music error button" = "OK";
 
-"player error title" = "Error";
-"player error msg" = "Couldn't play track";
-"player error button" = "OK";
+"track error title" = "Error";
+"track error msg" = "Couldn't play track %@";
+"track error button" = "OK";
+
+"av error title" = "Error";
+"av error msg" = "There was a problem initialising your audio. Try again?";
+"av error button" = "OK";
 
 "finished alert title" = "End";
 "finished alert msg" = "Your playlist finished";

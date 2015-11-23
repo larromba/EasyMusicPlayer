@@ -11,13 +11,13 @@ import Social
 
 class ShareManager: NSObject {
     private(set) weak var presenter: UIViewController!
-    private(set) var trackInfo: TrackInfo!
+    private(set) var track: Track!
     
     // MARK: - internal
     
-    func shareTrackInfo(trackInfo: TrackInfo, presenter: UIViewController) {
+    func shareTrack(track: Track, presenter: UIViewController) {
         self.presenter = presenter
-        self.trackInfo = trackInfo
+        self.track = track
         
         let choices = createShareChoices { (service) -> Void in
             if service != nil {
@@ -33,8 +33,8 @@ class ShareManager: NSObject {
         if SLComposeViewController.isAvailableForServiceType(serviceType) {
             let share = SLComposeViewController(forServiceType: serviceType)
             let text = String(format: localized("share format"),
-                trackInfo.artist,
-                trackInfo.title,
+                track.artist,
+                track.title,
                 NSBundle.appName())
             share.setInitialText(text)
             presenter.presentViewController(share, animated: true, completion: nil)

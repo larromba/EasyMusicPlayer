@@ -24,4 +24,21 @@ extension UIAlertController {
         
         return alert
     }
+    
+    public class func createAlertWithTitle(title: String?, message: String?, buttonTitle: String?, buttonAction: (Void) -> Void) -> UIAlertController! {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(
+            title: buttonTitle,
+            style: UIAlertActionStyle.Default,
+            handler: { (action) -> Void in
+                buttonAction()
+                alert.dismissViewControllerAnimated(true, completion: nil)
+        }))
+        
+        return alert
+    }
 }

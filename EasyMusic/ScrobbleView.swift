@@ -10,6 +10,7 @@ import UIKit
 
 protocol ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float)
+    func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float)
 }
 
 @IBDesignable
@@ -42,6 +43,10 @@ class ScrobbleView: UIView {
         let touch = touches.first!
         let point = touch.locationInView(self)
         moveScrobblerToPoint(point.x)
+        
+        let w = CGRectGetWidth(bounds)
+        let perc = Float(point.x / w)
+        delegate?.touchMovedToPercentage(self, percentage: perc)
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -53,7 +58,7 @@ class ScrobbleView: UIView {
         let point = touch.locationInView(self)
         let w = CGRectGetWidth(bounds)
         let perc = Float(point.x / w)
-        delegate?.touchMovedToPercentage(self, percentage: perc)
+        delegate?.touchEndedAtPercentage(self, percentage: perc)
     }
     
     // MARK: - private

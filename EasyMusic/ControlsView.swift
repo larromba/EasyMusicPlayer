@@ -45,9 +45,7 @@ class ControlsView: UIView {
         loadXib()
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    override func awakeFromNib() {        
         setControlsStopped()
         
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();

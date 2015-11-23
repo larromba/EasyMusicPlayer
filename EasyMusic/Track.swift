@@ -1,5 +1,5 @@
 //
-//  TrackInfo.swift
+//  Track.swift
 //  EasyMusic
 //
 //  Created by Lee Arromba on 03/11/2015.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TrackInfo: NSObject {
+class Track: NSObject {
     private(set) var artist: String!
     private(set) var title: String!
     private(set) var duration: NSTimeInterval! = 0

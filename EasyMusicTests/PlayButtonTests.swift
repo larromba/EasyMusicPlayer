@@ -10,27 +10,14 @@ import XCTest
 
 @testable import EasyMusic
 
-var imageExpectation: XCTestExpectation!
-
-class MockPlayButton: PlayButton {
-    override func setBackgroundImage(image: UIImage?, forState state: UIControlState) {
-        imageExpectation.fulfill()
-    }
-}
+private var buttonExpectation: XCTestExpectation!
 
 class PlayButtonTests: XCTestCase {
     var playButton: PlayButton!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        
         playButton = PlayButton()
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
     }
     
     func testPlayButtonState() {
@@ -39,7 +26,17 @@ class PlayButtonTests: XCTestCase {
     }
     
     func testPlayButtonImage() {
-        imageExpectation = expectationWithDescription("ControlsViewDelegate:stopPressed")
+        /**
+        expectations
+        - button background image changes on button state change
+        */
+        buttonExpectation = expectationWithDescription("button.setBackgroundImage(_, _)")
+        
+        class MockPlayButton: PlayButton {
+            override func setBackgroundImage(image: UIImage?, forState state: UIControlState) {
+                buttonExpectation.fulfill()
+            }
+        }
         
         let mockButton = MockPlayButton()
         mockButton.setButtonState(PlayButtonState.Pause)

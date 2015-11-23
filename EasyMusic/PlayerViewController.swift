@@ -10,7 +10,8 @@ import UIKit
 
 class PlayerViewController: UIViewController {
     private lazy var musicPlayer: MusicPlayer! = MusicPlayer(delegate: self)
-    private let shareManager: ShareManager! = ShareManager()
+    private var shareManager: ShareManager! = ShareManager()
+    private var userScrobbling: Bool! = false
     private var AlertController = UIAlertController.self
     
     @IBOutlet private(set) weak var scrobbleView: ScrobbleView!
@@ -22,7 +23,7 @@ class PlayerViewController: UIViewController {
         
         controlsView.delegate = self
         scrobbleView.delegate = self
-                
+        
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
             name: UIApplicationDidBecomeActiveNotification,
@@ -60,11 +61,22 @@ class PlayerViewController: UIViewController {
             buttonTitle: localized("no music error button"))
         return alert
     }
+
+    private func trackError() -> UIAlertController {
+        let track = musicPlayer.currentTrack()
+        let alert = AlertController.createAlertWithTitle(localized("track error title"),
+            message: String(localized("track error msg"), track.title),
+            buttonTitle: localized("track error button"))
+        return alert
+    }
     
-    private func playerError() -> UIAlertController {
-        let alert = AlertController.createAlertWithTitle(localized("player error title"),
-            message: localized("player error msg"),
-            buttonTitle: localized("player error button"))
+    private func avError() -> UIAlertController {
+        let alert = AlertController.createAlertWithTitle(localized("av error title"),
+            message: localized("av error msg"),
+            buttonTitle: localized("av error button"),
+            buttonAction: {
+                self.musicPlayer.enableAudioSession(true)
+        })
         return alert
     }
     
@@ -86,11 +98,10 @@ class PlayerViewController: UIViewController {
     }
     
     private func checkTracksAvailable() {
-        if musicPlayer.trackManager.tracks.count == 0 {
+        if musicPlayer.numOfTracks() == 0 {
             showError(noMusicError())
         } else {
             controlsView.setControlsStopped()
-            scrobbleView.enabled = true
         }
     }
 }
@@ -98,50 +109,81 @@ class PlayerViewController: UIViewController {
 // MARK: - MusicPlayerDelegate
 extension PlayerViewController: MusicPlayerDelegate {
     func changedState(sender: MusicPlayer, state: MusicPlayerState) {
-        if state == MusicPlayerState.Playing {
+        switch state {
+        case .Playing:
             controlsView.setControlsPlaying()
-            infoView.setTrackInfo(sender.trackInfo())
+            infoView.setInfoFromTrack(sender.currentTrack())
             scrobbleView.enabled = true
-        } else if state ==  MusicPlayerState.Paused {
+            break
+        case .Paused:
             controlsView.setControlsPaused()
             scrobbleView.enabled = false
-        } else if state == MusicPlayerState.Stopped {
+            break
+        case .Stopped:
             controlsView.setControlsStopped()
             scrobbleView.enabled = false
-        } else if state == MusicPlayerState.Finished {
+            break
+        case .Finished:
             controlsView.setControlsStopped()
             scrobbleView.enabled = false
             showAlert(finishedPlaylistAlert())
-        } else if state == MusicPlayerState.NoMusic {
-            showError(noMusicError())
-        } else {
-            showError(playerError())
+            break
         }
         
-        let trackManager = sender.trackManager
-        if trackManager.trackIndex == 0 {
+        let trackNumber = musicPlayer.currentTrackNumber()
+        if trackNumber == 0 {
             controlsView.enablePrevious(false)
         }
-        if (trackManager.trackIndex == trackManager.tracks.count - 1) {
+        if (trackNumber == musicPlayer.numOfTracks() - 1) {
             controlsView.enableNext(false)
         }
     }
     
     func changedPlaybackTime(sender: MusicPlayer, playbackTime: NSTimeInterval) {
-        let track = musicPlayer.trackInfo()
+        guard userScrobbling == false else {
+            return
+        }
+        
+        let track = musicPlayer.currentTrack()
         let perc = Float(playbackTime / track.duration!)
         scrobbleView.scrobbleToPercentage(perc)
         infoView.setTime(playbackTime, duration: track.duration!)
+    }
+    
+    func threwError(sender: MusicPlayer, error: MusicPlayerError) {
+        switch error {
+        case .NoMusic:
+            showError(noMusicError())
+            break
+        case .Decode, .InvalidUrl, .PlayerInit:
+            showError(trackError())
+            
+            let trackNumber = self.musicPlayer.currentTrackNumber()
+            if (trackNumber < self.musicPlayer.numOfTracks() - 1) {
+                self.musicPlayer.next()
+            }
+            break
+        case .AVError:
+            showError(avError())
+            break
+        }
     }
 }
 
 // MARK: - ScrobbleViewDelegate
 extension PlayerViewController: ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
-        let track = musicPlayer.trackInfo()
+        let track = musicPlayer.currentTrack()
         let time = track.duration! * NSTimeInterval(percentage)
-        musicPlayer.skipTo(time)
         infoView.setTime(time, duration: track.duration!)
+        userScrobbling = true
+    }
+    func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float) {
+        let track = musicPlayer.currentTrack()
+        let time = track.duration! * NSTimeInterval(percentage)
+        infoView.setTime(time, duration: track.duration!)
+        musicPlayer.skipTo(time)
+        userScrobbling = false
     }
 }
 
@@ -174,7 +216,7 @@ extension PlayerViewController: ControlsViewDelegate {
     }
     
     func sharePressed(sender: ControlsView) {
-        shareManager.shareTrackInfo(musicPlayer.trackInfo(), presenter: self)
+        shareManager.shareTrack(musicPlayer.currentTrack(), presenter: self)
     }
 }
 
@@ -193,6 +235,9 @@ extension PlayerViewController {
         self.scrobbleView = scrobbleView
     }
     func _injectAlertController(alertController: UIAlertController.Type) {
-        AlertController = alertController
+        self.AlertController = alertController
+    }
+    func _injectShareManager(shareManager: ShareManager) {
+        self.shareManager = shareManager
     }
 }
