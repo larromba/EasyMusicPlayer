@@ -147,33 +147,6 @@ class MusicPlayerTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
-    func testPlayInvalidTrackUrl() {
-        /**
-        expectations
-        - error thrown
-        */
-        musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
-        
-        // mocks
-        class MockTrackManager: TrackManager {
-            override func numOfTracks() -> Int { return 1 }
-            override func currentTrack() -> Track! {
-                return Track(artist: "", title: "", duration: 0, artwork: nil, url: NSURL(string: "")!)
-            }
-        }
-        
-        let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
-        
-        expectedError = MusicPlayerError.InvalidUrl
-        
-        // runnable
-        musicPlayer.play()
-        
-        // tests
-        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
-    }
-    
     func testPlayInvalidPlayer() {
         /**
         expectations
