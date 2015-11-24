@@ -31,8 +31,13 @@ class PlayerViewControllerTests: XCTestCase {
     }
     
     func testInitialState() {
-        XCTAssert(musicPlayer.scrobbleView.enabled == false)
-        
+        XCTAssert(playerViewController.scrobbleView.enabled == false)
+        XCTAssert(playerViewController.controlsView.playButton.enabled == true)
+        XCTAssert(playerViewController.controlsView.stopButton.enabled == false)
+        XCTAssert(playerViewController.controlsView.prevButton.enabled == false)
+        XCTAssert(playerViewController.controlsView.nextButton.enabled == false)
+        XCTAssert(playerViewController.controlsView.shuffleButton.enabled == true)
+        XCTAssert(playerViewController.controlsView.shareButton.enabled == false)
     }
     
     func testPlay() {

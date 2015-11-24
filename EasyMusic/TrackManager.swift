@@ -10,8 +10,8 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
-    private(set) var tracks: [Track]! = []
-    private(set) var trackIndex: Int! = 0
+    private var tracks: [Track]! = []
+    private var trackIndex: Int! = 0
     
     func createPlaylist() -> [Track]! {
         #if (arch(i386) || arch(x86_64)) && os(iOS)
@@ -62,12 +62,8 @@ class TrackManager {
         trackIndex = 0
     }
     
-    func currentTrack() -> Track! {
-        return tracks[trackIndex]
-    }
-    
-    func cuePrevious() -> Bool {
-        let newIndex = trackIndex - 1
+    func cuePrevious() -> Bool! {
+        let newIndex = currentTrackNumber() - 1
         if newIndex < 0 {
             return false
         }
@@ -76,13 +72,25 @@ class TrackManager {
         return true
     }
     
-    func cueNext() -> Bool {
-        let newIndex = trackIndex + 1
+    func cueNext() -> Bool! {
+        let newIndex = currentTrackNumber() + 1
         if newIndex >= tracks.count {
             return false
         }
         
         trackIndex = newIndex
         return true
+    }
+    
+    func currentTrack() -> Track! {
+        return tracks[currentTrackNumber()]
+    }
+    
+    func currentTrackNumber() -> Int! {
+        return trackIndex
+    }
+    
+    func numOfTracks() -> Int! {
+        return tracks.count
     }
 }

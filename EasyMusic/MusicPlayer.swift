@@ -125,28 +125,39 @@ class MusicPlayer: NSObject {
     }
     
     func play() {
-        guard trackManager.tracks.count > 0 else {
+        guard trackManager.numOfTracks() > 0 else {
             delegate?.threwError(self, error: MusicPlayerError.NoMusic)
             return
         }
         
         let track = trackManager.currentTrack()
-        if track.url == nil {
+        if track.url.absoluteString.characters.count == 0 {
             delegate?.threwError(self, error: MusicPlayerError.InvalidUrl)
             return
         }
         
-        if player == nil || player!.url!.absoluteString != track.url!.absoluteString {
-            _ = try! player = AVAudioPlayer(contentsOfURL: track.url!)
-            if player == nil {
+        if player == nil || player!.url!.absoluteString != track.url.absoluteString {
+            do {
+                try player = AVAudioPlayer(contentsOfURL: track.url)
+            }
+            catch _ {
                 delegate?.threwError(self, error: MusicPlayerError.PlayerInit)
                 return
             }
+            player!.delegate = self
         }
         
-        player!.delegate = self
-        player!.prepareToPlay()
-        player!.play()
+        var success = player!.prepareToPlay()
+        guard success == true else {
+            delegate?.threwError(self, error: MusicPlayerError.AVError)
+            return
+        }
+        
+        success = player!.play()
+        guard success == true else {
+            delegate?.threwError(self, error: MusicPlayerError.AVError)
+            return
+        }
         
         startPlaybackCheckTimer()
         
@@ -173,9 +184,7 @@ class MusicPlayer: NSObject {
     func previous() {
         stop()
         
-        if trackManager.cuePrevious() == false {
-            skipTo(0.0)
-        }
+        _ = trackManager.cuePrevious()
        
         play()
     }
@@ -199,7 +208,7 @@ class MusicPlayer: NSObject {
     }
     
     func currentTrackNumber() -> Int! {
-        return trackManager.trackIndex
+        return trackManager.currentTrackNumber()
     }
     
     func skipTo(time: NSTimeInterval) {
@@ -208,7 +217,7 @@ class MusicPlayer: NSObject {
     }
     
     func numOfTracks() -> Int! {
-        return trackManager.tracks.count
+        return trackManager.numOfTracks()
     }
 }
 
