@@ -10,8 +10,8 @@ import Foundation
 import Social
 
 class ShareManager: NSObject {
-    private(set) weak var presenter: UIViewController!
-    private(set) var track: Track!
+    private weak var presenter: UIViewController!
+    private var track: Track!
     
     // MARK: - internal
     

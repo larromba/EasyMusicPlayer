@@ -13,6 +13,19 @@ class TrackManager {
     private var tracks: [Track]! = []
     private var trackIndex: Int! = 0
     
+    var allTracks: [Track]! {
+        return tracks
+    }
+    var currentTrack: Track! {
+        return tracks[currentTrackNumber]
+    }
+    var currentTrackNumber: Int! {
+        return trackIndex
+    }
+    var numOfTracks: Int! {
+        return tracks.count
+    }
+    
     func createPlaylist() -> [Track]! {
         #if (arch(i386) || arch(x86_64)) && os(iOS)
             
@@ -65,7 +78,7 @@ class TrackManager {
     }
     
     func cuePrevious() -> Bool! {
-        let newIndex = currentTrackNumber() - 1
+        let newIndex = currentTrackNumber - 1
         if newIndex < 0 {
             return false
         }
@@ -75,7 +88,7 @@ class TrackManager {
     }
     
     func cueNext() -> Bool! {
-        let newIndex = currentTrackNumber() + 1
+        let newIndex = currentTrackNumber + 1
         if newIndex >= tracks.count {
             return false
         }
@@ -83,16 +96,15 @@ class TrackManager {
         trackIndex = newIndex
         return true
     }
-    
-    func currentTrack() -> Track! {
-        return tracks[currentTrackNumber()]
+}
+
+// MARK: - Testing
+extension TrackManager {
+    func _injectTrackIndex(trackIndex: Int) {
+        self.trackIndex = trackIndex
     }
     
-    func currentTrackNumber() -> Int! {
-        return trackIndex
-    }
-    
-    func numOfTracks() -> Int! {
-        return tracks.count
+    func _injectTracks(tracks: [Track]) {
+        self.tracks = tracks
     }
 }

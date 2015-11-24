@@ -63,7 +63,7 @@ class PlayerViewController: UIViewController {
     }
 
     private func trackError() -> UIAlertController {
-        let track = musicPlayer.currentTrack()
+        let track = musicPlayer.currentTrack
         let alert = AlertController.createAlertWithTitle(localized("track error title"),
             message: String(localized("track error msg"), track.title),
             buttonTitle: localized("track error button"))
@@ -98,7 +98,7 @@ class PlayerViewController: UIViewController {
     }
     
     private func checkTracksAvailable() {
-        if musicPlayer.numOfTracks() == 0 {
+        if musicPlayer.numOfTracks == 0 {
             showError(noMusicError())
         } else {
             controlsView.setControlsStopped()
@@ -112,7 +112,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         switch state {
         case .Playing:
             controlsView.setControlsPlaying()
-            infoView.setInfoFromTrack(sender.currentTrack())
+            infoView.setInfoFromTrack(sender.currentTrack)
             scrobbleView.enabled = true
             break
         case .Paused:
@@ -130,11 +130,11 @@ extension PlayerViewController: MusicPlayerDelegate {
             break
         }
         
-        let trackNumber = musicPlayer.currentTrackNumber()
+        let trackNumber = musicPlayer.currentTrackNumber
         if trackNumber == 0 {
             controlsView.enablePrevious(false)
         }
-        if (trackNumber == musicPlayer.numOfTracks() - 1) {
+        if (trackNumber == musicPlayer.numOfTracks - 1) {
             controlsView.enableNext(false)
         }
     }
@@ -144,7 +144,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             return
         }
         
-        let track = musicPlayer.currentTrack()
+        let track = musicPlayer.currentTrack
         let perc = Float(playbackTime / track.duration!)
         scrobbleView.scrobbleToPercentage(perc)
         infoView.setTime(playbackTime, duration: track.duration!)
@@ -158,8 +158,8 @@ extension PlayerViewController: MusicPlayerDelegate {
         case .Decode, .PlayerInit:
             showError(trackError())
             
-            let trackNumber = self.musicPlayer.currentTrackNumber()
-            if (trackNumber < self.musicPlayer.numOfTracks() - 1) {
+            let trackNumber = self.musicPlayer.currentTrackNumber
+            if (trackNumber < self.musicPlayer.numOfTracks - 1) {
                 self.musicPlayer.next()
             }
             break
@@ -173,14 +173,14 @@ extension PlayerViewController: MusicPlayerDelegate {
 // MARK: - ScrobbleViewDelegate
 extension PlayerViewController: ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
-        let track = musicPlayer.currentTrack()
+        let track = musicPlayer.currentTrack
         let time = track.duration! * NSTimeInterval(percentage)
         infoView.setTime(time, duration: track.duration!)
         userScrobbling = true
     }
     
     func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float) {
-        let track = musicPlayer.currentTrack()
+        let track = musicPlayer.currentTrack
         let time = track.duration! * NSTimeInterval(percentage)
         infoView.setTime(time, duration: track.duration!)
         musicPlayer.skipTo(time)
@@ -217,7 +217,7 @@ extension PlayerViewController: ControlsViewDelegate {
     }
     
     func sharePressed(sender: ControlsView) {
-        shareManager.shareTrack(musicPlayer.currentTrack(), presenter: self)
+        shareManager.shareTrack(musicPlayer.currentTrack, presenter: self)
     }
 }
 

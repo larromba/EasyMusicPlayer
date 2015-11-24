@@ -36,12 +36,21 @@ class MusicPlayer: NSObject {
     
     private(set) var trackManager: TrackManager! = TrackManager()
     private(set) var delegate: MusicPlayerDelegate?
+    
     var isPlaying: Bool! {
         guard player != nil else {
             return false
         }
-        
         return player!.playing
+    }
+    var currentTrack: Track! {
+        return trackManager.currentTrack
+    }
+    var currentTrackNumber: Int! {
+        return trackManager.currentTrackNumber
+    }
+    var numOfTracks: Int! {
+        return trackManager.numOfTracks
     }
     
     init(delegate: MusicPlayerDelegate) {
@@ -122,15 +131,14 @@ class MusicPlayer: NSObject {
     }
     
     func play() {
-        guard trackManager.numOfTracks() > 0 else {
+        guard numOfTracks > 0 else {
             delegate?.threwError(self, error: MusicPlayerError.NoMusic)
             return
         }
         
-        let track = trackManager.currentTrack()
-        if player == nil || player!.url!.absoluteString != track.url.absoluteString {
+        if player == nil || player!.url!.absoluteString != currentTrack.url.absoluteString {
             do {
-                try player = AVAudioPlayer(contentsOfURL: track.url)
+                try player = AVAudioPlayer(contentsOfURL: currentTrack.url)
             } catch _ {
                 delegate?.threwError(self, error: MusicPlayerError.PlayerInit)
                 return
@@ -194,40 +202,24 @@ class MusicPlayer: NSObject {
         trackManager.shuffleTracks()
     }
     
-    func currentTrack() -> Track! {
-        return trackManager.currentTrack()
-    }
-    
-    func currentTrackNumber() -> Int! {
-        return trackManager.currentTrackNumber()
-    }
-    
     func skipTo(time: NSTimeInterval) {
         player!.currentTime = time
         delegate?.changedPlaybackTime(self, playbackTime: time)
-    }
-    
-    func numOfTracks() -> Int! {
-        return trackManager.numOfTracks()
     }
 }
 
 // MARK: - AVAudioPlayerDelegate
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
-        delegate?.changedState(self, state: MusicPlayerState.Finished)
+        if flag == true {
+            delegate?.changedState(self, state: MusicPlayerState.Finished)
+        } else {
+            delegate?.threwError(self, error: MusicPlayerError.AVError)
+        }
     }
     
     func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
         delegate?.threwError(self, error: MusicPlayerError.Decode)
-    }
-    
-    func audioPlayerBeginInterruption(player: AVAudioPlayer) {
-        delegate?.changedState(self, state: MusicPlayerState.Paused)
-    }
-    
-    func audioPlayerEndInterruption(player: AVAudioPlayer, withOptions flags: Int) {
-        delegate?.changedState(self, state: MusicPlayerState.Playing)
     }
 }
 

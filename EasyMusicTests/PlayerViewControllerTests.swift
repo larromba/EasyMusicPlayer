@@ -64,21 +64,21 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockInfoView: InfoView {
-            private override func className() -> String! { return "InfoView" }
+            override func className() -> String! { return "InfoView" }
             override func setInfoFromTrack(track: Track) {
                 infoViewExpectation.fulfill()
             }
         }
         
         class MockControlsView: ControlsView {
-            private override func className() -> String! { return "ControlsView" }
-            private override func setControlsPlaying() {
+            override func className() -> String! { return "ControlsView" }
+            override func setControlsPlaying() {
                 controlsViewExpectation.fulfill()
             }
         }
         
         class MockSrobbleView: ScrobbleView {
-            private override func className() -> String! { return "ScrobbleView" }
+            override func className() -> String! { return "ScrobbleView" }
             override var enabled: Bool! {
                 get { return super.enabled }
                 set { if newValue == true { scobbleViewExpectation.fulfill() } }
@@ -127,14 +127,14 @@ class PlayerViewControllerTests: XCTestCase {
         }
 
         class MockControlsView: ControlsView {
-            private override func className() -> String! { return "ControlsView" }
-            private override func setControlsEnabled(enabled: Bool) {
+            override func className() -> String! { return "ControlsView" }
+            override func setControlsEnabled(enabled: Bool) {
                 if enabled == false { controlsViewExpectation.fulfill() }
             }
         }
         
         class MockSrobbleView: ScrobbleView {
-            private override func className() -> String! { return "ScrobbleView" }
+            override func className() -> String! { return "ScrobbleView" }
             override var enabled: Bool! {
                 get { return super.enabled }
                 set { if newValue == false { scobbleViewExpectation.fulfill() } }
@@ -186,28 +186,24 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var isPlaying: Bool! {
-                return false
-            }
-            
+            override var isPlaying: Bool! { return false }
             override func play() {
                 self.delegate?.threwError(self, error: MusicPlayerError.Decode)
             }
-            
             override func next() {
                 musicPlayerExpectation.fulfill()
             }
         }
         
         class MockControlsView: ControlsView {
-            private override func className() -> String! { return "ControlsView" }
-            private override func setControlsEnabled(enabled: Bool) {
+            override func className() -> String! { return "ControlsView" }
+            override func setControlsEnabled(enabled: Bool) {
                 if enabled == false { controlsViewExpectation.fulfill() }
             }
         }
         
         class MockSrobbleView: ScrobbleView {
-            private override func className() -> String! { return "ScrobbleView" }
+            override func className() -> String! { return "ScrobbleView" }
             override var enabled: Bool! {
                 get { return super.enabled }
                 set { if newValue == false { scobbleViewExpectation.fulfill() } }
@@ -257,10 +253,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var isPlaying: Bool! {
-                return true
-            }
-            
+            override var isPlaying: Bool! { return true }
             override func pause() {
                 musicPlayerExpectation.fulfill()
                 self.delegate?.changedState(self, state: MusicPlayerState.Paused)
@@ -268,14 +261,14 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockControlsView: ControlsView {
-            private override func className() -> String! { return "ControlsView" }
-            private override func setControlsPaused() {
+            override func className() -> String! { return "ControlsView" }
+            override func setControlsPaused() {
                 controlsViewExpectation.fulfill()
             }
         }
         
         class MockSrobbleView: ScrobbleView {
-            private override func className() -> String! { return "ScrobbleView" }
+            override func className() -> String! { return "ScrobbleView" }
             override var enabled: Bool! {
                 get { return super.enabled }
                 set { if newValue == false { scobbleViewExpectation.fulfill() } }
@@ -335,12 +328,10 @@ class PlayerViewControllerTests: XCTestCase {
     func testNextDisabled() {
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            private override func play() {
+            override func play() {
                 self.delegate?.changedState(self, state: MusicPlayerState.Playing)
             }
-            private override func numOfTracks() -> Int {
-                return 1
-            }
+            override var numOfTracks: Int { return 1 }
         }
         
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController)
@@ -392,12 +383,10 @@ class PlayerViewControllerTests: XCTestCase {
     func testPreviousDisabled() {
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            private override func play() {
+            override func play() {
                 self.delegate?.changedState(self, state: MusicPlayerState.Playing)
             }
-            private override func numOfTracks() -> Int {
-                return 1
-            }
+            override var numOfTracks: Int { return 1 }
         }
         
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController)
@@ -436,14 +425,14 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockControlsView: ControlsView {
-            private override func className() -> String! { return "ControlsView" }
-            private override func setControlsStopped() {
+            override func className() -> String! { return "ControlsView" }
+            override func setControlsStopped() {
                 controlsViewExpectation.fulfill()
             }
         }
         
         class MockSrobbleView: ScrobbleView {
-            private override func className() -> String! { return "ScrobbleView" }
+            override func className() -> String! { return "ScrobbleView" }
             override var enabled: Bool! {
                 get { return super.enabled }
                 set { if newValue == false { scobbleViewExpectation.fulfill() } }
@@ -467,6 +456,37 @@ class PlayerViewControllerTests: XCTestCase {
         mockControlsView.stopButtonPressed(mockButton)
         
         // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testFinished() {
+        /**
+        expectations
+        - Controls are in stopped state
+        - Scrobble view is disabled
+        */
+        controlsViewExpectation = expectationWithDescription("controlsView.setControlsPlaying()")
+        
+        // mocks
+        class MockControlsView: ControlsView {
+            override func className() -> String! { return "ControlsView" }
+            override func setControlsStopped() {
+                controlsViewExpectation.fulfill()
+            }
+        }
+        
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController)
+        playerViewController._injectMusicPlayer(mockMusicPlayer)
+        
+        let mockControlsView = MockControlsView()
+        playerViewController._injectControlsView(mockControlsView)
+        mockControlsView.delegate = playerViewController
+        
+        // runnable
+        mockMusicPlayer.delegate?.changedState(mockMusicPlayer, state: MusicPlayerState.Finished)
+        
+        // tests
+        XCTAssert(playerViewController.scrobbleView.enabled == false)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -516,7 +536,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockShareManager: ShareManager {
-            private override func shareTrack(track: Track, presenter: UIViewController) {
+            override func shareTrack(track: Track, presenter: UIViewController) {
                 if sharedTrack == track {
                     shareManagerExpectation.fulfill()
                 }
@@ -524,8 +544,8 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            private override func currentTrack() -> Track! {
-                sharedTrack = super.currentTrack()
+            override var currentTrack: Track! {
+                sharedTrack = super.currentTrack
                 return sharedTrack
             }
         }
@@ -564,7 +584,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockSrobbleView: ScrobbleView {
-            private override func className() -> String! { return "ScrobbleView" }
+            override func className() -> String! { return "ScrobbleView" }
             override var enabled: Bool! {
                 get { return true }
                 set { }
@@ -600,7 +620,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockSrobbleView: ScrobbleView {
-            private override func className() -> String! { return "ScrobbleView" }
+            override func className() -> String! { return "ScrobbleView" }
             override var enabled: Bool! {
                 get { return true }
                 set { }

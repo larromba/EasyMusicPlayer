@@ -15,6 +15,9 @@
 		7F40905F1BF92F7A00F449FD /* PlayButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F40905E1BF92F7A00F449FD /* PlayButtonTests.swift */; };
 		7F4090661BFA091C00F449FD /* PlayerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090651BFA091C00F449FD /* PlayerViewControllerTests.swift */; };
 		7F4090681BFA096600F449FD /* UIStoryboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090671BFA096600F449FD /* UIStoryboardExtensions.swift */; };
+		7F409B9A1C04ED4500DFD6C4 /* TrackManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B991C04ED4500DFD6C4 /* TrackManagerTests.swift */; };
+		7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */; };
+		7F409B9E1C0506F300DFD6C4 /* XCTestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */; };
 		7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
@@ -90,6 +93,9 @@
 		7F40905E1BF92F7A00F449FD /* PlayButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayButtonTests.swift; sourceTree = "<group>"; };
 		7F4090651BFA091C00F449FD /* PlayerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlayerViewControllerTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7F4090671BFA096600F449FD /* UIStoryboardExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtensions.swift; sourceTree = "<group>"; };
+		7F409B991C04ED4500DFD6C4 /* TrackManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackManagerTests.swift; sourceTree = "<group>"; };
+		7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareManagerTests.swift; sourceTree = "<group>"; };
+		7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExtension.swift; sourceTree = "<group>"; };
 		7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ShareManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7F7932001BEA7C7E00E2C153 /* ScrobbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrobbleView.swift; sourceTree = "<group>"; };
 		7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
@@ -166,6 +172,8 @@
 			isa = PBXGroup;
 			children = (
 				7F279C731C0220720000C4B0 /* MusicPlayerTests.swift */,
+				7F409B991C04ED4500DFD6C4 /* TrackManagerTests.swift */,
+				7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -194,6 +202,14 @@
 				7F4090651BFA091C00F449FD /* PlayerViewControllerTests.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		7F409B9F1C0506F600DFD6C4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		7F7931FF1BEA61D200E2C153 /* Resources */ = {
@@ -376,6 +392,7 @@
 				7F4090641BFA088C00F449FD /* Controllers */,
 				7F279C751C02207A0000C4B0 /* Objects */,
 				7F40905B1BF92A2400F449FD /* Resources */,
+				7F409B9F1C0506F600DFD6C4 /* Extensions */,
 			);
 			path = EasyMusicTests;
 			sourceTree = "<group>";
@@ -575,11 +592,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7F279C741C0220720000C4B0 /* MusicPlayerTests.swift in Sources */,
+				7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */,
 				7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */,
 				7F4090531BF65B5E00F449FD /* ControlsViewTests.swift in Sources */,
 				7FF5B3001BE64E220044FCE5 /* TrackInfoTests.swift in Sources */,
 				7F4090661BFA091C00F449FD /* PlayerViewControllerTests.swift in Sources */,
+				7F409B9A1C04ED4500DFD6C4 /* TrackManagerTests.swift in Sources */,
 				7F40905F1BF92F7A00F449FD /* PlayButtonTests.swift in Sources */,
+				7F409B9E1C0506F300DFD6C4 /* XCTestExtension.swift in Sources */,
 				7FCFE93D1BF4BDDA00981545 /* ScrobbleViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
