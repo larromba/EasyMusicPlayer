@@ -26,11 +26,13 @@ class PlayerViewControllerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        
         playerViewController = UIStoryboard.main().instantiateInitialViewController() as! PlayerViewController
         playerViewController.view.layoutIfNeeded()
     }
     
     func testInitialState() {
+        // tests
         XCTAssert(playerViewController.scrobbleView.enabled == false)
         XCTAssert(playerViewController.controlsView.playButton.enabled == true)
         XCTAssert(playerViewController.controlsView.stopButton.enabled == false)
@@ -97,11 +99,12 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectScrobbleView(mockScrobbleView)
         mockScrobbleView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.playButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -159,11 +162,12 @@ class PlayerViewControllerTests: XCTestCase {
         let mockAlertControllerType = MockAlertController.self
         playerViewController._injectAlertController(mockAlertControllerType)
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.playButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -231,11 +235,12 @@ class PlayerViewControllerTests: XCTestCase {
         let mockAlertControllerType = MockAlertController.self
         playerViewController._injectAlertController(mockAlertControllerType)
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.playButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -288,11 +293,12 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectScrobbleView(mockScrobbleView)
         mockScrobbleView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+        
+        // runnable
         mockControlsView.playButtonPressed(mockButton)
 
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -317,11 +323,12 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.nextButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -342,12 +349,13 @@ class PlayerViewControllerTests: XCTestCase {
         let mockControlsView = ControlsView()
         playerViewController._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
-                
-        // tests
+        
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.playButtonPressed(mockButton)
         
-        // assertions
+        // tests
         XCTAssert(mockControlsView.nextButton.enabled == false)
     }
     
@@ -372,11 +380,12 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.prevButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -398,11 +407,12 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.playButtonPressed(mockButton)
         
-        // assertions
+        // tests
         XCTAssert(mockControlsView.nextButton.enabled == false)
     }
     
@@ -451,11 +461,12 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectScrobbleView(mockScrobbleView)
         mockScrobbleView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.stopButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -487,16 +498,20 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.shuffleButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
     func testShare() {
-        // expectations
+        /**
+        expectations
+        - track is shared
+        */
         shareManagerExpectation = expectationWithDescription("shareManager.shareTrack(_, _)")
         
         // mocks
@@ -525,11 +540,12 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        // tests
         let mockButton = UIButton()
+
+        // runnable
         mockControlsView.shareButtonPressed(mockButton)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -562,10 +578,10 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectScrobbleView(mockScrobbleView)
         mockScrobbleView.delegate = playerViewController
         
-        // tests
+        // runnable
         mockScrobbleView.delegate?.touchEndedAtPercentage(mockScrobbleView, percentage: 0.2)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -598,10 +614,10 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController._injectScrobbleView(mockScrobbleView)
         mockScrobbleView.delegate = playerViewController
         
-        // tests
+        // runnable
         mockScrobbleView.delegate?.touchEndedAtPercentage(mockScrobbleView, percentage: 0.2)
         
-        // assertions
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
 }

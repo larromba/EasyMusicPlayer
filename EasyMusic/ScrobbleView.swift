@@ -40,13 +40,14 @@ class ScrobbleView: UIView {
             return
         }
 
-        let touch = touches.first!
-        let point = touch.locationInView(self)
-        moveScrobblerToPoint(point.x)
-        
-        let w = CGRectGetWidth(bounds)
-        let perc = Float(point.x / w)
-        delegate?.touchMovedToPercentage(self, percentage: perc)
+        if let touch = touches.first {
+            let point = touch.locationInView(self)
+            moveScrobblerToPoint(point.x)
+            
+            let w = CGRectGetWidth(bounds)
+            let perc = Float(point.x / w)
+            delegate?.touchMovedToPercentage(self, percentage: perc)
+        }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -54,11 +55,12 @@ class ScrobbleView: UIView {
             return
         }
         
-        let touch = touches.first!
-        let point = touch.locationInView(self)
-        let w = CGRectGetWidth(bounds)
-        let perc = Float(point.x / w)
-        delegate?.touchEndedAtPercentage(self, percentage: perc)
+        if let touch = touches.first {
+            let point = touch.locationInView(self)
+            let w = CGRectGetWidth(bounds)
+            let perc = Float(point.x / w)
+            delegate?.touchEndedAtPercentage(self, percentage: perc)
+        }
     }
     
     // MARK: - private

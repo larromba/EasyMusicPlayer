@@ -33,14 +33,16 @@ class TrackManager {
                     artwork = track.artwork!.imageWithSize(CGSizeMake(30, 30))
                 }
                 
-                let track = TrackInfo(
-                    artist: song.artist,
-                    title: song.title,
-                    duration: song.playbackDuration,
-                    artwork: artwork,
-                    url: song.valueForProperty(MPMediaItemPropertyAssetURL))
-                
-                tracks.append(track)
+                if let urlProperty = song.valueForProperty(MPMediaItemPropertyAssetURL) {
+                    let track = Track(
+                        artist: song.artist,
+                        title: song.title,
+                        duration: song.playbackDuration,
+                        artwork: artwork,
+                        url: urlProperty as NSURL)
+                    
+                    tracks.append(track)
+                }
             }
             
             return tracks
@@ -58,7 +60,7 @@ class TrackManager {
             mItems.exchangeObjectAtIndex(i, withObjectAtIndex: exchangeIndex)
         }
         
-        tracks = mItems as AnyObject as? [Track]
+        tracks = mItems as AnyObject as! [Track]
         trackIndex = 0
     }
     

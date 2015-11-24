@@ -64,7 +64,7 @@ class InfoView: UIView {
     
     // MARK: - private
     
-    private func stringFromTimeInterval(timeInterval: NSTimeInterval) -> String {
+    private func stringFromTimeInterval(timeInterval: NSTimeInterval) -> String! {
         let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60

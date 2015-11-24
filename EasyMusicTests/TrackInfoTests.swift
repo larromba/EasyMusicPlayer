@@ -11,13 +11,17 @@ import XCTest
 
 class TrackInfoTests: XCTestCase {
     func testInitValid() {
+        // mocks
         let artist = "artist"
         let title = "title"
         let duration = 9.0
         let artwork = UIImage()
         let url = NSURL(string: "")!
+        
+        // runnable
         let track = Track(artist: artist, title: title, duration: duration, artwork: artwork, url: url)
         
+        // tests
         XCTAssert(track.artist == artist)
         XCTAssert(track.title == title)
         XCTAssert(track.duration == duration)

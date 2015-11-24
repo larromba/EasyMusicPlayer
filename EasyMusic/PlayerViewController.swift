@@ -9,14 +9,14 @@
 import UIKit
 
 class PlayerViewController: UIViewController {
+    @IBOutlet private(set) weak var scrobbleView: ScrobbleView!
+    @IBOutlet private(set) weak var infoView: InfoView!
+    @IBOutlet private(set) weak var controlsView: ControlsView!
+    
     private lazy var musicPlayer: MusicPlayer! = MusicPlayer(delegate: self)
     private var shareManager: ShareManager! = ShareManager()
     private var userScrobbling: Bool! = false
     private var AlertController = UIAlertController.self
-    
-    @IBOutlet private(set) weak var scrobbleView: ScrobbleView!
-    @IBOutlet private(set) weak var infoView: InfoView!
-    @IBOutlet private(set) weak var controlsView: ControlsView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,7 +155,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         case .NoMusic:
             showError(noMusicError())
             break
-        case .Decode, .InvalidUrl, .PlayerInit:
+        case .Decode, .PlayerInit:
             showError(trackError())
             
             let trackNumber = self.musicPlayer.currentTrackNumber()
@@ -178,6 +178,7 @@ extension PlayerViewController: ScrobbleViewDelegate {
         infoView.setTime(time, duration: track.duration!)
         userScrobbling = true
     }
+    
     func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float) {
         let track = musicPlayer.currentTrack()
         let time = track.duration! * NSTimeInterval(percentage)
@@ -225,18 +226,23 @@ extension PlayerViewController {
     func _injectMusicPlayer(musicPlayer: MusicPlayer) {
         self.musicPlayer = musicPlayer
     }
+    
     func _injectInfoView(infoView: InfoView) {
         self.infoView = infoView
     }
+    
     func _injectControlsView(controlsView: ControlsView) {
         self.controlsView = controlsView
     }
+    
     func _injectScrobbleView(scrobbleView: ScrobbleView) {
         self.scrobbleView = scrobbleView
     }
+    
     func _injectAlertController(alertController: UIAlertController.Type) {
         self.AlertController = alertController
     }
+    
     func _injectShareManager(shareManager: ShareManager) {
         self.shareManager = shareManager
     }

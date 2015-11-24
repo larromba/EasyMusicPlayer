@@ -18,7 +18,6 @@ enum MusicPlayerState {
 }
 
 enum MusicPlayerError {
-    case InvalidUrl
     case Decode
     case PlayerInit
     case NoMusic
@@ -110,16 +109,14 @@ class MusicPlayer: NSObject {
         if enable {
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: [])
-            }
-            catch _ {
+            } catch _ {
                 delegate?.threwError(self, error: MusicPlayerError.AVError)
             }
         }
         
         do {
             try AVAudioSession.sharedInstance().setActive(enable)
-        }
-        catch _ {
+        } catch _ {
             delegate?.threwError(self, error: MusicPlayerError.AVError)
         }
     }
@@ -131,16 +128,10 @@ class MusicPlayer: NSObject {
         }
         
         let track = trackManager.currentTrack()
-        if track.url.absoluteString.characters.count == 0 {
-            delegate?.threwError(self, error: MusicPlayerError.InvalidUrl)
-            return
-        }
-        
         if player == nil || player!.url!.absoluteString != track.url.absoluteString {
             do {
                 try player = AVAudioPlayer(contentsOfURL: track.url)
-            }
-            catch _ {
+            } catch _ {
                 delegate?.threwError(self, error: MusicPlayerError.PlayerInit)
                 return
             }
@@ -245,6 +236,7 @@ extension MusicPlayer {
     func _injectPlayer(player: AVAudioPlayer) {
         self.player = player
     }
+    
     func _injectTrackManager(trackManager: TrackManager) {
         self.trackManager = trackManager
     }

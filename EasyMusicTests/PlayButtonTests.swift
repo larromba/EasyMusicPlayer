@@ -17,11 +17,15 @@ class PlayButtonTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        
         playButton = PlayButton()
     }
     
     func testPlayButtonState() {
+        // runnable
         playButton.setButtonState(PlayButtonState.Pause)
+        
+        // tests
         XCTAssert(playButton.buttonState == PlayButtonState.Pause)
     }
     
@@ -32,6 +36,7 @@ class PlayButtonTests: XCTestCase {
         */
         buttonExpectation = expectationWithDescription("button.setBackgroundImage(_, _)")
         
+        // mocks
         class MockPlayButton: PlayButton {
             override func setBackgroundImage(image: UIImage?, forState state: UIControlState) {
                 buttonExpectation.fulfill()
@@ -39,8 +44,11 @@ class PlayButtonTests: XCTestCase {
         }
         
         let mockButton = MockPlayButton()
+        
+        // runnable
         mockButton.setButtonState(PlayButtonState.Pause)
       
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
 }
