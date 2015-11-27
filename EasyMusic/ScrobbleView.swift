@@ -19,7 +19,7 @@ class ScrobbleView: UIView {
     @IBOutlet private(set) weak var barView: UIView!
     
     var delegate: ScrobbleViewDelegate?
-    var enabled: Bool! = false
+    var enabled: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)

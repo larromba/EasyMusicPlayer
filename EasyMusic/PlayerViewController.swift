@@ -15,7 +15,7 @@ class PlayerViewController: UIViewController {
     
     private lazy var musicPlayer: MusicPlayer! = MusicPlayer(delegate: self)
     private var shareManager: ShareManager! = ShareManager()
-    private var userScrobbling: Bool! = false
+    private var userScrobbling: Bool = false
     private var AlertController = UIAlertController.self
     
     override func viewDidLoad() {
@@ -152,7 +152,7 @@ extension PlayerViewController: MusicPlayerDelegate {
     
     func threwError(sender: MusicPlayer, error: MusicPlayerError) {
         switch error {
-        case .NoMusic:
+        case .NoMusic, .AVError:
             showError(noMusicError())
             break
         case .Decode, .PlayerInit:
@@ -162,9 +162,6 @@ extension PlayerViewController: MusicPlayerDelegate {
             if (trackNumber < self.musicPlayer.numOfTracks - 1) {
                 self.musicPlayer.next()
             }
-            break
-        case .AVError:
-            showError(avError())
             break
         }
     }
@@ -239,11 +236,11 @@ extension PlayerViewController {
         self.scrobbleView = scrobbleView
     }
     
-    func _injectAlertController(alertController: UIAlertController.Type) {
-        self.AlertController = alertController
-    }
-    
     func _injectShareManager(shareManager: ShareManager) {
         self.shareManager = shareManager
+    }
+    
+    func _injectUserScrobbling(userScrobbling: Bool) {
+        self.userScrobbling = userScrobbling
     }
 }

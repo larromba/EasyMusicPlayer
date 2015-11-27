@@ -19,6 +19,7 @@ private var musicPlayerDelegateTimeExpectation: XCTestExpectation!
 private var expectedError: MusicPlayerError?
 private var expectedState: MusicPlayerState?
 private var expectedPlaybackTime: NSTimeInterval?
+private var expectedPlaybackTimeRough: NSTimeInterval?
 private let audioUrl: NSURL! = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
 private var methodOrder: [Int]! = []
 
@@ -426,7 +427,7 @@ class MusicPlayerTests: XCTestCase {
         }
         
         class MockTrackManager: TrackManager {
-            override func cueNext() -> Bool! {
+            override func cueNext() -> Bool {
                 methodOrder.append(1)
                 trackManagerExpectation.fulfill()
                 return true
@@ -469,7 +470,7 @@ class MusicPlayerTests: XCTestCase {
         }
         
         class MockTrackManager: TrackManager {
-            override func cueNext() -> Bool! { return false }
+            override func cueNext() -> Bool { return false }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
@@ -583,6 +584,55 @@ class MusicPlayerTests: XCTestCase {
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
+    
+    func testPlaybackTimerCallback() {
+        /**
+        expectations
+        - changes playback time
+        */
+        musicPlayerDelegateTimeExpectation = expectationWithDescription("MusicPlayerDelegate.changedPlaybackTime(_, _)")
+        
+        // mocks
+        let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = musicPlayer
+        musicPlayer._injectPlayer(mockAudioPlayer)
+        
+        expectedPlaybackTimeRough = 1
+        
+        // runnable
+        musicPlayer.play()
+        
+        // tests
+        waitForExpectationsWithTimeout(1.1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testPlaybackTimerGetsInvalidated() {
+        /**
+        expectations
+        - timer should be invalidated
+        */
+        musicPlayerExpectation = expectationWithDescription("musicPlayer.playbackCheckTimer.invalidate()")
+        
+        // mocks
+        let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = musicPlayer
+        musicPlayer._injectPlayer(mockAudioPlayer)
+        
+        class MockTimer: NSTimer {
+            private override func invalidate() {
+                musicPlayerExpectation.fulfill()
+            }
+        }
+        
+        let mockPlaybackCheckTimer = MockTimer()
+        musicPlayer._injectPlaybackCheckTimer(mockPlaybackCheckTimer)
+        
+        // runnable
+        musicPlayer.stop()
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
 }
 
 // MARK: - ScrobbleViewDelegate
@@ -600,7 +650,9 @@ extension MusicPlayerTests: MusicPlayerDelegate {
     }
     
     func changedPlaybackTime(sender: EasyMusic.MusicPlayer, playbackTime: NSTimeInterval) {
-        if expectedPlaybackTime != nil && expectedPlaybackTime == playbackTime {
+        if expectedPlaybackTimeRough != nil && fabs(expectedPlaybackTimeRough! - playbackTime) < 0.2 {
+            musicPlayerDelegateTimeExpectation.fulfill()
+        } else if expectedPlaybackTime != nil && expectedPlaybackTime == playbackTime {
             musicPlayerDelegateTimeExpectation.fulfill()
         }
     }

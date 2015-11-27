@@ -10,8 +10,6 @@ import XCTest
 
 @testable import EasyMusic
 
-private var buttonExpectation: XCTestExpectation!
-
 class PlayButtonTests: XCTestCase {
     var playButton: PlayButton!
     
@@ -22,33 +20,25 @@ class PlayButtonTests: XCTestCase {
     }
     
     func testPlayButtonState() {
+        // mocks
+        let expected = PlayButtonState.Pause
+        
         // runnable
-        playButton.setButtonState(PlayButtonState.Pause)
+        playButton.setButtonState(expected)
         
         // tests
-        XCTAssert(playButton.buttonState == PlayButtonState.Pause)
+        XCTAssertEqual(playButton.buttonState, expected)
     }
     
     func testPlayButtonImage() {
-        /**
-        expectations
-        - button background image changes on button state change
-        */
-        buttonExpectation = expectationWithDescription("button.setBackgroundImage(_, _)")
-        
         // mocks
-        class MockPlayButton: PlayButton {
-            override func setBackgroundImage(image: UIImage?, forState state: UIControlState) {
-                buttonExpectation.fulfill()
-            }
-        }
-        
-        let mockButton = MockPlayButton()
+        let mockButton = PlayButton()
+        mockButton.setBackgroundImage(nil, forState: UIControlState.Normal)
         
         // runnable
         mockButton.setButtonState(PlayButtonState.Pause)
       
         // tests
-        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+        XCTAssertNotNil(mockButton.backgroundImageForState(UIControlState.Normal))
     }
 }

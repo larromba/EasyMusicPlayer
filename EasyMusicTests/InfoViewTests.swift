@@ -32,10 +32,10 @@ class InfoViewTests: XCTestCase {
         infoView.setInfoFromTrack(track)
         
         // tests
-        XCTAssert(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo != nil)
-        XCTAssert(infoView.artistLabel.text == artist)
-        XCTAssert(infoView.trackLabel.text == title)
-        XCTAssert(infoView.artworkImageView.image == artwork)
+        XCTAssertNotNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
+        XCTAssertEqual(infoView.artistLabel.text, artist)
+        XCTAssertEqual(infoView.trackLabel.text, title)
+        XCTAssertEqual(infoView.artworkImageView.image, artwork)
     }
     
     func testClearTrackInfo() {
@@ -49,11 +49,11 @@ class InfoViewTests: XCTestCase {
         infoView.clearInfo()
         
         // tests
-        XCTAssert(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo == nil)
-        XCTAssert(infoView.artistLabel.text == nil)
-        XCTAssert(infoView.trackLabel.text == nil)
-        XCTAssert(infoView.timeLabel.text == "00:00:00")
-        XCTAssert(infoView.artworkImageView.image == nil)
+        XCTAssertNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
+        XCTAssertNil(infoView.artistLabel.text)
+        XCTAssertNil(infoView.trackLabel.text)
+        XCTAssertEqual(infoView.timeLabel.text, "00:00:00")
+        XCTAssertNil(infoView.artworkImageView.image)
     }
     
     func testSetTime10Secs() {
@@ -61,7 +61,7 @@ class InfoViewTests: XCTestCase {
         infoView.setTime(10, duration: 0)
         
         // tests
-        XCTAssert(infoView.timeLabel.text == "00:00:10")
+        XCTAssertEqual(infoView.timeLabel.text, "00:00:10")
     }
     
     func testSetTime10Mins() {
@@ -69,7 +69,7 @@ class InfoViewTests: XCTestCase {
         infoView.setTime(10 * 60, duration: 0)
         
         // tests
-        XCTAssert(infoView.timeLabel.text == "00:10:00")
+        XCTAssertEqual(infoView.timeLabel.text, "00:10:00")
     }
     
     func testSetTime10Hrs() {
@@ -77,6 +77,6 @@ class InfoViewTests: XCTestCase {
         infoView.setTime(10 * 60 * 60, duration: 0)
         
         // tests
-        XCTAssert(infoView.timeLabel.text == "10:00:00")
+        XCTAssertEqual(infoView.timeLabel.text, "10:00:00")
     }
 }

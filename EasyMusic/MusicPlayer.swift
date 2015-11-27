@@ -37,7 +37,7 @@ class MusicPlayer: NSObject {
     private(set) var trackManager: TrackManager! = TrackManager()
     private(set) var delegate: MusicPlayerDelegate?
     
-    var isPlaying: Bool! {
+    var isPlaying: Bool {
         guard player != nil else {
             return false
         }
@@ -231,5 +231,9 @@ extension MusicPlayer {
     
     func _injectTrackManager(trackManager: TrackManager) {
         self.trackManager = trackManager
+    }
+    
+    func _injectPlaybackCheckTimer(playbackCheckTimer: NSTimer) {
+        self.playbackCheckTimer = playbackCheckTimer
     }
 }

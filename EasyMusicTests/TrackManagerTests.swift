@@ -20,11 +20,16 @@ private let mockTracks = [
 ]
 
 class TrackManagerTests: XCTestCase {
-    func testShuffleTracks() {
-        // mocks
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
+    var mockTrackManager: TrackManager!
+    
+    override func setUp() {
+        super.setUp()
         
+        mockTrackManager = TrackManager()
+        mockTrackManager._injectTracks(mockTracks)
+    }
+    
+    func testShuffleTracks() {
         // runnable
         mockTrackManager.shuffleTracks()
         
@@ -43,8 +48,6 @@ class TrackManagerTests: XCTestCase {
     func testCuePrevious() {
         // mocks
         let initialTrackIndex = 3
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
         mockTrackManager._injectTrackIndex(initialTrackIndex)
         
         // runnable
@@ -58,8 +61,6 @@ class TrackManagerTests: XCTestCase {
     func testCuePreviousIsntNegative() {
         // mocks
         let initialTrackIndex = 0
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
         mockTrackManager._injectTrackIndex(initialTrackIndex)
         
         // runnable
@@ -72,8 +73,6 @@ class TrackManagerTests: XCTestCase {
     func testCueNext() {
         // mocks
         let initialTrackIndex = 3
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
         mockTrackManager._injectTrackIndex(initialTrackIndex)
         
         // runnable
@@ -87,8 +86,6 @@ class TrackManagerTests: XCTestCase {
     func testCueNextNoBufferOverride() {
         // mocks
         let initialTrackIndex = mockTracks.count
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
         mockTrackManager._injectTrackIndex(initialTrackIndex)
         
         // runnable
@@ -99,10 +96,6 @@ class TrackManagerTests: XCTestCase {
     }
     
     func testAllTracks() {
-        // mocks 
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
-        
         // runnable
         let tracks = mockTrackManager.allTracks
         
@@ -113,8 +106,6 @@ class TrackManagerTests: XCTestCase {
     func testCurrentTrack() {
         // mocks
         let initialTrackIndex = 3
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
         mockTrackManager._injectTrackIndex(initialTrackIndex)
         
         // runnable
@@ -127,8 +118,6 @@ class TrackManagerTests: XCTestCase {
     func testCurrentTrackNumber() {
         // mocks
         let initialTrackIndex = 3
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
         mockTrackManager._injectTrackIndex(initialTrackIndex)
         
         // runnable
@@ -139,10 +128,6 @@ class TrackManagerTests: XCTestCase {
     }
     
     func testNumOfTracks() {
-        // mocks
-        let mockTrackManager = TrackManager()
-        mockTrackManager._injectTracks(mockTracks)
-        
         // runnable
         let numberOfTracks = mockTrackManager.numOfTracks
         

@@ -22,10 +22,10 @@ class TrackInfoTests: XCTestCase {
         let track = Track(artist: artist, title: title, duration: duration, artwork: artwork, url: url)
         
         // tests
-        XCTAssert(track.artist == artist)
-        XCTAssert(track.title == title)
-        XCTAssert(track.duration == duration)
-        XCTAssert(track.artwork == artwork)
-        XCTAssert(track.url == url)
+        XCTAssertEqual(track.artist, artist)
+        XCTAssertEqual(track.title, title)
+        XCTAssertEqual(track.duration, duration)
+        XCTAssertEqual(track.artwork, artwork)
+        XCTAssertEqual(track.url, url)
     }
 }

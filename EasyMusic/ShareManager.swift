@@ -10,8 +10,10 @@ import Foundation
 import Social
 
 class ShareManager: NSObject {
-    private weak var presenter: UIViewController!
+    private var presenter: UIViewController!
     private var track: Track!
+    private var ComposeViewController = SLComposeViewController.self
+    private var AlertAction = UIAlertAction.self
     
     // MARK: - internal
     
@@ -30,8 +32,8 @@ class ShareManager: NSObject {
     // MARK: - private
     
     private func shareViaService(serviceType: String) {
-        if SLComposeViewController.isAvailableForServiceType(serviceType) {
-            let share = SLComposeViewController(forServiceType: serviceType)
+        if ComposeViewController.isAvailableForServiceType(serviceType) {
+            let share = ComposeViewController.init(forServiceType: serviceType)
             let text = String(format: localized("share format"),
                 track.artist,
                 track.title,
@@ -52,30 +54,40 @@ class ShareManager: NSObject {
             message: localized("share sheet desc"),
             preferredStyle: UIAlertControllerStyle.ActionSheet)
         
-        msg.addAction(UIAlertAction(
-            title: localized("share option facebook"),
-            style: UIAlertActionStyle.Default,
+        msg.addAction(AlertAction.withTitle(localized("share option facebook"),
+            style: .Default,
             handler: { (action) -> Void in
-                completion!(SLServiceTypeFacebook)
-                msg.dismissViewControllerAnimated(true, completion: nil)
+                msg.dismissViewControllerAnimated(true, completion: {
+                    completion!(SLServiceTypeFacebook)
+                })
         }))
         
-        msg.addAction(UIAlertAction(
-            title: localized("share option twitter"),
-            style: UIAlertActionStyle.Default,
+        msg.addAction(AlertAction.withTitle(localized("share option twitter"),
+            style: .Default,
             handler: { (action) -> Void in
-                completion!(SLServiceTypeTwitter)
-                msg.dismissViewControllerAnimated(true, completion: nil)
+                msg.dismissViewControllerAnimated(true, completion: {
+                    completion!(SLServiceTypeTwitter)
+                })
         }))
         
-        msg.addAction(UIAlertAction(
-            title: localized("share option cancel"),
-            style: UIAlertActionStyle.Cancel,
+        msg.addAction(AlertAction.withTitle(localized("share option cancel"),
+            style: .Cancel,
             handler: { (action) -> Void in
-                completion!(nil)
-                msg.dismissViewControllerAnimated(true, completion: nil)
+                msg.dismissViewControllerAnimated(true, completion: {
+                    completion!(nil)
+                })
         }))
         
         return msg
+    }
+}
+
+extension ShareManager {
+    func _injectComposeViewController(composeViewController: SLComposeViewController.Type) {
+        self.ComposeViewController = composeViewController
+    }
+    
+    func _injectAlertAction(alertAction: UIAlertAction.Type) {
+        self.AlertAction = alertAction
     }
 }

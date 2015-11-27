@@ -33,7 +33,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.scrobbleToPercentage(0.5)
         
         // tests
-        XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) == 50.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView.barView.bounds), 50.0)
     }
     
     func testScrobble30() {
@@ -41,7 +41,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.scrobbleToPercentage(0.3)
         
         // tests
-        XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) == 30.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView.barView.bounds), 30.0)
     }
     
     func testScrobble90() {
@@ -49,7 +49,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.scrobbleToPercentage(0.9)
         
         // tests
-        XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) == 90.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView.barView.bounds), 90.0)
     }
     
     func testTouchesMoved50() {
@@ -63,7 +63,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) == 50.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView.barView.bounds), 50.0)
     }
     
     func testTouchesMoved30() {
@@ -77,7 +77,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) == 30.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView.barView.bounds), 30.0)
     }
     
     func testTouchesMoved90() {
@@ -91,7 +91,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) == 90.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView.barView.bounds), 90.0)
     }
     
     func testTouchesMovedDisabled() {
@@ -105,7 +105,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssert(CGRectGetWidth(scrobbleView.barView.bounds) != 90.0)
+        XCTAssertNotEqual(CGRectGetWidth(scrobbleView.barView.bounds), 90.0)
     }
     
     func testTouchesEnded() {

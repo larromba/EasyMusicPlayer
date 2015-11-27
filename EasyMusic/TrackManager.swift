@@ -27,7 +27,7 @@ class TrackManager {
     }
     
     func createPlaylist() -> [Track]! {
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
+        #if (arch(i386) || arch(x86_64)) && os(iOS) // if simulator
             
             let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
             let tracks = [
@@ -36,7 +36,7 @@ class TrackManager {
                 Track(artist: "Artist 3", title: "Title 3", duration: 219, artwork: nil, url: url)]
             return tracks
             
-        #else
+        #else // device
             
             let tracks: [TrackInfo]
             let songs = MPMediaQuery.songsQuery()
@@ -77,7 +77,7 @@ class TrackManager {
         trackIndex = 0
     }
     
-    func cuePrevious() -> Bool! {
+    func cuePrevious() -> Bool {
         let newIndex = currentTrackNumber - 1
         if newIndex < 0 {
             return false
@@ -87,7 +87,7 @@ class TrackManager {
         return true
     }
     
-    func cueNext() -> Bool! {
+    func cueNext() -> Bool {
         let newIndex = currentTrackNumber + 1
         if newIndex >= tracks.count {
             return false
