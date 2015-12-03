@@ -11,7 +11,7 @@ import UIKit
 extension UIImage {
     public class func safeImage(named name: String) -> UIImage! {
         let image = UIImage(named: name, inBundle: NSBundle.safeMainBundle(), compatibleWithTraitCollection: nil)
-        safeAssert(image != nil, String("missing image %@", name))
+        safeAssert(image != nil, String(format: "missing image %@", name))
         return image
     }
 }

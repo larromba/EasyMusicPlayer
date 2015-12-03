@@ -57,25 +57,22 @@ class ShareManager: NSObject {
         msg.addAction(AlertAction.withTitle(localized("share option facebook"),
             style: .Default,
             handler: { (action) -> Void in
-                msg.dismissViewControllerAnimated(true, completion: {
-                    completion!(SLServiceTypeFacebook)
-                })
+                completion!(SLServiceTypeFacebook)
+                msg.dismissViewControllerAnimated(true, completion: nil)
         }))
         
         msg.addAction(AlertAction.withTitle(localized("share option twitter"),
             style: .Default,
             handler: { (action) -> Void in
-                msg.dismissViewControllerAnimated(true, completion: {
-                    completion!(SLServiceTypeTwitter)
-                })
+                completion!(SLServiceTypeTwitter)
+                msg.dismissViewControllerAnimated(true, completion: nil)
         }))
         
         msg.addAction(AlertAction.withTitle(localized("share option cancel"),
             style: .Cancel,
             handler: { (action) -> Void in
-                msg.dismissViewControllerAnimated(true, completion: {
-                    completion!(nil)
-                })
+                completion!(nil)
+                msg.dismissViewControllerAnimated(true, completion: nil)
         }))
         
         return msg

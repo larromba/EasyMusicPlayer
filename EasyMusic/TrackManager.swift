@@ -38,12 +38,12 @@ class TrackManager {
             
         #else // device
             
-            let tracks: [TrackInfo]
-            let songs = MPMediaQuery.songsQuery()
-            for song: MPMediaItem in songs {
-                let artwork: UIImage = nil
+            var tracks: [Track] = []
+            let songs = MPMediaQuery.songsQuery().items
+            for song: MPMediaItem in songs! {
+                var artwork: UIImage? = nil
                 if song.artwork != nil {
-                    artwork = track.artwork!.imageWithSize(CGSizeMake(30, 30))
+                    artwork = song.artwork!.imageWithSize(CGSizeMake(30, 30))
                 }
                 
                 if let urlProperty = song.valueForProperty(MPMediaItemPropertyAssetURL) {
@@ -52,7 +52,7 @@ class TrackManager {
                         title: song.title,
                         duration: song.playbackDuration,
                         artwork: artwork,
-                        url: urlProperty as NSURL)
+                        url: urlProperty as! NSURL)
                     
                     tracks.append(track)
                 }

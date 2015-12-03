@@ -65,7 +65,7 @@ class PlayerViewController: UIViewController {
     private func trackError() -> UIAlertController {
         let track = musicPlayer.currentTrack
         let alert = AlertController.createAlertWithTitle(localized("track error title"),
-            message: String(localized("track error msg"), track.title),
+            message: String(format: localized("track error msg"), track.title),
             buttonTitle: localized("track error button"))
         return alert
     }

@@ -36,7 +36,7 @@
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FCFE9291BF4B26D00981545 /* TrackInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE92B1BF4B26D00981545 /* TrackInfo.strings */; };
 		7FCFE92C1BF4B27500981545 /* InfoView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE92E1BF4B27500981545 /* InfoView.strings */; };
-		7FCFE92F1BF4B27D00981545 /* MusicPlayerViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE9311BF4B27D00981545 /* MusicPlayerViewController.strings */; };
+		7FCFE92F1BF4B27D00981545 /* PlayerViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE9311BF4B27D00981545 /* PlayerViewController.strings */; };
 		7FCFE9321BF4B28200981545 /* ShareManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE9341BF4B28200981545 /* ShareManager.strings */; };
 		7FCFE93D1BF4BDDA00981545 /* ScrobbleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE93C1BF4BDDA00981545 /* ScrobbleViewTests.swift */; };
 		7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */; };
@@ -44,7 +44,7 @@
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
 		7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */; };
 		7FF5B2ED1BE64E210044FCE5 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EC1BE64E210044FCE5 /* PlayerViewController.swift */; };
-		7FF5B2F01BE64E210044FCE5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EE1BE64E210044FCE5 /* Main.storyboard */; };
+		7FF5B2F01BE64E210044FCE5 /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EE1BE64E210044FCE5 /* Player.storyboard */; };
 		7FF5B2F21BE64E220044FCE5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2F11BE64E210044FCE5 /* Assets.xcassets */; };
 		7FF5B2F51BE64E220044FCE5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2F31BE64E220044FCE5 /* LaunchScreen.storyboard */; };
 		7FF5B3001BE64E220044FCE5 /* TrackInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2FF1BE64E220044FCE5 /* TrackInfoTests.swift */; };
@@ -115,10 +115,10 @@
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FCFE92A1BF4B26D00981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TrackInfo.strings; sourceTree = "<group>"; };
 		7FCFE92D1BF4B27500981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoView.strings; sourceTree = "<group>"; };
-		7FCFE9301BF4B27D00981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MusicPlayerViewController.strings; sourceTree = "<group>"; };
+		7FCFE9301BF4B27D00981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PlayerViewController.strings; sourceTree = "<group>"; };
 		7FCFE9331BF4B28200981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ShareManager.strings; sourceTree = "<group>"; };
 		7FCFE9351BF4B28700981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/ShareManager.strings; sourceTree = "<group>"; };
-		7FCFE9361BF4B28900981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/MusicPlayerViewController.strings; sourceTree = "<group>"; };
+		7FCFE9361BF4B28900981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/PlayerViewController.strings; sourceTree = "<group>"; };
 		7FCFE9371BF4B28C00981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoView.strings; sourceTree = "<group>"; };
 		7FCFE9381BF4B28E00981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/TrackInfo.strings; sourceTree = "<group>"; };
 		7FCFE93C1BF4BDDA00981545 /* ScrobbleViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrobbleViewTests.swift; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 		7FF5B2E71BE64E210044FCE5 /* EasyMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FF5B2EC1BE64E210044FCE5 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlayerViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		7FF5B2EF1BE64E210044FCE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7FF5B2EF1BE64E210044FCE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Player.storyboard; sourceTree = "<group>"; };
 		7FF5B2F11BE64E210044FCE5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7FF5B2F41BE64E220044FCE5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7FF5B2F61BE64E220044FCE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -280,7 +280,7 @@
 		7FCFE91D1BF4AD6800981545 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
-				7FF5B2EE1BE64E210044FCE5 /* Main.storyboard */,
+				7FF5B2EE1BE64E210044FCE5 /* Player.storyboard */,
 				7FF5B2F31BE64E220044FCE5 /* LaunchScreen.storyboard */,
 			);
 			name = Storyboard;
@@ -325,7 +325,7 @@
 		7FCFE9241BF4AFE100981545 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				7FCFE9311BF4B27D00981545 /* MusicPlayerViewController.strings */,
+				7FCFE9311BF4B27D00981545 /* PlayerViewController.strings */,
 				7FCFE9341BF4B28200981545 /* ShareManager.strings */,
 			);
 			name = Objects;
@@ -536,14 +536,14 @@
 			files = (
 				7FCFE9321BF4B28200981545 /* ShareManager.strings in Resources */,
 				7FF5B2F51BE64E220044FCE5 /* LaunchScreen.storyboard in Resources */,
-				7FCFE92F1BF4B27D00981545 /* MusicPlayerViewController.strings in Resources */,
+				7FCFE92F1BF4B27D00981545 /* PlayerViewController.strings in Resources */,
 				7F8187B61BF1FBA400BAF398 /* ScrobbleView.xib in Resources */,
 				7F81878F1BF1F81B00BAF398 /* InfoView.xib in Resources */,
 				7FCFE9291BF4B26D00981545 /* TrackInfo.strings in Resources */,
 				7FF5B2F21BE64E220044FCE5 /* Assets.xcassets in Resources */,
 				7F8187C11BF2253800BAF398 /* ControlsView.xib in Resources */,
 				7FCFE92C1BF4B27500981545 /* InfoView.strings in Resources */,
-				7FF5B2F01BE64E210044FCE5 /* Main.storyboard in Resources */,
+				7FF5B2F01BE64E210044FCE5 /* Player.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,13 +650,13 @@
 			name = InfoView.strings;
 			sourceTree = "<group>";
 		};
-		7FCFE9311BF4B27D00981545 /* MusicPlayerViewController.strings */ = {
+		7FCFE9311BF4B27D00981545 /* PlayerViewController.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				7FCFE9301BF4B27D00981545 /* en */,
 				7FCFE9361BF4B28900981545 /* Base */,
 			);
-			name = MusicPlayerViewController.strings;
+			name = PlayerViewController.strings;
 			sourceTree = "<group>";
 		};
 		7FCFE9341BF4B28200981545 /* ShareManager.strings */ = {
@@ -668,12 +668,12 @@
 			name = ShareManager.strings;
 			sourceTree = "<group>";
 		};
-		7FF5B2EE1BE64E210044FCE5 /* Main.storyboard */ = {
+		7FF5B2EE1BE64E210044FCE5 /* Player.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				7FF5B2EF1BE64E210044FCE5 /* Base */,
 			);
-			name = Main.storyboard;
+			name = Player.storyboard;
 			sourceTree = "<group>";
 		};
 		7FF5B2F31BE64E220044FCE5 /* LaunchScreen.storyboard */ = {

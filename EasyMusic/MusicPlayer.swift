@@ -109,6 +109,10 @@ class MusicPlayer: NSObject {
     }
     
     func playbackCheckTimerCallback() {
+        guard player != nil else {
+            return
+        }
+        
         delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
@@ -164,6 +168,10 @@ class MusicPlayer: NSObject {
     }
     
     func stop() {
+        guard player != nil else {
+            return
+        }
+        
         player!.stop()
         
         stopPlaybackCheckTimer()
@@ -173,6 +181,10 @@ class MusicPlayer: NSObject {
     }
     
     func pause() {
+        guard player != nil else {
+            return
+        }
+        
         player!.pause()
      
         stopPlaybackCheckTimer()
@@ -203,6 +215,10 @@ class MusicPlayer: NSObject {
     }
     
     func skipTo(time: NSTimeInterval) {
+        guard player != nil else {
+            return
+        }
+        
         player!.currentTime = time
         delegate?.changedPlaybackTime(self, playbackTime: time)
     }

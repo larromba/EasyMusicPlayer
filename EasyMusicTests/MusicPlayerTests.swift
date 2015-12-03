@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import MediaPlayer
 import AVFoundation
 @testable import EasyMusic
 
@@ -20,7 +21,7 @@ private var expectedError: MusicPlayerError?
 private var expectedState: MusicPlayerState?
 private var expectedPlaybackTime: NSTimeInterval?
 private var expectedPlaybackTimeRough: NSTimeInterval?
-private let audioUrl: NSURL! = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
+private var audioUrl: NSURL! = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
 private var methodOrder: [Int]! = []
 
 class MusicPlayerTests: XCTestCase {
@@ -29,6 +30,11 @@ class MusicPlayerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         musicPlayer = MusicPlayer(delegate: self)
+        
+#if !((arch(i386) || arch(x86_64)) && os(iOS)) // if not simulator
+        let songs = MPMediaQuery.songsQuery().items
+        audioUrl = songs!.first!.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
+#endif
     }
     
     override func tearDown() {
@@ -457,9 +463,6 @@ class MusicPlayerTests: XCTestCase {
          - music player shouldn't play next track
          */
         let waitExpectation = expectationWithDescription("audioPlayer.play() shouldn't be called")
-        performAfterDelay(1) { () -> () in
-            waitExpectation.fulfill()
-        }
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
@@ -484,6 +487,9 @@ class MusicPlayerTests: XCTestCase {
         musicPlayer.next()
         
         // tests
+        performAfterDelay(1) { () -> (Void) in
+            waitExpectation.fulfill()
+        }
         waitForExpectationsWithTimeout(1, handler: { error in })
     }
     
@@ -603,7 +609,7 @@ class MusicPlayerTests: XCTestCase {
         musicPlayer.play()
         
         // tests
-        waitForExpectationsWithTimeout(1.1, handler: { error in XCTAssertNil(error) })
+        waitForExpectationsWithTimeout(2, handler: { error in XCTAssertNil(error) })
     }
     
     func testPlaybackTimerGetsInvalidated() {

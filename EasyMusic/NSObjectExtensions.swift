@@ -22,12 +22,12 @@ extension NSObject {
     
     public func localized(key: String) -> String! {
         let string = NSLocalizedString(key, tableName: self.className(), bundle: NSBundle.mainBundle(), value: "", comment: "")
-        safeAssert(string != key, String("missing localization %@", key))
+        safeAssert(string != key, String(format: "missing localization %@", key))
         return string
     }
     
     public func safeSelector(string: String) -> Selector {
-        safeAssert(self.respondsToSelector(Selector(string)), String("missing method %@", string))
+        safeAssert(self.respondsToSelector(Selector(string)), String(format: "missing method %@", string))
         return Selector(string)
     }
 }

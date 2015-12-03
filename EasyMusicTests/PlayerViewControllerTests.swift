@@ -141,7 +141,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // tests
         XCTAssertFalse(mockScrobbleView.enabled)
-        XCTAssertTrue(self.playerViewController.presentedViewController!.isKindOfClass(UIAlertController.classForCoder()))
+        XCTAssertTrue(self.playerViewController.presentedViewController is UIAlertController)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -186,7 +186,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // tests
         XCTAssertFalse(mockScrobbleView.enabled)
-        XCTAssertTrue(self.playerViewController.presentedViewController!.isKindOfClass(UIAlertController.classForCoder()))
+        XCTAssertTrue(self.playerViewController.presentedViewController is UIAlertController)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     

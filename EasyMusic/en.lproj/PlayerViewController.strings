@@ -11,7 +11,7 @@
 "no music error button" = "OK";
 
 "track error title" = "Error";
-"track error msg" = "Couldn't play track %@";
+"track error msg" = "Couldn't play '%@'";
 "track error button" = "OK";
 
 "av error title" = "Error";
