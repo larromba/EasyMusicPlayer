@@ -11,7 +11,7 @@ import UIKit
 class Track: NSObject {
     private(set) var artist: String!
     private(set) var title: String!
-    private(set) var duration: NSTimeInterval! = 0
+    private(set) var duration: NSTimeInterval = 0
     private(set) var artwork: UIImage!
     private(set) var url: NSURL!
     

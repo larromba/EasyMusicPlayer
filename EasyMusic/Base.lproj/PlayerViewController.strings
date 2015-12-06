@@ -14,9 +14,9 @@
 "track error msg" = "Couldn't play '%@'";
 "track error button" = "OK";
 
-"av error title" = "Error";
-"av error msg" = "There was a problem initialising your audio. Try again?";
-"av error button" = "OK";
+"accounts error title" = "Accounts";
+"accounts error msg" = "Please check your social accounts are correctly setup and try again";
+"accounts error button" = "OK";
 
 "finished alert title" = "End";
 "finished alert msg" = "Your playlist finished";

@@ -10,23 +10,23 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
-    private var tracks: [Track]! = []
-    private var trackIndex: Int! = 0
+    private var tracks: [Track] = []
+    private var trackIndex: Int = 0
     
-    var allTracks: [Track]! {
+    var allTracks: [Track] {
         return tracks
     }
-    var currentTrack: Track! {
+    var currentTrack: Track {
         return tracks[currentTrackNumber]
     }
-    var currentTrackNumber: Int! {
+    var currentTrackNumber: Int {
         return trackIndex
     }
-    var numOfTracks: Int! {
+    var numOfTracks: Int {
         return tracks.count
     }
     
-    func createPlaylist() -> [Track]! {
+    func createPlaylist() -> [Track] {
         #if (arch(i386) || arch(x86_64)) && os(iOS) // if simulator
             
             let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
@@ -42,8 +42,8 @@ class TrackManager {
             let songs = MPMediaQuery.songsQuery().items
             for song: MPMediaItem in songs! {
                 var artwork: UIImage? = nil
-                if song.artwork != nil {
-                    artwork = song.artwork!.imageWithSize(CGSizeMake(30, 30))
+                if let songArtwork = song.artwork {
+                    artwork = songArtwork.imageWithSize(CGSizeMake(30, 30))
                 }
                 
                 if let urlProperty = song.valueForProperty(MPMediaItemPropertyAssetURL) {

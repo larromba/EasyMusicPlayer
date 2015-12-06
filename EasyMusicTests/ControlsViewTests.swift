@@ -11,216 +11,313 @@ import MediaPlayer
 @testable import EasyMusic
 
 class ControlsViewTests: XCTestCase {
-    var controlsView: ControlsView!
-    var controlsExpectation: XCTestExpectation!
+    private var controlsView: ControlsView?
+    private var controlsExpectation: XCTestExpectation?
     
     override func setUp() {
         super.setUp()
         
         controlsView = ControlsView()
-        controlsView.delegate = self
+        controlsView!.delegate = self
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        
+        controlsView = nil
+        controlsExpectation = nil
     }
     
     func testIsStoppedStateOnInit() {
+        /**
+        expectations:
+        - controls are in stopped state
+        */
+        
         // runnable
-        controlsView.awakeFromNib()
+        controlsView!.awakeFromNib()
         
         // tests
-        XCTAssertTrue(controlsView.playButton.enabled)
-        XCTAssertFalse(controlsView.stopButton.enabled)
-        XCTAssertFalse(controlsView.prevButton.enabled)
-        XCTAssertFalse(controlsView.nextButton.enabled)
-        XCTAssertTrue(controlsView.shuffleButton.enabled)
-        XCTAssertFalse(controlsView.shareButton.enabled)
+        XCTAssertTrue(controlsView!.playButton.enabled)
+        XCTAssertFalse(controlsView!.stopButton.enabled)
+        XCTAssertFalse(controlsView!.prevButton.enabled)
+        XCTAssertFalse(controlsView!.nextButton.enabled)
+        XCTAssertTrue(controlsView!.shuffleButton.enabled)
+        XCTAssertFalse(controlsView!.shareButton.enabled)
     }
     
     func testControlsEnabled() {
+        /**
+         expectations:
+         - controls are enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.setControlsEnabled(enabled)
+        controlsView!.setControlsEnabled(enabled)
         
         // tests
-        XCTAssertEqual(controlsView.playButton.enabled, enabled)
-        XCTAssertEqual(controlsView.stopButton.enabled, enabled)
-        XCTAssertEqual(controlsView.prevButton.enabled, enabled)
-        XCTAssertEqual(controlsView.nextButton.enabled, enabled)
-        XCTAssertEqual(controlsView.shuffleButton.enabled, enabled)
-        XCTAssertEqual(controlsView.shareButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.playButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.stopButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.prevButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.nextButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.shuffleButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.shareButton.enabled, enabled)
     }
     
     func testPlayingState() {
+        /**
+        expectations:
+        - controls are in playing state
+        */
+        
         // runnable
-        controlsView.setControlsPlaying()
+        controlsView!.setControlsPlaying()
         
         // tests
-        XCTAssertTrue(controlsView.playButton.enabled)
-        XCTAssertTrue(controlsView.stopButton.enabled)
-        XCTAssertTrue(controlsView.prevButton.enabled)
-        XCTAssertTrue(controlsView.nextButton.enabled)
-        XCTAssertTrue(controlsView.shuffleButton.enabled)
-        XCTAssertTrue(controlsView.shareButton.enabled)
+        XCTAssertTrue(controlsView!.playButton.enabled)
+        XCTAssertTrue(controlsView!.stopButton.enabled)
+        XCTAssertTrue(controlsView!.prevButton.enabled)
+        XCTAssertTrue(controlsView!.nextButton.enabled)
+        XCTAssertTrue(controlsView!.shuffleButton.enabled)
+        XCTAssertTrue(controlsView!.shareButton.enabled)
     }
     
     func testPlayingStateImage() {
+        /**
+        expectations:
+        - play button in in play state
+        */
+        
         // runnable
-        controlsView.setControlsPlaying()
+        controlsView!.setControlsPaused()
         
         // tests
-        XCTAssertEqual(controlsView.playButton.buttonState, PlayButtonState.Pause)
+        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButtonState.Play)
     }
     
-    func testPauseState() {
+    func testPausedState() {
+        /**
+        expectations:
+        - controls are in paused state
+        */
+        
         // runnable
-        controlsView.setControlsPaused()
+        controlsView!.setControlsPaused()
         
         // tests
-        XCTAssertTrue(controlsView.playButton.enabled)
-        XCTAssertTrue(controlsView.stopButton.enabled)
-        XCTAssertFalse(controlsView.prevButton.enabled)
-        XCTAssertFalse(controlsView.nextButton.enabled)
-        XCTAssertTrue(controlsView.shuffleButton.enabled)
-        XCTAssertFalse(controlsView.shareButton.enabled)
+        XCTAssertTrue(controlsView!.playButton.enabled)
+        XCTAssertTrue(controlsView!.stopButton.enabled)
+        XCTAssertFalse(controlsView!.prevButton.enabled)
+        XCTAssertFalse(controlsView!.nextButton.enabled)
+        XCTAssertTrue(controlsView!.shuffleButton.enabled)
+        XCTAssertFalse(controlsView!.shareButton.enabled)
     }
     
-    func testPauseStateImage() {
+    func testPausedStateImage() {
+        /**
+        expectations:
+        - play button shows pause
+        */
+        
         // runnable
-        controlsView.setControlsPaused()
+        controlsView!.setControlsPlaying()
         
         // tests
-        XCTAssertEqual(controlsView.playButton.buttonState, PlayButtonState.Play)
+        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButtonState.Pause)
     }
     
     func testStoppedState() {
+        /**
+        expectations:
+        - play button in in stopped state
+        */
+        
         // runnable
-        controlsView.setControlsStopped()
+        controlsView!.setControlsStopped()
         
         // tests
-        XCTAssertTrue(controlsView.playButton.enabled)
-        XCTAssertFalse(controlsView.stopButton.enabled)
-        XCTAssertFalse(controlsView.prevButton.enabled)
-        XCTAssertFalse(controlsView.nextButton.enabled)
-        XCTAssertTrue(controlsView.shuffleButton.enabled)
-        XCTAssertFalse(controlsView.shareButton.enabled)
+        XCTAssertTrue(controlsView!.playButton.enabled)
+        XCTAssertFalse(controlsView!.stopButton.enabled)
+        XCTAssertFalse(controlsView!.prevButton.enabled)
+        XCTAssertFalse(controlsView!.nextButton.enabled)
+        XCTAssertTrue(controlsView!.shuffleButton.enabled)
+        XCTAssertFalse(controlsView!.shareButton.enabled)
     }
     
     func testStopStateImage() {
+        /**
+        expectations:
+        - play button shows play
+        */
+        
         // runnable
-        controlsView.setControlsStopped()
+        controlsView!.setControlsStopped()
         
         // tests
-        XCTAssertEqual(controlsView.playButton.buttonState, PlayButtonState.Play)
+        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButtonState.Play)
     }
     
     func testEnablePlay() {
+        /**
+         expectations:
+         - play button is enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enablePlay(enabled)
+        controlsView!.enablePlay(enabled)
         
         // tests
-        XCTAssertEqual(controlsView.playButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.playButton.enabled, enabled)
     }
     
     func testEnableRemotePlay() {
+        /**
+         expectations:
+         - remote play button is enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enablePlay(enabled)
+        controlsView!.enablePlay(enabled)
         
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().playCommand.enabled, enabled)
     }
     
     func testEnableStop() {
+        /**
+         expectations:
+         - stop button is enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enableStop(enabled)
+        controlsView!.enableStop(enabled)
         
         // tests
-        XCTAssertEqual(controlsView.stopButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.stopButton.enabled, enabled)
     }
     
     func testEnableRemoteStop() {
+        /**
+         expectations:
+         - remote stop button is enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enableStop(enabled)
+        controlsView!.enableStop(enabled)
         
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().stopCommand.enabled, enabled)
     }
     
     func testEnablePrevious() {
+        /**
+         expectations:
+         - previous button is enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enablePrevious(enabled)
+        controlsView!.enablePrevious(enabled)
         
         // tests
-        XCTAssertEqual(controlsView.prevButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.prevButton.enabled, enabled)
     }
     
     func testEnableRemotePrevious() {
+        /**
+         expectations:
+         - remote previous button is enabled
+         */
+         
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enablePrevious(enabled)
+        controlsView!.enablePrevious(enabled)
         
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().previousTrackCommand.enabled, enabled)
     }
     
     func testEnableNext() {
+        /**
+         expectations:
+         - next button is enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enableNext(enabled)
+        controlsView!.enableNext(enabled)
         
         // tests
-        XCTAssertEqual(controlsView.nextButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.nextButton.enabled, enabled)
     }
     
     func testEnableRemoteNext() {
+        /**
+         expectations:
+         - remote next button is enabled
+         */
+         
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enablePlay(enabled)
+        controlsView!.enablePlay(enabled)
         
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().nextTrackCommand.enabled, enabled)
     }
     
     func testEnableShuffle() {
+        /**
+         expectations:
+         - shuffle button is enabled
+         */
+        
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enableShuffle(enabled)
+        controlsView!.enableShuffle(enabled)
         
         // tests
-        XCTAssertEqual(controlsView.shuffleButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.shuffleButton.enabled, enabled)
     }
     
     func testEnableShare() {
+        /**
+         expectations:
+         - share button is enabled
+         */
+         
         // mocks
         let enabled = true
         
         // runnable
-        controlsView.enableShare(enabled)
+        controlsView!.enableShare(enabled)
         
         // tests
-        XCTAssertEqual(controlsView.shareButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.shareButton.enabled, enabled)
     }
     
     func testControlsViewDelegatePlayPressed() {
@@ -234,7 +331,7 @@ class ControlsViewTests: XCTestCase {
         let mockButton = UIButton()
         
         // runnable
-        controlsView.playButtonPressed(mockButton)
+        controlsView!.playButtonPressed(mockButton)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -251,7 +348,7 @@ class ControlsViewTests: XCTestCase {
         let mockButton = UIButton()
         
         // runnable
-        controlsView.stopButtonPressed(mockButton)
+        controlsView!.stopButtonPressed(mockButton)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -268,7 +365,7 @@ class ControlsViewTests: XCTestCase {
         let mockButton = UIButton()
         
         // runnable
-        controlsView.prevButtonPressed(mockButton)
+        controlsView!.prevButtonPressed(mockButton)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -285,7 +382,7 @@ class ControlsViewTests: XCTestCase {
         let mockButton = UIButton()
         
         // runnable
-        controlsView.nextButtonPressed(mockButton)
+        controlsView!.nextButtonPressed(mockButton)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -302,7 +399,7 @@ class ControlsViewTests: XCTestCase {
         let mockButton = UIButton()
         
         // runnable
-        controlsView.shuffleButtonPressed(mockButton)
+        controlsView!.shuffleButtonPressed(mockButton)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -312,26 +409,38 @@ class ControlsViewTests: XCTestCase {
 // MARK: - ControlsViewDelegate
 extension ControlsViewTests: ControlsViewDelegate {
     func playPressed(sender: ControlsView) {
-        controlsExpectation.fulfill()
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
     }
     
     func stopPressed(sender: ControlsView) {
-        controlsExpectation.fulfill()
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
     }
     
     func prevPressed(sender: ControlsView) {
-        controlsExpectation.fulfill()
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
     }
     
     func nextPressed(sender: ControlsView) {
-        controlsExpectation.fulfill()
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
     }
     
     func shufflePressed(sender: ControlsView) {
-        controlsExpectation.fulfill()
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
     }
     
     func sharePressed(sender: ControlsView) {
-        controlsExpectation.fulfill()
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
     }
 }

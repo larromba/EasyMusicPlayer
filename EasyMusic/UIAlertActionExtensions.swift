@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIAlertAction {
-    public class func withTitle(title: String?, style: UIAlertActionStyle, handler: (UIAlertAction -> Void)?) -> UIAlertAction! {
+    public class func withTitle(title: String?, style: UIAlertActionStyle, handler: (UIAlertAction -> Void)?) -> UIAlertAction {
         return UIAlertAction(title: title, style: style, handler: handler)
     }
 }

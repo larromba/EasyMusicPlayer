@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A55DBADBC90307E66ACAAB2 /* libPods-EasyMusicTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA691D1FEFC4D2C75E23A9D1 /* libPods-EasyMusicTests.a */; };
 		7F279C741C0220720000C4B0 /* MusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F279C731C0220720000C4B0 /* MusicPlayerTests.swift */; };
+		7F3A5F741C119A2E0065F16F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F3A5F731C119A2E0065F16F /* GoogleService-Info.plist */; };
+		7F3A5F771C119AFE0065F16F /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3A5F761C119AFE0065F16F /* Analytics.swift */; };
 		7F4090531BF65B5E00F449FD /* ControlsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090521BF65B5E00F449FD /* ControlsViewTests.swift */; };
 		7F4090551BF7E44900F449FD /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090541BF7E44900F449FD /* PlayButton.swift */; };
 		7F4090571BF91BD000F449FD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090561BF91BD000F449FD /* Log.swift */; };
@@ -51,6 +54,8 @@
 		7FF5B30B1BE64E220044FCE5 /* EasyMusicUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B30A1BE64E220044FCE5 /* EasyMusicUITests.swift */; };
 		7FF5B31D1BE654220044FCE5 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B31C1BE654220044FCE5 /* MusicPlayer.swift */; };
 		7FF5B31F1BE654470044FCE5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF5B31E1BE654470044FCE5 /* MediaPlayer.framework */; };
+		D5494E00CA007887EA40C40D /* libPods-EasyMusicUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146D8DFB2BF4D3EF83011E14 /* libPods-EasyMusicUITests.a */; };
+		E42A384263073D683C2B8952 /* libPods-EasyMusic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECEBE1F38A5E1A0CB55EEAD /* libPods-EasyMusic.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,9 +89,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		06CA2AD94158BF3031E0B145 /* Pods-EasyMusicUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyMusicUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EasyMusicUITests/Pods-EasyMusicUITests.release.xcconfig"; sourceTree = "<group>"; };
+		146D8DFB2BF4D3EF83011E14 /* libPods-EasyMusicUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EasyMusicUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		293A54B0A1B2DF2465F93681 /* Pods-EasyMusic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyMusic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EasyMusic/Pods-EasyMusic.debug.xcconfig"; sourceTree = "<group>"; };
 		2D5610D95A7182D0CAB3D8E1 /* Pods-EasyMusic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyMusic.release.xcconfig"; path = "Pods/Target Support Files/Pods-EasyMusic/Pods-EasyMusic.release.xcconfig"; sourceTree = "<group>"; };
+		2DE7962A672488B1F8659697 /* Pods-EasyMusicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyMusicTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EasyMusicTests/Pods-EasyMusicTests.release.xcconfig"; sourceTree = "<group>"; };
+		6ECEBE1F38A5E1A0CB55EEAD /* libPods-EasyMusic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EasyMusic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		78B52B85C35D314E98B8596D /* Pods-EasyMusicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyMusicTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EasyMusicTests/Pods-EasyMusicTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7F279C731C0220720000C4B0 /* MusicPlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerTests.swift; sourceTree = "<group>"; };
+		7F3A5F731C119A2E0065F16F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7F3A5F761C119AFE0065F16F /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		7F4090521BF65B5E00F449FD /* ControlsViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsViewTests.swift; sourceTree = "<group>"; };
 		7F4090541BF7E44900F449FD /* PlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		7F4090561BF91BD000F449FD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -140,6 +152,8 @@
 		7FF5B30C1BE64E220044FCE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7FF5B31C1BE654220044FCE5 /* MusicPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MusicPlayer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7FF5B31E1BE654470044FCE5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		8F80779065D645550E92A820 /* Pods-EasyMusicUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyMusicUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EasyMusicUITests/Pods-EasyMusicUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		AA691D1FEFC4D2C75E23A9D1 /* libPods-EasyMusicTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EasyMusicTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +164,7 @@
 				7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */,
 				7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */,
 				7FF5B31F1BE654470044FCE5 /* MediaPlayer.framework in Frameworks */,
+				E42A384263073D683C2B8952 /* libPods-EasyMusic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A55DBADBC90307E66ACAAB2 /* libPods-EasyMusicTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5494E00CA007887EA40C40D /* libPods-EasyMusicUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				7FF5B2F61BE64E220044FCE5 /* Info.plist */,
+				7F3A5F731C119A2E0065F16F /* GoogleService-Info.plist */,
 				7FF5B2F11BE64E210044FCE5 /* Assets.xcassets */,
 				7FCFE91F1BF4AD7D00981545 /* Xib */,
 				7FCFE91D1BF4AD6800981545 /* Storyboard */,
@@ -251,6 +269,7 @@
 				7FF5B31C1BE654220044FCE5 /* MusicPlayer.swift */,
 				7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */,
 				7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */,
+				7F3A5F761C119AFE0065F16F /* Analytics.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -415,6 +434,9 @@
 				7FCFE90D1BF3AF8F00981545 /* Social.framework */,
 				7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */,
 				7FF5B31E1BE654470044FCE5 /* MediaPlayer.framework */,
+				6ECEBE1F38A5E1A0CB55EEAD /* libPods-EasyMusic.a */,
+				AA691D1FEFC4D2C75E23A9D1 /* libPods-EasyMusicTests.a */,
+				146D8DFB2BF4D3EF83011E14 /* libPods-EasyMusicUITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -424,6 +446,10 @@
 			children = (
 				293A54B0A1B2DF2465F93681 /* Pods-EasyMusic.debug.xcconfig */,
 				2D5610D95A7182D0CAB3D8E1 /* Pods-EasyMusic.release.xcconfig */,
+				78B52B85C35D314E98B8596D /* Pods-EasyMusicTests.debug.xcconfig */,
+				2DE7962A672488B1F8659697 /* Pods-EasyMusicTests.release.xcconfig */,
+				8F80779065D645550E92A820 /* Pods-EasyMusicUITests.debug.xcconfig */,
+				06CA2AD94158BF3031E0B145 /* Pods-EasyMusicUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -435,10 +461,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF5B30F1BE64E220044FCE5 /* Build configuration list for PBXNativeTarget "EasyMusic" */;
 			buildPhases = (
+				3E4AF03D8983AABE5689CF2F /* Check Pods Manifest.lock */,
 				7FF5B2E31BE64E210044FCE5 /* Sources */,
 				7FF5B2E41BE64E210044FCE5 /* Frameworks */,
 				7FF5B2E51BE64E210044FCE5 /* Resources */,
 				7F8187AF1BF1FA4200BAF398 /* Embed Frameworks */,
+				5162B67ED100C5B89E70668E /* Embed Pods Frameworks */,
+				06A0BFFCD9352C0680DA3D68 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -453,9 +482,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF5B3121BE64E220044FCE5 /* Build configuration list for PBXNativeTarget "EasyMusicTests" */;
 			buildPhases = (
+				82417EC2FA81E98245B755B3 /* Check Pods Manifest.lock */,
 				7FF5B2F71BE64E220044FCE5 /* Sources */,
 				7FF5B2F81BE64E220044FCE5 /* Frameworks */,
 				7FF5B2F91BE64E220044FCE5 /* Resources */,
+				7631CC3D788B9F662C92817C /* Embed Pods Frameworks */,
+				9F428A3E399F908D7DFF6CEE /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -471,9 +503,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF5B3151BE64E220044FCE5 /* Build configuration list for PBXNativeTarget "EasyMusicUITests" */;
 			buildPhases = (
+				125D1CA04483811E8EF05C67 /* Check Pods Manifest.lock */,
 				7FF5B3021BE64E220044FCE5 /* Sources */,
 				7FF5B3031BE64E220044FCE5 /* Frameworks */,
 				7FF5B3041BE64E220044FCE5 /* Resources */,
+				455DAB418F6A4D2B808EBC7D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -542,6 +576,7 @@
 				7FCFE9291BF4B26D00981545 /* TrackInfo.strings in Resources */,
 				7FF5B2F21BE64E220044FCE5 /* Assets.xcassets in Resources */,
 				7FA60C9A1C110B9800D7D2DC /* ControlsView.xib in Resources */,
+				7F3A5F741C119A2E0065F16F /* GoogleService-Info.plist in Resources */,
 				7FCFE92C1BF4B27500981545 /* InfoView.strings in Resources */,
 				7FF5B2F01BE64E210044FCE5 /* Player.storyboard in Resources */,
 			);
@@ -563,6 +598,129 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		06A0BFFCD9352C0680DA3D68 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusic/Pods-EasyMusic-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		125D1CA04483811E8EF05C67 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3E4AF03D8983AABE5689CF2F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		455DAB418F6A4D2B808EBC7D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusicUITests/Pods-EasyMusicUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5162B67ED100C5B89E70668E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusic/Pods-EasyMusic-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7631CC3D788B9F662C92817C /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusicTests/Pods-EasyMusicTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		82417EC2FA81E98245B755B3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9F428A3E399F908D7DFF6CEE /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusicTests/Pods-EasyMusicTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7FF5B2E31BE64E210044FCE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -576,6 +734,7 @@
 				7FCFE9161BF4A40600981545 /* UIAlertControllerExtensions.swift in Sources */,
 				7FF5B31D1BE654220044FCE5 /* MusicPlayer.swift in Sources */,
 				7F4090681BFA096600F449FD /* UIStoryboardExtensions.swift in Sources */,
+				7F3A5F771C119AFE0065F16F /* Analytics.swift in Sources */,
 				7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */,
 				7FCFE9181BF4A7C300981545 /* UIImageExtensions.swift in Sources */,
 				7F4090571BF91BD000F449FD /* Log.swift in Sources */,
@@ -796,13 +955,16 @@
 		};
 		7FF5B3101BE64E220044FCE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 293A54B0A1B2DF2465F93681 /* Pods-EasyMusic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = EasyMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -811,13 +973,17 @@
 		};
 		7FF5B3111BE64E220044FCE5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D5610D95A7182D0CAB3D8E1 /* Pods-EasyMusic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = EasyMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -826,6 +992,7 @@
 		};
 		7FF5B3131BE64E220044FCE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78B52B85C35D314E98B8596D /* Pods-EasyMusicTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EasyMusicTests/Info.plist;
@@ -838,6 +1005,7 @@
 		};
 		7FF5B3141BE64E220044FCE5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DE7962A672488B1F8659697 /* Pods-EasyMusicTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EasyMusicTests/Info.plist;
@@ -850,6 +1018,7 @@
 		};
 		7FF5B3161BE64E220044FCE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8F80779065D645550E92A820 /* Pods-EasyMusicUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = EasyMusicUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -862,6 +1031,7 @@
 		};
 		7FF5B3171BE64E220044FCE5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06CA2AD94158BF3031E0B145 /* Pods-EasyMusicUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = EasyMusicUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

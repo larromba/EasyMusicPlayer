@@ -13,6 +13,7 @@ import MediaPlayer
 class InfoView: UIView {
     @IBOutlet private(set) var artistLabel: UILabel!
     @IBOutlet private(set) var trackLabel: UILabel!
+    @IBOutlet private(set) var trackPositionLabel: UILabel!
     @IBOutlet private(set) var timeLabel: UILabel!
     @IBOutlet private(set) var artworkImageView: UIImageView!
     
@@ -51,26 +52,30 @@ class InfoView: UIView {
         
         artistLabel.text = nil
         trackLabel.text = nil
+        trackPositionLabel.text = nil
         artworkImageView.image = nil
         
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = nil
     }
     
     func setTime(time: NSTimeInterval, duration: NSTimeInterval) {
-        self.timeLabel.text = String(
-            format: localized("time format"),
-            stringFromTimeInterval(time))
+        timeLabel.text = String(
+            format: localized("time format"), stringFromTimeInterval(time))
+    }
+    
+    func setTrackPosition(trackPosition: Int, totalTracks: Int) {
+        trackPositionLabel.text = String(
+            format: localized("track position format"), trackPosition, totalTracks)
     }
     
     // MARK: - private
     
-    private func stringFromTimeInterval(timeInterval: NSTimeInterval) -> String! {
+    private func stringFromTimeInterval(timeInterval: NSTimeInterval) -> String {
         let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60
         let hours = (interval / 3600)
         return String(
-            format: localized("time interval format"),
-            hours, minutes, seconds)
+            format: localized("time interval format"), hours, minutes, seconds)
     }
 }

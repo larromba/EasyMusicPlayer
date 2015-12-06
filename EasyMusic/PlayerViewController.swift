@@ -13,17 +13,22 @@ class PlayerViewController: UIViewController {
     @IBOutlet private(set) weak var infoView: InfoView!
     @IBOutlet private(set) weak var controlsView: ControlsView!
     
-    private lazy var musicPlayer: MusicPlayer! = MusicPlayer(delegate: self)
-    private var shareManager: ShareManager! = ShareManager()
+    private lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
+    private var shareManager: ShareManager = ShareManager()
     private var userScrobbling: Bool = false
     private var AlertController = UIAlertController.self
+    
+    private enum Alert {
+        case ShareAccount
+        case FinishedPlaylist
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         controlsView.delegate = self
         scrobbleView.delegate = self
-        
+                
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
             name: UIApplicationDidBecomeActiveNotification,
@@ -54,54 +59,10 @@ class PlayerViewController: UIViewController {
     }
     
     // MARK: - private
-
-    private func noMusicError() -> UIAlertController {
-        let alert = AlertController.createAlertWithTitle(localized("no music error title"),
-            message: localized("no music error msg"),
-            buttonTitle: localized("no music error button"))
-        return alert
-    }
-
-    private func trackError() -> UIAlertController {
-        let track = musicPlayer.currentTrack
-        let alert = AlertController.createAlertWithTitle(localized("track error title"),
-            message: String(format: localized("track error msg"), track.title),
-            buttonTitle: localized("track error button"))
-        return alert
-    }
-    
-    private func avError() -> UIAlertController {
-        let alert = AlertController.createAlertWithTitle(localized("av error title"),
-            message: localized("av error msg"),
-            buttonTitle: localized("av error button"),
-            buttonAction: {
-                self.musicPlayer.enableAudioSession(true)
-        })
-        return alert
-    }
-    
-    private func finishedPlaylistAlert() -> UIAlertController {
-        let alert = AlertController.createAlertWithTitle(localized("finished alert title"),
-            message: localized("finished alert msg"),
-            buttonTitle: localized("finished alert button"))
-        return alert
-    }
-    
-    private func showError(error: UIAlertController) {
-        controlsView.setControlsEnabled(false)
-        scrobbleView.enabled = false
-        presentViewController(error, animated: true, completion: nil)
-    }
-    
-    private func showAlert(alert: UIAlertController) {
-        presentViewController(alert, animated: true, completion: nil)
-    }
     
     private func checkTracksAvailable() {
         if musicPlayer.numOfTracks == 0 {
-            showError(noMusicError())
-        } else {
-            controlsView.setControlsStopped()
+            threwError(musicPlayer, error: MusicPlayerError.NoMusic)
         }
     }
 }
@@ -126,7 +87,15 @@ extension PlayerViewController: MusicPlayerDelegate {
         case .Finished:
             controlsView.setControlsStopped()
             scrobbleView.enabled = false
-            showAlert(finishedPlaylistAlert())
+            
+            Analytics.shared.sendAlertEvent("finished_playlist",
+                classId: self.className())
+            
+            let alert = AlertController.createAlertWithTitle(localized("finished alert title"),
+                message: localized("finished alert msg"),
+                buttonTitle: localized("finished alert button"))
+            presentViewController(alert, animated: true, completion: nil)
+            
             break
         }
         
@@ -137,6 +106,8 @@ extension PlayerViewController: MusicPlayerDelegate {
         if (trackNumber == musicPlayer.numOfTracks - 1) {
             controlsView.enableNext(false)
         }
+        
+        infoView.setTrackPosition((trackNumber + 1), totalTracks: musicPlayer.numOfTracks)
     }
     
     func changedPlaybackTime(sender: MusicPlayer, playbackTime: NSTimeInterval) {
@@ -145,25 +116,45 @@ extension PlayerViewController: MusicPlayerDelegate {
         }
         
         let track = musicPlayer.currentTrack
-        let perc = Float(playbackTime / track.duration!)
+        let perc = Float(playbackTime / track.duration)
         scrobbleView.scrobbleToPercentage(perc)
-        infoView.setTime(playbackTime, duration: track.duration!)
+        infoView.setTime(playbackTime, duration: track.duration)
     }
     
     func threwError(sender: MusicPlayer, error: MusicPlayerError) {
+        var alert: UIAlertController!
+        
         switch error {
-        case .NoMusic, .AVError:
-            showError(noMusicError())
-            break
-        case .Decode, .PlayerInit:
-            showError(trackError())
+        case .NoMusic:
+            Analytics.shared.sendAlertEvent("no_music",
+                classId: self.className())
             
-            let trackNumber = self.musicPlayer.currentTrackNumber
-            if (trackNumber < self.musicPlayer.numOfTracks - 1) {
-                self.musicPlayer.next()
-            }
+            alert = AlertController.createAlertWithTitle(localized("no music error title"),
+                message: localized("no music error msg"),
+                buttonTitle: localized("no music error button"),
+                buttonAction: {
+                    self.checkTracksAvailable()
+            })
+            break
+            
+        case .Decode, .PlayerInit, .AVError:
+            Analytics.shared.sendAlertEvent("track",
+                classId: self.className())
+            
+            let track = musicPlayer.currentTrack
+            alert = AlertController.createAlertWithTitle(localized("track error title"),
+                message: String(format: localized("track error msg"), track.title),
+                buttonTitle: localized("track error button"),
+                buttonAction: {
+                    let trackNumber = self.musicPlayer.currentTrackNumber
+                    if (trackNumber < self.musicPlayer.numOfTracks) {
+                        self.musicPlayer.next()
+                    }
+            })
             break
         }
+        
+        presentViewController(alert, animated: true, completion: nil)
     }
 }
 
@@ -171,16 +162,19 @@ extension PlayerViewController: MusicPlayerDelegate {
 extension PlayerViewController: ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
         let track = musicPlayer.currentTrack
-        let time = track.duration! * NSTimeInterval(percentage)
-        infoView.setTime(time, duration: track.duration!)
+        let time = track.duration * NSTimeInterval(percentage)
+        infoView.setTime(time, duration: track.duration)
         userScrobbling = true
     }
     
     func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float) {
+        Analytics.shared.sendButtonPressEvent("scrobble",
+            classId: self.className())
+        
         let track = musicPlayer.currentTrack
-        let time = track.duration! * NSTimeInterval(percentage)
-        infoView.setTime(time, duration: track.duration!)
-        musicPlayer.skipTo(time)
+        let time = track.duration * NSTimeInterval(percentage)
+        infoView.setTime(time, duration: track.duration)
+        musicPlayer.time = time
         userScrobbling = false
     }
 }
@@ -189,32 +183,78 @@ extension PlayerViewController: ScrobbleViewDelegate {
 extension PlayerViewController: ControlsViewDelegate {
     func playPressed(sender: ControlsView) {
         if musicPlayer.isPlaying == false {
+            Analytics.shared.sendButtonPressEvent("play",
+                classId: self.className())
+            
             musicPlayer.play()
         } else {
+            Analytics.shared.sendButtonPressEvent("pause",
+                classId: self.className())
+            
             musicPlayer.pause()
         }
     }
     
     func stopPressed(sender: ControlsView) {
+        Analytics.shared.sendButtonPressEvent("stop",
+            classId: self.className())
+        
         musicPlayer.stop()
     }
     
     func prevPressed(sender: ControlsView) {
+        Analytics.shared.sendButtonPressEvent("prev",
+            classId: self.className())
+        
         musicPlayer.previous()
     }
     
     func nextPressed(sender: ControlsView) {
+        Analytics.shared.sendButtonPressEvent("next",
+            classId: self.className())
+        
         musicPlayer.next()
     }
     
     func shufflePressed(sender: ControlsView) {
+        Analytics.shared.sendButtonPressEvent("shuffle",
+            classId: self.className())
+        
         musicPlayer.stop()
         musicPlayer.shuffle()
         musicPlayer.play()
     }
     
     func sharePressed(sender: ControlsView) {
-        shareManager.shareTrack(musicPlayer.currentTrack, presenter: self)
+        shareManager.shareTrack(musicPlayer.currentTrack, presenter: self, completion: { (result: ShareManagerResult, service: String?) in
+            var event: String!
+            switch result {
+            case .Success:
+                event = "success_\(service)"
+                break
+            case .CancelledAfterChoice:
+                event = "cancelled-after-choice_\(service)"
+                break
+            case .CancelledBeforeChoice:
+                event = "cancelled-before-choice_\(service)"
+                break
+            case .Error:
+                event = "error_\(service)"
+
+                Analytics.shared.sendAlertEvent("share_account",
+                    classId: self.className())
+                
+                let alert = UIAlertController.createAlertWithTitle(self.localized("accounts error title"),
+                    message: self.localized("accounts error msg"),
+                    buttonTitle: self.localized("accounts error button"))
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+                break
+            }
+            
+            Analytics.shared.sendShareEvent(event,
+                classId: self.className())
+        })
     }
 }
 
@@ -238,6 +278,10 @@ extension PlayerViewController {
     
     func _injectShareManager(shareManager: ShareManager) {
         self.shareManager = shareManager
+    }
+    
+    func _injectAlertController(alertController: UIAlertController.Type) {
+        self.AlertController = alertController
     }
     
     func _injectUserScrobbling(userScrobbling: Bool) {

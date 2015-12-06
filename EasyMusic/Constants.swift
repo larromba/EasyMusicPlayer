@@ -11,6 +11,7 @@ import Foundation
 struct Constant {
     struct Notification {
         static let ApplicationDidBecomeActive = "applicationDidBecomeActive"
+        static let ApplicationWillResignActive = "applicationWillResignActive"
         static let ApplicationWillTerminate = "applicationWillTerminate"
     }
     
@@ -35,6 +36,6 @@ struct Constant {
     }
     
     struct Storyboard {
-         static let Main = "Main"
+         static let Player = "Player"
     }
 }

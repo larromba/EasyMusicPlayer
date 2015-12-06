@@ -10,6 +10,7 @@
                 <outlet property="artworkImageView" destination="pUZ-ec-YGB" id="mMj-zX-zFO"/>
                 <outlet property="timeLabel" destination="Jcv-wa-chp" id="Fuw-lq-wTq"/>
                 <outlet property="trackLabel" destination="2qf-8v-yco" id="8Lu-sc-s4Z"/>
+                <outlet property="trackPositionLabel" destination="bij-M8-km4" id="hU2-g9-QZn"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -27,8 +28,8 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Noise" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qf-8v-yco">
-                    <rect key="frame" x="6" y="38.5" width="588" height="20.5"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="6" y="38" width="588" height="20.5"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" red="0.32104245590000002" green="0.32104245590000002" blue="0.32104245590000002" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -38,12 +39,19 @@
                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track 1 of 3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bij-M8-km4" userLabel="Position Label">
+                    <rect key="frame" x="6" y="576.5" width="588" height="17"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                    <color key="textColor" red="0.32104245590000002" green="0.32104245590000002" blue="0.32104245590000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="pUZ-ec-YGB" secondAttribute="bottom" id="0Yf-eG-Ely"/>
                 <constraint firstAttribute="trailing" secondItem="ZfL-ha-Gb2" secondAttribute="trailing" constant="6" id="5NM-f1-tGp"/>
                 <constraint firstItem="Jcv-wa-chp" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" constant="6" id="7qo-00-IJX"/>
+                <constraint firstAttribute="trailing" secondItem="bij-M8-km4" secondAttribute="trailing" constant="6" id="DcZ-qs-wAk"/>
                 <constraint firstItem="ZfL-ha-Gb2" firstAttribute="top" secondItem="QTA-kx-IEU" secondAttribute="top" constant="6" id="EYm-NS-3QQ"/>
                 <constraint firstItem="pUZ-ec-YGB" firstAttribute="top" secondItem="QTA-kx-IEU" secondAttribute="top" id="ItR-FK-7r6"/>
                 <constraint firstItem="pUZ-ec-YGB" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" id="Khg-tD-nsy"/>
@@ -54,6 +62,8 @@
                 <constraint firstItem="ZfL-ha-Gb2" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" constant="6" id="bPA-WV-PPh"/>
                 <constraint firstAttribute="bottom" secondItem="Jcv-wa-chp" secondAttribute="bottom" constant="6" id="mZL-V3-gVB"/>
                 <constraint firstAttribute="trailing" secondItem="pUZ-ec-YGB" secondAttribute="trailing" id="ofM-i4-JrP"/>
+                <constraint firstAttribute="bottom" secondItem="bij-M8-km4" secondAttribute="bottom" constant="6" id="prp-mH-xhq"/>
+                <constraint firstItem="bij-M8-km4" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" constant="6" id="vup-2F-mLa"/>
                 <constraint firstItem="2qf-8v-yco" firstAttribute="top" secondItem="ZfL-ha-Gb2" secondAttribute="bottom" constant="6" id="zaQ-dm-gES"/>
             </constraints>
         </view>

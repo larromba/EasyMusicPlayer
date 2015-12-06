@@ -22,7 +22,7 @@ extension UIView {
     
     // MARK: - private
     
-    private func createViewFromNib() -> UIView! {
+    private func createViewFromNib() -> UIView {
         let nib = UINib(nibName: self.className(), bundle: NSBundle.safeMainBundle())
         let view = nib.instantiateWithOwner(self, options: nil).first as! UIView
         return view

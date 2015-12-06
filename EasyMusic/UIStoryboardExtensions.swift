@@ -9,8 +9,8 @@
 import UIKit
 
 extension UIStoryboard {
-    public class func main() -> UIStoryboard! {
-        let storyboard = UIStoryboard(name: Constant.Storyboard.Main, bundle: nil)
+    public class func main() -> UIStoryboard {
+        let storyboard = UIStoryboard(name: Constant.Storyboard.Player, bundle: nil)
         return storyboard
     }
 }

@@ -11,39 +11,51 @@ import MediaPlayer
 import AVFoundation
 @testable import EasyMusic
 
-private var musicPlayerExpectation: XCTestExpectation!
-private var audioPlayerExpectation: XCTestExpectation!
-private var trackManagerExpectation: XCTestExpectation!
-private var musicPlayerDelegateErrorExpectation: XCTestExpectation!
-private var musicPlayerDelegateStateExpectation: XCTestExpectation!
-private var musicPlayerDelegateTimeExpectation: XCTestExpectation!
+private var musicPlayerExpectation: XCTestExpectation?
+private var audioPlayerExpectation: XCTestExpectation?
+private var trackManagerExpectation: XCTestExpectation?
+private var musicPlayerDelegateErrorExpectation: XCTestExpectation?
+private var musicPlayerDelegateStateExpectation: XCTestExpectation?
+private var musicPlayerDelegateTimeExpectation: XCTestExpectation?
 private var expectedError: MusicPlayerError?
 private var expectedState: MusicPlayerState?
 private var expectedPlaybackTime: NSTimeInterval?
 private var expectedPlaybackTimeRough: NSTimeInterval?
-private var audioUrl: NSURL! = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
-private var methodOrder: [Int]! = []
+private var methodOrder: [Int]?
+private var audioUrl: NSURL!
 
 class MusicPlayerTests: XCTestCase {
-    var musicPlayer: EasyMusic.MusicPlayer!
+    private var musicPlayer: EasyMusic.MusicPlayer?
     
     override func setUp() {
         super.setUp()
+        
         musicPlayer = MusicPlayer(delegate: self)
+        methodOrder = []
         
 #if !((arch(i386) || arch(x86_64)) && os(iOS)) // if not simulator
         let songs = MPMediaQuery.songsQuery().items
         audioUrl = songs!.first!.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
+#else
+        audioUrl = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
 #endif
     }
     
     override func tearDown() {
         super.tearDown()
         
+        musicPlayer = nil
+        musicPlayerExpectation = nil
+        audioPlayerExpectation = nil
+        trackManagerExpectation = nil
+        musicPlayerDelegateErrorExpectation = nil
+        musicPlayerDelegateStateExpectation = nil
+        musicPlayerDelegateTimeExpectation = nil
         expectedError = nil
         expectedState = nil
         expectedPlaybackTime = nil
-        methodOrder = []
+        expectedPlaybackTimeRough = nil
+        methodOrder = nil
     }
     
     func testAudioSessionOnInit() {
@@ -57,7 +69,7 @@ class MusicPlayerTests: XCTestCase {
         class MockMusicPlayer: EasyMusic.MusicPlayer {
             override func enableAudioSession(enable: Bool) {
                 if enable == true {
-                    musicPlayerExpectation.fulfill()
+                    musicPlayerExpectation!.fulfill()
                 }
             }
         }
@@ -80,7 +92,7 @@ class MusicPlayerTests: XCTestCase {
         class MockMusicPlayer: EasyMusic.MusicPlayer {
             override func enableAudioSession(enable: Bool) {
                 if enable == false {
-                    musicPlayerExpectation.fulfill()
+                    musicPlayerExpectation!.fulfill()
                 }
             }
         }
@@ -96,7 +108,7 @@ class MusicPlayerTests: XCTestCase {
         /**
         expectations
         - audio plays
-        - state changes
+        - delegate call
         */
         audioPlayerExpectation = expectationWithDescription("audioPlayer.play()")
         musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
@@ -104,29 +116,29 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
             override private func play() -> Bool {
-                audioPlayerExpectation.fulfill()
+                audioPlayerExpectation!.fulfill()
                 return true
             }
         }
         
         class MockTrackManager: TrackManager {
-            override var numOfTracks: Int! { return 1 }
-            override var currentTrack: Track! {
+            override var numOfTracks: Int { return 1 }
+            override var currentTrack: Track {
                 return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
             }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
        
         expectedState = MusicPlayerState.Playing
         
         // runnable
-        musicPlayer.play()
+        musicPlayer!.play()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -135,22 +147,22 @@ class MusicPlayerTests: XCTestCase {
     func testPlayNoTracks() {
         /**
         expectations
-        - error thrown
+        - delegate call
         */
         musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
         
         // mocks
         class MockTrackManager: TrackManager {
-            override var numOfTracks: Int! { return 0 }
+            override var numOfTracks: Int { return 0 }
         }
 
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         expectedError = MusicPlayerError.NoMusic
         
         // runnable
-        musicPlayer.play()
+        musicPlayer!.play()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -159,25 +171,25 @@ class MusicPlayerTests: XCTestCase {
     func testPlayInvalidPlayer() {
         /**
         expectations
-        - error thrown
+        - delegate call
         */
         musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
         
         // mocks
         class MockTrackManager: TrackManager {
-            override var numOfTracks: Int! { return 1 }
-            override var currentTrack: Track! {
+            override var numOfTracks: Int { return 1 }
+            override var currentTrack: Track {
                 return Track(artist: "", title: "", duration: 0, artwork: nil, url: NSURL(string: "fakeUrl")!)
             }
         }
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         expectedError = MusicPlayerError.PlayerInit
         
         // runnable
-        musicPlayer.play()
+        musicPlayer!.play()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -186,7 +198,7 @@ class MusicPlayerTests: XCTestCase {
     func testPlayAVError1() {
         /**
         expectations
-        - error thrown
+        - delegate call
         */
         musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
         
@@ -198,23 +210,23 @@ class MusicPlayerTests: XCTestCase {
         }
         
         class MockTrackManager: TrackManager {
-            override var numOfTracks: Int! { return 1 }
-            override var currentTrack: Track! {
+            override var numOfTracks: Int { return 1 }
+            override var currentTrack: Track {
                 return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
             }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         expectedError = MusicPlayerError.AVError
         
         // runnable
-        musicPlayer.play()
+        musicPlayer!.play()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -223,7 +235,7 @@ class MusicPlayerTests: XCTestCase {
     func testPlayAVError2() {
         /**
         expectations
-        - error thrown
+        - delegate call
         */
         musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
         
@@ -235,23 +247,23 @@ class MusicPlayerTests: XCTestCase {
         }
         
         class MockTrackManager: TrackManager {
-            override var numOfTracks: Int! { return 1 }
-            override var currentTrack: Track! {
+            override var numOfTracks: Int { return 1 }
+            override var currentTrack: Track {
                 return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
             }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         expectedError = MusicPlayerError.AVError
         
         // runnable
-        musicPlayer.play()
+        musicPlayer!.play()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -261,7 +273,7 @@ class MusicPlayerTests: XCTestCase {
         /**
         expectations
         - audio pauses
-        - state changes
+        - delegate call
         */
         audioPlayerExpectation = expectationWithDescription("audioPlayer.pause()")
         musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
@@ -269,28 +281,28 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
             override private func pause() {
-                audioPlayerExpectation.fulfill()
+                audioPlayerExpectation!.fulfill()
             }
         }
         
         class MockTrackManager: TrackManager {
-            override var numOfTracks: Int! { return 1 }
-            override var currentTrack: Track! {
+            override var numOfTracks: Int { return 1 }
+            override var currentTrack: Track {
                 return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
             }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         expectedState = MusicPlayerState.Paused
         
         // runnable
-        musicPlayer.pause()
+        musicPlayer!.pause()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -300,8 +312,7 @@ class MusicPlayerTests: XCTestCase {
         /**
         expectations
         - audio stops
-        - changes state
-        - changes playback time
+        - 2 delegate calls
         */
         audioPlayerExpectation = expectationWithDescription("audioPlayer.stop()")
         musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
@@ -310,29 +321,29 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
             override private func stop() {
-                audioPlayerExpectation.fulfill()
+                audioPlayerExpectation!.fulfill()
             }
         }
         
         class MockTrackManager: TrackManager {
-            override var numOfTracks: Int! { return 1 }
-            override var currentTrack: Track! {
+            override var numOfTracks: Int { return 1 }
+            override var currentTrack: Track {
                 return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
             }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         expectedState = MusicPlayerState.Stopped
         expectedPlaybackTime = 0.0
         
         // runnable
-        musicPlayer.stop()
+        musicPlayer!.stop()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -348,36 +359,36 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
             override private func play() -> Bool {
-                methodOrder.append(2)
+                methodOrder!.append(2)
                 return true
             }
             override private func stop() {
-                methodOrder.append(0)
+                methodOrder!.append(0)
             }
         }
         
         class MockTrackManager: TrackManager {
             override func cuePrevious() -> Bool {
-                methodOrder.append(1)
-                trackManagerExpectation.fulfill()
+                methodOrder!.append(1)
+                trackManagerExpectation!.fulfill()
                 return true
             }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
                 
         // runnable
-        musicPlayer.previous()
+        musicPlayer!.previous()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in
             XCTAssertNil(error)
-            XCTAssertMethodOrderCorrect(methodOrder)
+            XCTAssertMethodOrderCorrect(methodOrder!)
         })
     }
     
@@ -400,15 +411,15 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         expectedPlaybackTime = 0.0
         
         // runnable
-        musicPlayer.previous()
+        musicPlayer!.previous()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -424,36 +435,36 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
             override private func play() -> Bool {
-                methodOrder.append(2)
+                methodOrder!.append(2)
                 return true
             }
             override private func stop() {
-                methodOrder.append(0)
+                methodOrder!.append(0)
             }
         }
         
         class MockTrackManager: TrackManager {
             override func cueNext() -> Bool {
-                methodOrder.append(1)
-                trackManagerExpectation.fulfill()
+                methodOrder!.append(1)
+                trackManagerExpectation!.fulfill()
                 return true
             }
         }
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         // runnable
-        musicPlayer.next()
+        musicPlayer!.next()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in
             XCTAssertNil(error)
-            XCTAssertMethodOrderCorrect(methodOrder)
+            XCTAssertMethodOrderCorrect(methodOrder!)
         })
     }
     
@@ -478,13 +489,13 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer._injectTrackManager(mockTrackManager)
+        musicPlayer!._injectTrackManager(mockTrackManager)
         
         // runnable
-        musicPlayer.next()
+        musicPlayer!.next()
         
         // tests
         performAfterDelay(1) { () -> (Void) in
@@ -493,23 +504,22 @@ class MusicPlayerTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: { error in })
     }
     
-    func testSkipTo() {
+    func testPlayerTime() {
         /**
         expectations
         - audio player should skip to time
+        - delegate call
         */
-        audioPlayerExpectation = expectationWithDescription("audioPlayer.currentTime")
         musicPlayerDelegateTimeExpectation = expectationWithDescription("MusicPlayerDelegate.changedPlaybackTime(_, _)")
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
             override private func play() -> Bool { return true }
             override private func stop() { }
-            override private var currentTime: NSTimeInterval {
+            override var currentTime: NSTimeInterval {
                 set {
-                    if newValue == expectedPlaybackTime {
-                        audioPlayerExpectation.fulfill()
-                    }
+                    super.currentTime = newValue
+                    XCTAssertEqual(expectedPlaybackTime, newValue)
                 }
                 get { return super.currentTime }
             }
@@ -517,28 +527,29 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         expectedPlaybackTime = 2.0
         
         // runnable
-        musicPlayer.skipTo(expectedPlaybackTime!)
+        musicPlayer!.time = expectedPlaybackTime!
         
         // tests
+        XCTAssertEqual(expectedPlaybackTime, mockAudioPlayer.currentTime)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
     func testAudioPlayerDidFinishPlayingSuccess() {
         /**
         expectations
-        - changes state
+        - delegate call
         */
         musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
         
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         expectedState = MusicPlayerState.Finished
         
@@ -552,14 +563,14 @@ class MusicPlayerTests: XCTestCase {
     func testAudioPlayerDidFinishPlayingFailure() {
         /**
         expectations
-        - changes state
+        - delegate call
         */
         musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
         
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         expectedError = MusicPlayerError.AVError
         
@@ -573,14 +584,14 @@ class MusicPlayerTests: XCTestCase {
     func testAudioPlayerDecodeError() {
         /**
         expectations
-        - changes state
+        - delegate call
         */
         musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
         
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         expectedError = MusicPlayerError.Decode
         
@@ -594,19 +605,19 @@ class MusicPlayerTests: XCTestCase {
     func testPlaybackTimerCallback() {
         /**
         expectations
-        - changes playback time
+        - delegate call
         */
         musicPlayerDelegateTimeExpectation = expectationWithDescription("MusicPlayerDelegate.changedPlaybackTime(_, _)")
         
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         expectedPlaybackTimeRough = 1
         
         // runnable
-        musicPlayer.play()
+        musicPlayer!.play()
         
         // tests
         waitForExpectationsWithTimeout(2, handler: { error in XCTAssertNil(error) })
@@ -622,19 +633,19 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer._injectPlayer(mockAudioPlayer)
+        musicPlayer!._injectPlayer(mockAudioPlayer)
         
         class MockTimer: NSTimer {
             private override func invalidate() {
-                musicPlayerExpectation.fulfill()
+                musicPlayerExpectation!.fulfill()
             }
         }
         
         let mockPlaybackCheckTimer = MockTimer()
-        musicPlayer._injectPlaybackCheckTimer(mockPlaybackCheckTimer)
+        musicPlayer!._injectPlaybackCheckTimer(mockPlaybackCheckTimer)
         
         // runnable
-        musicPlayer.stop()
+        musicPlayer!.stop()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -645,21 +656,21 @@ class MusicPlayerTests: XCTestCase {
 extension MusicPlayerTests: MusicPlayerDelegate {
     func threwError(sender: EasyMusic.MusicPlayer, error: MusicPlayerError) {
         if expectedError != nil && expectedError == error {
-            musicPlayerDelegateErrorExpectation.fulfill()
+            musicPlayerDelegateErrorExpectation!.fulfill()
         }
     }
     
     func changedState(sender: EasyMusic.MusicPlayer, state: MusicPlayerState) {
         if expectedState != nil && expectedState == state {
-            musicPlayerDelegateStateExpectation.fulfill()
+            musicPlayerDelegateStateExpectation!.fulfill()
         }
     }
     
     func changedPlaybackTime(sender: EasyMusic.MusicPlayer, playbackTime: NSTimeInterval) {
         if expectedPlaybackTimeRough != nil && fabs(expectedPlaybackTimeRough! - playbackTime) < 0.2 {
-            musicPlayerDelegateTimeExpectation.fulfill()
+            musicPlayerDelegateTimeExpectation!.fulfill()
         } else if expectedPlaybackTime != nil && expectedPlaybackTime == playbackTime {
-            musicPlayerDelegateTimeExpectation.fulfill()
+            musicPlayerDelegateTimeExpectation!.fulfill()
         }
     }
 }

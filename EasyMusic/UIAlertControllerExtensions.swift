@@ -9,11 +9,11 @@
 import UIKit
 
 extension UIAlertController {
-    public class func createAlertWithTitle(title: String?, message: String?, buttonTitle: String?) -> UIAlertController! {
+    public class func createAlertWithTitle(title: String?, message: String?, buttonTitle: String?) -> UIAlertController {
         return createAlertWithTitle(title, message: message, buttonTitle: buttonTitle, buttonAction: nil)
     }
     
-    public class func createAlertWithTitle(title: String?, message: String?, buttonTitle: String?, buttonAction: (Void -> Void)?) -> UIAlertController! {
+    public class func createAlertWithTitle(title: String?, message: String?, buttonTitle: String?, buttonAction: (Void -> Void)?) -> UIAlertController {
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -22,9 +22,7 @@ extension UIAlertController {
         alert.addAction(UIAlertAction.withTitle(buttonTitle,
             style: UIAlertActionStyle.Default,
             handler: { (action) -> Void in
-                if buttonAction != nil {
-                    buttonAction!()
-                }
+                buttonAction?()
                 alert.dismissViewControllerAnimated(true, completion: nil)
         }))
         

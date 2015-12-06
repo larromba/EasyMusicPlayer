@@ -11,6 +11,11 @@ import XCTest
 
 class TrackInfoTests: XCTestCase {
     func testInitValid() {
+        /**
+         expectations:
+         - object properties are initialised correctly
+         */
+        
         // mocks
         let artist = "artist"
         let title = "title"

@@ -33,24 +33,38 @@ protocol MusicPlayerDelegate {
 class MusicPlayer: NSObject {
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: NSTimer?
+    private var playingInBackground: Bool = false
+    private var trackManager: TrackManager = TrackManager()
     
-    private(set) var trackManager: TrackManager! = TrackManager()
-    private(set) var delegate: MusicPlayerDelegate?
-    
+    var delegate: MusicPlayerDelegate?
     var isPlaying: Bool {
-        guard player != nil else {
-            return false
+        if let player = player {
+            return player.playing
         }
-        return player!.playing
+        return false
     }
-    var currentTrack: Track! {
+    var currentTrack: Track {
         return trackManager.currentTrack
     }
-    var currentTrackNumber: Int! {
+    var currentTrackNumber: Int {
         return trackManager.currentTrackNumber
     }
-    var numOfTracks: Int! {
+    var numOfTracks: Int {
         return trackManager.numOfTracks
+    }
+    var time: NSTimeInterval {
+        set {
+            if let player = player {
+                player.currentTime = newValue
+                changedPlaybackTime(time)
+            }
+        }
+        get {
+            if let player = player {
+                return player.currentTime
+            }
+            return 0.0
+        }
     }
     
     init(delegate: MusicPlayerDelegate) {
@@ -67,6 +81,14 @@ class MusicPlayer: NSObject {
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationWillTerminate),
             name: UIApplicationWillTerminateNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: safeSelector(Constant.Notification.ApplicationWillResignActive),
+            name: UIApplicationWillResignActiveNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
+            name: UIApplicationDidBecomeActiveNotification,
             object: nil)
         
         enableAudioSession(true)
@@ -85,6 +107,12 @@ class MusicPlayer: NSObject {
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: UIApplicationWillTerminateNotification,
             object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UIApplicationDidBecomeActiveNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UIApplicationWillResignActiveNotification,
+            object: nil)
     }
     
     // MARK: - private
@@ -102,10 +130,34 @@ class MusicPlayer: NSObject {
         playbackCheckTimer = nil
     }
     
+    private func threwError(error: MusicPlayerError) {
+        delegate?.threwError(self, error: error)
+        changedState(MusicPlayerState.Stopped)
+    }
+    
+    private func changedState(state: MusicPlayerState) {
+        delegate?.changedState(self, state: state)
+    }
+    
+    private func changedPlaybackTime(playbackTime: NSTimeInterval) {
+        delegate?.changedPlaybackTime(self, playbackTime: playbackTime)
+    }
+    
     // MARK: - notifications
     
     func applicationWillTerminate() {
         enableAudioSession(false)
+    }
+    
+    func applicationWillResignActive() {
+        playingInBackground = true
+    }
+    
+    func applicationDidBecomeActive() {
+        if playingInBackground == true && isPlaying == false {
+            stop()
+        }
+        playingInBackground = false
     }
     
     func playbackCheckTimerCallback() {
@@ -113,7 +165,7 @@ class MusicPlayer: NSObject {
             return
         }
         
-        delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
+        changedPlaybackTime(player!.currentTime)
     }
     
     // MARK: - internal
@@ -123,20 +175,20 @@ class MusicPlayer: NSObject {
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: [])
             } catch _ {
-                delegate?.threwError(self, error: MusicPlayerError.AVError)
+                threwError(MusicPlayerError.AVError)
             }
         }
         
         do {
             try AVAudioSession.sharedInstance().setActive(enable)
         } catch _ {
-            delegate?.threwError(self, error: MusicPlayerError.AVError)
+            threwError(MusicPlayerError.AVError)
         }
     }
     
     func play() {
         guard numOfTracks > 0 else {
-            delegate?.threwError(self, error: MusicPlayerError.NoMusic)
+            threwError(MusicPlayerError.NoMusic)
             return
         }
         
@@ -144,7 +196,7 @@ class MusicPlayer: NSObject {
             do {
                 try player = AVAudioPlayer(contentsOfURL: currentTrack.url)
             } catch _ {
-                delegate?.threwError(self, error: MusicPlayerError.PlayerInit)
+                threwError(MusicPlayerError.PlayerInit)
                 return
             }
             player!.delegate = self
@@ -152,19 +204,19 @@ class MusicPlayer: NSObject {
         
         var success = player!.prepareToPlay()
         guard success == true else {
-            delegate?.threwError(self, error: MusicPlayerError.AVError)
+            threwError(MusicPlayerError.AVError)
             return
         }
         
         success = player!.play()
         guard success == true else {
-            delegate?.threwError(self, error: MusicPlayerError.AVError)
+            threwError(MusicPlayerError.AVError)
             return
         }
         
         startPlaybackCheckTimer()
         
-        delegate?.changedState(self, state: MusicPlayerState.Playing)
+        changedState(MusicPlayerState.Playing)
     }
     
     func stop() {
@@ -175,9 +227,9 @@ class MusicPlayer: NSObject {
         player!.stop()
         
         stopPlaybackCheckTimer()
-        skipTo(0.0)
+        time = 0.0
         
-        delegate?.changedState(self, state: MusicPlayerState.Stopped)
+        changedState(MusicPlayerState.Stopped)
     }
     
     func pause() {
@@ -189,7 +241,7 @@ class MusicPlayer: NSObject {
      
         stopPlaybackCheckTimer()
         
-        delegate?.changedState(self, state: MusicPlayerState.Paused)
+        changedState(MusicPlayerState.Paused)
     }
     
     func previous() {
@@ -213,29 +265,20 @@ class MusicPlayer: NSObject {
     func shuffle() {
         trackManager.shuffleTracks()
     }
-    
-    func skipTo(time: NSTimeInterval) {
-        guard player != nil else {
-            return
-        }
-        
-        player!.currentTime = time
-        delegate?.changedPlaybackTime(self, playbackTime: time)
-    }
 }
 
 // MARK: - AVAudioPlayerDelegate
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         if flag == true {
-            delegate?.changedState(self, state: MusicPlayerState.Finished)
+            changedState(MusicPlayerState.Finished)
         } else {
-            delegate?.threwError(self, error: MusicPlayerError.AVError)
+            threwError(MusicPlayerError.AVError)
         }
     }
     
     func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
-        delegate?.threwError(self, error: MusicPlayerError.Decode)
+        threwError(MusicPlayerError.Decode)
     }
 }
 

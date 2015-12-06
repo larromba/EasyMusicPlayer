@@ -9,19 +9,28 @@
 import Foundation
 import Social
 
+enum ShareManagerResult {
+    case Success
+    case CancelledAfterChoice
+    case CancelledBeforeChoice
+    case Error
+}
+
 class ShareManager: NSObject {
-    private var presenter: UIViewController!
-    private var track: Track!
+    private weak var presenter: UIViewController!
+    private weak var track: Track!
+    private var completion: ((ShareManagerResult, String?) -> Void)?
     private var ComposeViewController = SLComposeViewController.self
     private var AlertAction = UIAlertAction.self
     
     // MARK: - internal
     
-    func shareTrack(track: Track, presenter: UIViewController) {
+    func shareTrack(track: Track, presenter: UIViewController, completion: ((ShareManagerResult, String?) -> Void)?) {
         self.presenter = presenter
         self.track = track
+        self.completion = completion;
         
-        let choices = createShareChoices { (service) -> Void in
+        let choices = createShareChoices { (service: String?) -> Void in
             if service != nil {
                 self.shareViaService(service!)
             }
@@ -39,16 +48,23 @@ class ShareManager: NSObject {
                 track.title,
                 NSBundle.appName())
             share.setInitialText(text)
+            share.completionHandler = { (result:SLComposeViewControllerResult) in
+                switch result {
+                case .Done:
+                    self.completion?(ShareManagerResult.Success, serviceType)
+                    break
+                case .Cancelled:
+                    self.completion?(ShareManagerResult.CancelledAfterChoice, serviceType)
+                    break
+                }
+            }
             presenter.presentViewController(share, animated: true, completion: nil)
         } else {
-            let alert = UIAlertController.createAlertWithTitle(localized("accounts error title"),
-                message: localized("accounts error msg"),
-                buttonTitle: localized("accounts error button"))
-            presenter.presentViewController(alert, animated: true, completion: nil)
+            self.completion?(ShareManagerResult.Error, serviceType)
         }
     }
     
-    private func createShareChoices(completion completion: ((String?) -> Void)?) -> UIAlertController! {
+    private func createShareChoices(completion completion: ((String?) -> Void)?) -> UIAlertController {
         let msg = UIAlertController(
             title: localized("share sheet title"),
             message: localized("share sheet desc"),
@@ -56,23 +72,25 @@ class ShareManager: NSObject {
         
         msg.addAction(AlertAction.withTitle(localized("share option facebook"),
             style: .Default,
-            handler: { (action) -> Void in
+            handler: { (action: UIAlertAction) -> Void in
                 completion!(SLServiceTypeFacebook)
                 msg.dismissViewControllerAnimated(true, completion: nil)
         }))
         
         msg.addAction(AlertAction.withTitle(localized("share option twitter"),
             style: .Default,
-            handler: { (action) -> Void in
+            handler: { (action: UIAlertAction) -> Void in
                 completion!(SLServiceTypeTwitter)
                 msg.dismissViewControllerAnimated(true, completion: nil)
         }))
         
         msg.addAction(AlertAction.withTitle(localized("share option cancel"),
             style: .Cancel,
-            handler: { (action) -> Void in
+            handler: { (action: UIAlertAction) -> Void in
                 completion!(nil)
-                msg.dismissViewControllerAnimated(true, completion: nil)
+                msg.dismissViewControllerAnimated(true, completion: {
+                    self.completion?(ShareManagerResult.CancelledBeforeChoice, nil)
+                })
         }))
         
         return msg

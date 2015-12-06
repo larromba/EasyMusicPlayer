@@ -15,5 +15,7 @@ public func safeAssert(condition: Bool, _ msg: String) {
 }
 
 public func log(msg: String) {
-    print(msg)
+    #if DEBUG
+        print(msg)
+    #endif
 }
