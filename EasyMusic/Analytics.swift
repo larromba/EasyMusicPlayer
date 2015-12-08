@@ -10,7 +10,7 @@ import Foundation
 import Google
 
 class Analytics {
-    static let shared = Analytics()
+    private(set) static var shared = Analytics()
     
     // MARK: - Internal
     
@@ -44,6 +44,10 @@ class Analytics {
         sendEvent(event, action: classId, category: "alert")
     }
     
+    func sendErrorEvent(error: NSError, classId: String) {
+        sendEvent("domain:\(error.domain), code:\(error.code)", action: classId, category: "error")
+    }
+    
     // MARK: - Private
     
     private func sendEvent(event: String, action: String, category: String) {
@@ -53,5 +57,12 @@ class Analytics {
             label: event,
             value: nil).build() as [NSObject : AnyObject]
         tracker.send(item)
+    }
+}
+
+// MARK - Testing
+extension Analytics {
+    class func _injectShared(shared: Analytics) {
+        self.shared = shared
     }
 }

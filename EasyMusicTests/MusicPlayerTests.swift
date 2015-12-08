@@ -14,6 +14,7 @@ import AVFoundation
 private var musicPlayerExpectation: XCTestExpectation?
 private var audioPlayerExpectation: XCTestExpectation?
 private var trackManagerExpectation: XCTestExpectation?
+private var analyticsExpectation: XCTestExpectation?
 private var musicPlayerDelegateErrorExpectation: XCTestExpectation?
 private var musicPlayerDelegateStateExpectation: XCTestExpectation?
 private var musicPlayerDelegateTimeExpectation: XCTestExpectation?
@@ -51,6 +52,7 @@ class MusicPlayerTests: XCTestCase {
         musicPlayerDelegateErrorExpectation = nil
         musicPlayerDelegateStateExpectation = nil
         musicPlayerDelegateTimeExpectation = nil
+        analyticsExpectation = nil
         expectedError = nil
         expectedState = nil
         expectedPlaybackTime = nil
@@ -584,19 +586,32 @@ class MusicPlayerTests: XCTestCase {
     func testAudioPlayerDecodeError() {
         /**
         expectations
+        - analytics triggered
         - delegate call
         */
         musicPlayerDelegateErrorExpectation = expectationWithDescription("MusicPlayerDelegate.threwError(_, _)")
+        analyticsExpectation = expectationWithDescription("Analytics.shared.sendErrorEvent(_, _)")
         
         // mocks
+        class MockAnalytics: Analytics {
+            override func sendErrorEvent(error: NSError, classId: String) {
+                analyticsExpectation?.fulfill()
+            }
+        }
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics._injectShared(mockAnalytics)
+        
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
         musicPlayer!._injectPlayer(mockAudioPlayer)
         
+        let mockError = NSError(domain: "", code: 0, userInfo: nil)
+        
         expectedError = MusicPlayerError.Decode
         
         // runnable
-        mockAudioPlayer.delegate?.audioPlayerDecodeErrorDidOccur!(mockAudioPlayer, error: nil)
+        mockAudioPlayer.delegate?.audioPlayerDecodeErrorDidOccur!(mockAudioPlayer, error: mockError)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })

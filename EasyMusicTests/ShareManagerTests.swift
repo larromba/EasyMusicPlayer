@@ -6,8 +6,6 @@
 //  Copyright © 2015 Lee Arromba. All rights reserved.
 //
 
-// TODO: - completion block
-
 import XCTest
 import Social
 @testable import EasyMusic

@@ -270,6 +270,10 @@ extension MusicPlayer: AVAudioPlayerDelegate {
     }
     
     func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
+        if let error = error {
+            Analytics.shared.sendErrorEvent(error, classId: self.className())
+        }
+        
         threwError(MusicPlayerError.Decode)
     }
 }
