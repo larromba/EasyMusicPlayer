@@ -56,7 +56,7 @@ class MusicPlayer: NSObject {
         set {
             if let player = player {
                 player.currentTime = newValue
-                changedPlaybackTime(time)
+                delegate?.changedPlaybackTime(self, playbackTime: time)
             }
         }
         get {
@@ -132,15 +132,7 @@ class MusicPlayer: NSObject {
     
     private func threwError(error: MusicPlayerError) {
         delegate?.threwError(self, error: error)
-        changedState(MusicPlayerState.Stopped)
-    }
-    
-    private func changedState(state: MusicPlayerState) {
-        delegate?.changedState(self, state: state)
-    }
-    
-    private func changedPlaybackTime(playbackTime: NSTimeInterval) {
-        delegate?.changedPlaybackTime(self, playbackTime: playbackTime)
+        delegate?.changedState(self, state: MusicPlayerState.Stopped)
     }
     
     // MARK: - notifications
@@ -165,7 +157,7 @@ class MusicPlayer: NSObject {
             return
         }
         
-        changedPlaybackTime(player!.currentTime)
+        delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
     // MARK: - internal
@@ -216,7 +208,7 @@ class MusicPlayer: NSObject {
         
         startPlaybackCheckTimer()
         
-        changedState(MusicPlayerState.Playing)
+        delegate?.changedState(self, state: MusicPlayerState.Playing)
     }
     
     func stop() {
@@ -229,7 +221,7 @@ class MusicPlayer: NSObject {
         stopPlaybackCheckTimer()
         time = 0.0
         
-        changedState(MusicPlayerState.Stopped)
+        delegate?.changedState(self, state: MusicPlayerState.Stopped)
     }
     
     func pause() {
@@ -241,7 +233,7 @@ class MusicPlayer: NSObject {
      
         stopPlaybackCheckTimer()
         
-        changedState(MusicPlayerState.Paused)
+        delegate?.changedState(self, state: MusicPlayerState.Paused)
     }
     
     func previous() {
@@ -271,7 +263,7 @@ class MusicPlayer: NSObject {
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         if flag == true {
-            changedState(MusicPlayerState.Finished)
+            delegate?.changedState(self, state: MusicPlayerState.Finished)
         } else {
             threwError(MusicPlayerError.AVError)
         }

@@ -226,6 +226,9 @@ extension PlayerViewController: ControlsViewDelegate {
     }
     
     func sharePressed(sender: ControlsView) {
+        Analytics.shared.sendButtonPressEvent("share",
+            classId: self.className())
+        
         shareManager.shareTrack(musicPlayer.currentTrack, presenter: self, completion: { (result: ShareManagerResult, service: String?) in
             var event: String!
             switch result {
