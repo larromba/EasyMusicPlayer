@@ -11,6 +11,7 @@ import Google
 
 class Analytics {
     private(set) static var shared = Analytics()
+    private var sessionStartDate: NSDate?
     
     // MARK: - Internal
     
@@ -30,6 +31,35 @@ class Analytics {
         #else
             gai.logger.logLevel = GAILogLevel.None
         #endif
+    }
+    
+    func startSession() {
+        sessionStartDate = NSDate()
+    }
+    
+    func endSession() {
+        guard sessionStartDate != nil else {
+            return
+        }
+        
+        let currentDate = NSDate()
+        let sessionTimeSecs = currentDate.timeIntervalSinceDate(sessionStartDate!)
+        let sessionTimeMilliSecs = (sessionTimeSecs * 1000)
+        let tracker = GAI.sharedInstance().defaultTracker
+        let item = GAIDictionaryBuilder.createTimingWithCategory("app",
+            interval: sessionTimeMilliSecs,
+            name: "session",
+            label: nil).build() as [NSObject : AnyObject]
+        
+        tracker.send(item)
+        sessionStartDate = nil
+    }
+    
+    func sendScreenNameEvent(screenName: String) {
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: screenName)
+        let item = GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject]
+        tracker.send(item)
     }
     
     func sendButtonPressEvent(event: String, classId: String) {
@@ -56,6 +86,7 @@ class Analytics {
             action: action,
             label: event,
             value: nil).build() as [NSObject : AnyObject]
+        
         tracker.send(item)
     }
 }

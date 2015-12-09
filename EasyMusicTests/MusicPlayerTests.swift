@@ -58,6 +58,7 @@ class MusicPlayerTests: XCTestCase {
         expectedPlaybackTime = nil
         expectedPlaybackTimeRough = nil
         methodOrder = nil
+        Analytics._injectShared(Analytics())
     }
     
     func testAudioSessionOnInit() {
@@ -595,7 +596,7 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockAnalytics: Analytics {
             override func sendErrorEvent(error: NSError, classId: String) {
-                analyticsExpectation?.fulfill()
+                analyticsExpectation!.fulfill()
             }
         }
         

@@ -45,6 +45,7 @@
 		7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */; };
 		7FD4F5FE1BFB75B600DCE572 /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FD1BFB75B600DCE572 /* GCD.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
+		7FE56F731C18702A00DAF1EE /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE56F721C18702A00DAF1EE /* AppDelegateTests.swift */; };
 		7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */; };
 		7FF5B2ED1BE64E210044FCE5 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EC1BE64E210044FCE5 /* PlayerViewController.swift */; };
 		7FF5B2F01BE64E210044FCE5 /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EE1BE64E210044FCE5 /* Player.storyboard */; };
@@ -135,6 +136,7 @@
 		7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InfoViewTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7FD4F5FD1BFB75B600DCE572 /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7FE56F721C18702A00DAF1EE /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
 		7FF5B2E71BE64E210044FCE5 /* EasyMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FF5B2EC1BE64E210044FCE5 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PlayerViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -409,6 +411,7 @@
 		7FF5B2FE1BE64E220044FCE5 /* EasyMusicTests */ = {
 			isa = PBXGroup;
 			children = (
+				7FE56F721C18702A00DAF1EE /* AppDelegateTests.swift */,
 				7FCFE93B1BF4BA2900981545 /* Models */,
 				7FCFE93E1BF4BDE300981545 /* Views */,
 				7F4090641BFA088C00F449FD /* Controllers */,
@@ -754,6 +757,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FE56F731C18702A00DAF1EE /* AppDelegateTests.swift in Sources */,
 				7F279C741C0220720000C4B0 /* MusicPlayerTests.swift in Sources */,
 				7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */,
 				7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */,

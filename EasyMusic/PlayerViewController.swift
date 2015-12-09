@@ -40,9 +40,11 @@ class PlayerViewController: UIViewController {
             name: UIApplicationDidBecomeActiveNotification,
             object: nil)
     }
-    
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        Analytics.shared.sendScreenNameEvent(self.className())
         
         checkTracksAvailable()
     }

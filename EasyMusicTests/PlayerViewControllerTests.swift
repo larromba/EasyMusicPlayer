@@ -18,6 +18,7 @@ private var musicPlayerExpectation: XCTestExpectation?
 private var infoViewExpectation: XCTestExpectation?
 private var controlsViewExpectation: XCTestExpectation?
 private var shareManagerExpectation: XCTestExpectation?
+private var analyticsExpectation: XCTestExpectation?
 private var sharedTrack: Track!
 
 class PlayerViewControllerTests: XCTestCase {
@@ -39,6 +40,32 @@ class PlayerViewControllerTests: XCTestCase {
         infoViewExpectation = nil
         controlsViewExpectation = nil
         shareManagerExpectation = nil
+        analyticsExpectation = nil
+        Analytics._injectShared(Analytics())
+    }
+    
+    func testScreenAnalytics() {
+        /**
+        expectations
+        - analytics event sent
+        */
+        analyticsExpectation = expectationWithDescription("analytics.sendScreenNameEvent(_)")
+        
+        // mocks
+        class MockAnalytics: Analytics {
+            override func sendScreenNameEvent(screenName: String) {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics._injectShared(mockAnalytics)
+        
+        // runnable
+        playerViewController!.viewDidAppear(false)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
 
     func testPlay() {
@@ -47,17 +74,27 @@ class PlayerViewControllerTests: XCTestCase {
         - Music player attempts to play
         */
         musicPlayerExpectation = expectationWithDescription("musicPlayer.play()")
-
+        analyticsExpectation = expectationWithDescription("analytics.sendButtonPressEvent(_, _)")
+        
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
             override func play() {
                 musicPlayerExpectation!.fulfill()
             }
         }
-
+        
+        class MockAnalytics: Analytics {
+            override func sendButtonPressEvent(event: String, classId: String) {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
 
+        let mockAnalytics = MockAnalytics()
+        Analytics._injectShared(mockAnalytics)
+        
         let mockControlsView = ControlsView()
         playerViewController!._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
@@ -298,9 +335,11 @@ class PlayerViewControllerTests: XCTestCase {
         /**
         expectations
         - Music player attempts to pause
+        - Analytics event fired
         */
         musicPlayerExpectation = expectationWithDescription("musicPlayer.pause()")
-        
+        analyticsExpectation = expectationWithDescription("analytics.sendButtonPressEvent(_, _)")
+
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
             override var isPlaying: Bool { return true }
@@ -309,8 +348,17 @@ class PlayerViewControllerTests: XCTestCase {
             }
         }
         
+        class MockAnalytics: Analytics {
+            override func sendButtonPressEvent(event: String, classId: String) {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics._injectShared(mockAnalytics)
         
         let mockControlsView = ControlsView()
         playerViewController!._injectControlsView(mockControlsView)
