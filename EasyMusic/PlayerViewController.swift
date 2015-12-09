@@ -17,12 +17,7 @@ class PlayerViewController: UIViewController {
     private var shareManager: ShareManager = ShareManager()
     private var userScrobbling: Bool = false
     private var AlertController = UIAlertController.self
-    
-    private enum Alert {
-        case ShareAccount
-        case FinishedPlaylist
-    }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
