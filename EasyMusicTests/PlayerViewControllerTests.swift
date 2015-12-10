@@ -120,9 +120,21 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockInfoView: InfoView {
+            var setInfoFromTrack: Bool = false
+            var setTrackPosition: Bool = false
             override func className() -> String { return "InfoView" }
             override func setInfoFromTrack(track: Track) {
-                infoViewExpectation!.fulfill()
+                setInfoFromTrack = true
+                checkExpectation()
+            }
+            override func setTrackPosition(trackPosition: Int, totalTracks: Int) {
+                setTrackPosition = true
+                checkExpectation()
+            }
+            func checkExpectation() {
+                if setInfoFromTrack && setTrackPosition {
+                    infoViewExpectation!.fulfill()
+                }
             }
         }
         
@@ -143,15 +155,13 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        let mockScrobbleView = ScrobbleView()
-        playerViewController!._injectScrobbleView(mockScrobbleView)
-        mockScrobbleView.userInteractionEnabled = false
+        playerViewController!.scrobbleView.userInteractionEnabled = false
         
         // runnable
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
 
         // tests
-        XCTAssertTrue(mockScrobbleView.userInteractionEnabled)
+        XCTAssertTrue(playerViewController!.scrobbleView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -272,7 +282,7 @@ class PlayerViewControllerTests: XCTestCase {
         // tests
         let mockAlertController = playerViewController!.presentedViewController as! MockAlertController
         mockAlertController.dismissViewControllerAnimated(false) { () -> Void in
-            XCTAssertNil(self.playerViewController!.presentedViewController)
+            XCTAssertNil(self.playerViewController!.presentedViewController) // for sanity only
             mockAlertController.mockButtonAction()
             XCTAssertTrue(self.playerViewController!.presentedViewController is UIAlertController)
             waitExpectation.fulfill()
@@ -313,13 +323,6 @@ class PlayerViewControllerTests: XCTestCase {
         
         playerViewController!._injectAlertController(MockAlertController.self)
         
-        let mockControlsView = ControlsView()
-        playerViewController!._injectControlsView(mockControlsView)
-        mockControlsView.delegate = playerViewController
-        
-        let mockScrobbleView = ScrobbleView()
-        playerViewController!._injectScrobbleView(mockScrobbleView)
-
         // runnable
         mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayerError.Decode)
         
@@ -396,14 +399,11 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        let mockScrobbleView = ScrobbleView()
-        playerViewController!._injectScrobbleView(mockScrobbleView)
-        
         // runnable
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Paused)
         
         // tests
-        XCTAssertFalse(mockScrobbleView.userInteractionEnabled)
+        XCTAssertFalse(playerViewController!.scrobbleView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -451,15 +451,33 @@ class PlayerViewControllerTests: XCTestCase {
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
-        let mockControlsView = ControlsView()
-        playerViewController!._injectControlsView(mockControlsView)
-        mockControlsView.delegate = playerViewController
+        // runnable
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        
+        // tests
+        XCTAssertFalse(playerViewController!.controlsView.nextButton.enabled)
+    }
+    
+    func testNextRepeatAll() {
+        /**
+         expectations
+         - button not disabled
+         */
+         
+         // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var numOfTracks: Int { return 1 }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        mockMusicPlayer.repeatMode = MusicPlayerRepeatMode.All
+        playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
         // runnable
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
         
         // tests
-        XCTAssertFalse(mockControlsView.nextButton.enabled)
+        XCTAssertTrue(playerViewController!.controlsView.nextButton.enabled)
     }
     
     func testPrevious() {
@@ -490,6 +508,49 @@ class PlayerViewControllerTests: XCTestCase {
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testPreviousDisabled() {
+        /**
+         expectations
+         - button is disabled
+         */
+         
+        // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var numOfTracks: Int { return 1 }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        playerViewController!._injectMusicPlayer(mockMusicPlayer)
+        
+        // runnable
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        
+        // tests
+        XCTAssertFalse(playerViewController!.controlsView.prevButton.enabled)
+    }
+    
+    func testPreviousRepeatAll() {
+        /**
+        expectations
+        - button not disabled
+        */
+
+        // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var numOfTracks: Int { return 1 }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        mockMusicPlayer.repeatMode = MusicPlayerRepeatMode.All
+        playerViewController!._injectMusicPlayer(mockMusicPlayer)
+        
+        // runnable
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        
+        // tests
+        XCTAssertTrue(playerViewController!.controlsView.prevButton.enabled)
     }
 
     func testStop() {
@@ -545,14 +606,11 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        let mockScrobbleView = ScrobbleView()
-        playerViewController!._injectScrobbleView(mockScrobbleView)
-        
         // runnable
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Stopped)
         
         // tests
-        XCTAssertFalse(mockScrobbleView.userInteractionEnabled)
+        XCTAssertFalse(playerViewController!.scrobbleView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -561,14 +619,23 @@ class PlayerViewControllerTests: XCTestCase {
         expectations
         - Controls are in stopped state
         - Scrobble view is disabled
+        - Info is cleared
         */
         controlsViewExpectation = expectationWithDescription("controlsView.setControlsStopped()")
+        infoViewExpectation = expectationWithDescription("infoView.clearInfo()")
         
         // mocks
         class MockControlsView: ControlsView {
             override func className() -> String { return "ControlsView" }
             override func setControlsStopped() {
                 controlsViewExpectation!.fulfill()
+            }
+        }
+        
+        class MockInfoView: InfoView {
+            override func className() -> String { return "InfoView" }
+            override func clearInfo() {
+                infoViewExpectation!.fulfill()
             }
         }
         
@@ -579,14 +646,14 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
-        let mockScrobbleView = ScrobbleView()
-        playerViewController!._injectScrobbleView(mockScrobbleView)
+        let mockInfoView = MockInfoView()
+        playerViewController!._injectInfoView(mockInfoView)
         
         // runnable
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Finished)
         
         // tests
-        XCTAssertFalse(mockScrobbleView.userInteractionEnabled)
+        XCTAssertFalse(playerViewController!.scrobbleView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -674,6 +741,7 @@ class PlayerViewControllerTests: XCTestCase {
         expectations
         - repeat mode changes
         */
+
         // mocks
         let mockControlsView = ControlsView()
         mockControlsView.repeatButton.setButtonState(RepeatButtonState.All)
@@ -692,6 +760,24 @@ class PlayerViewControllerTests: XCTestCase {
         
         // tests
         XCTAssertEqual(mockMusicPlayer.repeatMode, expectedRepeatMode)
+    }
+    
+    func testRepeatLoaded() {
+        /**
+         expectations
+         - repeat mode loaded on launch
+         */
+         
+        // mocks
+        UserData.repeatMode = MusicPlayerRepeatMode.All
+       
+        let expectedRepeatButtonState = RepeatButtonState.All
+
+        // runnable
+        playerViewController!.viewDidLoad()
+        
+        // tests
+        XCTAssertEqual(playerViewController!.controlsView.repeatButton.buttonState, expectedRepeatButtonState)
     }
     
     func testScrobbleTouchMoved() {
@@ -722,12 +808,8 @@ class PlayerViewControllerTests: XCTestCase {
         let mockInfoView = MockInfoView()
         playerViewController!._injectInfoView(mockInfoView)
         
-        let mockScrobbleView = ScrobbleView()
-        playerViewController!._injectScrobbleView(mockScrobbleView)
-        mockScrobbleView.delegate = playerViewController
-        
         // runnable
-        mockScrobbleView.delegate!.touchMovedToPercentage(mockScrobbleView, percentage: 0.2)
+        playerViewController!.scrobbleView.delegate!.touchMovedToPercentage(playerViewController!.scrobbleView, percentage: 0.2)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
@@ -751,12 +833,8 @@ class PlayerViewControllerTests: XCTestCase {
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
-        let mockScrobbleView = ScrobbleView()
-        playerViewController!._injectScrobbleView(mockScrobbleView)
-        mockScrobbleView.delegate = playerViewController
-        
         // runnable
-        mockScrobbleView.delegate!.touchEndedAtPercentage(mockScrobbleView, percentage: 0.2)
+        playerViewController!.scrobbleView.delegate!.touchEndedAtPercentage(playerViewController!.scrobbleView, percentage: 0.2)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })

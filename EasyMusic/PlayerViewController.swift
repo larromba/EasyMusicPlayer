@@ -17,12 +17,28 @@ class PlayerViewController: UIViewController {
     private var shareManager: ShareManager = ShareManager()
     private var userScrobbling: Bool = false
     private var AlertController = UIAlertController.self
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         controlsView.delegate = self
         scrobbleView.delegate = self
+        
+        if let repeatMode = UserData.repeatMode {
+            musicPlayer.repeatMode = repeatMode
+            
+            switch repeatMode {
+            case .None:
+                controlsView.repeatButton.setButtonState(RepeatButtonState.None)
+                break
+            case .One:
+                controlsView.repeatButton.setButtonState(RepeatButtonState.One)
+                break
+            case .All:
+                controlsView.repeatButton.setButtonState(RepeatButtonState.All)
+                break
+            }
+        }
                 
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
@@ -62,6 +78,22 @@ class PlayerViewController: UIViewController {
             threwError(musicPlayer, error: MusicPlayerError.NoMusic)
         }
     }
+    
+    private func updateSeekingControls() {
+        if musicPlayer.repeatMode == MusicPlayerRepeatMode.All {
+            controlsView.enablePrevious(true)
+            controlsView.enableNext(true)
+            return
+        }
+        
+        let trackNumber = musicPlayer.currentTrackNumber
+        if trackNumber == 0 {
+            controlsView.enablePrevious(false)
+        }
+        if (trackNumber == musicPlayer.numOfTracks - 1) {
+            controlsView.enableNext(false)
+        }
+    }
 }
 
 // MARK: - MusicPlayerDelegate
@@ -71,6 +103,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         case .Playing:
             controlsView.setControlsPlaying()
             infoView.setInfoFromTrack(sender.currentTrack)
+            infoView.setTrackPosition((musicPlayer.currentTrackNumber + 1), totalTracks: musicPlayer.numOfTracks)
             scrobbleView.userInteractionEnabled = true
             break
         case .Paused:
@@ -82,6 +115,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             scrobbleView.userInteractionEnabled = false
             break
         case .Finished:
+            infoView.clearInfo()
             controlsView.setControlsStopped()
             scrobbleView.userInteractionEnabled = false
             
@@ -96,15 +130,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             break
         }
         
-        let trackNumber = musicPlayer.currentTrackNumber
-        if trackNumber == 0 {
-            controlsView.enablePrevious(false)
-        }
-        if (trackNumber == musicPlayer.numOfTracks - 1) {
-            controlsView.enableNext(false)
-        }
-        
-        infoView.setTrackPosition((trackNumber + 1), totalTracks: musicPlayer.numOfTracks)
+        updateSeekingControls()
     }
     
     func changedPlaybackTime(sender: MusicPlayer, playbackTime: NSTimeInterval) {
@@ -277,10 +303,16 @@ extension PlayerViewController: ControlsViewDelegate {
             musicPlayer.repeatMode = MusicPlayerRepeatMode.None
         }
         
+        // update ui
         sender.repeatButton.setButtonState(newButtonState)
-        
+        updateSeekingControls()
+
+        // track analytics
         Analytics.shared.sendButtonPressEvent(event,
             classId: self.className())
+        
+        // save repeat state
+        UserData.repeatMode = musicPlayer.repeatMode
     }
 }
 

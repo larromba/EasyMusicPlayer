@@ -128,7 +128,7 @@ class TrackManagerTests: XCTestCase {
         XCTAssert(result == false)
     }
     
-    func testCueRestart() {
+    func testCueStart() {
         /**
          expectations
          - manager cued to start from the beginning
@@ -141,7 +141,26 @@ class TrackManagerTests: XCTestCase {
         let expectedResult = 0
         
         // runnable
-        trackManager!.cueRestart()
+        trackManager!.cueStart()
+        
+        // tests
+        XCTAssertEqual(trackManager!.currentTrackNumber, expectedResult)
+    }
+    
+    func testCueEnd() {
+        /**
+         expectations
+         - manager cued to start from the end
+         */
+         
+         // mocks
+        let initialTrackIndex = 0
+        trackManager!._injectTrackIndex(initialTrackIndex)
+        
+        let expectedResult = trackManager!.numOfTracks - 1
+        
+        // runnable
+        trackManager!.cueEnd()
         
         // tests
         XCTAssertEqual(trackManager!.currentTrackNumber, expectedResult)

@@ -97,8 +97,12 @@ class TrackManager {
         return true
     }
     
-    func cueRestart() {
+    func cueStart() {
         trackIndex = 0
+    }
+    
+    func cueEnd() {
+        trackIndex = numOfTracks - 1
     }
 }
 

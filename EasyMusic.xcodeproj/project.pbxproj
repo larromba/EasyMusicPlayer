@@ -33,6 +33,8 @@
 		7F92B6EF1C19979200A5273A /* PlayerButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */; };
 		7F92B6F11C19AD0A00A5273A /* RepeatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */; };
 		7F92B6F31C19ADFF00A5273A /* RepeatButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F21C19ADFF00A5273A /* RepeatButtonTests.swift */; };
+		7F92B6F51C1A09F100A5273A /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F41C1A09F100A5273A /* UserData.swift */; };
+		7F92B6F71C1A0F7E00A5273A /* UserDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F61C1A0F7E00A5273A /* UserDataTests.swift */; };
 		7FA25FC21C088A0B009FB59D /* UIAlertActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */; };
 		7FA60C941C110B9000D7D2DC /* ScrobbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA60C961C110B9000D7D2DC /* ScrobbleView.xib */; };
 		7FA60C971C110B9400D7D2DC /* InfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA60C991C110B9400D7D2DC /* InfoView.xib */; };
@@ -124,6 +126,8 @@
 		7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerButtonTests.swift; sourceTree = "<group>"; };
 		7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatButton.swift; sourceTree = "<group>"; };
 		7F92B6F21C19ADFF00A5273A /* RepeatButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatButtonTests.swift; sourceTree = "<group>"; };
+		7F92B6F41C1A09F100A5273A /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		7F92B6F61C1A0F7E00A5273A /* UserDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataTests.swift; sourceTree = "<group>"; };
 		7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertActionExtensions.swift; sourceTree = "<group>"; };
 		7FA60C951C110B9000D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ScrobbleView.xib; sourceTree = "<group>"; };
 		7FA60C981C110B9400D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InfoView.xib; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 				7F279C731C0220720000C4B0 /* MusicPlayerTests.swift */,
 				7F409B991C04ED4500DFD6C4 /* TrackManagerTests.swift */,
 				7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */,
+				7F92B6F61C1A0F7E00A5273A /* UserDataTests.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -281,6 +286,7 @@
 				7FF5B31C1BE654220044FCE5 /* MusicPlayer.swift */,
 				7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */,
 				7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */,
+				7F92B6F41C1A09F100A5273A /* UserData.swift */,
 				7F3A5F761C119AFE0065F16F /* Analytics.swift */,
 			);
 			name = Objects;
@@ -759,6 +765,7 @@
 				7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */,
 				7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */,
 				7F8187B81BF2011C00BAF398 /* UIViewExtensions.swift in Sources */,
+				7F92B6F51C1A09F100A5273A /* UserData.swift in Sources */,
 				7F4090551BF7E44900F449FD /* PlayButton.swift in Sources */,
 				7F8187B51BF1FB9F00BAF398 /* ScrobbleView.swift in Sources */,
 				7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */,
@@ -777,6 +784,7 @@
 				7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */,
 				7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */,
 				7F4090531BF65B5E00F449FD /* ControlsViewTests.swift in Sources */,
+				7F92B6F71C1A0F7E00A5273A /* UserDataTests.swift in Sources */,
 				7FF5B3001BE64E220044FCE5 /* TrackInfoTests.swift in Sources */,
 				7F4090661BFA091C00F449FD /* PlayerViewControllerTests.swift in Sources */,
 				7F409B9A1C04ED4500DFD6C4 /* TrackManagerTests.swift in Sources */,

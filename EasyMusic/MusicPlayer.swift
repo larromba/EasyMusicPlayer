@@ -24,7 +24,7 @@ enum MusicPlayerError {
     case AVError
 }
 
-enum MusicPlayerRepeatMode {
+enum MusicPlayerRepeatMode: Int {
     case None
     case One
     case All
@@ -246,7 +246,10 @@ class MusicPlayer: NSObject {
     func previous() {
         stop()
         
-        _ = trackManager.cuePrevious()
+        let result = trackManager.cuePrevious()
+        if repeatMode == MusicPlayerRepeatMode.All && result == false {
+            trackManager.cueEnd()
+        }
        
         play()
     }
@@ -254,10 +257,13 @@ class MusicPlayer: NSObject {
     func next() {
         stop()
         
-        if trackManager.cueNext() == false {
+        let result = trackManager.cueNext()
+        if repeatMode == MusicPlayerRepeatMode.All && result == false {
+            trackManager.cueStart()
+        } else if result == false {
             return
         }
-        
+
         play()
     }
 
@@ -278,7 +284,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
         case .None:
             let result = trackManager.cueNext()
             if result == false {
-                trackManager.cueRestart()
+                trackManager.cueStart()
                 delegate?.changedState(self, state: MusicPlayerState.Finished)
                 return
             }
@@ -290,7 +296,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
         case .All:
             let result = trackManager.cueNext()
             if result == false {
-                trackManager.cueRestart()
+                trackManager.cueStart()
             }
             play()
             break
