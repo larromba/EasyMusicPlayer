@@ -542,24 +542,151 @@ class MusicPlayerTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
-    func testAudioPlayerDidFinishPlayingSuccess() {
+    func testAudioPlayerDidFinishPlayingAtStartRepeatModeNone() {
         /**
         expectations
+        - track number increments
         - delegate call
         */
         musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
         
         // mocks
+        musicPlayer!.repeatMode = MusicPlayerRepeatMode.None
+
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
         musicPlayer!._injectPlayer(mockAudioPlayer)
         
+        let expectedTrackNumber = musicPlayer!.currentTrackNumber + 1
+        expectedState = MusicPlayerState.Playing
+        
+        // runnable
+        mockAudioPlayer.delegate?.audioPlayerDidFinishPlaying!(mockAudioPlayer, successfully: true)
+        
+        // tests
+        XCTAssertEqual(musicPlayer!.currentTrackNumber, expectedTrackNumber)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAudioPlayerDidFinishPlayingAtEndRepeatModeNone() {
+        /**
+        expectations
+        - track number resets
+        - delegate call
+        */
+        musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
+        
+        // mocks
+        musicPlayer!.repeatMode = MusicPlayerRepeatMode.None
+
+        let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = musicPlayer
+        musicPlayer!._injectPlayer(mockAudioPlayer)
+        
+        let mockTrackManager = TrackManager()
+        let mockTracks = mockTrackManager.createPlaylist()
+        mockTrackManager._injectTracks(mockTracks)
+        mockTrackManager._injectTrackIndex(mockTracks.count - 1)
+        musicPlayer!._injectTrackManager(mockTrackManager)
+        
+        let expectedTrackNumber = 0
         expectedState = MusicPlayerState.Finished
         
         // runnable
         mockAudioPlayer.delegate?.audioPlayerDidFinishPlaying!(mockAudioPlayer, successfully: true)
         
         // tests
+        XCTAssertEqual(musicPlayer!.currentTrackNumber, expectedTrackNumber)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAudioPlayerDidFinishPlayingAtEndRepeatModeOne() {
+        /**
+        expectations
+        - track number stays the same
+        - delegate call
+        */
+        musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
+        
+        // mocks
+        musicPlayer!.repeatMode = MusicPlayerRepeatMode.One
+
+        let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = musicPlayer
+        musicPlayer!._injectPlayer(mockAudioPlayer)
+        
+        let mockTrackManager = TrackManager()
+        let mockTracks = mockTrackManager.createPlaylist()
+        mockTrackManager._injectTracks(mockTracks)
+        mockTrackManager._injectTrackIndex(mockTracks.count - 1)
+        musicPlayer!._injectTrackManager(mockTrackManager)
+        
+        let expectedTrackNumber = musicPlayer!.currentTrackNumber
+        expectedState = MusicPlayerState.Playing
+        
+        // runnable
+        mockAudioPlayer.delegate?.audioPlayerDidFinishPlaying!(mockAudioPlayer, successfully: true)
+        
+        // tests
+        XCTAssertEqual(musicPlayer!.currentTrackNumber, expectedTrackNumber)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAudioPlayerDidFinishPlayingAtStartRepeatModeAll() {
+        /**
+        expectations
+        - track number increments
+        - delegate call
+        */
+        musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
+        
+        // mocks
+        musicPlayer!.repeatMode = MusicPlayerRepeatMode.All
+
+        let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = musicPlayer
+        musicPlayer!._injectPlayer(mockAudioPlayer)
+        
+        let expectedTrackNumber = musicPlayer!.currentTrackNumber + 1
+        expectedState = MusicPlayerState.Playing
+        
+        // runnable
+        mockAudioPlayer.delegate?.audioPlayerDidFinishPlaying!(mockAudioPlayer, successfully: true)
+        
+        // tests
+        XCTAssertEqual(musicPlayer!.currentTrackNumber, expectedTrackNumber)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAudioPlayerDidFinishPlayingAtEndRepeatModeAll() {
+        /**
+        expectations
+        - track number resets
+        - delegate call
+        */
+        musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
+        
+        // mocks
+        musicPlayer!.repeatMode = MusicPlayerRepeatMode.All
+
+        let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = musicPlayer
+        musicPlayer!._injectPlayer(mockAudioPlayer)
+        
+        let mockTrackManager = TrackManager()
+        let mockTracks = mockTrackManager.createPlaylist()
+        mockTrackManager._injectTracks(mockTracks)
+        mockTrackManager._injectTrackIndex(mockTracks.count - 1)
+        musicPlayer!._injectTrackManager(mockTrackManager)
+        
+        let expectedTrackNumber = 0
+        expectedState = MusicPlayerState.Playing
+        
+        // runnable
+        mockAudioPlayer.delegate?.audioPlayerDidFinishPlaying!(mockAudioPlayer, successfully: true)
+        
+        // tests
+        XCTAssertEqual(musicPlayer!.currentTrackNumber, expectedTrackNumber)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     

@@ -29,6 +29,10 @@
 		7F8187BB1BF208F500BAF398 /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */; };
 		7F8187BD1BF20FDC00BAF398 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BC1BF20FDC00BAF398 /* InfoView.swift */; };
 		7F8187BF1BF2252A00BAF398 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BE1BF2252A00BAF398 /* ControlsView.swift */; };
+		7F92B6ED1C1994D600A5273A /* PlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6EC1C1994D600A5273A /* PlayerButton.swift */; };
+		7F92B6EF1C19979200A5273A /* PlayerButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */; };
+		7F92B6F11C19AD0A00A5273A /* RepeatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */; };
+		7F92B6F31C19ADFF00A5273A /* RepeatButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F21C19ADFF00A5273A /* RepeatButtonTests.swift */; };
 		7FA25FC21C088A0B009FB59D /* UIAlertActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */; };
 		7FA60C941C110B9000D7D2DC /* ScrobbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA60C961C110B9000D7D2DC /* ScrobbleView.xib */; };
 		7FA60C971C110B9400D7D2DC /* InfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA60C991C110B9400D7D2DC /* InfoView.xib */; };
@@ -116,6 +120,10 @@
 		7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		7F8187BC1BF20FDC00BAF398 /* InfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InfoView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7F8187BE1BF2252A00BAF398 /* ControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
+		7F92B6EC1C1994D600A5273A /* PlayerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerButton.swift; sourceTree = "<group>"; };
+		7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerButtonTests.swift; sourceTree = "<group>"; };
+		7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatButton.swift; sourceTree = "<group>"; };
+		7F92B6F21C19ADFF00A5273A /* RepeatButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatButtonTests.swift; sourceTree = "<group>"; };
 		7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertActionExtensions.swift; sourceTree = "<group>"; };
 		7FA60C951C110B9000D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ScrobbleView.xib; sourceTree = "<group>"; };
 		7FA60C981C110B9400D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InfoView.xib; sourceTree = "<group>"; };
@@ -253,6 +261,8 @@
 				7F8187BC1BF20FDC00BAF398 /* InfoView.swift */,
 				7F8187BE1BF2252A00BAF398 /* ControlsView.swift */,
 				7F4090541BF7E44900F449FD /* PlayButton.swift */,
+				7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */,
+				7F92B6EC1C1994D600A5273A /* PlayerButton.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -366,7 +376,9 @@
 				7FCFE93C1BF4BDDA00981545 /* ScrobbleViewTests.swift */,
 				7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */,
 				7F4090521BF65B5E00F449FD /* ControlsViewTests.swift */,
+				7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */,
 				7F40905E1BF92F7A00F449FD /* PlayButtonTests.swift */,
+				7F92B6F21C19ADFF00A5273A /* RepeatButtonTests.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -740,7 +752,9 @@
 				7F3A5F771C119AFE0065F16F /* Analytics.swift in Sources */,
 				7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */,
 				7FCFE9181BF4A7C300981545 /* UIImageExtensions.swift in Sources */,
+				7F92B6F11C19AD0A00A5273A /* RepeatButton.swift in Sources */,
 				7F4090571BF91BD000F449FD /* Log.swift in Sources */,
+				7F92B6ED1C1994D600A5273A /* PlayerButton.swift in Sources */,
 				7F8187BF1BF2252A00BAF398 /* ControlsView.swift in Sources */,
 				7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */,
 				7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */,
@@ -759,6 +773,7 @@
 			files = (
 				7FE56F731C18702A00DAF1EE /* AppDelegateTests.swift in Sources */,
 				7F279C741C0220720000C4B0 /* MusicPlayerTests.swift in Sources */,
+				7F92B6EF1C19979200A5273A /* PlayerButtonTests.swift in Sources */,
 				7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */,
 				7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */,
 				7F4090531BF65B5E00F449FD /* ControlsViewTests.swift in Sources */,
@@ -768,6 +783,7 @@
 				7F40905F1BF92F7A00F449FD /* PlayButtonTests.swift in Sources */,
 				7F409B9E1C0506F300DFD6C4 /* XCTestExtension.swift in Sources */,
 				7FCFE93D1BF4BDDA00981545 /* ScrobbleViewTests.swift in Sources */,
+				7F92B6F31C19ADFF00A5273A /* RepeatButtonTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

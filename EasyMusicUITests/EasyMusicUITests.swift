@@ -9,7 +9,6 @@
 import XCTest
 
 class EasyMusicUITests: XCTestCase {
-        
     override func setUp() {
         super.setUp()
         

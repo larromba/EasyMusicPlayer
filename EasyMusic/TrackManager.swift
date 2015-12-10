@@ -96,6 +96,10 @@ class TrackManager {
         trackIndex = newIndex
         return true
     }
+    
+    func cueRestart() {
+        trackIndex = 0
+    }
 }
 
 // MARK: - Testing

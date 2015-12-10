@@ -24,6 +24,12 @@ enum MusicPlayerError {
     case AVError
 }
 
+enum MusicPlayerRepeatMode {
+    case None
+    case One
+    case All
+}
+
 protocol MusicPlayerDelegate {
     func threwError(sender: MusicPlayer, error: MusicPlayerError)
     func changedState(sender: MusicPlayer, state: MusicPlayerState)
@@ -35,8 +41,9 @@ class MusicPlayer: NSObject {
     private var playbackCheckTimer: NSTimer?
     private var playingInBackground: Bool = false
     private var trackManager: TrackManager = TrackManager()
-    
+
     var delegate: MusicPlayerDelegate?
+    var repeatMode: MusicPlayerRepeatMode = MusicPlayerRepeatMode.None
     var isPlaying: Bool {
         if let player = player {
             return player.playing
@@ -71,7 +78,7 @@ class MusicPlayer: NSObject {
         super.init()
         
         self.delegate = delegate
-        
+                
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
         commandCenter.pauseCommand.addTarget(self, action: safeSelector("pause"))
         commandCenter.playCommand.addTarget(self, action: safeSelector("play"))
@@ -262,10 +269,31 @@ class MusicPlayer: NSObject {
 // MARK: - AVAudioPlayerDelegate
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
-        if flag == true {
-            delegate?.changedState(self, state: MusicPlayerState.Finished)
-        } else {
+        if flag == false {
             threwError(MusicPlayerError.AVError)
+            return
+        }
+        
+        switch repeatMode {
+        case .None:
+            let result = trackManager.cueNext()
+            if result == false {
+                trackManager.cueRestart()
+                delegate?.changedState(self, state: MusicPlayerState.Finished)
+                return
+            }
+            play()
+            break
+        case .One:
+            play()
+            break
+        case .All:
+            let result = trackManager.cueNext()
+            if result == false {
+                trackManager.cueRestart()
+            }
+            play()
+            break
         }
     }
     

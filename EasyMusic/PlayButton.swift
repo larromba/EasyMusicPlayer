@@ -14,10 +14,12 @@ enum PlayButtonState {
 }
 
 @IBDesignable
-class PlayButton: UIButton {
+class PlayButton: PlayerButton {
     private(set) var buttonState: PlayButtonState!
 
     override func awakeFromNib() {
+        super.awakeFromNib()
+        
         setButtonState(PlayButtonState.Play)
     }
     

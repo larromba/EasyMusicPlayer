@@ -10,6 +10,7 @@
                 <outlet property="nextButton" destination="Dgv-XX-Xc3" id="g5X-fZ-wnk"/>
                 <outlet property="playButton" destination="V7J-PO-NB5" id="nlX-al-Dyz"/>
                 <outlet property="prevButton" destination="ghJ-k2-r6d" id="3ps-X7-d0T"/>
+                <outlet property="repeatButton" destination="GnC-ST-nB8" id="eJ3-qB-xtX"/>
                 <outlet property="shareButton" destination="F6a-0C-6mh" id="xkm-3b-I8E"/>
                 <outlet property="shuffleButton" destination="Je9-vB-a58" id="mTZ-yM-1Ac"/>
                 <outlet property="stopButton" destination="p9V-09-KvV" id="4gQ-De-NOe"/>
@@ -23,7 +24,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tbk-dt-aDz">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9V-09-KvV">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9V-09-KvV" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="223" y="24" width="153" height="151.5"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="p9V-09-KvV" secondAttribute="height" multiplier="83:82" id="aiD-H2-IIQ"/>
@@ -53,7 +54,7 @@
                                 <action selector="playButtonPressed:" destination="-1" eventType="touchUpInside" id="BJp-qh-PnQ"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghJ-k2-r6d">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghJ-k2-r6d" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="65" y="29" width="142" height="142"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="ghJ-k2-r6d" secondAttribute="height" multiplier="1:1" id="FvC-Zt-NOh"/>
@@ -63,7 +64,7 @@
                                 <action selector="prevButtonPressed:" destination="-1" eventType="touchUpInside" id="XbI-2G-Ku4"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dgv-XX-Xc3">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dgv-XX-Xc3" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="392" y="29" width="143" height="143"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Dgv-XX-Xc3" secondAttribute="height" multiplier="1:1" id="I1Z-v4-DdO"/>
@@ -94,7 +95,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TZB-Lb-T4F">
                     <rect key="frame" x="0.0" y="400" width="600" height="200"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Je9-vB-a58">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Je9-vB-a58" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="223" y="24" width="153" height="151.5"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Je9-vB-a58" secondAttribute="height" multiplier="83:82" id="1HG-dw-m3d"/>
@@ -104,26 +105,35 @@
                                 <action selector="shuffleButtonPressed:" destination="-1" eventType="touchUpInside" id="ixg-qi-jz2"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6a-0C-6mh">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6a-0C-6mh" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="489" y="129" width="46" height="46"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="2Wj-aj-i6Z"/>
-                                <constraint firstAttribute="width" secondItem="F6a-0C-6mh" secondAttribute="height" multiplier="1:1" id="ofy-Py-zgX"/>
                                 <constraint firstAttribute="height" constant="46" id="ydm-p8-Q8F"/>
                             </constraints>
                             <state key="normal" backgroundImage="ShareButton"/>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="ofy-Py-zgX"/>
-                                </mask>
-                            </variation>
                             <connections>
                                 <action selector="shareButtonPressed:" destination="-1" eventType="touchUpInside" id="9Oc-7T-JKx"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GnC-ST-nB8" customClass="RepeatButton" customModule="EasyMusic" customModuleProvider="target">
+                            <rect key="frame" x="65" y="129" width="46" height="47"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="46" id="bie-lQ-9jC"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="repeatButtonPressed:" destination="-1" eventType="touchUpInside" id="8is-x7-Bk2"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="1" green="0.62365473644003311" blue="0.78917564547456187" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstItem="GnC-ST-nB8" firstAttribute="bottom" secondItem="Je9-vB-a58" secondAttribute="bottom" id="3Pv-up-FxL"/>
+                        <constraint firstItem="GnC-ST-nB8" firstAttribute="top" secondItem="F6a-0C-6mh" secondAttribute="top" id="Jl9-LW-bhh"/>
                         <constraint firstAttribute="bottom" secondItem="Je9-vB-a58" secondAttribute="bottom" constant="24" id="Q5N-eS-gkB"/>
                         <constraint firstAttribute="trailing" secondItem="F6a-0C-6mh" secondAttribute="trailing" constant="8" id="Td8-yA-Lkh"/>
                         <constraint firstItem="Je9-vB-a58" firstAttribute="centerX" secondItem="TZB-Lb-T4F" secondAttribute="centerX" id="XDd-u8-THb"/>
@@ -141,6 +151,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="GnC-ST-nB8" firstAttribute="leading" secondItem="ghJ-k2-r6d" secondAttribute="leading" id="2QQ-ML-2vT"/>
                 <constraint firstAttribute="trailing" secondItem="REt-Ws-5mL" secondAttribute="trailing" id="9lk-zd-Oa1"/>
                 <constraint firstItem="TZB-Lb-T4F" firstAttribute="leading" secondItem="l24-ae-JZW" secondAttribute="leading" id="Izi-vw-r7p"/>
                 <constraint firstAttribute="trailing" secondItem="Tbk-dt-aDz" secondAttribute="trailing" id="Oze-qa-jlx"/>
@@ -159,10 +170,10 @@
         </view>
     </objects>
     <resources>
-        <image name="NextButton" width="171" height="171"/>
-        <image name="PreviousButton" width="171" height="171"/>
-        <image name="ShareButton" width="171" height="171"/>
-        <image name="ShuffleButton" width="171" height="171"/>
+        <image name="NextButton" width="128" height="128"/>
+        <image name="PreviousButton" width="128" height="128"/>
+        <image name="ShareButton" width="128" height="128"/>
+        <image name="ShuffleButton" width="128" height="128"/>
         <image name="StopButton" width="171" height="171"/>
     </resources>
 </document>

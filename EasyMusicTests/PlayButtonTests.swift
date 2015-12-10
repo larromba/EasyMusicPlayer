@@ -48,13 +48,12 @@ class PlayButtonTests: XCTestCase {
          */
         
         // mocks
-        let mockButton = PlayButton()
-        mockButton.setBackgroundImage(nil, forState: UIControlState.Normal)
+        playButton!.setBackgroundImage(nil, forState: UIControlState.Normal)
         
         // runnable
-        mockButton.setButtonState(PlayButtonState.Pause)
+        playButton!.setButtonState(PlayButtonState.Pause)
       
         // tests
-        XCTAssertNotNil(mockButton.backgroundImageForState(UIControlState.Normal))
+        XCTAssertNotNil(playButton!.backgroundImageForState(UIControlState.Normal))
     }
 }

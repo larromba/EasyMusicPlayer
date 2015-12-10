@@ -65,6 +65,7 @@ class ControlsViewTests: XCTestCase {
         XCTAssertEqual(controlsView!.nextButton.enabled, enabled)
         XCTAssertEqual(controlsView!.shuffleButton.enabled, enabled)
         XCTAssertEqual(controlsView!.shareButton.enabled, enabled)
+        XCTAssertEqual(controlsView!.repeatButton.enabled, enabled)
     }
     
     func testPlayingState() {
@@ -320,6 +321,22 @@ class ControlsViewTests: XCTestCase {
         XCTAssertEqual(controlsView!.shareButton.enabled, enabled)
     }
     
+    func testEnableRepeat() {
+        /**
+         expectations:
+         - repeat button is enabled
+         */
+         
+         // mocks
+        let enabled = true
+        
+        // runnable
+        controlsView!.enableRepeat(enabled)
+        
+        // tests
+        XCTAssertEqual(controlsView!.repeatButton.enabled, enabled)
+    }
+    
     func testControlsViewDelegatePlayPressed() {
         /**
          expectations
@@ -404,6 +421,23 @@ class ControlsViewTests: XCTestCase {
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
+    
+    func testControlsViewDelegateRepeatPressed() {
+        /**
+        expectations
+        - delegate method called on button press
+        */
+        controlsExpectation = expectationWithDescription("ControlsViewDelegate.repeatPressed(_)")
+        
+        // mocks
+        let mockButton = UIButton()
+        
+        // runnable
+        controlsView!.repeatButtonPressed(mockButton)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
 }
 
 // MARK: - ControlsViewDelegate
@@ -439,6 +473,12 @@ extension ControlsViewTests: ControlsViewDelegate {
     }
     
     func sharePressed(sender: ControlsView) {
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
+    }
+    
+    func repeatPressed(sender: ControlsView) {
         if let controlsExpectation = controlsExpectation {
             controlsExpectation.fulfill()
         }

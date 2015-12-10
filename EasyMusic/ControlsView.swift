@@ -22,6 +22,7 @@ protocol ControlsViewDelegate {
     func nextPressed(sender: ControlsView)
     func shufflePressed(sender: ControlsView)
     func sharePressed(sender: ControlsView)
+    func repeatPressed(sender: ControlsView)
 }
 
 @IBDesignable
@@ -32,6 +33,7 @@ class ControlsView: UIView {
     @IBOutlet private(set) weak var nextButton: UIButton!
     @IBOutlet private(set) weak var shuffleButton: UIButton!
     @IBOutlet private(set) weak var shareButton: UIButton!
+    @IBOutlet private(set) weak var repeatButton: RepeatButton!
     
     var delegate: ControlsViewDelegate?
     
@@ -80,6 +82,10 @@ class ControlsView: UIView {
         delegate?.sharePressed(self)
     }
     
+    @IBAction func repeatButtonPressed(sender: UIButton) {
+        delegate?.repeatPressed(self)
+    }
+    
     // MARK: - internal
     
     func setControlsPlaying() {
@@ -118,6 +124,7 @@ class ControlsView: UIView {
         enableStop(enabled)
         enableShuffle(enabled)
         enableShare(enabled)
+        enableRepeat(enabled)
     }
     
     func enablePrevious(enable: Bool) {
@@ -150,5 +157,9 @@ class ControlsView: UIView {
     
     func enableShuffle(enable: Bool) {
         shuffleButton.enabled = enable
+    }
+    
+    func enableRepeat(enable: Bool) {
+        repeatButton.enabled = enable
     }
 }

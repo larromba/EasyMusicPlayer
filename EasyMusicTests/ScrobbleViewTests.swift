@@ -86,7 +86,6 @@ class ScrobbleViewTests: XCTestCase {
         let mockTouch = MockTouch()
         let mockEvent = UIEvent()
         mockPoint = CGPointMake(50, 0)
-        scrobbleView!.enabled = true
         
         // runnable
         scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
@@ -106,7 +105,6 @@ class ScrobbleViewTests: XCTestCase {
         let mockTouch = MockTouch()
         let mockEvent = UIEvent()
         mockPoint = CGPointMake(30, 0)
-        scrobbleView!.enabled = true
 
         // runnable
         scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
@@ -125,7 +123,6 @@ class ScrobbleViewTests: XCTestCase {
         let mockTouch = MockTouch()
         let mockEvent = UIEvent()
         mockPoint = CGPointMake(90, 0)
-        scrobbleView!.enabled = true
         
         // runnable
         scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
@@ -134,23 +131,17 @@ class ScrobbleViewTests: XCTestCase {
         XCTAssertEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 90.0)
     }
     
-    func testTouchesMovedDisabled() {
+    func testUserInteractionDisabledBarAlpha() {
         /**
          expectations:
-         - touches don't execute
+         - bar's alpha value changes when disabled
          */
-         
-        // mocks
-        let mockTouch = MockTouch()
-        let mockEvent = UIEvent()
-        mockPoint = CGPointMake(90, 0)
-        scrobbleView!.enabled = false
         
         // runnable
-        scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
+        scrobbleView!.userInteractionEnabled = false
         
         // tests
-        XCTAssertNotEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 90.0)
+        XCTAssertNotEqual(scrobbleView!.barView, 1.0)
     }
     
     func testTouchesEnded() {
@@ -163,7 +154,6 @@ class ScrobbleViewTests: XCTestCase {
         // mocks
         let mockTouch = UITouch()
         let mockEvent = UIEvent()
-        scrobbleView!.enabled = true
         
         // runnable
         scrobbleView!.touchesEnded(Set(arrayLiteral: mockTouch), withEvent: mockEvent)

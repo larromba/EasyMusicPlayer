@@ -25,6 +25,9 @@ struct Constant {
         static let Placeholder = "ImagePlaceholder"
         static let PlayButton = "PlayButton"
         static let PauseButton = "PauseButton"
+        static let RepeatButton = "RepeatButton"
+        static let RepeatOneButton = "RepeatOneButton"
+        static let RepeatAllButton = "RepeatAllButton"
     }
     
     struct String {
@@ -32,7 +35,7 @@ struct Constant {
     }
     
     struct Path {
-        static let DummyAudio = "/Users/larromba/Documents/Business/Pink Chicken/personal/EasyMusic/TestTunes/Bounce.mp3"
+        static let DummyAudio = "/Users/larromba/Documents/Business/Pink Chicken/personal/EasyMusic/[TestTunes]/Bounce.mp3"
     }
     
     struct Storyboard {

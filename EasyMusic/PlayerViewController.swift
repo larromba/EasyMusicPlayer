@@ -71,19 +71,19 @@ extension PlayerViewController: MusicPlayerDelegate {
         case .Playing:
             controlsView.setControlsPlaying()
             infoView.setInfoFromTrack(sender.currentTrack)
-            scrobbleView.enabled = true
+            scrobbleView.userInteractionEnabled = true
             break
         case .Paused:
             controlsView.setControlsPaused()
-            scrobbleView.enabled = false
+            scrobbleView.userInteractionEnabled = false
             break
         case .Stopped:
             controlsView.setControlsStopped()
-            scrobbleView.enabled = false
+            scrobbleView.userInteractionEnabled = false
             break
         case .Finished:
             controlsView.setControlsStopped()
-            scrobbleView.enabled = false
+            scrobbleView.userInteractionEnabled = false
             
             Analytics.shared.sendAlertEvent("finished_playlist",
                 classId: self.className())
@@ -255,6 +255,32 @@ extension PlayerViewController: ControlsViewDelegate {
             Analytics.shared.sendShareEvent(event,
                 classId: self.className())
         })
+    }
+    
+    func repeatPressed(sender: ControlsView) {
+        let buttonState: RepeatButtonState = sender.repeatButton.buttonState
+        var newButtonState: RepeatButtonState!
+        var event: String!
+        
+        switch buttonState {
+        case .None:
+            newButtonState = RepeatButtonState.One
+            event = "repeat-one"
+            musicPlayer.repeatMode = MusicPlayerRepeatMode.One
+        case .One:
+            newButtonState = RepeatButtonState.All
+            event = "repeat-all"
+            musicPlayer.repeatMode = MusicPlayerRepeatMode.All
+        case .All:
+            newButtonState = RepeatButtonState.None
+            event = "repeat-none"
+            musicPlayer.repeatMode = MusicPlayerRepeatMode.None
+        }
+        
+        sender.repeatButton.setButtonState(newButtonState)
+        
+        Analytics.shared.sendButtonPressEvent(event,
+            classId: self.className())
     }
 }
 

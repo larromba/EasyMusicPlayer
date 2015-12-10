@@ -19,7 +19,22 @@ class ScrobbleView: UIView {
     @IBOutlet private(set) weak var barView: UIView!
     
     var delegate: ScrobbleViewDelegate?
-    var enabled: Bool = false
+    
+    private var _enabled: Bool = false
+    override var userInteractionEnabled: Bool {
+        set {
+            super.userInteractionEnabled = newValue
+            
+            if newValue == true {
+                barView.alpha = 1.0
+            } else {
+                barView.alpha = 0.5
+            }
+        }
+        get {
+            return super.userInteractionEnabled
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,10 +51,6 @@ class ScrobbleView: UIView {
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        guard enabled == true else {
-            return
-        }
-
         if let touch = touches.first {
             let point = touch.locationInView(self)
             moveScrobblerToPoint(point.x)
@@ -51,10 +62,6 @@ class ScrobbleView: UIView {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        guard enabled == true else {
-            return
-        }
-        
         if let touch = touches.first {
             let point = touch.locationInView(self)
             let w = CGRectGetWidth(bounds)
