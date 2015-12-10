@@ -29,13 +29,13 @@ class PlayerViewController: UIViewController {
             
             switch repeatMode {
             case .None:
-                controlsView.repeatButton.setButtonState(RepeatButtonState.None)
+                controlsView.repeatButton.setButtonState(RepeatButton.State.None)
                 break
             case .One:
-                controlsView.repeatButton.setButtonState(RepeatButtonState.One)
+                controlsView.repeatButton.setButtonState(RepeatButton.State.One)
                 break
             case .All:
-                controlsView.repeatButton.setButtonState(RepeatButtonState.All)
+                controlsView.repeatButton.setButtonState(RepeatButton.State.All)
                 break
             }
         }
@@ -75,12 +75,12 @@ class PlayerViewController: UIViewController {
     
     private func checkTracksAvailable() {
         if musicPlayer.numOfTracks == 0 {
-            threwError(musicPlayer, error: MusicPlayerError.NoMusic)
+            threwError(musicPlayer, error: MusicPlayer.Error.NoMusic)
         }
     }
     
     private func updateSeekingControls() {
-        if musicPlayer.repeatMode == MusicPlayerRepeatMode.All {
+        if musicPlayer.repeatMode == MusicPlayer.RepeatMode.All {
             controlsView.enablePrevious(true)
             controlsView.enableNext(true)
             return
@@ -98,7 +98,7 @@ class PlayerViewController: UIViewController {
 
 // MARK: - MusicPlayerDelegate
 extension PlayerViewController: MusicPlayerDelegate {
-    func changedState(sender: MusicPlayer, state: MusicPlayerState) {
+    func changedState(sender: MusicPlayer, state: MusicPlayer.State) {
         switch state {
         case .Playing:
             controlsView.setControlsPlaying()
@@ -144,7 +144,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         infoView.setTime(playbackTime, duration: track.duration)
     }
     
-    func threwError(sender: MusicPlayer, error: MusicPlayerError) {
+    func threwError(sender: MusicPlayer, error: MusicPlayer.Error) {
         var alert: UIAlertController!
         
         switch error {
@@ -252,7 +252,7 @@ extension PlayerViewController: ControlsViewDelegate {
         Analytics.shared.sendButtonPressEvent("share",
             classId: self.className())
         
-        shareManager.shareTrack(musicPlayer.currentTrack, presenter: self, completion: { (result: ShareManagerResult, service: String?) in
+        shareManager.shareTrack(musicPlayer.currentTrack, presenter: self, completion: { (result: ShareManager.Result, service: String?) in
             var event: String!
             switch result {
             case .Success:
@@ -284,23 +284,23 @@ extension PlayerViewController: ControlsViewDelegate {
     }
     
     func repeatPressed(sender: ControlsView) {
-        let buttonState: RepeatButtonState = sender.repeatButton.buttonState
-        var newButtonState: RepeatButtonState!
+        let buttonState: RepeatButton.State = sender.repeatButton.buttonState
+        var newButtonState: RepeatButton.State!
         var event: String!
         
         switch buttonState {
         case .None:
-            newButtonState = RepeatButtonState.One
+            newButtonState = RepeatButton.State.One
             event = "repeat-one"
-            musicPlayer.repeatMode = MusicPlayerRepeatMode.One
+            musicPlayer.repeatMode = MusicPlayer.RepeatMode.One
         case .One:
-            newButtonState = RepeatButtonState.All
+            newButtonState = RepeatButton.State.All
             event = "repeat-all"
-            musicPlayer.repeatMode = MusicPlayerRepeatMode.All
+            musicPlayer.repeatMode = MusicPlayer.RepeatMode.All
         case .All:
-            newButtonState = RepeatButtonState.None
+            newButtonState = RepeatButton.State.None
             event = "repeat-none"
-            musicPlayer.repeatMode = MusicPlayerRepeatMode.None
+            musicPlayer.repeatMode = MusicPlayer.RepeatMode.None
         }
         
         // update ui

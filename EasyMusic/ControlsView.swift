@@ -9,12 +9,6 @@
 import UIKit
 import MediaPlayer
 
-enum ControlsViewState {
-    case Playing
-    case Paused
-    case Stopped
-}
-
 protocol ControlsViewDelegate {
     func playPressed(sender: ControlsView)
     func stopPressed(sender: ControlsView)
@@ -89,12 +83,12 @@ class ControlsView: UIView {
     // MARK: - internal
     
     func setControlsPlaying() {
-        playButton.setButtonState(PlayButtonState.Pause)
+        playButton.setButtonState(PlayButton.State.Pause)
         setControlsEnabled(true)
     }
     
     func setControlsPaused() {
-        playButton.setButtonState(PlayButtonState.Play)
+        playButton.setButtonState(PlayButton.State.Play)
         
         enablePlay(true)
         enableShuffle(true)
@@ -106,7 +100,7 @@ class ControlsView: UIView {
     }
     
     func setControlsStopped() {
-        playButton.setButtonState(PlayButtonState.Play)
+        playButton.setButtonState(PlayButton.State.Play)
         
         enablePlay(true)
         enableShuffle(true)

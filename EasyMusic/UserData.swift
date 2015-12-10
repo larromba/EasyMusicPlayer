@@ -9,10 +9,10 @@
 import Foundation
 
 class UserData {
-    class var repeatMode: MusicPlayerRepeatMode? {
+    class var repeatMode: MusicPlayer.RepeatMode? {
         get {
             if let repeatModeData = NSUserDefaults.standardUserDefaults().objectForKey("repeatMode") as? NSNumber {
-                return MusicPlayerRepeatMode(rawValue: repeatModeData.integerValue)
+                return MusicPlayer.RepeatMode(rawValue: repeatModeData.integerValue)
             }
             return nil
         }

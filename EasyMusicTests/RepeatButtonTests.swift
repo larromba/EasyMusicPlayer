@@ -32,7 +32,7 @@ class RepeatButtonTests: XCTestCase {
          */
          
          // mocks
-        let expected = RepeatButtonState.All
+        let expected = RepeatButton.State.All
         
         // runnable
         repeatButton!.setButtonState(expected)
@@ -51,7 +51,7 @@ class RepeatButtonTests: XCTestCase {
         repeatButton!.setBackgroundImage(nil, forState: UIControlState.Normal)
         
         // runnable
-        repeatButton!.setButtonState(RepeatButtonState.All)
+        repeatButton!.setButtonState(RepeatButton.State.All)
         
         // tests
         XCTAssertNotNil(repeatButton!.backgroundImageForState(UIControlState.Normal))

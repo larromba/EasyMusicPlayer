@@ -8,28 +8,28 @@
 
 import UIKit
 
-enum PlayButtonState {
-    case Play
-    case Pause
-}
-
 @IBDesignable
 class PlayButton: PlayerButton {
-    private(set) var buttonState: PlayButtonState!
+    private(set) var buttonState: State!
 
+    enum State {
+        case Play
+        case Pause
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        setButtonState(PlayButtonState.Play)
+        setButtonState(State.Play)
     }
     
     override func prepareForInterfaceBuilder() {
-        setButtonState(PlayButtonState.Play)
+        setButtonState(State.Play)
     }
     
     // MARK: - internal
     
-    func setButtonState(state: PlayButtonState) {
+    func setButtonState(state: State) {
         buttonState = state
         switch state {
         case .Play:

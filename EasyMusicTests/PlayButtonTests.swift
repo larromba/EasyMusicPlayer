@@ -32,7 +32,7 @@ class PlayButtonTests: XCTestCase {
          */
         
         // mocks
-        let expected = PlayButtonState.Pause
+        let expected = PlayButton.State.Pause
         
         // runnable
         playButton!.setButtonState(expected)
@@ -51,7 +51,7 @@ class PlayButtonTests: XCTestCase {
         playButton!.setBackgroundImage(nil, forState: UIControlState.Normal)
         
         // runnable
-        playButton!.setButtonState(PlayButtonState.Pause)
+        playButton!.setButtonState(PlayButton.State.Pause)
       
         // tests
         XCTAssertNotNil(playButton!.backgroundImageForState(UIControlState.Normal))

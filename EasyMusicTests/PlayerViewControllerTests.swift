@@ -158,7 +158,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!.scrobbleView.userInteractionEnabled = false
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
 
         // tests
         XCTAssertTrue(playerViewController!.scrobbleView.userInteractionEnabled)
@@ -221,7 +221,7 @@ class PlayerViewControllerTests: XCTestCase {
         let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
 
         // runnable
-        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayerError.NoMusic)
+        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.Error.NoMusic)
         
         // tests
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
@@ -277,7 +277,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectAlertController(MockAlertController.self)
         
         // runnable
-        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayerError.NoMusic)
+        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.Error.NoMusic)
         
         // tests
         let mockAlertController = playerViewController!.presentedViewController as! MockAlertController
@@ -324,7 +324,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectAlertController(MockAlertController.self)
         
         // runnable
-        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayerError.Decode)
+        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.Error.Decode)
         
         // tests
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
@@ -400,7 +400,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockControlsView.delegate = playerViewController
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Paused)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Paused)
         
         // tests
         XCTAssertFalse(playerViewController!.scrobbleView.userInteractionEnabled)
@@ -452,7 +452,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
         XCTAssertFalse(playerViewController!.controlsView.nextButton.enabled)
@@ -470,11 +470,11 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
-        mockMusicPlayer.repeatMode = MusicPlayerRepeatMode.All
+        mockMusicPlayer.repeatMode = MusicPlayer.RepeatMode.All
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
         XCTAssertTrue(playerViewController!.controlsView.nextButton.enabled)
@@ -525,7 +525,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
         XCTAssertFalse(playerViewController!.controlsView.prevButton.enabled)
@@ -543,11 +543,11 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
-        mockMusicPlayer.repeatMode = MusicPlayerRepeatMode.All
+        mockMusicPlayer.repeatMode = MusicPlayer.RepeatMode.All
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Playing)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
         XCTAssertTrue(playerViewController!.controlsView.prevButton.enabled)
@@ -607,7 +607,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockControlsView.delegate = playerViewController
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Stopped)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Stopped)
         
         // tests
         XCTAssertFalse(playerViewController!.scrobbleView.userInteractionEnabled)
@@ -650,7 +650,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!._injectInfoView(mockInfoView)
         
         // runnable
-        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayerState.Finished)
+        mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Finished)
         
         // tests
         XCTAssertFalse(playerViewController!.scrobbleView.userInteractionEnabled)
@@ -703,7 +703,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockShareManager: ShareManager {
-            override func shareTrack(track: Track, presenter: UIViewController, completion: ((ShareManagerResult, String?) -> Void)?) {
+            override func shareTrack(track: Track, presenter: UIViewController, completion: ((ShareManager.Result, String?) -> Void)?) {
                 if sharedTrack == track {
                     shareManagerExpectation!.fulfill()
                 }
@@ -744,16 +744,16 @@ class PlayerViewControllerTests: XCTestCase {
 
         // mocks
         let mockControlsView = ControlsView()
-        mockControlsView.repeatButton.setButtonState(RepeatButtonState.All)
+        mockControlsView.repeatButton.setButtonState(RepeatButton.State.All)
         playerViewController!._injectControlsView(mockControlsView)
         mockControlsView.delegate = playerViewController
         
         let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
-        mockMusicPlayer.repeatMode = MusicPlayerRepeatMode.All
+        mockMusicPlayer.repeatMode = MusicPlayer.RepeatMode.All
         playerViewController!._injectMusicPlayer(mockMusicPlayer)
         
         let mockButton = UIButton()
-        let expectedRepeatMode = MusicPlayerRepeatMode.None
+        let expectedRepeatMode = MusicPlayer.RepeatMode.None
         
         // runnable
         mockControlsView.repeatButtonPressed(mockButton)
@@ -769,9 +769,9 @@ class PlayerViewControllerTests: XCTestCase {
          */
          
         // mocks
-        UserData.repeatMode = MusicPlayerRepeatMode.All
+        UserData.repeatMode = MusicPlayer.RepeatMode.All
        
-        let expectedRepeatButtonState = RepeatButtonState.All
+        let expectedRepeatButtonState = RepeatButton.State.All
 
         // runnable
         playerViewController!.viewDidLoad()

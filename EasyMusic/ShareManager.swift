@@ -9,23 +9,23 @@
 import Foundation
 import Social
 
-enum ShareManagerResult {
-    case Success
-    case CancelledAfterChoice
-    case CancelledBeforeChoice
-    case Error
-}
-
 class ShareManager: NSObject {
     private weak var presenter: UIViewController!
     private weak var track: Track!
-    private var completion: ((ShareManagerResult, String?) -> Void)?
+    private var completion: ((Result, String?) -> Void)?
     private var ComposeViewController = SLComposeViewController.self
     private var AlertAction = UIAlertAction.self
     
+    enum Result {
+        case Success
+        case CancelledAfterChoice
+        case CancelledBeforeChoice
+        case Error
+    }
+    
     // MARK: - internal
     
-    func shareTrack(track: Track, presenter: UIViewController, completion: ((ShareManagerResult, String?) -> Void)?) {
+    func shareTrack(track: Track, presenter: UIViewController, completion: ((Result, String?) -> Void)?) {
         self.presenter = presenter
         self.track = track
         self.completion = completion;
@@ -51,16 +51,16 @@ class ShareManager: NSObject {
             share.completionHandler = { (result:SLComposeViewControllerResult) in
                 switch result {
                 case .Done:
-                    self.completion?(ShareManagerResult.Success, serviceType)
+                    self.completion?(Result.Success, serviceType)
                     break
                 case .Cancelled:
-                    self.completion?(ShareManagerResult.CancelledAfterChoice, serviceType)
+                    self.completion?(Result.CancelledAfterChoice, serviceType)
                     break
                 }
             }
             presenter.presentViewController(share, animated: true, completion: nil)
         } else {
-            self.completion?(ShareManagerResult.Error, serviceType)
+            self.completion?(Result.Error, serviceType)
         }
     }
     
@@ -89,7 +89,7 @@ class ShareManager: NSObject {
             handler: { (action: UIAlertAction) -> Void in
                 completion!(nil)
                 msg.dismissViewControllerAnimated(true, completion: {
-                    self.completion?(ShareManagerResult.CancelledBeforeChoice, nil)
+                    self.completion?(Result.CancelledBeforeChoice, nil)
                 })
         }))
         

@@ -96,7 +96,7 @@ class ControlsViewTests: XCTestCase {
         controlsView!.setControlsPaused()
         
         // tests
-        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButtonState.Play)
+        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButton.State.Play)
     }
     
     func testPausedState() {
@@ -127,7 +127,7 @@ class ControlsViewTests: XCTestCase {
         controlsView!.setControlsPlaying()
         
         // tests
-        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButtonState.Pause)
+        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButton.State.Pause)
     }
     
     func testStoppedState() {
@@ -158,7 +158,7 @@ class ControlsViewTests: XCTestCase {
         controlsView!.setControlsStopped()
         
         // tests
-        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButtonState.Play)
+        XCTAssertEqual(controlsView!.playButton.buttonState, PlayButton.State.Play)
     }
     
     func testEnablePlay() {

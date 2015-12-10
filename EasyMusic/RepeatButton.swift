@@ -8,29 +8,29 @@
 
 import UIKit
 
-enum RepeatButtonState {
-    case None
-    case One
-    case All
-}
-
 @IBDesignable
 class RepeatButton: PlayerButton {
-    private(set) var buttonState: RepeatButtonState!
+    private(set) var buttonState: State!
+    
+    enum State {
+        case None
+        case One
+        case All
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        setButtonState(RepeatButtonState.None)
+        setButtonState(State.None)
     }
     
     override func prepareForInterfaceBuilder() {
-        setButtonState(RepeatButtonState.None)
+        setButtonState(State.None)
     }
     
     // MARK: - internal
     
-    func setButtonState(state: RepeatButtonState) {
+    func setButtonState(state: State) {
         buttonState = state
         switch state {
         case .None:
