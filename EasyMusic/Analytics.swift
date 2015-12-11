@@ -27,7 +27,7 @@ class Analytics {
         
         #if DEBUG
             gai.dryRun = true
-            gai.logger.logLevel = GAILogLevel.Verbose
+            gai.logger.logLevel = GAILogLevel.None
         #else
             gai.logger.logLevel = GAILogLevel.None
         #endif
@@ -93,7 +93,8 @@ class Analytics {
 
 // MARK - Testing
 extension Analytics {
-    class func _injectShared(shared: Analytics) {
-        self.shared = shared
+    class var __shared: Analytics {
+        set { shared = newValue }
+        get { return shared }
     }
 }
