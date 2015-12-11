@@ -46,6 +46,7 @@ class ScrobbleView: UIView {
     
     override func awakeFromNib() {
         moveScrobblerToPoint(0.0)
+        userInteractionEnabled = false
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {

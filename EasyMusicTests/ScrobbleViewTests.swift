@@ -35,6 +35,16 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleViewExpectation = nil
     }
     
+    func testAwakeFromNib() {
+        /**
+        expectations
+        - scrobble view disabled
+        */
+        
+        scrobbleView!.awakeFromNib()
+        XCTAssertFalse(scrobbleView!.userInteractionEnabled)
+    }
+    
     func testScrobble50() {
         /**
         expectations:
