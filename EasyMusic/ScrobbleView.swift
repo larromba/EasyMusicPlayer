@@ -16,11 +16,9 @@ protocol ScrobbleViewDelegate {
 @IBDesignable
 class ScrobbleView: UIView {
     @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
-    @IBOutlet private(set) weak var barView: UIView!
+    @IBOutlet private weak var barView: UIView!
     
     var delegate: ScrobbleViewDelegate?
-    
-    private var _enabled: Bool = false
     override var userInteractionEnabled: Bool {
         set {
             super.userInteractionEnabled = newValue
@@ -86,4 +84,10 @@ class ScrobbleView: UIView {
         let point = w * CGFloat(percentage)
         moveScrobblerToPoint(point)
     }
+}
+
+// MARK: - Testing
+
+extension ScrobbleView {
+    var __barView: UIView { return barView }
 }

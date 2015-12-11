@@ -11,11 +11,11 @@ import MediaPlayer
 
 @IBDesignable
 class InfoView: UIView {
-    @IBOutlet private(set) var artistLabel: UILabel!
-    @IBOutlet private(set) var trackLabel: UILabel!
-    @IBOutlet private(set) var trackPositionLabel: UILabel!
-    @IBOutlet private(set) var timeLabel: UILabel!
-    @IBOutlet private(set) var artworkImageView: UIImageView!
+    @IBOutlet private weak var artistLabel: UILabel!
+    @IBOutlet private weak var trackLabel: UILabel!
+    @IBOutlet private weak var trackPositionLabel: UILabel!
+    @IBOutlet private weak var timeLabel: UILabel!
+    @IBOutlet private weak var artworkImageView: UIImageView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,10 +38,18 @@ class InfoView: UIView {
         trackLabel.text = track.title
         artworkImageView.image = track.artwork
         
+        var mediaItemArtwork: MPMediaItemArtwork!
+        if let artwork = track.artwork {
+            mediaItemArtwork = MPMediaItemArtwork(image: artwork)
+        } else {
+            let placeholderImage = UIImage.safeImage(named: Constant.Image.Placeholder)
+            mediaItemArtwork = MPMediaItemArtwork(image: placeholderImage)
+        }
+        
         let songInfo: [String: AnyObject] = [
             MPMediaItemPropertyTitle: track.title,
             MPMediaItemPropertyArtist: track.artist,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: track.artwork),
+            MPMediaItemPropertyArtwork: mediaItemArtwork,
             MPNowPlayingInfoPropertyPlaybackRate: Float(1.0)
         ]
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
@@ -78,4 +86,14 @@ class InfoView: UIView {
         return String(
             format: localized("time interval format"), hours, minutes, seconds)
     }
+}
+
+// MARK: - Testing
+
+extension InfoView {
+    var __artistLabel: UILabel { return artistLabel }
+    var __trackLabel: UILabel { return trackLabel }
+    var __trackPositionLabel: UILabel { return trackPositionLabel }
+    var __timeLabel: UILabel { return timeLabel }
+    var __artworkImageView: UIImageView { return artworkImageView }
 }

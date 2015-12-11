@@ -43,16 +43,16 @@ class TrackManager {
             for song: MPMediaItem in songs! {
                 var artwork: UIImage? = nil
                 if let songArtwork = song.artwork {
-                    artwork = songArtwork.imageWithSize(CGSizeMake(30, 30))
+                    artwork = songArtwork.imageWithSize(CGSizeMake(512, 512))
                 }
                 
-                if let urlProperty = song.valueForProperty(MPMediaItemPropertyAssetURL) {
+                if let urlProperty = song.assetURL {
                     let track = Track(
                         artist: song.artist,
                         title: song.title,
                         duration: song.playbackDuration,
                         artwork: artwork,
-                        url: urlProperty as! NSURL)
+                        url: urlProperty)
                     
                     tracks.append(track)
                 }
@@ -108,11 +108,12 @@ class TrackManager {
 
 // MARK: - Testing
 extension TrackManager {
-    func _injectTrackIndex(trackIndex: Int) {
-        self.trackIndex = trackIndex
+    var __trackIndex: Int {
+        get { return trackIndex }
+        set { trackIndex = newValue }
     }
-    
-    func _injectTracks(tracks: [Track]) {
-        self.tracks = tracks
+    var __tracks: [Track] {
+        get { return tracks }
+        set { tracks = newValue }
     }
 }

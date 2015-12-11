@@ -28,7 +28,7 @@ class TrackManagerTests: XCTestCase {
         ]
         
         trackManager = TrackManager()
-        trackManager!._injectTracks(mockTracks)
+        trackManager!.__tracks = mockTracks
     }
     
     override func tearDown() {
@@ -66,14 +66,14 @@ class TrackManagerTests: XCTestCase {
         
         // mocks
         let initialTrackIndex = 3
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         // runnable
         let result =  trackManager!.cuePrevious()
         
         // tests
-        XCTAssert(trackManager!.currentTrackNumber == (initialTrackIndex - 1))
-        XCTAssert(result == true)
+        XCTAssertEqual(trackManager!.currentTrackNumber, (initialTrackIndex - 1))
+        XCTAssertTrue(result)
     }
     
     func testCuePreviousIsntNegative() {
@@ -84,13 +84,13 @@ class TrackManagerTests: XCTestCase {
         
         // mocks
         let initialTrackIndex = 0
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         // runnable
         let result = trackManager!.cuePrevious()
         
         // tests
-        XCTAssert(result == false)
+        XCTAssertFalse(result)
     }
     
     func testCueNext() {
@@ -101,14 +101,14 @@ class TrackManagerTests: XCTestCase {
         
         // mocks
         let initialTrackIndex = 3
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         // runnable
         let result = trackManager!.cueNext()
         
         // tests
-        XCTAssert(trackManager!.currentTrackNumber == (initialTrackIndex + 1))
-        XCTAssert(result == true)
+        XCTAssertEqual(trackManager!.currentTrackNumber, (initialTrackIndex + 1))
+        XCTAssertTrue(result)
     }
     
     func testCueNextNoBufferOverride() {
@@ -119,13 +119,13 @@ class TrackManagerTests: XCTestCase {
         
         // mocks
         let initialTrackIndex = mockTracks.count
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         // runnable
         let result = trackManager!.cueNext()
         
         // tests
-        XCTAssert(result == false)
+        XCTAssertFalse(result)
     }
     
     func testCueStart() {
@@ -136,7 +136,7 @@ class TrackManagerTests: XCTestCase {
          
          // mocks
         let initialTrackIndex = 3
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         let expectedResult = 0
         
@@ -155,7 +155,7 @@ class TrackManagerTests: XCTestCase {
          
          // mocks
         let initialTrackIndex = 0
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         let expectedResult = trackManager!.numOfTracks - 1
         
@@ -176,7 +176,7 @@ class TrackManagerTests: XCTestCase {
         let tracks = trackManager!.allTracks
         
         // tests
-        XCTAssert(tracks == mockTracks)
+        XCTAssertEqual(tracks, mockTracks)
     }
     
     func testCurrentTrack() {
@@ -187,13 +187,13 @@ class TrackManagerTests: XCTestCase {
         
         // mocks
         let initialTrackIndex = 3
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         // runnable
         let tracks = trackManager!.allTracks
         
         // tests
-        XCTAssert(tracks[initialTrackIndex] == mockTracks[initialTrackIndex])
+        XCTAssertEqual(tracks[initialTrackIndex], mockTracks[initialTrackIndex])
     }
     
     func testCurrentTrackNumber() {
@@ -204,13 +204,13 @@ class TrackManagerTests: XCTestCase {
         
         // mocks
         let initialTrackIndex = 3
-        trackManager!._injectTrackIndex(initialTrackIndex)
+        trackManager!.__trackIndex = initialTrackIndex
         
         // runnable
         let trackNumber = trackManager!.currentTrackNumber
         
         // tests
-        XCTAssert(trackNumber == initialTrackIndex)
+        XCTAssertEqual(trackNumber, initialTrackIndex)
     }
     
     func testNumOfTracks() {
@@ -223,6 +223,6 @@ class TrackManagerTests: XCTestCase {
         let numberOfTracks = trackManager!.numOfTracks
         
         // tests
-        XCTAssert(numberOfTracks == mockTracks.count)
+        XCTAssertEqual(numberOfTracks, mockTracks.count)
     }
 }

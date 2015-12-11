@@ -75,7 +75,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.72802388693407172" green="0.62121485116623543" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.72941176470588232" green="0.61960784313725492" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Dgv-XX-Xc3" secondAttribute="bottom" constant="28.5" id="7WM-ck-bZY"/>
                         <constraint firstItem="Dgv-XX-Xc3" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" priority="750" constant="164" id="9tN-Ll-ROa"/>

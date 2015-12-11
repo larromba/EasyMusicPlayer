@@ -149,7 +149,9 @@ class MusicPlayer: NSObject {
     }
     
     func applicationWillResignActive() {
-        playingInBackground = true
+        if isPlaying == true {
+            playingInBackground = true
+        }
     }
     
     func applicationDidBecomeActive() {
@@ -314,15 +316,16 @@ extension MusicPlayer: AVAudioPlayerDelegate {
 
 // MARK: - Testing
 extension MusicPlayer {
-    func _injectPlayer(player: AVAudioPlayer) {
-        self.player = player
+    var __player: AVAudioPlayer? {
+        get { return player }
+        set { player = newValue }
     }
-    
-    func _injectTrackManager(trackManager: TrackManager) {
-        self.trackManager = trackManager
+    var __trackManager: TrackManager {
+        get { return trackManager }
+        set { trackManager = newValue }
     }
-    
-    func _injectPlaybackCheckTimer(playbackCheckTimer: NSTimer) {
-        self.playbackCheckTimer = playbackCheckTimer
+    var __playbackCheckTimer: NSTimer? {
+        get { return playbackCheckTimer }
+        set { playbackCheckTimer = newValue }
     }
 }

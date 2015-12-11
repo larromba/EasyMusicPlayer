@@ -10,21 +10,15 @@ import UIKit
 
 @IBDesignable
 class PlayButton: PlayerButton {
-    private(set) var buttonState: State!
+    private(set) var buttonState: State = State.Play
 
     enum State {
         case Play
         case Pause
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        setButtonState(State.Play)
-    }
-    
     override func prepareForInterfaceBuilder() {
-        setButtonState(State.Play)
+        setButtonState(buttonState)
     }
     
     // MARK: - internal

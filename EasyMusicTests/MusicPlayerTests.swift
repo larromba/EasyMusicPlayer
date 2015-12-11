@@ -58,7 +58,7 @@ class MusicPlayerTests: XCTestCase {
         expectedPlaybackTime = nil
         expectedPlaybackTimeRough = nil
         methodOrder = nil
-        Analytics._injectShared(Analytics())
+        Analytics.__shared = Analytics()
     }
     
     func testAudioSessionOnInit() {
@@ -133,10 +133,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
        
         expectedState = MusicPlayer.State.Playing
         
@@ -160,7 +160,7 @@ class MusicPlayerTests: XCTestCase {
         }
 
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         expectedError = MusicPlayer.Error.NoMusic
         
@@ -187,7 +187,7 @@ class MusicPlayerTests: XCTestCase {
         }
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         expectedError = MusicPlayer.Error.PlayerInit
         
@@ -221,10 +221,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         expectedError = MusicPlayer.Error.AVError
         
@@ -258,10 +258,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         expectedError = MusicPlayer.Error.AVError
         
@@ -297,10 +297,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         expectedState = MusicPlayer.State.Paused
         
@@ -337,10 +337,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         expectedState = MusicPlayer.State.Stopped
         expectedPlaybackTime = 0.0
@@ -380,10 +380,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
                 
         // runnable
         musicPlayer!.previous()
@@ -414,10 +414,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         expectedPlaybackTime = 0.0
         
@@ -456,10 +456,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         // runnable
         musicPlayer!.next()
@@ -492,10 +492,10 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = MockTrackManager()
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        musicPlayer!.__trackManager = mockTrackManager
         
         // runnable
         musicPlayer!.next()
@@ -530,7 +530,7 @@ class MusicPlayerTests: XCTestCase {
         
         let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         expectedPlaybackTime = 2.0
         
@@ -555,7 +555,7 @@ class MusicPlayerTests: XCTestCase {
 
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let expectedTrackNumber = musicPlayer!.currentTrackNumber + 1
         expectedState = MusicPlayer.State.Playing
@@ -581,13 +581,13 @@ class MusicPlayerTests: XCTestCase {
 
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = TrackManager()
         let mockTracks = mockTrackManager.createPlaylist()
-        mockTrackManager._injectTracks(mockTracks)
-        mockTrackManager._injectTrackIndex(mockTracks.count - 1)
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        mockTrackManager.__tracks = mockTracks
+        mockTrackManager.__trackIndex = mockTracks.count - 1
+        musicPlayer!.__trackManager = mockTrackManager
         
         let expectedTrackNumber = 0
         expectedState = MusicPlayer.State.Finished
@@ -613,13 +613,13 @@ class MusicPlayerTests: XCTestCase {
 
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = TrackManager()
         let mockTracks = mockTrackManager.createPlaylist()
-        mockTrackManager._injectTracks(mockTracks)
-        mockTrackManager._injectTrackIndex(mockTracks.count - 1)
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        mockTrackManager.__tracks = mockTracks
+        mockTrackManager.__trackIndex = mockTracks.count - 1
+        musicPlayer!.__trackManager = mockTrackManager
         
         let expectedTrackNumber = musicPlayer!.currentTrackNumber
         expectedState = MusicPlayer.State.Playing
@@ -645,7 +645,7 @@ class MusicPlayerTests: XCTestCase {
 
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let expectedTrackNumber = musicPlayer!.currentTrackNumber + 1
         expectedState = MusicPlayer.State.Playing
@@ -671,13 +671,13 @@ class MusicPlayerTests: XCTestCase {
 
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockTrackManager = TrackManager()
         let mockTracks = mockTrackManager.createPlaylist()
-        mockTrackManager._injectTracks(mockTracks)
-        mockTrackManager._injectTrackIndex(mockTracks.count - 1)
-        musicPlayer!._injectTrackManager(mockTrackManager)
+        mockTrackManager.__tracks = mockTracks
+        mockTrackManager.__trackIndex = mockTracks.count - 1
+        musicPlayer!.__trackManager = mockTrackManager
         
         let expectedTrackNumber = 0
         expectedState = MusicPlayer.State.Playing
@@ -700,7 +700,7 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         expectedError = MusicPlayer.Error.AVError
         
@@ -728,11 +728,11 @@ class MusicPlayerTests: XCTestCase {
         }
         
         let mockAnalytics = MockAnalytics()
-        Analytics._injectShared(mockAnalytics)
+        Analytics.__shared = mockAnalytics
         
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         let mockError = NSError(domain: "", code: 0, userInfo: nil)
         
@@ -755,7 +755,7 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         expectedPlaybackTimeRough = 1
         
@@ -776,7 +776,7 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         let mockAudioPlayer = try! AVAudioPlayer(contentsOfURL: audioUrl)
         mockAudioPlayer.delegate = musicPlayer
-        musicPlayer!._injectPlayer(mockAudioPlayer)
+        musicPlayer!.__player = mockAudioPlayer
         
         class MockTimer: NSTimer {
             private override func invalidate() {
@@ -785,7 +785,7 @@ class MusicPlayerTests: XCTestCase {
         }
         
         let mockPlaybackCheckTimer = MockTimer()
-        musicPlayer!._injectPlaybackCheckTimer(mockPlaybackCheckTimer)
+        musicPlayer!.__playbackCheckTimer = mockPlaybackCheckTimer
         
         // runnable
         musicPlayer!.stop()

@@ -15,7 +15,7 @@ class Track: NSObject {
     private(set) var artwork: UIImage!
     private(set) var url: NSURL!
     
-    init(var artist: String?, var title: String?, duration: NSTimeInterval, var artwork: UIImage?, url: NSURL) {
+    init(var artist: String?, var title: String?, duration: NSTimeInterval, artwork: UIImage?, url: NSURL) {
         super.init()
         
         if artist == nil || artist!.characters.count == 0 {
@@ -24,10 +24,6 @@ class Track: NSObject {
 
         if title == nil || title!.characters.count == 0 {
             title = localized("unknown track")
-        }
-        
-        if artwork == nil {
-            artwork = UIImage.safeImage(named: Constant.Image.Placeholder)
         }
         
         self.artist = artist

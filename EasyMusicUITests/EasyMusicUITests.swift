@@ -72,4 +72,12 @@ class EasyMusicUITests: XCTestCase {
         app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(3).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Button).elementBoundByIndex(0).tap()
         XCUIDevice.sharedDevice().pressButton(XCUIDeviceButton.Home)
     }
+    
+    func testRepeatMode() {
+        let button = XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(3).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Button).elementBoundByIndex(1)
+        button.tap()
+        button.tap()
+        button.tap()
+        button.tap()
+    }
 }

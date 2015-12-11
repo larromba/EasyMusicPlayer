@@ -25,7 +25,7 @@ class AppDelegateTests: XCTestCase {
         
         appDelegate = nil
         analyticsExpectation = nil
-        Analytics._injectShared(Analytics())
+        Analytics.__shared = Analytics()
     }
     
     func testSessionAnalytics() {
@@ -49,7 +49,7 @@ class AppDelegateTests: XCTestCase {
         }
         
         let mockAnalytics = MockAnalytics()
-        Analytics._injectShared(mockAnalytics)
+        Analytics.__shared = mockAnalytics
         
         let mockApplication = UIApplication.sharedApplication()
         

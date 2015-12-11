@@ -97,12 +97,14 @@ class ShareManager: NSObject {
     }
 }
 
+// MARK: - Testing
 extension ShareManager {
-    func _injectComposeViewController(composeViewController: SLComposeViewController.Type) {
-        self.ComposeViewController = composeViewController
+    var __ComposeViewController: SLComposeViewController.Type {
+        get { return ComposeViewController }
+        set { ComposeViewController = newValue }
     }
-    
-    func _injectAlertAction(alertAction: UIAlertAction.Type) {
-        self.AlertAction = alertAction
+    var __AlertAction: UIAlertAction.Type {
+        get { return AlertAction }
+        set { AlertAction = newValue }
     }
 }

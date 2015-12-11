@@ -45,7 +45,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView!.scrobbleToPercentage(0.5)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 50.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 50.0)
     }
     
     func testScrobble30() {
@@ -58,7 +58,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView!.scrobbleToPercentage(0.3)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 30.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 30.0)
     }
     
     func testScrobble90() {
@@ -71,7 +71,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView!.scrobbleToPercentage(0.9)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 90.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 90.0)
     }
     
     func testTouchesMoved50() {
@@ -91,7 +91,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 50.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 50.0)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -110,7 +110,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 30.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 30.0)
     }
     
     func testTouchesMoved90() {
@@ -128,7 +128,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.barView.bounds), 90.0)
+        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 90.0)
     }
     
     func testUserInteractionDisabledBarAlpha() {
@@ -141,7 +141,7 @@ class ScrobbleViewTests: XCTestCase {
         scrobbleView!.userInteractionEnabled = false
         
         // tests
-        XCTAssertNotEqual(scrobbleView!.barView, 1.0)
+        XCTAssertNotEqual(scrobbleView!.__barView, 1.0)
     }
     
     func testTouchesEnded() {

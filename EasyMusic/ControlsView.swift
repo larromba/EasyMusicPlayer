@@ -21,15 +21,23 @@ protocol ControlsViewDelegate {
 
 @IBDesignable
 class ControlsView: UIView {
-    @IBOutlet private(set) weak var playButton: PlayButton!
-    @IBOutlet private(set) weak var stopButton: UIButton!
-    @IBOutlet private(set) weak var prevButton: UIButton!
-    @IBOutlet private(set) weak var nextButton: UIButton!
-    @IBOutlet private(set) weak var shuffleButton: UIButton!
-    @IBOutlet private(set) weak var shareButton: UIButton!
-    @IBOutlet private(set) weak var repeatButton: RepeatButton!
+    @IBOutlet private weak var playButton: PlayButton!
+    @IBOutlet private weak var stopButton: UIButton!
+    @IBOutlet private weak var prevButton: UIButton!
+    @IBOutlet private weak var nextButton: UIButton!
+    @IBOutlet private weak var shuffleButton: UIButton!
+    @IBOutlet private weak var shareButton: UIButton!
+    @IBOutlet private weak var repeatButton: RepeatButton!
     
     var delegate: ControlsViewDelegate?
+    var repeatButtonState: RepeatButton.State {
+        set {
+            repeatButton.setButtonState(newValue)
+        }
+        get {
+            return repeatButton.buttonState
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -156,4 +164,16 @@ class ControlsView: UIView {
     func enableRepeat(enable: Bool) {
         repeatButton.enabled = enable
     }
+}
+
+// MARK: - Testing
+
+extension ControlsView {
+    var __playButton: PlayButton { return playButton }
+    var __stopButton: UIButton { return stopButton }
+    var __prevButton: UIButton { return prevButton }
+    var __nextButton: UIButton { return nextButton }
+    var __shuffleButton: UIButton { return shuffleButton }
+    var __shareButton: UIButton { return shareButton }
+    var __repeatButton: RepeatButton { return repeatButton }
 }

@@ -70,10 +70,10 @@ class ShareManagerTests: XCTestCase {
         }
         
         let mockActionType = MockAlertAction.self
-        shareManager!._injectAlertAction(mockActionType)
+        shareManager!.__AlertAction = mockActionType
         
         let mockComposerViewController = MockComposeViewController.self
-        shareManager!._injectComposeViewController(mockComposerViewController)
+        shareManager!.__ComposeViewController = mockComposerViewController
         
         let mockPresenter = UIViewController()
         UIApplication.sharedApplication().keyWindow?.rootViewController = mockPresenter

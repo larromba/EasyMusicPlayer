@@ -9,9 +9,9 @@
 import UIKit
 
 class PlayerViewController: UIViewController {
-    @IBOutlet private(set) weak var scrobbleView: ScrobbleView!
-    @IBOutlet private(set) weak var infoView: InfoView!
-    @IBOutlet private(set) weak var controlsView: ControlsView!
+    @IBOutlet private weak var scrobbleView: ScrobbleView!
+    @IBOutlet private weak var infoView: InfoView!
+    @IBOutlet private weak var controlsView: ControlsView!
     
     private lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
     private var shareManager: ShareManager = ShareManager()
@@ -29,17 +29,17 @@ class PlayerViewController: UIViewController {
             
             switch repeatMode {
             case .None:
-                controlsView.repeatButton.setButtonState(RepeatButton.State.None)
+                controlsView.repeatButtonState = RepeatButton.State.None
                 break
             case .One:
-                controlsView.repeatButton.setButtonState(RepeatButton.State.One)
+                controlsView.repeatButtonState = RepeatButton.State.One
                 break
             case .All:
-                controlsView.repeatButton.setButtonState(RepeatButton.State.All)
+                controlsView.repeatButtonState = RepeatButton.State.All
                 break
             }
         }
-                
+        
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
             name: UIApplicationDidBecomeActiveNotification,
@@ -105,6 +105,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             infoView.setInfoFromTrack(sender.currentTrack)
             infoView.setTrackPosition((musicPlayer.currentTrackNumber + 1), totalTracks: musicPlayer.numOfTracks)
             scrobbleView.userInteractionEnabled = true
+            updateSeekingControls()
             break
         case .Paused:
             controlsView.setControlsPaused()
@@ -129,8 +130,6 @@ extension PlayerViewController: MusicPlayerDelegate {
             
             break
         }
-        
-        updateSeekingControls()
     }
     
     func changedPlaybackTime(sender: MusicPlayer, playbackTime: NSTimeInterval) {
@@ -284,7 +283,7 @@ extension PlayerViewController: ControlsViewDelegate {
     }
     
     func repeatPressed(sender: ControlsView) {
-        let buttonState: RepeatButton.State = sender.repeatButton.buttonState
+        let buttonState: RepeatButton.State = sender.repeatButtonState
         var newButtonState: RepeatButton.State!
         var event: String!
         
@@ -304,8 +303,11 @@ extension PlayerViewController: ControlsViewDelegate {
         }
         
         // update ui
-        sender.repeatButton.setButtonState(newButtonState)
-        updateSeekingControls()
+        sender.repeatButtonState = newButtonState
+        
+        if musicPlayer.isPlaying == true {
+            updateSeekingControls()
+        }
 
         // track analytics
         Analytics.shared.sendButtonPressEvent(event,
@@ -318,31 +320,32 @@ extension PlayerViewController: ControlsViewDelegate {
 
 // MARK - Testing
 extension PlayerViewController {
-    func _injectMusicPlayer(musicPlayer: MusicPlayer) {
-        self.musicPlayer = musicPlayer
+    var __musicPlayer: MusicPlayer {
+        get { return musicPlayer }
+        set { musicPlayer = newValue }
     }
-    
-    func _injectInfoView(infoView: InfoView) {
-        self.infoView = infoView
+    var __infoView: InfoView {
+        get { return infoView }
+        set { infoView = newValue }
     }
-    
-    func _injectControlsView(controlsView: ControlsView) {
-        self.controlsView = controlsView
+    var __controlsView: ControlsView {
+        get { return controlsView }
+        set { controlsView = newValue }
     }
-    
-    func _injectScrobbleView(scrobbleView: ScrobbleView) {
-        self.scrobbleView = scrobbleView
+    var __scrobbleView: ScrobbleView {
+        get { return scrobbleView }
+        set { scrobbleView = newValue }
     }
-    
-    func _injectShareManager(shareManager: ShareManager) {
-        self.shareManager = shareManager
+    var __shareManager: ShareManager {
+        get { return shareManager }
+        set { shareManager = newValue }
     }
-    
-    func _injectAlertController(alertController: UIAlertController.Type) {
-        self.AlertController = alertController
+    var __AlertController: UIAlertController.Type {
+        get { return AlertController }
+        set { AlertController = newValue }
     }
-    
-    func _injectUserScrobbling(userScrobbling: Bool) {
-        self.userScrobbling = userScrobbling
+    var __userScrobbling: Bool {
+        get { return userScrobbling }
+        set { userScrobbling = newValue }
     }
 }
