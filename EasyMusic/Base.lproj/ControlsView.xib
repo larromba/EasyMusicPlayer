@@ -79,11 +79,11 @@
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Dgv-XX-Xc3" secondAttribute="bottom" constant="28.5" id="7WM-ck-bZY"/>
                         <constraint firstItem="Dgv-XX-Xc3" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" priority="750" constant="164" id="9tN-Ll-ROa"/>
-                        <constraint firstItem="V7J-PO-NB5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ghJ-k2-r6d" secondAttribute="trailing" priority="750" constant="10" id="Fta-ND-lHS"/>
+                        <constraint firstItem="V7J-PO-NB5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ghJ-k2-r6d" secondAttribute="trailing" constant="10" id="Fta-ND-lHS"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Dgv-XX-Xc3" secondAttribute="trailing" constant="10" id="GID-rD-rt5"/>
                         <constraint firstItem="ghJ-k2-r6d" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="REt-Ws-5mL" secondAttribute="leading" constant="10" id="XIM-IB-c1U"/>
                         <constraint firstItem="V7J-PO-NB5" firstAttribute="top" secondItem="REt-Ws-5mL" secondAttribute="top" constant="19" id="XZL-Tv-Y06"/>
-                        <constraint firstItem="Dgv-XX-Xc3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="V7J-PO-NB5" secondAttribute="trailing" priority="750" constant="10" id="XaG-XR-QEZ"/>
+                        <constraint firstItem="Dgv-XX-Xc3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="V7J-PO-NB5" secondAttribute="trailing" constant="10" id="XaG-XR-QEZ"/>
                         <constraint firstItem="ghJ-k2-r6d" firstAttribute="top" secondItem="REt-Ws-5mL" secondAttribute="top" constant="29" id="YCy-fn-X9Z"/>
                         <constraint firstAttribute="bottom" secondItem="V7J-PO-NB5" secondAttribute="bottom" constant="18.5" id="fTz-5f-CGX"/>
                         <constraint firstAttribute="bottom" secondItem="ghJ-k2-r6d" secondAttribute="bottom" constant="29.5" id="fVn-sS-zBJ"/>
