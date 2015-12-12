@@ -79,7 +79,7 @@ class Analytics {
     }
     
     // MARK: - Private
-    
+
     private func sendEvent(event: String, action: String, category: String) {
         let tracker = GAI.sharedInstance().defaultTracker
         let item = GAIDictionaryBuilder.createEventWithCategory(category,
@@ -92,6 +92,7 @@ class Analytics {
 }
 
 // MARK - Testing
+
 extension Analytics {
     class var __shared: Analytics {
         set { shared = newValue }

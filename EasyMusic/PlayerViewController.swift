@@ -65,13 +65,13 @@ class PlayerViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - notification
+    // MARK: - Notification
     
     func applicationDidBecomeActive() {
         checkTracksAvailable()
     }
     
-    // MARK: - private
+    // MARK: - Private
     
     private func checkTracksAvailable() {
         if musicPlayer.numOfTracks == 0 {
@@ -97,6 +97,7 @@ class PlayerViewController: UIViewController {
 }
 
 // MARK: - MusicPlayerDelegate
+
 extension PlayerViewController: MusicPlayerDelegate {
     func changedState(sender: MusicPlayer, state: MusicPlayer.State) {
         switch state {
@@ -181,6 +182,7 @@ extension PlayerViewController: MusicPlayerDelegate {
 }
 
 // MARK: - ScrobbleViewDelegate
+
 extension PlayerViewController: ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
         let track = musicPlayer.currentTrack
@@ -202,6 +204,7 @@ extension PlayerViewController: ScrobbleViewDelegate {
 }
 
 // MARK: - ControlsViewDelegate
+
 extension PlayerViewController: ControlsViewDelegate {
     func playPressed(sender: ControlsView) {
         if musicPlayer.isPlaying == false {
@@ -319,6 +322,7 @@ extension PlayerViewController: ControlsViewDelegate {
 }
 
 // MARK - Testing
+
 extension PlayerViewController {
     var __musicPlayer: MusicPlayer {
         get { return musicPlayer }

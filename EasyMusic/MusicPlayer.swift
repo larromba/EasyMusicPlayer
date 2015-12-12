@@ -122,7 +122,7 @@ class MusicPlayer: NSObject {
             object: nil)
     }
     
-    // MARK: - private
+    // MARK: - Private
     
     private func startPlaybackCheckTimer() {
         playbackCheckTimer = NSTimer.scheduledTimerWithTimeInterval(1.0,
@@ -142,7 +142,7 @@ class MusicPlayer: NSObject {
         delegate?.changedState(self, state: MusicPlayer.State.Stopped)
     }
     
-    // MARK: - notifications
+    // MARK: - Notifications
     
     func applicationWillTerminate() {
         enableAudioSession(false)
@@ -169,7 +169,7 @@ class MusicPlayer: NSObject {
         delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
-    // MARK: - internal
+    // MARK: - Internal
     
     func enableAudioSession(enable: Bool) {
         if enable {
@@ -275,6 +275,7 @@ class MusicPlayer: NSObject {
 }
 
 // MARK: - AVAudioPlayerDelegate
+
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
         if flag == false {
@@ -315,6 +316,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
 }
 
 // MARK: - Testing
+
 extension MusicPlayer {
     var __player: AVAudioPlayer? {
         get { return player }

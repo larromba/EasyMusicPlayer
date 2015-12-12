@@ -174,6 +174,7 @@ class ScrobbleViewTests: XCTestCase {
 }
 
 // MARK: - ScrobbleViewDelegate
+
 extension ScrobbleViewTests: ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
         if let scrobbleViewExpectation = scrobbleViewExpectation {

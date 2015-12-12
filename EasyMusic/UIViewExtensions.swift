@@ -20,7 +20,7 @@ extension UIView {
         return subviews.first
     }
     
-    // MARK: - private
+    // MARK: - Private
     
     private func createViewFromNib() -> UIView {
         let nib = UINib(nibName: self.className(), bundle: NSBundle.safeMainBundle())

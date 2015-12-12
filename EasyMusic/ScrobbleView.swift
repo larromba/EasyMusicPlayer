@@ -45,8 +45,13 @@ class ScrobbleView: UIView {
     }
     
     override func awakeFromNib() {
-        moveScrobblerToPoint(0.0)
         userInteractionEnabled = false
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        moveScrobblerToPoint(0.0)
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -66,10 +71,12 @@ class ScrobbleView: UIView {
             let w = CGRectGetWidth(bounds)
             let perc = Float(point.x / w)
             delegate?.touchEndedAtPercentage(self, percentage: perc)
+            
+            animateTouchesEnded()
         }
     }
     
-    // MARK: - private
+    // MARK: - Private
     
     private func moveScrobblerToPoint(point: CGFloat) {
         let w = CGRectGetWidth(bounds)
@@ -78,7 +85,11 @@ class ScrobbleView: UIView {
         layoutIfNeeded()
     }
     
-    // MARK: - internal
+    private func animateTouchesEnded() {
+        
+    }
+    
+    // MARK: - Internal
     
     func scrobbleToPercentage(percentage: Float) {
         let w = CGRectGetWidth(bounds)

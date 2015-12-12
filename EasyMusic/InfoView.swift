@@ -31,12 +31,12 @@ class InfoView: UIView {
         clearInfo()
     }
  
-    // MARK: - internal
+    // MARK: - Internal
     
     func setInfoFromTrack(track: Track) {
-        artistLabel.text = track.artist
-        trackLabel.text = track.title
-        artworkImageView.image = track.artwork
+        artistLabel.text = "Arkist"//track.artist
+        trackLabel.text = "Fill Your Coffee"//track.title
+        artworkImageView.image = UIImage(named: "arkist-rendezvous-fill_your_coffee") //track.artwork
         
         var mediaItemArtwork: MPMediaItemArtwork!
         if let artwork = track.artwork {
@@ -76,7 +76,7 @@ class InfoView: UIView {
             format: localized("track position format"), trackPosition, totalTracks)
     }
     
-    // MARK: - private
+    // MARK: - Private
     
     private func stringFromTimeInterval(timeInterval: NSTimeInterval) -> String {
         let interval = Int(timeInterval)

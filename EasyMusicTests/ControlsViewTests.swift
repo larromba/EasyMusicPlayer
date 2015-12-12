@@ -450,6 +450,7 @@ class ControlsViewTests: XCTestCase {
 }
 
 // MARK: - ControlsViewDelegate
+
 extension ControlsViewTests: ControlsViewDelegate {
     func playPressed(sender: ControlsView) {
         if let controlsExpectation = controlsExpectation {

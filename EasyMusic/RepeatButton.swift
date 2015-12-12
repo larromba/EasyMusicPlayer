@@ -18,11 +18,17 @@ class RepeatButton: PlayerButton {
         case All
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        setButtonState(buttonState)
+    }
+    
     override func prepareForInterfaceBuilder() {
         setButtonState(buttonState)
     }
     
-    // MARK: - internal
+    // MARK: - Internal
     
     func setButtonState(state: State) {
         buttonState = state

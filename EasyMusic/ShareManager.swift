@@ -23,7 +23,7 @@ class ShareManager: NSObject {
         case Error
     }
     
-    // MARK: - internal
+    // MARK: - Internal
     
     func shareTrack(track: Track, presenter: UIViewController, completion: ((Result, String?) -> Void)?) {
         self.presenter = presenter
@@ -38,7 +38,7 @@ class ShareManager: NSObject {
         self.presenter.presentViewController(choices, animated: true, completion: nil)
     }
     
-    // MARK: - private
+    // MARK: - Private
     
     private func shareViaService(serviceType: String) {
         if ComposeViewController.isAvailableForServiceType(serviceType) {
@@ -98,6 +98,7 @@ class ShareManager: NSObject {
 }
 
 // MARK: - Testing
+
 extension ShareManager {
     var __ComposeViewController: SLComposeViewController.Type {
         get { return ComposeViewController }

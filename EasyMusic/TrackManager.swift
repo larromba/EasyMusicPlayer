@@ -107,6 +107,7 @@ class TrackManager {
 }
 
 // MARK: - Testing
+
 extension TrackManager {
     var __trackIndex: Int {
         get { return trackIndex }

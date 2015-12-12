@@ -58,7 +58,7 @@ class ControlsView: UIView {
         commandCenter.seekForwardCommand.enabled = false
     }
     
-    // MARK: - ib actions
+    // MARK: - IBAction
     
     @IBAction func playButtonPressed(sender: UIButton) {
         delegate?.playPressed(self)
@@ -88,7 +88,7 @@ class ControlsView: UIView {
         delegate?.repeatPressed(self)
     }
     
-    // MARK: - internal
+    // MARK: - Internal
     
     func setControlsPlaying() {
         playButton.setButtonState(PlayButton.State.Pause)

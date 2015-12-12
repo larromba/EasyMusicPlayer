@@ -796,6 +796,7 @@ class MusicPlayerTests: XCTestCase {
 }
 
 // MARK: - ScrobbleViewDelegate
+
 extension MusicPlayerTests: MusicPlayerDelegate {
     func threwError(sender: EasyMusic.MusicPlayer, error: EasyMusic.MusicPlayer.Error) {
         if expectedError != nil && expectedError == error {
