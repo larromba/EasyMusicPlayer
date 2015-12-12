@@ -44,7 +44,7 @@
 		7FCFE9161BF4A40600981545 /* UIAlertControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */; };
 		7FCFE9181BF4A7C300981545 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9171BF4A7C300981545 /* UIImageExtensions.swift */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
-		7FCFE9291BF4B26D00981545 /* TrackInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE92B1BF4B26D00981545 /* TrackInfo.strings */; };
+		7FCFE9291BF4B26D00981545 /* Track.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE92B1BF4B26D00981545 /* Track.strings */; };
 		7FCFE92C1BF4B27500981545 /* InfoView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE92E1BF4B27500981545 /* InfoView.strings */; };
 		7FCFE92F1BF4B27D00981545 /* PlayerViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE9311BF4B27D00981545 /* PlayerViewController.strings */; };
 		7FCFE9321BF4B28200981545 /* ShareManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FCFE9341BF4B28200981545 /* ShareManager.strings */; };
@@ -138,14 +138,14 @@
 		7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertControllerExtensions.swift; sourceTree = "<group>"; };
 		7FCFE9171BF4A7C300981545 /* UIImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
-		7FCFE92A1BF4B26D00981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/TrackInfo.strings; sourceTree = "<group>"; };
+		7FCFE92A1BF4B26D00981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Track.strings; sourceTree = "<group>"; };
 		7FCFE92D1BF4B27500981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoView.strings; sourceTree = "<group>"; };
 		7FCFE9301BF4B27D00981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PlayerViewController.strings; sourceTree = "<group>"; };
 		7FCFE9331BF4B28200981545 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ShareManager.strings; sourceTree = "<group>"; };
 		7FCFE9351BF4B28700981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/ShareManager.strings; sourceTree = "<group>"; };
 		7FCFE9361BF4B28900981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/PlayerViewController.strings; sourceTree = "<group>"; };
 		7FCFE9371BF4B28C00981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoView.strings; sourceTree = "<group>"; };
-		7FCFE9381BF4B28E00981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/TrackInfo.strings; sourceTree = "<group>"; };
+		7FCFE9381BF4B28E00981545 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Track.strings; sourceTree = "<group>"; };
 		7FCFE93C1BF4BDDA00981545 /* ScrobbleViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrobbleViewTests.swift; sourceTree = "<group>"; };
 		7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InfoViewTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7FD4F5FD1BFB75B600DCE572 /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
@@ -349,7 +349,7 @@
 		7FCFE9221BF4AFD200981545 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				7FCFE92B1BF4B26D00981545 /* TrackInfo.strings */,
+				7FCFE92B1BF4B26D00981545 /* Track.strings */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -597,7 +597,7 @@
 				7FCFE92F1BF4B27D00981545 /* PlayerViewController.strings in Resources */,
 				7FA60C941C110B9000D7D2DC /* ScrobbleView.xib in Resources */,
 				7FA60C971C110B9400D7D2DC /* InfoView.xib in Resources */,
-				7FCFE9291BF4B26D00981545 /* TrackInfo.strings in Resources */,
+				7FCFE9291BF4B26D00981545 /* Track.strings in Resources */,
 				7FF5B2F21BE64E220044FCE5 /* Assets.xcassets in Resources */,
 				7FA60C9A1C110B9800D7D2DC /* ControlsView.xib in Resources */,
 				7F3A5F741C119A2E0065F16F /* GoogleService-Info.plist in Resources */,
@@ -847,13 +847,13 @@
 			name = ControlsView.xib;
 			sourceTree = "<group>";
 		};
-		7FCFE92B1BF4B26D00981545 /* TrackInfo.strings */ = {
+		7FCFE92B1BF4B26D00981545 /* Track.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				7FCFE92A1BF4B26D00981545 /* en */,
 				7FCFE9381BF4B28E00981545 /* Base */,
 			);
-			name = TrackInfo.strings;
+			name = Track.strings;
 			sourceTree = "<group>";
 		};
 		7FCFE92E1BF4B27500981545 /* InfoView.strings */ = {
