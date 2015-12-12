@@ -35,7 +35,7 @@ class ShareManagerTests: XCTestCase {
         let mockPresenter = UIViewController()
         UIApplication.sharedApplication().keyWindow?.rootViewController = mockPresenter
         
-        let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, artwork: nil, url: NSURL())
+        let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, mediaItemArtwork: nil, url: NSURL())
         
         // runnable
         shareManager!.shareTrack(mockTrack, presenter: mockPresenter, completion: nil)
@@ -78,7 +78,7 @@ class ShareManagerTests: XCTestCase {
         let mockPresenter = UIViewController()
         UIApplication.sharedApplication().keyWindow?.rootViewController = mockPresenter
         
-        let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, artwork: nil, url: NSURL())
+        let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, mediaItemArtwork: nil, url: NSURL())
         
         // runnable
         shareManager!.shareTrack(mockTrack, presenter: mockPresenter, completion: nil)

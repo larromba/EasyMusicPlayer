@@ -30,11 +30,12 @@ class TrackManager {
         #if (arch(i386) || arch(x86_64)) && os(iOS) // if simulator
             
             let image = UIImage(named: "arkist-rendezvous-fill_your_coffee")
+            let mediaItemArtwork = MPMediaItemArtwork(image: image!)
             let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
             let tracks = [
-                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, artwork: image, url: url),
-                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, artwork: image, url: url),
-                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, artwork: image, url: url)]
+                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, mediaItemArtwork: mediaItemArtwork, url: url),
+                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, mediaItemArtwork: mediaItemArtwork, url: url),
+                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, mediaItemArtwork: mediaItemArtwork, url: url)]
             return tracks
             
         #else // device
@@ -42,17 +43,12 @@ class TrackManager {
             var tracks: [Track] = []
             let songs = MPMediaQuery.songsQuery().items
             for song: MPMediaItem in songs! {
-                var artwork: UIImage? = nil
-                if let songArtwork = song.artwork {
-                    artwork = songArtwork.imageWithSize(CGSizeMake(512, 512))
-                }
-                
                 if let urlProperty = song.assetURL {
                     let track = Track(
                         artist: song.artist,
                         title: song.title,
                         duration: song.playbackDuration,
-                        artwork: artwork,
+                        mediaItemArtwork: song.artwork,
                         url: urlProperty)
                     
                     tracks.append(track)

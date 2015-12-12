@@ -35,9 +35,10 @@ class InfoViewTests: XCTestCase {
         let artist = "artist"
         let title = "title"
         let duration = 9.0
-        let artwork = UIImage()
+        let image = UIImage()
+        let artwork = MPMediaItemArtwork(image: image)
         let url = NSURL(string: "")!
-        let track = Track(artist: artist, title: title, duration: duration, artwork: artwork, url: url)
+        let track = Track(artist: artist, title: title, duration: duration, mediaItemArtwork: artwork, url: url)
         
         // runnable
         infoView!.setInfoFromTrack(track)
@@ -46,7 +47,7 @@ class InfoViewTests: XCTestCase {
         XCTAssertNotNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
         XCTAssertEqual(infoView!.__artistLabel.text, artist)
         XCTAssertEqual(infoView!.__trackLabel.text, title)
-        XCTAssertEqual(infoView!.__artworkImageView.image, artwork)
+        XCTAssertEqual(infoView!.__artworkImageView.image, image)
     }
     
     func testSetTrackPosition() {

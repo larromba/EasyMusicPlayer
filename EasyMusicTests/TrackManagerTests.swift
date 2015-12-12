@@ -19,12 +19,12 @@ class TrackManagerTests: XCTestCase {
         super.setUp()
         
         mockTracks = [
-            Track(artist: "Artist 1", title: "Title 1", duration: 219, artwork: nil, url: url),
-            Track(artist: "Artist 2", title: "Title 2", duration: 219, artwork: nil, url: url),
-            Track(artist: "Artist 3", title: "Title 3", duration: 219, artwork: nil, url: url),
-            Track(artist: "Artist 4", title: "Title 4", duration: 219, artwork: nil, url: url),
-            Track(artist: "Artist 5", title: "Title 5", duration: 219, artwork: nil, url: url),
-            Track(artist: "Artist 6", title: "Title 6", duration: 219, artwork: nil, url: url)
+            Track(artist: "Artist 1", title: "Title 1", duration: 219, mediaItemArtwork: nil, url: url),
+            Track(artist: "Artist 2", title: "Title 2", duration: 219, mediaItemArtwork: nil, url: url),
+            Track(artist: "Artist 3", title: "Title 3", duration: 219, mediaItemArtwork: nil, url: url),
+            Track(artist: "Artist 4", title: "Title 4", duration: 219, mediaItemArtwork: nil, url: url),
+            Track(artist: "Artist 5", title: "Title 5", duration: 219, mediaItemArtwork: nil, url: url),
+            Track(artist: "Artist 6", title: "Title 6", duration: 219, mediaItemArtwork: nil, url: url)
         ]
         
         trackManager = TrackManager()

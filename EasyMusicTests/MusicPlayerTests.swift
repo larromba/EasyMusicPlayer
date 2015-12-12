@@ -127,7 +127,7 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override var numOfTracks: Int { return 1 }
             override var currentTrack: Track {
-                return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
+                return Track(artist: "", title: "", duration: 0, mediaItemArtwork: nil, url: audioUrl)
             }
         }
         
@@ -182,7 +182,7 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override var numOfTracks: Int { return 1 }
             override var currentTrack: Track {
-                return Track(artist: "", title: "", duration: 0, artwork: nil, url: NSURL(string: "fakeUrl")!)
+                return Track(artist: "", title: "", duration: 0, mediaItemArtwork: nil, url: NSURL(string: "fakeUrl")!)
             }
         }
         
@@ -215,7 +215,7 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override var numOfTracks: Int { return 1 }
             override var currentTrack: Track {
-                return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
+                return Track(artist: "", title: "", duration: 0, mediaItemArtwork: nil, url: audioUrl)
             }
         }
         
@@ -252,7 +252,7 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override var numOfTracks: Int { return 1 }
             override var currentTrack: Track {
-                return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
+                return Track(artist: "", title: "", duration: 0, mediaItemArtwork: nil, url: audioUrl)
             }
         }
         
@@ -291,7 +291,7 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override var numOfTracks: Int { return 1 }
             override var currentTrack: Track {
-                return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
+                return Track(artist: "", title: "", duration: 0, mediaItemArtwork: nil, url: audioUrl)
             }
         }
         
@@ -331,7 +331,7 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override var numOfTracks: Int { return 1 }
             override var currentTrack: Track {
-                return Track(artist: "", title: "", duration: 0, artwork: nil, url: audioUrl)
+                return Track(artist: "", title: "", duration: 0, mediaItemArtwork: nil, url: audioUrl)
             }
         }
         

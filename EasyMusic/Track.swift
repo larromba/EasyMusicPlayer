@@ -7,15 +7,20 @@
 //
 
 import UIKit
+import MediaPlayer
 
 class Track: NSObject {
+    private var mediaItemArtwork: MPMediaItemArtwork?
+
     private(set) var artist: String!
     private(set) var title: String!
     private(set) var duration: NSTimeInterval = 0
-    private(set) var artwork: UIImage!
     private(set) var url: NSURL!
+    var artwork: UIImage? {
+        return mediaItemArtwork?.imageWithSize(CGSizeMake(512, 512))
+    }
     
-    init(var artist: String?, var title: String?, duration: NSTimeInterval, artwork: UIImage?, url: NSURL) {
+    init(var artist: String?, var title: String?, duration: NSTimeInterval, mediaItemArtwork: MPMediaItemArtwork?, url: NSURL) {
         super.init()
         
         if artist == nil || artist!.characters.count == 0 {
@@ -29,7 +34,7 @@ class Track: NSObject {
         self.artist = artist
         self.title = title
         self.duration = duration
-        self.artwork = artwork
+        self.mediaItemArtwork = mediaItemArtwork
         self.url = url
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import MediaPlayer
 @testable import EasyMusic
 
 class TrackInfoTests: XCTestCase {
@@ -20,17 +21,18 @@ class TrackInfoTests: XCTestCase {
         let artist = "artist"
         let title = "title"
         let duration = 9.0
-        let artwork = UIImage()
+        let image = UIImage()
+        let artwork = MPMediaItemArtwork(image: image)
         let url = NSURL(string: "")!
         
         // runnable
-        let track = Track(artist: artist, title: title, duration: duration, artwork: artwork, url: url)
+        let track = Track(artist: artist, title: title, duration: duration, mediaItemArtwork: artwork, url: url)
         
         // tests
         XCTAssertEqual(track.artist, artist)
         XCTAssertEqual(track.title, title)
         XCTAssertEqual(track.duration, duration)
-        XCTAssertEqual(track.artwork, artwork)
+        XCTAssertEqual(track.artwork, image)
         XCTAssertEqual(track.url, url)
     }
 }
