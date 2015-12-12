@@ -25,9 +25,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p9V-09-KvV" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
-                            <rect key="frame" x="223" y="24" width="153" height="151.5"/>
+                            <rect key="frame" x="229" y="29" width="142" height="142"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="p9V-09-KvV" secondAttribute="height" multiplier="83:82" id="aiD-H2-IIQ"/>
+                                <constraint firstAttribute="width" secondItem="p9V-09-KvV" secondAttribute="height" multiplier="1:1" id="aiD-H2-IIQ"/>
                             </constraints>
                             <state key="normal" backgroundImage="StopButton"/>
                             <connections>
@@ -38,8 +38,8 @@
                     <color key="backgroundColor" red="0.32372932904880058" green="0.92807460678917164" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="p9V-09-KvV" firstAttribute="centerX" secondItem="Tbk-dt-aDz" secondAttribute="centerX" id="2kl-E6-06b"/>
-                        <constraint firstAttribute="bottom" secondItem="p9V-09-KvV" secondAttribute="bottom" constant="24" id="8FV-5U-W6P"/>
-                        <constraint firstItem="p9V-09-KvV" firstAttribute="top" secondItem="Tbk-dt-aDz" secondAttribute="top" constant="24" id="9iw-Jb-F7G"/>
+                        <constraint firstAttribute="bottom" secondItem="p9V-09-KvV" secondAttribute="bottom" constant="29" id="8FV-5U-W6P"/>
+                        <constraint firstItem="p9V-09-KvV" firstAttribute="top" secondItem="Tbk-dt-aDz" secondAttribute="top" constant="29" id="9iw-Jb-F7G"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="REt-Ws-5mL">
@@ -55,7 +55,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghJ-k2-r6d" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
-                            <rect key="frame" x="65" y="29" width="142" height="142"/>
+                            <rect key="frame" x="36" y="29" width="142" height="142"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="ghJ-k2-r6d" secondAttribute="height" multiplier="1:1" id="FvC-Zt-NOh"/>
                             </constraints>
@@ -65,7 +65,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dgv-XX-Xc3" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
-                            <rect key="frame" x="392" y="29" width="143" height="143"/>
+                            <rect key="frame" x="421" y="29" width="143" height="143"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Dgv-XX-Xc3" secondAttribute="height" multiplier="1:1" id="I1Z-v4-DdO"/>
                             </constraints>
@@ -78,17 +78,17 @@
                     <color key="backgroundColor" red="0.72941176470588232" green="0.61960784313725492" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="Dgv-XX-Xc3" secondAttribute="bottom" constant="28.5" id="7WM-ck-bZY"/>
-                        <constraint firstItem="Dgv-XX-Xc3" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" priority="750" constant="164" id="9tN-Ll-ROa"/>
-                        <constraint firstItem="V7J-PO-NB5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ghJ-k2-r6d" secondAttribute="trailing" constant="10" id="Fta-ND-lHS"/>
+                        <constraint firstItem="Dgv-XX-Xc3" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" priority="250" constant="192" id="9tN-Ll-ROa"/>
+                        <constraint firstItem="V7J-PO-NB5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ghJ-k2-r6d" secondAttribute="trailing" priority="250" constant="40" id="Fta-ND-lHS"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Dgv-XX-Xc3" secondAttribute="trailing" constant="10" id="GID-rD-rt5"/>
                         <constraint firstItem="ghJ-k2-r6d" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="REt-Ws-5mL" secondAttribute="leading" constant="10" id="XIM-IB-c1U"/>
                         <constraint firstItem="V7J-PO-NB5" firstAttribute="top" secondItem="REt-Ws-5mL" secondAttribute="top" constant="19" id="XZL-Tv-Y06"/>
-                        <constraint firstItem="Dgv-XX-Xc3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="V7J-PO-NB5" secondAttribute="trailing" constant="10" id="XaG-XR-QEZ"/>
+                        <constraint firstItem="Dgv-XX-Xc3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="V7J-PO-NB5" secondAttribute="trailing" priority="250" constant="40" id="XaG-XR-QEZ"/>
                         <constraint firstItem="ghJ-k2-r6d" firstAttribute="top" secondItem="REt-Ws-5mL" secondAttribute="top" constant="29" id="YCy-fn-X9Z"/>
                         <constraint firstAttribute="bottom" secondItem="V7J-PO-NB5" secondAttribute="bottom" constant="18.5" id="fTz-5f-CGX"/>
                         <constraint firstAttribute="bottom" secondItem="ghJ-k2-r6d" secondAttribute="bottom" constant="29.5" id="fVn-sS-zBJ"/>
                         <constraint firstItem="Dgv-XX-Xc3" firstAttribute="top" secondItem="REt-Ws-5mL" secondAttribute="top" constant="29" id="jv4-hs-0rt"/>
-                        <constraint firstItem="ghJ-k2-r6d" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" priority="750" constant="-164" id="qbO-es-D6r"/>
+                        <constraint firstItem="ghJ-k2-r6d" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" priority="250" constant="-193" id="qbO-es-D6r"/>
                         <constraint firstItem="V7J-PO-NB5" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" id="xlc-S9-4lh"/>
                     </constraints>
                 </view>
@@ -96,9 +96,9 @@
                     <rect key="frame" x="0.0" y="400" width="600" height="200"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Je9-vB-a58" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
-                            <rect key="frame" x="223" y="24" width="153" height="151.5"/>
+                            <rect key="frame" x="229" y="29" width="142" height="142"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="Je9-vB-a58" secondAttribute="height" multiplier="83:82" id="1HG-dw-m3d"/>
+                                <constraint firstAttribute="width" secondItem="Je9-vB-a58" secondAttribute="height" multiplier="1:1" id="1HG-dw-m3d"/>
                             </constraints>
                             <state key="normal" backgroundImage="ShuffleButton"/>
                             <connections>
@@ -106,7 +106,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6a-0C-6mh" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
-                            <rect key="frame" x="489" y="129" width="46" height="46"/>
+                            <rect key="frame" x="518" y="125" width="46" height="46"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="2Wj-aj-i6Z"/>
                                 <constraint firstAttribute="height" constant="46" id="ydm-p8-Q8F"/>
@@ -117,7 +117,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GnC-ST-nB8" customClass="RepeatButton" customModule="EasyMusic" customModuleProvider="target">
-                            <rect key="frame" x="65" y="129" width="46" height="47"/>
+                            <rect key="frame" x="36" y="124" width="46" height="47"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="46" id="bie-lQ-9jC"/>
                             </constraints>
@@ -133,12 +133,12 @@
                     <color key="backgroundColor" red="1" green="0.62365473644003311" blue="0.78917564547456187" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="GnC-ST-nB8" firstAttribute="bottom" secondItem="Je9-vB-a58" secondAttribute="bottom" id="3Pv-up-FxL"/>
-                        <constraint firstItem="GnC-ST-nB8" firstAttribute="top" secondItem="F6a-0C-6mh" secondAttribute="top" id="Jl9-LW-bhh"/>
-                        <constraint firstAttribute="bottom" secondItem="Je9-vB-a58" secondAttribute="bottom" constant="24" id="Q5N-eS-gkB"/>
+                        <constraint firstItem="GnC-ST-nB8" firstAttribute="top" secondItem="F6a-0C-6mh" secondAttribute="top" constant="-1" id="Jl9-LW-bhh"/>
+                        <constraint firstAttribute="bottom" secondItem="Je9-vB-a58" secondAttribute="bottom" constant="29" id="Q5N-eS-gkB"/>
                         <constraint firstAttribute="trailing" secondItem="F6a-0C-6mh" secondAttribute="trailing" constant="8" id="Td8-yA-Lkh"/>
                         <constraint firstItem="Je9-vB-a58" firstAttribute="centerX" secondItem="TZB-Lb-T4F" secondAttribute="centerX" id="XDd-u8-THb"/>
                         <constraint firstItem="F6a-0C-6mh" firstAttribute="bottom" secondItem="Je9-vB-a58" secondAttribute="bottom" id="guI-Yy-QbW"/>
-                        <constraint firstItem="Je9-vB-a58" firstAttribute="top" secondItem="TZB-Lb-T4F" secondAttribute="top" constant="24" id="l4e-eo-0gA"/>
+                        <constraint firstItem="Je9-vB-a58" firstAttribute="top" secondItem="TZB-Lb-T4F" secondAttribute="top" constant="29" id="l4e-eo-0gA"/>
                         <constraint firstAttribute="bottom" secondItem="F6a-0C-6mh" secondAttribute="bottom" constant="8" id="zA1-Zg-feX"/>
                     </constraints>
                     <variation key="default">
