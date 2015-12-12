@@ -29,11 +29,12 @@ class TrackManager {
     func createPlaylist() -> [Track] {
         #if (arch(i386) || arch(x86_64)) && os(iOS) // if simulator
             
+            let image = UIImage(named: "arkist-rendezvous-fill_your_coffee")
             let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
             let tracks = [
-                Track(artist: "Artist 1", title: "Title 1", duration: 219, artwork: nil, url: url),
-                Track(artist: "Artist 2", title: "Title 2", duration: 219, artwork: nil, url: url),
-                Track(artist: "Artist 3", title: "Title 3", duration: 219, artwork: nil, url: url)]
+                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, artwork: image, url: url),
+                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, artwork: image, url: url),
+                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, artwork: image, url: url)]
             return tracks
             
         #else // device

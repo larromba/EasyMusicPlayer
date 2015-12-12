@@ -34,9 +34,9 @@ class InfoView: UIView {
     // MARK: - Internal
     
     func setInfoFromTrack(track: Track) {
-        artistLabel.text = "Arkist"//track.artist
-        trackLabel.text = "Fill Your Coffee"//track.title
-        artworkImageView.image = UIImage(named: "arkist-rendezvous-fill_your_coffee") //track.artwork
+        artistLabel.text = track.artist
+        trackLabel.text = track.title
+        artworkImageView.image = track.artwork
         
         var mediaItemArtwork: MPMediaItemArtwork!
         if let artwork = track.artwork {
