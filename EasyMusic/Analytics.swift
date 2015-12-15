@@ -27,7 +27,7 @@ class Analytics {
         
         #if DEBUG
             gai.dryRun = true
-            gai.logger.logLevel = GAILogLevel.None
+            gai.logger.logLevel = GAILogLevel.Warning
         #else
             gai.logger.logLevel = GAILogLevel.None
         #endif
@@ -57,8 +57,9 @@ class Analytics {
     
     func sendScreenNameEvent(screenName: String) {
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: screenName)
         let item = GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject]
+        
+        tracker.set(kGAIScreenName, value: screenName)
         tracker.send(item)
     }
     
