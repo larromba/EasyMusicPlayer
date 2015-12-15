@@ -41,4 +41,8 @@ struct Constant {
     struct Storyboard {
          static let Player = "Player"
     }
+    
+    struct Url {
+        static let AppStoreLink = "https://itunes.apple.com/app/id1067558718"
+    }
 }

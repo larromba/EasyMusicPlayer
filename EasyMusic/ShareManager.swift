@@ -48,6 +48,7 @@ class ShareManager: NSObject {
                 track.title,
                 NSBundle.appName())
             share.setInitialText(text)
+            share.addURL(NSURL(string: Constant.Url.AppStoreLink))
             share.completionHandler = { (result:SLComposeViewControllerResult) in
                 switch result {
                 case .Done:
