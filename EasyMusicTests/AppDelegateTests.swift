@@ -28,23 +28,17 @@ class AppDelegateTests: XCTestCase {
         Analytics.__shared = Analytics()
     }
     
-    func testSessionAnalytics() {
+    func testStartSession1() {
         /**
         expectations
-        - analytics event sent
+        - session started
         */
-        analyticsExpectation = expectationWithDescription("analytics.endSession()")
+        analyticsExpectation = expectationWithDescription("analytics.startSession()")
         
         // mocks
         class MockAnalytics: Analytics {
-            var sessionStarted: Bool = false
             override func startSession() {
-                sessionStarted = true
-            }
-            override func endSession() {
-                if sessionStarted == true {
-                    analyticsExpectation!.fulfill()
-                }
+                analyticsExpectation!.fulfill()
             }
         }
         
@@ -55,6 +49,57 @@ class AppDelegateTests: XCTestCase {
         
         // runnable
         appDelegate!.applicationWillEnterForeground(mockApplication)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testStartSession2() {
+        /**
+        expectations
+        - session started
+        */
+        analyticsExpectation = expectationWithDescription("analytics.startSession()")
+        
+        // mocks
+        class MockAnalytics: Analytics {
+            override func startSession() {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics.__shared = mockAnalytics
+        
+        let mockApplication = UIApplication.sharedApplication()
+        
+        // runnable
+        appDelegate!.application(mockApplication, didFinishLaunchingWithOptions: nil)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testEndSession() {
+        /**
+        expectations
+        - session ended
+        */
+        analyticsExpectation = expectationWithDescription("analytics.endSession()")
+        
+        // mocks
+        class MockAnalytics: Analytics {
+            override func endSession() {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics.__shared = mockAnalytics
+        
+        let mockApplication = UIApplication.sharedApplication()
+        
+        // runnable
         appDelegate!.applicationDidEnterBackground(mockApplication)
         
         // tests
