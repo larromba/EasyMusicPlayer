@@ -385,7 +385,6 @@ class MusicPlayerTests: XCTestCase {
         expectations
         - track manager stops, cue's previous track, then plays
         */
-        trackManagerExpectation = expectationWithDescription("trackManager.previous()")
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
@@ -401,7 +400,6 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override func cuePrevious() -> Bool {
                 methodOrder!.append(1)
-                trackManagerExpectation!.fulfill()
                 return true
             }
         }
@@ -417,10 +415,7 @@ class MusicPlayerTests: XCTestCase {
         musicPlayer!.previous()
         
         // tests
-        waitForExpectationsWithTimeout(1, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertMethodOrderCorrect(methodOrder!)
-        })
+        XCTAssertMethodOrderCorrect(methodOrder!)
     }
     
     func testPreviousFalse() {
@@ -461,7 +456,6 @@ class MusicPlayerTests: XCTestCase {
         expectations
         - track manager stops, cue's next track, then plays
         */
-        trackManagerExpectation = expectationWithDescription("trackManager.next()")
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
@@ -493,10 +487,7 @@ class MusicPlayerTests: XCTestCase {
         musicPlayer!.next()
         
         // tests
-        waitForExpectationsWithTimeout(1, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertMethodOrderCorrect(methodOrder!)
-        })
+        XCTAssertMethodOrderCorrect(methodOrder!)
     }
     
     func testNextFalse() {
@@ -533,6 +524,46 @@ class MusicPlayerTests: XCTestCase {
             waitExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(1, handler: { error in })
+    }
+    
+    func testNextTrackPlaysAutomatically() {
+        /**
+         expectations
+         - next track should be cued
+         - next track should play
+         */
+        trackManagerExpectation = expectationWithDescription("trackManager.cueNext()")
+        musicPlayerExpectation = expectationWithDescription("audioPlayer.play()")
+        
+        // mocks
+        class MockAudioPlayer: AVAudioPlayer {
+            override private func play() -> Bool {
+                musicPlayerExpectation!.fulfill()
+                return true
+            }
+            
+        }
+        
+        class MockTrackManager: TrackManager {
+            override func cueNext() -> Bool {
+                trackManagerExpectation!.fulfill()
+                return super.cueNext()
+            }
+        }
+        
+        let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = musicPlayer
+        musicPlayer!.__player = mockAudioPlayer
+        
+        let mockTrackManager = MockTrackManager()
+        mockTrackManager.__tracks = mockPlaylist!
+        musicPlayer!.__trackManager = mockTrackManager
+        
+        // runnable
+        mockAudioPlayer.playAtTime(218)
+        
+        // tests
+        waitForExpectationsWithTimeout(3, handler: { error in })
     }
     
     func testPlayerTime() {
