@@ -303,6 +303,22 @@ class PlayerViewControllerTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
+    func testNoVolumeErrorIsThrown() {
+        /**
+         expectations
+         - error alert is thrown
+         */
+         
+         // mocks
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+        
+        // runnable
+        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.Error.NoVolume)
+        
+        // tests
+        XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
+    }
+    
     func testPlayErrorGeneric() {
         /**
         expectations

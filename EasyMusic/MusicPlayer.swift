@@ -53,6 +53,9 @@ class MusicPlayer: NSObject {
             return 0.0
         }
     }
+    var volume: Float {
+        return AVAudioSession.sharedInstance().outputVolume
+    }
     
     enum State {
         case Playing
@@ -65,6 +68,7 @@ class MusicPlayer: NSObject {
         case Decode
         case PlayerInit
         case NoMusic
+        case NoVolume
         case AVError
     }
     
@@ -193,6 +197,11 @@ class MusicPlayer: NSObject {
             return
         }
         
+        guard volume > 0.0 else {
+            threwError(Error.NoVolume)
+            return
+        }
+        
         if player == nil || player!.url!.absoluteString != currentTrack.url.absoluteString {
             do {
                 try player = AVAudioPlayer(contentsOfURL: currentTrack.url)
@@ -208,6 +217,8 @@ class MusicPlayer: NSObject {
             threwError(Error.AVError)
             return
         }
+        
+        log("vol \(AVAudioSession.sharedInstance().outputVolume)")
         
         success = player!.play()
         guard success == true else {

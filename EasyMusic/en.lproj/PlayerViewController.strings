@@ -7,8 +7,12 @@
 */
 
 "no music error title" = "Error";
-"no music error msg" = "You have no music!";
+"no music error msg" = "You have no music";
 "no music error button" = "OK";
+
+"no volume error title" = "Error";
+"no volume error msg" = "Your volume is too low";
+"no volume error button" = "OK";
 
 "track error title" = "Error";
 "track error msg" = "Couldn't play '%@'";

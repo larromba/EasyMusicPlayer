@@ -159,7 +159,14 @@ extension PlayerViewController: MusicPlayerDelegate {
                     self.checkTracksAvailable()
             })
             break
+        case .NoVolume:
+            Analytics.shared.sendAlertEvent("no_volume",
+                classId: self.className())
             
+            alert = AlertController.createAlertWithTitle(localized("no volume error title"),
+                message: localized("no volume error msg"),
+                buttonTitle: localized("no volume error button"))
+            break
         case .Decode, .PlayerInit, .AVError:
             Analytics.shared.sendAlertEvent("track",
                 classId: self.className())
