@@ -18,7 +18,7 @@ struct Constant {
     struct Bundle {
         static let BundleDisplayName = "CFBundleName"
         static let BundleIdentifier = "CFBundleIdentifier"
-        static let HardCodedMainBundleIdentifier = "com.pinkchicken.EasyMusic"
+        static let HardCodedMainBundleIdentifier = "com.pinkchicken.easymusicplayer"
     }
     
     struct Image {

@@ -3,11 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>TRACKING_ID</key>
+	<string>UA-71014283-2</string>
+	<key>TRACKING_ID_DEV</key>
 	<string>UA-71014283-1</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.pinkchicken.EasyMusic</string>
+	<string>com.pinkchicken.easymusicplayer</string>
 	<key>IS_ADS_ENABLED</key>
 	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
