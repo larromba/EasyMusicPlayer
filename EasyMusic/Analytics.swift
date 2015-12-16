@@ -12,21 +12,36 @@ import Google
 class Analytics {
     private(set) static var shared = Analytics()
     private var sessionStartDate: NSDate?
+    private var isSetup: Bool = false
+    var dryRun: Bool = false
+    
+    enum Error: ErrorType {
+        case Setup
+    }
     
     // MARK: - Internal
     
-    func setup() {
-        // Configure tracker from GoogleService-Info.plist.
+    func setup() throws {
         var configureError: NSError?
         GGLContext.sharedInstance().configureWithError(&configureError)
-        safeAssert(configureError == nil, "Error configuring Google services: \(configureError)")
         
-        // Optional: configure GAI options.
+        if configureError != nil {
+            log("Error configuring Google services: \(configureError)")
+            throw Error.Setup
+        }
+        
+        isSetup = true
+        
         let gai = GAI.sharedInstance()
-        gai.trackUncaughtExceptions = true  // report uncaught exceptions
-        
+        gai.trackUncaughtExceptions = true
+    
         #if DEBUG
-            gai.dryRun = true
+            let path = NSBundle.safeMainBundle().pathForResource("GoogleService-Info", ofType: "plist")!
+            let data = NSDictionary(contentsOfFile: path)!
+            let devId = data["TRACKING_ID_DEV"] as! String
+
+            gai.defaultTracker = gai.trackerWithTrackingId(devId)
+            gai.dryRun = dryRun
             gai.logger.logLevel = GAILogLevel.Warning
         #else
             gai.logger.logLevel = GAILogLevel.None
@@ -34,6 +49,10 @@ class Analytics {
     }
     
     func startSession() {
+        guard isSetup == true else {
+            return
+        }
+        
         sessionStartDate = NSDate()
     }
     
@@ -44,23 +63,22 @@ class Analytics {
         
         let currentDate = NSDate()
         let sessionTimeSecs = currentDate.timeIntervalSinceDate(sessionStartDate!)
-        let sessionTimeMilliSecs = (sessionTimeSecs * 1000)
-        let tracker = GAI.sharedInstance().defaultTracker
+        let sessionTimeMilliSecs = NSNumber(unsignedInteger: UInt(sessionTimeSecs * 1000.0))
         let item = GAIDictionaryBuilder.createTimingWithCategory("app",
             interval: sessionTimeMilliSecs,
             name: "session",
             label: nil).build() as [NSObject : AnyObject]
         
-        tracker.send(item)
+        send(item)
         sessionStartDate = nil
     }
     
     func sendScreenNameEvent(screenName: String) {
         let tracker = GAI.sharedInstance().defaultTracker
+        tracker.set(kGAIScreenName, value: screenName)
         let item = GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject]
         
-        tracker.set(kGAIScreenName, value: screenName)
-        tracker.send(item)
+        send(item)
     }
     
     func sendButtonPressEvent(event: String, classId: String) {
@@ -82,12 +100,20 @@ class Analytics {
     // MARK: - Private
 
     private func sendEvent(event: String, action: String, category: String) {
-        let tracker = GAI.sharedInstance().defaultTracker
         let item = GAIDictionaryBuilder.createEventWithCategory(category,
             action: action,
             label: event,
             value: nil).build() as [NSObject : AnyObject]
+       
+        send(item)
+    }
+    
+    private func send(item: [NSObject : AnyObject]) {
+        guard isSetup == true else {
+            return
+        }
         
+        let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(item)
     }
 }
@@ -98,5 +124,13 @@ extension Analytics {
     class var __shared: Analytics {
         set { shared = newValue }
         get { return shared }
+    }
+    var __defaultTracker: GAITracker {
+        set { GAI.sharedInstance().defaultTracker = newValue }
+        get { return GAI.sharedInstance().defaultTracker }
+    }
+    var __isSetup: Bool {
+        set { isSetup = newValue }
+        get { return isSetup }
     }
 }

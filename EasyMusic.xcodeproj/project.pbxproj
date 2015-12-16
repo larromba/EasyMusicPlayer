@@ -10,6 +10,7 @@
 		75DCB5006989A088E30241F0 /* Pods_EasyMusicUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA23785C58A7CE2142722051 /* Pods_EasyMusicUITests.framework */; };
 		7F279C741C0220720000C4B0 /* MusicPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F279C731C0220720000C4B0 /* MusicPlayerTests.swift */; };
 		7F377B451C1C78500004EBDC /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F377B441C1C78500004EBDC /* Label.swift */; };
+		7F377B471C20B66E0004EBDC /* AnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F377B461C20B66E0004EBDC /* AnalyticsTests.swift */; };
 		7F3A5F741C119A2E0065F16F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F3A5F731C119A2E0065F16F /* GoogleService-Info.plist */; };
 		7F3A5F771C119AFE0065F16F /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3A5F761C119AFE0065F16F /* Analytics.swift */; };
 		7F4090531BF65B5E00F449FD /* ControlsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090521BF65B5E00F449FD /* ControlsViewTests.swift */; };
@@ -104,6 +105,7 @@
 		78B52B85C35D314E98B8596D /* Pods-EasyMusicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EasyMusicTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EasyMusicTests/Pods-EasyMusicTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7F279C731C0220720000C4B0 /* MusicPlayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicPlayerTests.swift; sourceTree = "<group>"; };
 		7F377B441C1C78500004EBDC /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		7F377B461C20B66E0004EBDC /* AnalyticsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsTests.swift; sourceTree = "<group>"; };
 		7F3A5F731C119A2E0065F16F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7F3A5F761C119AFE0065F16F /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		7F4090521BF65B5E00F449FD /* ControlsViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsViewTests.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				7F409B991C04ED4500DFD6C4 /* TrackManagerTests.swift */,
 				7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */,
 				7F92B6F61C1A0F7E00A5273A /* UserDataTests.swift */,
+				7F377B461C20B66E0004EBDC /* AnalyticsTests.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -791,6 +794,7 @@
 				7F92B6F71C1A0F7E00A5273A /* UserDataTests.swift in Sources */,
 				7FF5B3001BE64E220044FCE5 /* TrackInfoTests.swift in Sources */,
 				7F4090661BFA091C00F449FD /* PlayerViewControllerTests.swift in Sources */,
+				7F377B471C20B66E0004EBDC /* AnalyticsTests.swift in Sources */,
 				7F409B9A1C04ED4500DFD6C4 /* TrackManagerTests.swift in Sources */,
 				7F40905F1BF92F7A00F449FD /* PlayButtonTests.swift in Sources */,
 				7F409B9E1C0506F300DFD6C4 /* XCTestExtension.swift in Sources */,
@@ -997,7 +1001,7 @@
 				INFOPLIST_FILE = EasyMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1017,7 +1021,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
