@@ -13,8 +13,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        Analytics.shared.setup()
-                
+        #if DEBUG
+            log("\nDEBUG BUILD\n")
+        #endif
+        
+        do {
+            try Analytics.shared.setup()
+        } catch _ {
+            log("Analytics setup failed")
+        }
+        
+        Analytics.shared.startSession()
+        
         return true
     }
 
