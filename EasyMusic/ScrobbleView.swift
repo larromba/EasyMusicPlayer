@@ -17,6 +17,8 @@ protocol ScrobbleViewDelegate {
 class ScrobbleView: UIView {
     @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
     @IBOutlet private weak var barView: UIView!
+
+    private var didLayoutSubviews: Bool = false
     
     var delegate: ScrobbleViewDelegate?
     override var userInteractionEnabled: Bool {
@@ -47,11 +49,15 @@ class ScrobbleView: UIView {
     override func awakeFromNib() {
         userInteractionEnabled = false
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        moveScrobblerToPoint(0.0)
+        // ipad compatible
+        if didLayoutSubviews == false {
+            didLayoutSubviews = true
+            moveScrobblerToPoint(0.0)
+        }
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
