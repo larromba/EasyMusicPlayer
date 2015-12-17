@@ -217,9 +217,7 @@ class MusicPlayer: NSObject {
             threwError(Error.AVError)
             return
         }
-        
-        log("vol \(AVAudioSession.sharedInstance().outputVolume)")
-        
+                
         success = player!.play()
         guard success == true else {
             threwError(Error.AVError)
