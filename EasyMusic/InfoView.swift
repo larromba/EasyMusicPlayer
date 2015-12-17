@@ -11,11 +11,11 @@ import MediaPlayer
 
 @IBDesignable
 class InfoView: UIView {
-    @IBOutlet private weak var artistLabel: UILabel!
-    @IBOutlet private weak var trackLabel: UILabel!
-    @IBOutlet private weak var trackPositionLabel: UILabel!
-    @IBOutlet private weak var timeLabel: UILabel!
-    @IBOutlet private weak var artworkImageView: UIImageView!
+    @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var trackLabel: UILabel!
+    @IBOutlet weak var trackPositionLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var artworkImageView: UIImageView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -86,14 +86,4 @@ class InfoView: UIView {
         return String(
             format: localized("time interval format"), hours, minutes, seconds)
     }
-}
-
-// MARK: - Testing
-
-extension InfoView {
-    var __artistLabel: UILabel { return artistLabel }
-    var __trackLabel: UILabel { return trackLabel }
-    var __trackPositionLabel: UILabel { return trackPositionLabel }
-    var __timeLabel: UILabel { return timeLabel }
-    var __artworkImageView: UIImageView { return artworkImageView }
 }

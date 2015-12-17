@@ -21,13 +21,13 @@ protocol ControlsViewDelegate {
 
 @IBDesignable
 class ControlsView: UIView {
-    @IBOutlet private weak var playButton: PlayButton!
-    @IBOutlet private weak var stopButton: UIButton!
-    @IBOutlet private weak var prevButton: UIButton!
-    @IBOutlet private weak var nextButton: UIButton!
-    @IBOutlet private weak var shuffleButton: UIButton!
-    @IBOutlet private weak var shareButton: UIButton!
-    @IBOutlet private weak var repeatButton: RepeatButton!
+    @IBOutlet weak var playButton: PlayButton!
+    @IBOutlet weak var stopButton: UIButton!
+    @IBOutlet weak var prevButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var shuffleButton: UIButton!
+    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var repeatButton: RepeatButton!
     
     var delegate: ControlsViewDelegate?
     var repeatButtonState: RepeatButton.State {
@@ -164,16 +164,4 @@ class ControlsView: UIView {
     func enableRepeat(enable: Bool) {
         repeatButton.enabled = enable
     }
-}
-
-// MARK: - Testing
-
-extension ControlsView {
-    var __playButton: PlayButton { return playButton }
-    var __stopButton: UIButton { return stopButton }
-    var __prevButton: UIButton { return prevButton }
-    var __nextButton: UIButton { return nextButton }
-    var __shuffleButton: UIButton { return shuffleButton }
-    var __shareButton: UIButton { return shareButton }
-    var __repeatButton: RepeatButton { return repeatButton }
 }

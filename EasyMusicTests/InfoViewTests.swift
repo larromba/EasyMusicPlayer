@@ -45,9 +45,9 @@ class InfoViewTests: XCTestCase {
         
         // tests
         XCTAssertNotNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
-        XCTAssertEqual(infoView!.__artistLabel.text, artist)
-        XCTAssertEqual(infoView!.__trackLabel.text, title)
-        XCTAssertEqual(infoView!.__artworkImageView.image, image)
+        XCTAssertEqual(infoView!.artistLabel.text, artist)
+        XCTAssertEqual(infoView!.trackLabel.text, title)
+        XCTAssertEqual(infoView!.artworkImageView.image, image)
     }
     
     func testSetTrackPosition() {
@@ -60,7 +60,7 @@ class InfoViewTests: XCTestCase {
         infoView!.setTrackPosition(2, totalTracks: 3)
         
         // tests
-        XCTAssertEqual(infoView!.__trackPositionLabel.text, "2 of 3")
+        XCTAssertEqual(infoView!.trackPositionLabel.text, "2 of 3")
     }
     
     func testClearTrackInfo() {
@@ -70,22 +70,22 @@ class InfoViewTests: XCTestCase {
         */
         
         // mocks
-        infoView!.__artistLabel.text = "artist"
-        infoView!.__trackLabel.text = "title"
-        infoView!.__trackPositionLabel.text = "1 of 1"
-        infoView!.__timeLabel.text = "01:00:00"
-        infoView!.__artworkImageView.image = UIImage()
+        infoView!.artistLabel.text = "artist"
+        infoView!.trackLabel.text = "title"
+        infoView!.trackPositionLabel.text = "1 of 1"
+        infoView!.timeLabel.text = "01:00:00"
+        infoView!.artworkImageView.image = UIImage()
         
         // runnable
         infoView!.clearInfo()
         
         // tests
         XCTAssertNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
-        XCTAssertNil(infoView!.__artistLabel.text)
-        XCTAssertNil(infoView!.__trackLabel.text)
-        XCTAssertNil(infoView!.__trackPositionLabel.text)
-        XCTAssertEqual(infoView!.__timeLabel.text, "00:00:00")
-        XCTAssertNil(infoView!.__artworkImageView.image)
+        XCTAssertNil(infoView!.artistLabel.text)
+        XCTAssertNil(infoView!.trackLabel.text)
+        XCTAssertNil(infoView!.trackPositionLabel.text)
+        XCTAssertEqual(infoView!.timeLabel.text, "00:00:00")
+        XCTAssertNil(infoView!.artworkImageView.image)
     }
     
     func testSetTime10Secs() {
@@ -98,7 +98,7 @@ class InfoViewTests: XCTestCase {
         infoView!.setTime(10, duration: 0)
         
         // tests
-        XCTAssertEqual(infoView!.__timeLabel.text, "00:00:10")
+        XCTAssertEqual(infoView!.timeLabel.text, "00:00:10")
     }
     
     func testSetTime10Mins() {
@@ -111,7 +111,7 @@ class InfoViewTests: XCTestCase {
         infoView!.setTime(10 * 60, duration: 0)
         
         // tests
-        XCTAssertEqual(infoView!.__timeLabel.text, "00:10:00")
+        XCTAssertEqual(infoView!.timeLabel.text, "00:10:00")
     }
     
     func testSetTime10Hrs() {
@@ -124,6 +124,6 @@ class InfoViewTests: XCTestCase {
         infoView!.setTime(10 * 60 * 60, duration: 0)
         
         // tests
-        XCTAssertEqual(infoView!.__timeLabel.text, "10:00:00")
+        XCTAssertEqual(infoView!.timeLabel.text, "10:00:00")
     }
 }

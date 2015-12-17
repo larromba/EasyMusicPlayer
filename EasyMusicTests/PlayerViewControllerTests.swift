@@ -483,7 +483,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
-        XCTAssertFalse(playerViewController!.__controlsView.__nextButton.enabled)
+        XCTAssertFalse(playerViewController!.__controlsView.nextButton.enabled)
     }
     
     func testNextRepeatAll() {
@@ -505,7 +505,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
-        XCTAssertTrue(playerViewController!.__controlsView.__nextButton.enabled)
+        XCTAssertTrue(playerViewController!.__controlsView.nextButton.enabled)
     }
     
     func testPrevious() {
@@ -556,7 +556,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
-        XCTAssertFalse(playerViewController!.__controlsView.__prevButton.enabled)
+        XCTAssertFalse(playerViewController!.__controlsView.prevButton.enabled)
     }
     
     func testPreviousRepeatAll() {
@@ -578,7 +578,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
         
         // tests
-        XCTAssertTrue(playerViewController!.__controlsView.__prevButton.enabled)
+        XCTAssertTrue(playerViewController!.__controlsView.prevButton.enabled)
     }
 
     func testStop() {
@@ -731,7 +731,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockShareManager: ShareManager {
-            override func shareTrack(track: Track, presenter: UIViewController, completion: ((ShareManager.Result, String?) -> Void)?) {
+            override func shareTrack(track: Track, presenter: UIViewController, sender: UIView, completion: ((ShareManager.Result, String?) -> Void)?) {
                 if sharedTrack == track {
                     shareManagerExpectation!.fulfill()
                 }
@@ -772,7 +772,7 @@ class PlayerViewControllerTests: XCTestCase {
 
         // mocks
         let mockControlsView = ControlsView()
-        mockControlsView.__repeatButton.setButtonState(RepeatButton.State.All)
+        mockControlsView.repeatButton.setButtonState(RepeatButton.State.All)
         playerViewController!.__controlsView = mockControlsView
         mockControlsView.delegate = playerViewController
         
@@ -805,7 +805,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!.viewDidLoad()
         
         // tests
-        XCTAssertEqual(playerViewController!.__controlsView.__repeatButton.buttonState, expectedRepeatButtonState)
+        XCTAssertEqual(playerViewController!.__controlsView.repeatButton.buttonState, expectedRepeatButtonState)
     }
     
     func testScrobbleTouchMoved() {

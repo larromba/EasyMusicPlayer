@@ -1,8 +1,8 @@
 //
-//  PlayerButtonTests.swift
+//  ShuffleButtonTests.swift
 //  EasyMusic
 //
-//  Created by Lee Arromba on 10/12/2015.
+//  Created by Lee Arromba on 16/12/2015.
 //  Copyright © 2015 Lee Arromba. All rights reserved.
 //
 
@@ -12,7 +12,7 @@ import UIKit
 
 private var animationExpectation: XCTestExpectation?
 
-class PlayerButtonTests: XCTestCase {
+class ShuffleButtonTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         
@@ -21,31 +21,31 @@ class PlayerButtonTests: XCTestCase {
     
     func testAnimation() {
         /**
-         expectations
-         - animation is added
-         */
+        expectations
+        - animation is added
+        */
         animationExpectation = expectationWithDescription("layer.addAnimation(_, _)")
-
+        
         // mocks
         class MockLayer: CALayer {
             override func addAnimation(anim: CAAnimation, forKey key: String?) {
                 let basicAnim = anim as! CABasicAnimation
-                if basicAnim.keyPath == "transform.scale" {
+                if basicAnim.keyPath == "transform.rotation.z" {
                     animationExpectation!.fulfill()
                 }
             }
         }
         
-        class MockPlayerButton: PlayerButton {
+        class MockShuffleButton: ShuffleButton {
             override var layer: CALayer {
                 return MockLayer()
             }
         }
         
-        let mockPlayerButton = MockPlayerButton()
+        let mockShuffleButton = MockShuffleButton()
         
         // runnable
-        mockPlayerButton.touchUpInside()
+        mockShuffleButton.touchUpInside()
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })

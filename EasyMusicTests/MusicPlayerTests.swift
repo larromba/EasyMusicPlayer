@@ -471,7 +471,6 @@ class MusicPlayerTests: XCTestCase {
         class MockTrackManager: TrackManager {
             override func cueNext() -> Bool {
                 methodOrder!.append(1)
-                trackManagerExpectation!.fulfill()
                 return true
             }
         }

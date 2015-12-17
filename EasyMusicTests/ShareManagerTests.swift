@@ -38,7 +38,7 @@ class ShareManagerTests: XCTestCase {
         let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, mediaItemArtwork: nil, url: NSURL())
         
         // runnable
-        shareManager!.shareTrack(mockTrack, presenter: mockPresenter, completion: nil)
+        shareManager!.shareTrack(mockTrack, presenter: mockPresenter, sender: mockPresenter.view, completion: nil)
         
         // tests
         XCTAssertTrue(mockPresenter.presentedViewController is UIAlertController)
@@ -81,7 +81,7 @@ class ShareManagerTests: XCTestCase {
         let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, mediaItemArtwork: nil, url: NSURL())
         
         // runnable
-        shareManager!.shareTrack(mockTrack, presenter: mockPresenter, completion: nil)
+        shareManager!.shareTrack(mockTrack, presenter: mockPresenter, sender: mockPresenter.view, completion: nil)
         
         let presentedViewController = mockPresenter.presentedViewController as! UIAlertController
         let action = presentedViewController.actions[0] as! MockAlertAction
