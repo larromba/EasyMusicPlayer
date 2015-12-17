@@ -30,10 +30,6 @@ struct Constant {
         static let RepeatAllButton = "RepeatAllButton"
     }
     
-    struct String {
-        static let MainBundleIdentifier = "com.pinkchicken.EasyMusic"
-    }
-    
     struct Path {
         static let DummyAudio = "/Users/larromba/Documents/Business/Pink Chicken/personal/EasyMusic/[TestTunes]/Bounce.mp3"
     }
@@ -44,5 +40,9 @@ struct Constant {
     
     struct Url {
         static let AppStoreLink = "https://itunes.apple.com/app/id1067558718"
+    }
+    
+    struct String {
+        static let AppName = "Easy Music Player"
     }
 }

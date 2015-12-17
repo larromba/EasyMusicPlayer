@@ -51,7 +51,7 @@ class ShareManager: NSObject {
             let text = String(format: localized("share format"),
                 track.artist,
                 track.title,
-                NSBundle.appName())
+                Constant.String.AppName)
             share.setInitialText(text)
             share.addURL(NSURL(string: Constant.Url.AppStoreLink))
             share.completionHandler = { (result:SLComposeViewControllerResult) in
