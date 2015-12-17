@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -50,6 +50,9 @@
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="V7J-PO-NB5" secondAttribute="height" multiplier="1:1" id="Kpd-iU-C6p"/>
                             </constraints>
+                            <variation key="heightClass=regular" misplaced="YES">
+                                <rect key="frame" x="184.5" y="19" width="230" height="230"/>
+                            </variation>
                             <connections>
                                 <action selector="playButtonPressed:" destination="-1" eventType="touchUpInside" id="BJp-qh-PnQ"/>
                             </connections>
@@ -60,6 +63,12 @@
                                 <constraint firstAttribute="width" secondItem="ghJ-k2-r6d" secondAttribute="height" multiplier="1:1" id="FvC-Zt-NOh"/>
                             </constraints>
                             <state key="normal" backgroundImage="PreviousButton"/>
+                            <variation key="heightClass=regular" misplaced="YES">
+                                <rect key="frame" x="10" y="29" width="208" height="209"/>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                <rect key="frame" x="102" y="29" width="209" height="209"/>
+                            </variation>
                             <connections>
                                 <action selector="prevButtonPressed:" destination="-1" eventType="touchUpInside" id="XbI-2G-Ku4"/>
                             </connections>
@@ -70,6 +79,12 @@
                                 <constraint firstAttribute="width" secondItem="Dgv-XX-Xc3" secondAttribute="height" multiplier="1:1" id="I1Z-v4-DdO"/>
                             </constraints>
                             <state key="normal" backgroundImage="NextButton"/>
+                            <variation key="heightClass=regular" misplaced="YES">
+                                <rect key="frame" x="381" y="29" width="209" height="210"/>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                <rect key="frame" x="487" y="29" width="210" height="210"/>
+                            </variation>
                             <connections>
                                 <action selector="nextButtonPressed:" destination="-1" eventType="touchUpInside" id="HSc-KI-DEP"/>
                             </connections>
@@ -91,11 +106,14 @@
                         <constraint firstItem="ghJ-k2-r6d" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" priority="250" constant="-193" id="qbO-es-D6r"/>
                         <constraint firstItem="V7J-PO-NB5" firstAttribute="centerX" secondItem="REt-Ws-5mL" secondAttribute="centerX" id="xlc-S9-4lh"/>
                     </constraints>
+                    <variation key="heightClass=regular" misplaced="YES">
+                        <rect key="frame" x="0.0" y="266" width="600" height="267.5"/>
+                    </variation>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TZB-Lb-T4F">
                     <rect key="frame" x="0.0" y="400" width="600" height="200"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Je9-vB-a58" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Je9-vB-a58" customClass="ShuffleButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="229" y="29" width="142" height="142"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Je9-vB-a58" secondAttribute="height" multiplier="1:1" id="1HG-dw-m3d"/>
@@ -108,23 +126,32 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6a-0C-6mh" customClass="PlayerButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="518" y="125" width="46" height="46"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="46" id="2Wj-aj-i6Z"/>
-                                <constraint firstAttribute="height" constant="46" id="ydm-p8-Q8F"/>
+                                <constraint firstAttribute="width" constant="46" id="2Wj-aj-i6Z">
+                                    <variation key="heightClass=regular" constant="46"/>
+                                    <variation key="widthClass=regular" constant="100"/>
+                                </constraint>
+                                <constraint firstAttribute="height" constant="46" id="ydm-p8-Q8F">
+                                    <variation key="heightClass=regular" constant="46"/>
+                                    <variation key="widthClass=regular" constant="100"/>
+                                </constraint>
                             </constraints>
                             <state key="normal" backgroundImage="ShareButton"/>
+                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                <rect key="frame" x="651" y="191" width="46" height="46"/>
+                            </variation>
                             <connections>
                                 <action selector="shareButtonPressed:" destination="-1" eventType="touchUpInside" id="9Oc-7T-JKx"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GnC-ST-nB8" customClass="RepeatButton" customModule="EasyMusic" customModuleProvider="target">
                             <rect key="frame" x="36" y="124" width="46" height="47"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="46" id="bie-lQ-9jC"/>
-                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <state key="normal">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <variation key="heightClass=regular-widthClass=regular" ambiguous="YES" misplaced="YES">
+                                <rect key="frame" x="102" y="190" width="46" height="47"/>
+                            </variation>
                             <connections>
                                 <action selector="repeatButtonPressed:" destination="-1" eventType="touchUpInside" id="8is-x7-Bk2"/>
                             </connections>
@@ -139,6 +166,7 @@
                         <constraint firstItem="Je9-vB-a58" firstAttribute="centerX" secondItem="TZB-Lb-T4F" secondAttribute="centerX" id="XDd-u8-THb"/>
                         <constraint firstItem="F6a-0C-6mh" firstAttribute="bottom" secondItem="Je9-vB-a58" secondAttribute="bottom" id="guI-Yy-QbW"/>
                         <constraint firstItem="Je9-vB-a58" firstAttribute="top" secondItem="TZB-Lb-T4F" secondAttribute="top" constant="29" id="l4e-eo-0gA"/>
+                        <constraint firstItem="GnC-ST-nB8" firstAttribute="width" secondItem="F6a-0C-6mh" secondAttribute="width" id="niY-tn-wOA"/>
                         <constraint firstAttribute="bottom" secondItem="F6a-0C-6mh" secondAttribute="bottom" constant="8" id="zA1-Zg-feX"/>
                     </constraints>
                     <variation key="default">
@@ -146,6 +174,9 @@
                             <exclude reference="Td8-yA-Lkh"/>
                             <exclude reference="zA1-Zg-feX"/>
                         </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="0.0" y="532" width="800" height="267"/>
                     </variation>
                 </view>
             </subviews>
