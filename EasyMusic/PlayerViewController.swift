@@ -261,34 +261,37 @@ extension PlayerViewController: ControlsViewDelegate {
         Analytics.shared.sendButtonPressEvent("share",
             classId: self.className())
         
-        shareManager.shareTrack(musicPlayer.currentTrack, presenter: self, completion: { (result: ShareManager.Result, service: String?) in
-            var event: String!
-            switch result {
-            case .Success:
-                event = "success_\(service)"
-                break
-            case .CancelledAfterChoice:
-                event = "cancelled-after-choice_\(service)"
-                break
-            case .CancelledBeforeChoice:
-                event = "cancelled-before-choice_\(service)"
-                break
-            case .Error:
-                event = "error_\(service)"
+        shareManager.shareTrack(musicPlayer.currentTrack,
+            presenter: self,
+            sender: sender.shareButton,
+            completion: { (result: ShareManager.Result, service: String?) in
+                var event: String!
+                switch result {
+                case .Success:
+                    event = "success_\(service)"
+                    break
+                case .CancelledAfterChoice:
+                    event = "cancelled-after-choice_\(service)"
+                    break
+                case .CancelledBeforeChoice:
+                    event = "cancelled-before-choice_\(service)"
+                    break
+                case .Error:
+                    event = "error_\(service)"
 
-                Analytics.shared.sendAlertEvent("share_account",
+                    Analytics.shared.sendAlertEvent("share_account",
+                        classId: self.className())
+                    
+                    let alert = UIAlertController.createAlertWithTitle(self.localized("accounts error title"),
+                        message: self.localized("accounts error msg"),
+                        buttonTitle: self.localized("accounts error button"))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
+                    break
+                }
+                
+                Analytics.shared.sendShareEvent(event,
                     classId: self.className())
-                
-                let alert = UIAlertController.createAlertWithTitle(self.localized("accounts error title"),
-                    message: self.localized("accounts error msg"),
-                    buttonTitle: self.localized("accounts error button"))
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-                break
-            }
-            
-            Analytics.shared.sendShareEvent(event,
-                classId: self.className())
         })
     }
     

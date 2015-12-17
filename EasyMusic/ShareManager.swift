@@ -25,7 +25,7 @@ class ShareManager: NSObject {
     
     // MARK: - Internal
     
-    func shareTrack(track: Track, presenter: UIViewController, completion: ((Result, String?) -> Void)?) {
+    func shareTrack(track: Track, presenter: UIViewController, sender: UIView, completion: ((Result, String?) -> Void)?) {
         self.presenter = presenter
         self.track = track
         self.completion = completion;
@@ -34,6 +34,11 @@ class ShareManager: NSObject {
             if service != nil {
                 self.shareViaService(service!)
             }
+        }
+        if let popoverController = choices.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+            popoverController.permittedArrowDirections = UIPopoverArrowDirection.Any;
         }
         self.presenter.presentViewController(choices, animated: true, completion: nil)
     }
