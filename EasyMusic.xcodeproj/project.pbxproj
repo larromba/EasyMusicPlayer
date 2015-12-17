@@ -491,6 +491,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF5B30F1BE64E220044FCE5 /* Build configuration list for PBXNativeTarget "EasyMusic" */;
 			buildPhases = (
+				7F9AAE5A1C23072B00CB7316 /* Run Script */,
 				3E4AF03D8983AABE5689CF2F /* Check Pods Manifest.lock */,
 				7FF5B2E31BE64E210044FCE5 /* Sources */,
 				7FF5B2E41BE64E210044FCE5 /* Frameworks */,
@@ -718,6 +719,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusicTests/Pods-EasyMusicTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		7F9AAE5A1C23072B00CB7316 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh base-lang.sh";
 		};
 		82417EC2FA81E98245B755B3 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
