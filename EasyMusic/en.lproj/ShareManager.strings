@@ -1,14 +1,14 @@
-/* 
-  ShareManager.strings
-  EasyMusic
-
-  Created by Lee Arromba on 12/11/2015.
-  Copyright © 2015 Lee Arromba. All rights reserved.
-*/
+/*
+ ShareManager.strings
+ EasyMusic
+ 
+ Created by Lee Arromba on 12/11/2015.
+ Copyright © 2015 Lee Arromba. All rights reserved.
+ */
 
 "share format" = "%@ - %@ (via %@)";
 "share sheet title" = "Share";
-"share sheet desc" = "Where do you want to share?";
+"share sheet desc" = "Where do you want to share this track?";
 "share option facebook" = "Facebook";
 "share option twitter" = "Twitter";
 "share option cancel" = "Cancel";

@@ -8,7 +8,7 @@
 
 "share format" = "%@ - %@ (via %@)";
 "share sheet title" = "Share";
-"share sheet desc" = "Where do you want to share?";
+"share sheet desc" = "Where do you want to share this track?";
 "share option facebook" = "Facebook";
 "share option twitter" = "Twitter";
 "share option cancel" = "Cancel";
