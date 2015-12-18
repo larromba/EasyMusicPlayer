@@ -1,0 +1,11 @@
+/* 
+  InfoView.strings
+  EasyMusic
+
+  Created by Lee Arromba on 12/11/2015.
+  Copyright © 2015 Lee Arromba. All rights reserved.
+*/
+
+"time format" = "%@";
+"time interval format" = "%02d:%02d:%02d";
+"track position format" = "%i の %i";
