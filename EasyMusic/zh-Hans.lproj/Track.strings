@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  EasyMusic
+
+  Created by Lee Arromba on 12/11/2015.
+  Copyright © 2015 Lee Arromba. All rights reserved.
+*/
+
+"unknown artist" = "未知艺术家";
+"unknown track" = "未知标题";

@@ -147,6 +147,10 @@
 		7F9AAE671C24705500CB7316 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoView.strings; sourceTree = "<group>"; };
 		7F9AAE681C24705500CB7316 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/PlayerViewController.strings; sourceTree = "<group>"; };
 		7F9AAE691C24705500CB7316 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/ShareManager.strings; sourceTree = "<group>"; };
+		7F9AAE6A1C2471A300CB7316 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Track.strings"; sourceTree = "<group>"; };
+		7F9AAE6B1C2471A300CB7316 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoView.strings"; sourceTree = "<group>"; };
+		7F9AAE6C1C2471A300CB7316 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/PlayerViewController.strings"; sourceTree = "<group>"; };
+		7F9AAE6D1C2471A300CB7316 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/ShareManager.strings"; sourceTree = "<group>"; };
 		7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertActionExtensions.swift; sourceTree = "<group>"; };
 		7FA60C981C110B9400D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InfoView.xib; sourceTree = "<group>"; };
 		7FA60C9B1C110B9800D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ControlsView.xib; sourceTree = "<group>"; };
@@ -596,6 +600,7 @@
 				de,
 				fr,
 				it,
+				"zh-Hans",
 			);
 			mainGroup = 7FF5B2DE1BE64E210044FCE5;
 			productRefGroup = 7FF5B2E81BE64E210044FCE5 /* Products */;
@@ -893,6 +898,7 @@
 				7F9AAE5B1C2312DA00CB7316 /* de */,
 				7F9AAE621C246E0900CB7316 /* fr */,
 				7F9AAE661C24705500CB7316 /* it */,
+				7F9AAE6A1C2471A300CB7316 /* zh-Hans */,
 			);
 			name = Track.strings;
 			sourceTree = "<group>";
@@ -905,6 +911,7 @@
 				7F9AAE5C1C2312DA00CB7316 /* de */,
 				7F9AAE631C246E0900CB7316 /* fr */,
 				7F9AAE671C24705500CB7316 /* it */,
+				7F9AAE6B1C2471A300CB7316 /* zh-Hans */,
 			);
 			name = InfoView.strings;
 			sourceTree = "<group>";
@@ -917,6 +924,7 @@
 				7F9AAE5D1C2312DA00CB7316 /* de */,
 				7F9AAE641C246E0900CB7316 /* fr */,
 				7F9AAE681C24705500CB7316 /* it */,
+				7F9AAE6C1C2471A300CB7316 /* zh-Hans */,
 			);
 			name = PlayerViewController.strings;
 			sourceTree = "<group>";
@@ -929,6 +937,7 @@
 				7F9AAE5E1C2312DA00CB7316 /* de */,
 				7F9AAE651C246E0900CB7316 /* fr */,
 				7F9AAE691C24705500CB7316 /* it */,
+				7F9AAE6D1C2471A300CB7316 /* zh-Hans */,
 			);
 			name = ShareManager.strings;
 			sourceTree = "<group>";
