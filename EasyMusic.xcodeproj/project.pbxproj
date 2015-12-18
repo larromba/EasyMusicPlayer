@@ -155,6 +155,10 @@
 		7F9AAE6F1C2472F900CB7316 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoView.strings; sourceTree = "<group>"; };
 		7F9AAE701C2472F900CB7316 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/PlayerViewController.strings; sourceTree = "<group>"; };
 		7F9AAE711C2472F900CB7316 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ShareManager.strings; sourceTree = "<group>"; };
+		7F9AAE721C2474AD00CB7316 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Track.strings; sourceTree = "<group>"; };
+		7F9AAE731C2474AD00CB7316 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoView.strings; sourceTree = "<group>"; };
+		7F9AAE741C2474AD00CB7316 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PlayerViewController.strings; sourceTree = "<group>"; };
+		7F9AAE751C2474AD00CB7316 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ShareManager.strings; sourceTree = "<group>"; };
 		7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertActionExtensions.swift; sourceTree = "<group>"; };
 		7FA60C981C110B9400D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InfoView.xib; sourceTree = "<group>"; };
 		7FA60C9B1C110B9800D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ControlsView.xib; sourceTree = "<group>"; };
@@ -606,6 +610,7 @@
 				it,
 				"zh-Hans",
 				ja,
+				ru,
 			);
 			mainGroup = 7FF5B2DE1BE64E210044FCE5;
 			productRefGroup = 7FF5B2E81BE64E210044FCE5 /* Products */;
@@ -905,6 +910,7 @@
 				7F9AAE661C24705500CB7316 /* it */,
 				7F9AAE6A1C2471A300CB7316 /* zh-Hans */,
 				7F9AAE6E1C2472F900CB7316 /* ja */,
+				7F9AAE721C2474AD00CB7316 /* ru */,
 			);
 			name = Track.strings;
 			sourceTree = "<group>";
@@ -919,6 +925,7 @@
 				7F9AAE671C24705500CB7316 /* it */,
 				7F9AAE6B1C2471A300CB7316 /* zh-Hans */,
 				7F9AAE6F1C2472F900CB7316 /* ja */,
+				7F9AAE731C2474AD00CB7316 /* ru */,
 			);
 			name = InfoView.strings;
 			sourceTree = "<group>";
@@ -933,6 +940,7 @@
 				7F9AAE681C24705500CB7316 /* it */,
 				7F9AAE6C1C2471A300CB7316 /* zh-Hans */,
 				7F9AAE701C2472F900CB7316 /* ja */,
+				7F9AAE741C2474AD00CB7316 /* ru */,
 			);
 			name = PlayerViewController.strings;
 			sourceTree = "<group>";
@@ -947,6 +955,7 @@
 				7F9AAE691C24705500CB7316 /* it */,
 				7F9AAE6D1C2471A300CB7316 /* zh-Hans */,
 				7F9AAE711C2472F900CB7316 /* ja */,
+				7F9AAE751C2474AD00CB7316 /* ru */,
 			);
 			name = ShareManager.strings;
 			sourceTree = "<group>";
