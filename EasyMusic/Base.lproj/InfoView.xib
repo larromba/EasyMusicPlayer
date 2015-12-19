@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InfoView" customModule="EasyMusic" customModuleProvider="target">
+            <connections>
+                <outlet property="artistLabel" destination="ZfL-ha-Gb2" id="AP7-wi-G2j"/>
+                <outlet property="artworkImageView" destination="pUZ-ec-YGB" id="mMj-zX-zFO"/>
+                <outlet property="timeLabel" destination="Jcv-wa-chp" id="Fuw-lq-wTq"/>
+                <outlet property="trackLabel" destination="2qf-8v-yco" id="8Lu-sc-s4Z"/>
+                <outlet property="trackPositionLabel" destination="bij-M8-km4" id="hU2-g9-QZn"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" id="QTA-kx-IEU">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pUZ-ec-YGB">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refused" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZfL-ha-Gb2">
+                    <rect key="frame" x="6" y="6" width="588" height="26.5"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="22"/>
+                    <color key="textColor" red="0.32104245585151525" green="0.32104245585151525" blue="0.32104245585151525" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="44"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Noise" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2qf-8v-yco">
+                    <rect key="frame" x="6" y="38" width="588" height="20"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" red="0.32104245590000002" green="0.32104245590000002" blue="0.32104245590000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="34"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jcv-wa-chp">
+                    <rect key="frame" x="6" y="32" width="588" height="561.5"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="48"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="96"/>
+                    </variation>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track 1 of 3" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bij-M8-km4" userLabel="Position Label">
+                    <rect key="frame" x="6" y="577" width="588" height="16.5"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                    <color key="textColor" red="0.32104245590000002" green="0.32104245590000002" blue="0.32104245590000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
+                    </variation>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="pUZ-ec-YGB" secondAttribute="bottom" id="0Yf-eG-Ely"/>
+                <constraint firstAttribute="trailing" secondItem="ZfL-ha-Gb2" secondAttribute="trailing" constant="6" id="5NM-f1-tGp"/>
+                <constraint firstItem="Jcv-wa-chp" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" constant="6" id="7qo-00-IJX"/>
+                <constraint firstAttribute="trailing" secondItem="bij-M8-km4" secondAttribute="trailing" constant="6" id="DcZ-qs-wAk"/>
+                <constraint firstItem="ZfL-ha-Gb2" firstAttribute="top" secondItem="QTA-kx-IEU" secondAttribute="top" constant="6" id="EYm-NS-3QQ"/>
+                <constraint firstItem="Jcv-wa-chp" firstAttribute="top" secondItem="ZfL-ha-Gb2" secondAttribute="bottom" id="HIf-8J-ppC"/>
+                <constraint firstItem="pUZ-ec-YGB" firstAttribute="top" secondItem="QTA-kx-IEU" secondAttribute="top" id="ItR-FK-7r6"/>
+                <constraint firstItem="pUZ-ec-YGB" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" id="Khg-tD-nsy"/>
+                <constraint firstItem="2qf-8v-yco" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" constant="6" id="ONL-m8-Avc"/>
+                <constraint firstAttribute="trailing" secondItem="2qf-8v-yco" secondAttribute="trailing" constant="6" id="RJr-CP-3OQ"/>
+                <constraint firstAttribute="trailing" secondItem="Jcv-wa-chp" secondAttribute="trailing" constant="6" id="ZwY-a9-M9f"/>
+                <constraint firstItem="ZfL-ha-Gb2" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" constant="6" id="bPA-WV-PPh"/>
+                <constraint firstAttribute="bottom" secondItem="Jcv-wa-chp" secondAttribute="bottom" constant="6" id="mZL-V3-gVB"/>
+                <constraint firstAttribute="trailing" secondItem="pUZ-ec-YGB" secondAttribute="trailing" id="ofM-i4-JrP"/>
+                <constraint firstAttribute="bottom" secondItem="bij-M8-km4" secondAttribute="bottom" constant="6" id="prp-mH-xhq"/>
+                <constraint firstItem="bij-M8-km4" firstAttribute="leading" secondItem="QTA-kx-IEU" secondAttribute="leading" constant="6" id="vup-2F-mLa"/>
+                <constraint firstItem="2qf-8v-yco" firstAttribute="top" secondItem="ZfL-ha-Gb2" secondAttribute="bottom" constant="6" id="zaQ-dm-gES"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

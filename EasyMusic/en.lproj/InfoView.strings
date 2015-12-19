@@ -8,3 +8,4 @@
 
 "time format" = "%@";
 "time interval format" = "%02d:%02d:%02d";
+"track position format" = "%i of %i";

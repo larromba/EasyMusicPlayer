@@ -9,25 +9,25 @@
 import Foundation
 
 extension NSObject {
-    func className() -> String! {
+    public func className() -> String {
         let className = NSStringFromClass(self.dynamicType)
         let components = className.componentsSeparatedByString(".")
         
         if components.count > 0 {
-            return components.last
+            return components.last!
         }
         
         return className
     }
     
-    func localized(key: String) -> String! {
+    public func localized(key: String) -> String {
         let string = NSLocalizedString(key, tableName: self.className(), bundle: NSBundle.mainBundle(), value: "", comment: "")
-        safeAssert(string != key, String("missing localization %@", key))
+        safeAssert(string != key, "missing localization: \(key)")
         return string
     }
     
-    func safeSelector(string: String) -> Selector {
-        safeAssert(self.respondsToSelector(Selector(string)), String("missing method %@", string))
+    public func safeSelector(string: String) -> Selector {
+        safeAssert(self.respondsToSelector(Selector(string)), "missing method: \(string)")
         return Selector(string)
     }
 }

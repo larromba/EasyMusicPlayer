@@ -1,0 +1,42 @@
+==== App ====
+
+Unbekannter Interpret
+Unbekannter Titel
+[x] von [x]
+Fehler
+Du hast keine Musik
+OK
+Deine Lautstärke ist zu niedrig
+[x] konnte nicht wiedergegeben werden
+Konten
+Bitte überprüfe, ob deine Social-Media-Konten korrekt eingerichtet sind und versuche es noch einmal
+Ende
+Deine Wiedergabeliste ist zu Ende
+auf
+Teilen
+Wo willst du dieses Lied teilen?
+Facebook 
+Twitter 
+Abbrechen
+
+==== Name ====
+
+Easy Music Player
+
+==== Description ====
+
+Der "Easy Music Player" bietet einen einfachen und alternativen Weg, um auf deinem Handy gespeicherte Musik zu hören. Diese App wurde mit viel Liebe gemacht, um nur eine Bestimmung zu erfüllen - deine Musik gut wiederzugeben.
+
+Beinhaltet:
+- Play, Pause, Nächstes, Vorheriges, Shuffle
+- Zeitnavigationsleiste
+- Wiederhole nichts / ein / alle
+- Teile Musik auf Twitter & Facebook
+- Musik im Hintergrund wiedergeben
+- Bediene den Player vom Startbildschirm und gesperrter Bildschirm
+
+Kompatibel mit iPad und iPhone. Optimiert für iPhone 6.
+
+==== Keywords ====
+
+Musik-Player,einfache,Audio,Sound,Streaming-Medien,Radio,beste,klein,mp3,mp4,cd,frei,online,hören,bluetooth

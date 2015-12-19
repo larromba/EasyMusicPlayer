@@ -10,40 +10,79 @@ import Foundation
 import MediaPlayer
 import AVFoundation
 
-enum MusicPlayerState {
-    case Playing
-    case Paused
-    case Stopped
-    case Finished
-    case Error
-    case Unknown
-}
-
 protocol MusicPlayerDelegate {
-    func changedState(sender: MusicPlayer, state: MusicPlayerState)
+    func threwError(sender: MusicPlayer, error: MusicPlayer.Error)
+    func changedState(sender: MusicPlayer, state: MusicPlayer.State)
     func changedPlaybackTime(sender: MusicPlayer, playbackTime: NSTimeInterval)
 }
 
 class MusicPlayer: NSObject {
-    private var tracks: [MPMediaItem]! = []
-    private var trackIndex: Int! = 0
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: NSTimer?
-    
+    private var playingInBackground: Bool = false
+    private var trackManager: TrackManager = TrackManager()
+
     var delegate: MusicPlayerDelegate?
-    var isPlaying: Bool! {
-        guard player != nil else {
-            return false
+    var repeatMode: RepeatMode = RepeatMode.None
+    var isPlaying: Bool {
+        if let player = player {
+            return player.playing
         }
-        
-        return player!.playing
+        return false
+    }
+    var currentTrack: Track {
+        return trackManager.currentTrack
+    }
+    var currentTrackNumber: Int {
+        return trackManager.currentTrackNumber
+    }
+    var numOfTracks: Int {
+        return trackManager.numOfTracks
+    }
+    var time: NSTimeInterval {
+        set {
+            if let player = player {
+                player.currentTime = newValue
+                delegate?.changedPlaybackTime(self, playbackTime: time)
+            }
+        }
+        get {
+            if let player = player {
+                return player.currentTime
+            }
+            return 0.0
+        }
+    }
+    var volume: Float {
+        return AVAudioSession.sharedInstance().outputVolume
+    }
+    
+    enum State {
+        case Playing
+        case Paused
+        case Stopped
+        case Finished
+    }
+    
+    enum Error {
+        case Decode
+        case PlayerInit
+        case NoMusic
+        case NoVolume
+        case AVError
+    }
+    
+    enum RepeatMode: Int {
+        case None
+        case One
+        case All
     }
     
     init(delegate: MusicPlayerDelegate) {
         super.init()
         
         self.delegate = delegate
-        
+                
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
         commandCenter.pauseCommand.addTarget(self, action: safeSelector("pause"))
         commandCenter.playCommand.addTarget(self, action: safeSelector("play"))
@@ -51,8 +90,16 @@ class MusicPlayer: NSObject {
         commandCenter.nextTrackCommand.addTarget(self, action: safeSelector("next"))
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: safeSelector("applicationWillTerminate"),
+            selector: safeSelector(Constant.Notification.ApplicationWillTerminate),
             name: UIApplicationWillTerminateNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: safeSelector(Constant.Notification.ApplicationWillResignActive),
+            name: UIApplicationWillResignActiveNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
+            name: UIApplicationDidBecomeActiveNotification,
             object: nil)
         
         enableAudioSession(true)
@@ -62,32 +109,24 @@ class MusicPlayer: NSObject {
     deinit {
         enableAudioSession(false)
         
+        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
+        commandCenter.pauseCommand.removeTarget(self)
+        commandCenter.playCommand.removeTarget(self)
+        commandCenter.previousTrackCommand.removeTarget(self)
+        commandCenter.nextTrackCommand.removeTarget(self)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: UIApplicationWillTerminateNotification,
             object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UIApplicationDidBecomeActiveNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UIApplicationWillResignActiveNotification,
+            object: nil)
     }
     
-    // MARK: - private
-    
-    private func enableAudioSession(enable: Bool) {
-        if enable {
-            _ = try! AVAudioSession.sharedInstance().setCategory(
-                AVAudioSessionCategoryPlayback,
-                withOptions: [])
-        }
-        _ = try! AVAudioSession.sharedInstance().setActive(enable)
-    }
-    
-    private func setRemoteTrackInfo(track: TrackInfo) {        
-        let songInfo: [String: AnyObject] = [
-            MPMediaItemPropertyTitle: track.title!,
-            MPMediaItemPropertyArtist: track.artist!,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: track.artwork!),
-            MPNowPlayingInfoPropertyPlaybackRate: Float(1.0)
-        ]
-
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
-    }
+    // MARK: - Private
     
     private func startPlaybackCheckTimer() {
         playbackCheckTimer = NSTimer.scheduledTimerWithTimeInterval(1.0,
@@ -102,144 +141,202 @@ class MusicPlayer: NSObject {
         playbackCheckTimer = nil
     }
     
-    // MARK: - notifications
+    private func threwError(error: Error) {
+        delegate?.threwError(self, error: error)
+        delegate?.changedState(self, state: MusicPlayer.State.Stopped)
+    }
+    
+    // MARK: - Notifications
     
     func applicationWillTerminate() {
         enableAudioSession(false)
     }
     
+    func applicationWillResignActive() {
+        if isPlaying == true {
+            playingInBackground = true
+        }
+    }
+    
+    func applicationDidBecomeActive() {
+        if playingInBackground == true && isPlaying == false {
+            stop()
+        }
+        playingInBackground = false
+    }
+    
     func playbackCheckTimerCallback() {
+        guard player != nil else {
+            return
+        }
+        
         delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
-    // MARK: - public
+    // MARK: - Internal
+    
+    func enableAudioSession(enable: Bool) {
+        if enable {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: [])
+            } catch _ {
+                threwError(Error.AVError)
+            }
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setActive(enable)
+        } catch _ {
+            threwError(Error.AVError)
+        }
+    }
     
     func play() {
-        guard tracks.count > 0 else {
+        guard numOfTracks > 0 else {
+            threwError(Error.NoMusic)
             return
         }
         
-        let track = tracks[trackIndex]
-        let url: NSURL = track.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
-        if player == nil || player!.url!.absoluteString != url.absoluteString {
-            _ = try! player = AVAudioPlayer(contentsOfURL: url)
-        }
-
-        if player == nil {
-            delegate?.changedState(self, state: MusicPlayerState.Error)
+        guard volume > 0.0 else {
+            threwError(Error.NoVolume)
             return
         }
         
-        player!.delegate = self
-        player!.prepareToPlay()
-        player!.play()
+        if player == nil || player!.url!.absoluteString != currentTrack.url.absoluteString {
+            do {
+                try player = AVAudioPlayer(contentsOfURL: currentTrack.url)
+            } catch _ {
+                threwError(Error.PlayerInit)
+                return
+            }
+            player!.delegate = self
+        }
+        
+        var success = player!.prepareToPlay()
+        guard success == true else {
+            threwError(Error.AVError)
+            return
+        }
+                
+        success = player!.play()
+        guard success == true else {
+            threwError(Error.AVError)
+            return
+        }
         
         startPlaybackCheckTimer()
-        setRemoteTrackInfo(trackInfo())
         
-        delegate?.changedState(self, state: MusicPlayerState.Playing)
+        delegate?.changedState(self, state: State.Playing)
     }
     
     func stop() {
-        player!.stop()
-        player!.currentTime = 0.0
-      
-        stopPlaybackCheckTimer()
+        guard player != nil else {
+            return
+        }
         
-        delegate?.changedState(self, state: MusicPlayerState.Stopped)
-        delegate?.changedPlaybackTime(self, playbackTime: 0.0)
+        player!.stop()
+        
+        stopPlaybackCheckTimer()
+        time = 0.0
+        
+        delegate?.changedState(self, state: State.Stopped)
     }
     
     func pause() {
+        guard player != nil else {
+            return
+        }
+        
         player!.pause()
      
         stopPlaybackCheckTimer()
         
-        delegate?.changedState(self, state: MusicPlayerState.Paused)
+        delegate?.changedState(self, state: State.Paused)
     }
     
     func previous() {
-        pause()
+        stop()
         
-        var newIndex = trackIndex - 1
-        if newIndex < 0 {
-            newIndex = 0
-            player!.currentTime = 0.0
+        let result = trackManager.cuePrevious()
+        if repeatMode == RepeatMode.All && result == false {
+            trackManager.cueEnd()
         }
-        
-        trackIndex = newIndex
        
         play()
     }
     
     func next() {
-        let newIndex = trackIndex + 1
-        if newIndex >= tracks.count {
-            stop()
+        stop()
+        
+        let result = trackManager.cueNext()
+        if repeatMode == RepeatMode.All && result == false {
+            trackManager.cueStart()
+        } else if result == false {
             return
         }
-        
-        pause()
-        trackIndex = trackIndex + 1
+
         play()
     }
-    
-    func shuffle() -> Bool {
-        let query = MPMediaQuery.songsQuery()
-        if query.items?.count == 0 {
-            // if we have no songs, bail
-            return false
-        }
-        
-        let mItems = NSMutableArray(array: query.items!)
-        
-        for var i = 0; i < mItems.count - 1; ++i {
-            let remainingCount = mItems.count - i;
-            let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
-            mItems.exchangeObjectAtIndex(i, withObjectAtIndex: exchangeIndex)
-        }
-        
-        tracks = mItems as AnyObject as? [MPMediaItem]
-        trackIndex = 0
-        
-        return true
-    }
-    
-    func hasTracks() -> Bool! {
-        return tracks.count > 0
-    }
-    
-    func trackInfo() -> TrackInfo! {
-        let track = tracks[trackIndex]
-        
-        var artwork: UIImage?
-        if track.artwork != nil {
-            artwork = track.artwork!.imageWithSize(CGSizeMake(30, 30));
-        }
-        
-        let trackInfo = TrackInfo(
-            artist: track.artist,
-            title: track.title,
-            duration: track.playbackDuration,
-            artwork: artwork)
-        return trackInfo
-    }
-    
-    func tracksInfo() -> TracksInfo {
-        return TracksInfo(
-            trackInfo: trackInfo(),
-            trackIndex: trackIndex,
-            totalTracks: tracks!.count)
-    }
-    
-    func skipTo(time: NSTimeInterval) {
-        player!.currentTime = time
+
+    func shuffle() {
+        trackManager.shuffleTracks()
     }
 }
 
 // MARK: - AVAudioPlayerDelegate
+
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
-        delegate?.changedState(self, state: MusicPlayerState.Finished)
+        if flag == false {
+            threwError(Error.AVError)
+            return
+        }
+        
+        switch repeatMode {
+        case .None:
+            let result = trackManager.cueNext()
+            if result == false {
+                trackManager.cueStart()
+                delegate?.changedState(self, state: State.Finished)
+                return
+            }
+            play()
+            break
+        case .One:
+            play()
+            break
+        case .All:
+            let result = trackManager.cueNext()
+            if result == false {
+                trackManager.cueStart()
+            }
+            play()
+            break
+        }
+    }
+    
+    func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
+        if let error = error {
+            Analytics.shared.sendErrorEvent(error, classId: self.className())
+        }
+        
+        threwError(Error.Decode)
+    }
+}
+
+// MARK: - Testing
+
+extension MusicPlayer {
+    var __player: AVAudioPlayer? {
+        get { return player }
+        set { player = newValue }
+    }
+    var __trackManager: TrackManager {
+        get { return trackManager }
+        set { trackManager = newValue }
+    }
+    var __playbackCheckTimer: NSTimer? {
+        get { return playbackCheckTimer }
+        set { playbackCheckTimer = newValue }
     }
 }

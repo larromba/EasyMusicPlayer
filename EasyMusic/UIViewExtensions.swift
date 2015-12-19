@@ -9,20 +9,21 @@
 import UIKit
 
 extension UIView {
-    func loadXib() {
+    public func loadXib() {
         let view = createViewFromNib()
         view.frame = bounds
         view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         addSubview(view)
     }
     
-    func nibView() -> UIView? {
+    public func nibView() -> UIView? {
         return subviews.first
     }
     
-    private func createViewFromNib() -> UIView! {
-        let bundle = NSBundle(forClass: self.dynamicType)
-        let nib = UINib(nibName: self.className(), bundle: bundle)
+    // MARK: - Private
+    
+    private func createViewFromNib() -> UIView {
+        let nib = UINib(nibName: self.className(), bundle: NSBundle.safeMainBundle())
         let view = nib.instantiateWithOwner(self, options: nil).first as! UIView
         return view
     }

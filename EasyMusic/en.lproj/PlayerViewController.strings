@@ -1,0 +1,27 @@
+/* 
+  MusicPlayerViewController.strings
+  EasyMusic
+
+  Created by Lee Arromba on 12/11/2015.
+  Copyright © 2015 Lee Arromba. All rights reserved.
+*/
+
+"no music error title" = "Error";
+"no music error msg" = "You have no music";
+"no music error button" = "OK";
+
+"no volume error title" = "Error";
+"no volume error msg" = "Your volume is too low";
+"no volume error button" = "OK";
+
+"track error title" = "Error";
+"track error msg" = "Couldn't play '%@'";
+"track error button" = "OK";
+
+"accounts error title" = "Accounts";
+"accounts error msg" = "Please check your social accounts are correctly setup and try again";
+"accounts error button" = "OK";
+
+"finished alert title" = "End";
+"finished alert msg" = "Your playlist finished";
+"finished alert button" = "OK";

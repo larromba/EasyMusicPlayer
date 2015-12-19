@@ -7,63 +7,123 @@
 //
 
 import XCTest
+import MediaPlayer
 @testable import EasyMusic
 
 class InfoViewTests: XCTestCase {
-    var infoView: InfoView!
+    private var infoView: InfoView?
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
+        
         infoView = InfoView()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        
+        infoView = nil
     }
     
     func testSetTrackInfo() {
+        /**
+         expectations:
+         - information strings set correctly from track in ui
+         */
+        
+        // mocks
         let artist = "artist"
         let title = "title"
         let duration = 9.0
-        let artwork = UIImage()
-        let trackInfo = TrackInfo(artist: artist, title: title, duration: duration, artwork: artwork)
+        let image = UIImage()
+        let artwork = MPMediaItemArtwork(image: image)
+        let url = NSURL(string: "")!
+        let track = Track(artist: artist, title: title, duration: duration, mediaItemArtwork: artwork, url: url)
         
-        infoView.setTrackInfo(trackInfo)
+        // runnable
+        infoView!.setInfoFromTrack(track)
         
-        XCTAssert(infoView.artist.text == artist)
-        XCTAssert(infoView.track.text == title)
-        XCTAssert(infoView.artwork.image == artwork)
+        // tests
+        XCTAssertNotNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
+        XCTAssertEqual(infoView!.artistLabel.text, artist)
+        XCTAssertEqual(infoView!.trackLabel.text, title)
+        XCTAssertEqual(infoView!.artworkImageView.image, image)
+    }
+    
+    func testSetTrackPosition() {
+        /**
+        expectations:
+        - track position set correctly in ui
+        */
+        
+        // runnable
+        infoView!.setTrackPosition(2, totalTracks: 3)
+        
+        // tests
+        XCTAssertEqual(infoView!.trackPositionLabel.text, "2 of 3")
     }
     
     func testClearTrackInfo() {
-        infoView.artist.text = "artist"
-        infoView.track.text = "title"
-        infoView.time.text = "01:00:00"
-        infoView.artwork.image = UIImage()
+        /**
+        expectations:
+        - ui clears
+        */
         
-        infoView.clearTrackInfo()
+        // mocks
+        infoView!.artistLabel.text = "artist"
+        infoView!.trackLabel.text = "title"
+        infoView!.trackPositionLabel.text = "1 of 1"
+        infoView!.timeLabel.text = "01:00:00"
+        infoView!.artworkImageView.image = UIImage()
         
-        XCTAssert(infoView.artist.text == nil)
-        XCTAssert(infoView.track.text == nil)
-        XCTAssert(infoView.time.text == "00:00:00")
-        XCTAssert(infoView.artwork.image == nil)
+        // runnable
+        infoView!.clearInfo()
+        
+        // tests
+        XCTAssertNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
+        XCTAssertNil(infoView!.artistLabel.text)
+        XCTAssertNil(infoView!.trackLabel.text)
+        XCTAssertNil(infoView!.trackPositionLabel.text)
+        XCTAssertEqual(infoView!.timeLabel.text, "00:00:00")
+        XCTAssertNil(infoView!.artworkImageView.image)
     }
     
     func testSetTime10Secs() {
-        infoView.setTime(10, duration: 0)
-        XCTAssert(infoView.time.text == "00:00:10")
+        /**
+        expectations:
+        - time set correctly in ui
+        */
+        
+        // runnable
+        infoView!.setTime(10, duration: 0)
+        
+        // tests
+        XCTAssertEqual(infoView!.timeLabel.text, "00:00:10")
     }
     
     func testSetTime10Mins() {
-        infoView.setTime(10 * 60, duration: 0)
-        XCTAssert(infoView.time.text == "00:10:00")
+        /**
+        expectations:
+        - time set correctly in ui
+        */
+        
+        // runnable
+        infoView!.setTime(10 * 60, duration: 0)
+        
+        // tests
+        XCTAssertEqual(infoView!.timeLabel.text, "00:10:00")
     }
     
     func testSetTime10Hrs() {
-        infoView.setTime(10 * 60 * 60, duration: 0)
-        XCTAssert(infoView.time.text == "10:00:00")
+        /**
+        expectations:
+        - time set correctly in ui
+        */
+        
+        // runnable
+        infoView!.setTime(10 * 60 * 60, duration: 0)
+        
+        // tests
+        XCTAssertEqual(infoView!.timeLabel.text, "10:00:00")
     }
 }

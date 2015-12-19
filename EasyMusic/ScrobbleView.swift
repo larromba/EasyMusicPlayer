@@ -10,15 +10,31 @@ import UIKit
 
 protocol ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float)
+    func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float)
 }
 
 @IBDesignable
 class ScrobbleView: UIView {
     @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
-    @IBOutlet weak var barView: UIView!
+    @IBOutlet private weak var barView: UIView!
+
+    private var didLayoutSubviews: Bool = false
     
     var delegate: ScrobbleViewDelegate?
-    var enabled: Bool! = false
+    override var userInteractionEnabled: Bool {
+        set {
+            super.userInteractionEnabled = newValue
+            
+            if newValue == true {
+                barView.alpha = 1.0
+            } else {
+                barView.alpha = 0.5
+            }
+        }
+        get {
+            return super.userInteractionEnabled
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,45 +47,65 @@ class ScrobbleView: UIView {
     }
     
     override func awakeFromNib() {
-        moveScrobblerToPoint(0.0)
+        userInteractionEnabled = false
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // ipad compatible
+        if didLayoutSubviews == false {
+            didLayoutSubviews = true
+            moveScrobblerToPoint(0.0)
+        }
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        guard enabled == true else {
-            return
+        if let touch = touches.first {
+            let point = touch.locationInView(self)
+            moveScrobblerToPoint(point.x)
+            
+            let w = CGRectGetWidth(bounds)
+            let perc = Float(point.x / w)
+            delegate?.touchMovedToPercentage(self, percentage: perc)
         }
-
-        let touch = touches.first!
-        let point = touch.locationInView(self)
-        moveScrobblerToPoint(point.x)
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        guard enabled == true else {
-            return
+        if let touch = touches.first {
+            let point = touch.locationInView(self)
+            let w = CGRectGetWidth(bounds)
+            let perc = Float(point.x / w)
+            delegate?.touchEndedAtPercentage(self, percentage: perc)
+            
+            animateTouchesEnded()
         }
-        
-        let touch = touches.first!
-        let point = touch.locationInView(self)
-        let w = CGRectGetWidth(bounds)
-        let perc = Float(point.x / w)
-        delegate?.touchMovedToPercentage(self, percentage: perc)
     }
     
-    // MARK: - private
+    // MARK: - Private
     
-    func moveScrobblerToPoint(point: CGFloat) {
+    private func moveScrobblerToPoint(point: CGFloat) {
         let w = CGRectGetWidth(bounds)
         let x = w - point
         trailingEdgeConstraint.constant = x
         layoutIfNeeded()
     }
     
-    // MARK: - Public
+    private func animateTouchesEnded() {
+        
+    }
+    
+    // MARK: - Internal
     
     func scrobbleToPercentage(percentage: Float) {
         let w = CGRectGetWidth(bounds)
         let point = w * CGFloat(percentage)
         moveScrobblerToPoint(point)
     }
+}
+
+// MARK: - Testing
+
+extension ScrobbleView {
+    var __barView: UIView { return barView }
 }

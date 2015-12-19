@@ -8,42 +8,36 @@
 
 import UIKit
 
-enum PlayButtonState {
-    case Play
-    case Pause
-}
-
 @IBDesignable
-class PlayButton: UIButton {
-    private(set) var buttonState: PlayButtonState!
+class PlayButton: PlayerButton {
+    private(set) var buttonState: State = State.Play
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        buttonState = PlayButtonState.Play
+    enum State {
+        case Play
+        case Pause
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    override func awakeFromNib() {
+        super.awakeFromNib()
         
-        buttonState = PlayButtonState.Play
+        setButtonState(buttonState)
     }
     
     override func prepareForInterfaceBuilder() {
-        buttonState = PlayButtonState.Play
+        setButtonState(buttonState)
     }
     
-    // MARK: - Public
+    // MARK: - Internal
     
-    func setButtonState(state: PlayButtonState) {
+    func setButtonState(state: State) {
         buttonState = state
         switch state {
         case .Play:
-            setBackgroundImage(UIImage.safeImage(named: "PlayButton"),
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PlayButton),
                 forState: UIControlState.Normal)
             break
         case .Pause:
-            setBackgroundImage(UIImage.safeImage(named: "PauseButton"),
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PauseButton),
                 forState: UIControlState.Normal)
             break
         }

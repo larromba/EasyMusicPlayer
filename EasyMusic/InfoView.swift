@@ -7,13 +7,15 @@
 //
 
 import UIKit
+import MediaPlayer
 
 @IBDesignable
 class InfoView: UIView {
-    @IBOutlet var artist: UILabel!
-    @IBOutlet var track: UILabel!
-    @IBOutlet var time: UILabel!
-    @IBOutlet var artwork: UIImageView!
+    @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var trackLabel: UILabel!
+    @IBOutlet weak var trackPositionLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var artworkImageView: UIImageView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,28 +28,52 @@ class InfoView: UIView {
     }
     
     override func awakeFromNib() {
-        clearTrackInfo()
+        clearInfo()
     }
  
-    // MARK: - Public
+    // MARK: - Internal
     
-    func setTrackInfo(trackInfo: TrackInfo) {
-        artist.text = trackInfo.artist
-        track.text = trackInfo.title
-        artwork.image = trackInfo.artwork
+    func setInfoFromTrack(track: Track) {
+        artistLabel.text = track.artist
+        trackLabel.text = track.title
+        artworkImageView.image = track.artwork
+        
+        var mediaItemArtwork: MPMediaItemArtwork!
+        if let artwork = track.artwork {
+            mediaItemArtwork = MPMediaItemArtwork(image: artwork)
+        } else {
+            let placeholderImage = UIImage.safeImage(named: Constant.Image.Placeholder)
+            mediaItemArtwork = MPMediaItemArtwork(image: placeholderImage)
+        }
+        
+        let songInfo: [String: AnyObject] = [
+            MPMediaItemPropertyTitle: track.title,
+            MPMediaItemPropertyArtist: track.artist,
+            MPMediaItemPropertyArtwork: mediaItemArtwork,
+            MPNowPlayingInfoPropertyPlaybackRate: Float(1.0)
+        ]
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
     }
     
-    func clearTrackInfo() {
+    func clearInfo() {
         setTime(0.0, duration: 0.0)
-        artist.text = nil
-        track.text = nil
-        artwork.image = nil
+        
+        artistLabel.text = nil
+        trackLabel.text = nil
+        trackPositionLabel.text = nil
+        artworkImageView.image = nil
+        
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = nil
     }
     
     func setTime(time: NSTimeInterval, duration: NSTimeInterval) {
-        self.time.text = String(
-            format: localized("time format"),
-            stringFromTimeInterval(time))
+        timeLabel.text = String(
+            format: localized("time format"), stringFromTimeInterval(time))
+    }
+    
+    func setTrackPosition(trackPosition: Int, totalTracks: Int) {
+        trackPositionLabel.text = String(
+            format: localized("track position format"), trackPosition, totalTracks)
     }
     
     // MARK: - Private
@@ -58,7 +84,6 @@ class InfoView: UIView {
         let minutes = (interval / 60) % 60
         let hours = (interval / 3600)
         return String(
-            format: localized("time interval format"),
-            hours, minutes, seconds)
+            format: localized("time interval format"), hours, minutes, seconds)
     }
 }

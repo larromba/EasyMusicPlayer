@@ -7,29 +7,32 @@
 //
 
 import XCTest
+import MediaPlayer
 @testable import EasyMusic
 
 class TrackInfoTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     func testInitValid() {
+        /**
+         expectations:
+         - object properties are initialised correctly
+         */
+        
+        // mocks
         let artist = "artist"
         let title = "title"
         let duration = 9.0
-        let artwork = UIImage()
-        let trackInfo = TrackInfo(artist: artist, title: title, duration: duration, artwork: artwork)
+        let image = UIImage()
+        let artwork = MPMediaItemArtwork(image: image)
+        let url = NSURL(string: "")!
         
-        XCTAssert(trackInfo.artist == artist)
-        XCTAssert(trackInfo.title == title)
-        XCTAssert(trackInfo.duration == duration)
-        XCTAssert(trackInfo.artwork == artwork)
+        // runnable
+        let track = Track(artist: artist, title: title, duration: duration, mediaItemArtwork: artwork, url: url)
+        
+        // tests
+        XCTAssertEqual(track.artist, artist)
+        XCTAssertEqual(track.title, title)
+        XCTAssertEqual(track.duration, duration)
+        XCTAssertEqual(track.artwork, image)
+        XCTAssertEqual(track.url, url)
     }
 }

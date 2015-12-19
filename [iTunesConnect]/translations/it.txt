@@ -1,0 +1,42 @@
+==== App ====
+
+Artista sconosciuto
+sconosciuta Titolo
+[ x ] di [ x ]
+Errore
+Non hai la musica
+ok
+Il volume è troppo basso
+Non poteva giocare [ x ]
+conti
+Si prega di controllare i vostri conti sociali sono configurato correttamente e riprovare
+Fine
+La playlist finito
+via
+quota
+Dove vuoi condividere questo brano?
+Facebook
+Twitter
+Cancellare
+
+==== Name ====
+
+Easy Music Player
+
+==== Description ====
+
+"Easy Music Player" è un modo semplice e alternativa per riprodurre la musica salvata sul telefono. Questa applicazione è stata amore artigianale con un solo scopo in mente - per giocare bene la vostra musica.
+
+contiene :
+- Play, Pausa, Avanti, Indietro, Shuffle
+- Barra di scorrimento Tempo
+- Ripetere nessuno / uno / tutto
+- Condividere musica su Twitter e Facebook
+- Riproduzione di musica in sottofondo
+- Controlli la musica dal vostro homescreen e lockscreen
+
+Compatibile con iPad e iPhone. Ottimizzato per iPhone 6.
+
+==== Keywords ====
+
+musica,giocatore,facile,audio,suono,streaming,multimediale,radio,semplice,migliore,piccolo,mp3,mp4,cd,gratis,online,ascoltare,bluetooth

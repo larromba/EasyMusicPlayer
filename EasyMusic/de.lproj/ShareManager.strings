@@ -1,0 +1,14 @@
+/*
+ ShareManager.strings
+ EasyMusic
+ 
+ Created by Lee Arromba on 12/11/2015.
+ Copyright © 2015 Lee Arromba. All rights reserved.
+ */
+
+"share format" = "%@ - %@ (auf %@)";
+"share sheet title" = "Teilen";
+"share sheet desc" = "Wo willst du dieses Lied teilen?";
+"share option facebook" = "Facebook";
+"share option twitter" = "Twitter";
+"share option cancel" = "Abbrechen";

@@ -9,12 +9,6 @@
 import UIKit
 import MediaPlayer
 
-enum ControlsViewState {
-    case Playing
-    case Paused
-    case Stopped
-}
-
 protocol ControlsViewDelegate {
     func playPressed(sender: ControlsView)
     func stopPressed(sender: ControlsView)
@@ -22,6 +16,7 @@ protocol ControlsViewDelegate {
     func nextPressed(sender: ControlsView)
     func shufflePressed(sender: ControlsView)
     func sharePressed(sender: ControlsView)
+    func repeatPressed(sender: ControlsView)
 }
 
 @IBDesignable
@@ -32,8 +27,17 @@ class ControlsView: UIView {
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var shuffleButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var repeatButton: RepeatButton!
     
     var delegate: ControlsViewDelegate?
+    var repeatButtonState: RepeatButton.State {
+        set {
+            repeatButton.setButtonState(newValue)
+        }
+        get {
+            return repeatButton.buttonState
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,9 +49,7 @@ class ControlsView: UIView {
         loadXib()
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    override func awakeFromNib() {        
         setControlsStopped()
         
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
@@ -56,7 +58,7 @@ class ControlsView: UIView {
         commandCenter.seekForwardCommand.enabled = false
     }
     
-    // MARK: - ib actions
+    // MARK: - IBAction
     
     @IBAction func playButtonPressed(sender: UIButton) {
         delegate?.playPressed(self)
@@ -82,15 +84,19 @@ class ControlsView: UIView {
         delegate?.sharePressed(self)
     }
     
-    // MARK: - public
+    @IBAction func repeatButtonPressed(sender: UIButton) {
+        delegate?.repeatPressed(self)
+    }
+    
+    // MARK: - Internal
     
     func setControlsPlaying() {
-        playButton.setButtonState(PlayButtonState.Pause)
+        playButton.setButtonState(PlayButton.State.Pause)
         setControlsEnabled(true)
     }
     
     func setControlsPaused() {
-        playButton.setButtonState(PlayButtonState.Play)
+        playButton.setButtonState(PlayButton.State.Play)
         
         enablePlay(true)
         enableShuffle(true)
@@ -102,7 +108,7 @@ class ControlsView: UIView {
     }
     
     func setControlsStopped() {
-        playButton.setButtonState(PlayButtonState.Play)
+        playButton.setButtonState(PlayButton.State.Play)
         
         enablePlay(true)
         enableShuffle(true)
@@ -120,6 +126,7 @@ class ControlsView: UIView {
         enableStop(enabled)
         enableShuffle(enabled)
         enableShare(enabled)
+        enableRepeat(enabled)
     }
     
     func enablePrevious(enable: Bool) {
@@ -152,5 +159,9 @@ class ControlsView: UIView {
     
     func enableShuffle(enable: Bool) {
         shuffleButton.enabled = enable
+    }
+    
+    func enableRepeat(enable: Bool) {
+        repeatButton.enabled = enable
     }
 }
