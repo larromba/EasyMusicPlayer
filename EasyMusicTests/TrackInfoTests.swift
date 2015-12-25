@@ -10,6 +10,13 @@ import XCTest
 import MediaPlayer
 @testable import EasyMusic
 
+private let mockArtist = "artist"
+private let mockTitle = "title"
+private let mockDuration = 9.0
+private let mockImage = UIImage()
+private let mockArtwork = MPMediaItemArtwork(image: mockImage)
+private let mockAssetUrl = NSURL(string: "")!
+
 class TrackInfoTests: XCTestCase {
     func testInitValid() {
         /**
@@ -18,21 +25,22 @@ class TrackInfoTests: XCTestCase {
          */
         
         // mocks
-        let artist = "artist"
-        let title = "title"
-        let duration = 9.0
-        let image = UIImage()
-        let artwork = MPMediaItemArtwork(image: image)
-        let url = NSURL(string: "")!
+        class MockMediaItem: MPMediaItem {
+            override var artist: String { return mockArtist }
+            override var title: String { return mockTitle }
+            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var artwork: MPMediaItemArtwork { return mockArtwork }
+            override var assetURL: NSURL { return mockAssetUrl }
+        }
         
         // runnable
-        let track = Track(artist: artist, title: title, duration: duration, mediaItemArtwork: artwork, url: url)
+        let track = Track(mediaItem: MockMediaItem())
         
         // tests
-        XCTAssertEqual(track.artist, artist)
-        XCTAssertEqual(track.title, title)
-        XCTAssertEqual(track.duration, duration)
-        XCTAssertEqual(track.artwork, image)
-        XCTAssertEqual(track.url, url)
+        XCTAssertEqual(track.artist, mockArtist)
+        XCTAssertEqual(track.title, mockTitle)
+        XCTAssertEqual(track.duration, mockDuration)
+        XCTAssertEqual(track.artwork, mockImage)
+        XCTAssertEqual(track.url, mockAssetUrl)
     }
 }

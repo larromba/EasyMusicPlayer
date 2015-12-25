@@ -19,8 +19,10 @@ protocol MusicPlayerDelegate {
 class MusicPlayer: NSObject {
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: NSTimer?
+    private var seekTimer: NSTimer?
     private var playingInBackground: Bool = false
     private var trackManager: TrackManager = TrackManager()
+    private var seekStartDate: NSDate!
 
     var delegate: MusicPlayerDelegate?
     var repeatMode: RepeatMode = RepeatMode.None
@@ -30,7 +32,10 @@ class MusicPlayer: NSObject {
         }
         return false
     }
-    var currentTrack: Track {
+    var currentResolvedTrack: Track {
+        return trackManager.currentResolvedTrack
+    }
+    var currentTrack: MPMediaItem {
         return trackManager.currentTrack
     }
     var currentTrackNumber: Int {
@@ -82,12 +87,15 @@ class MusicPlayer: NSObject {
         super.init()
         
         self.delegate = delegate
-                
+
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
+        commandCenter.togglePlayPauseCommand.addTarget(self, action: safeSelector("togglePlayPause"))
         commandCenter.pauseCommand.addTarget(self, action: safeSelector("pause"))
         commandCenter.playCommand.addTarget(self, action: safeSelector("play"))
         commandCenter.previousTrackCommand.addTarget(self, action: safeSelector("previous"))
         commandCenter.nextTrackCommand.addTarget(self, action: safeSelector("next"))
+        commandCenter.seekForwardCommand.addTarget(self, action: safeSelector("seekForward:"))
+        commandCenter.seekBackwardCommand.addTarget(self, action: safeSelector("seekBackward:"))
         
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationWillTerminate),
@@ -109,11 +117,14 @@ class MusicPlayer: NSObject {
     deinit {
         enableAudioSession(false)
         
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
+        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter()
+        commandCenter.togglePlayPauseCommand.removeTarget(self)
         commandCenter.pauseCommand.removeTarget(self)
         commandCenter.playCommand.removeTarget(self)
         commandCenter.previousTrackCommand.removeTarget(self)
         commandCenter.nextTrackCommand.removeTarget(self)
+        commandCenter.seekForwardCommand.removeTarget(self)
+        commandCenter.seekBackwardCommand.removeTarget(self)
         
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: UIApplicationWillTerminateNotification,
@@ -129,6 +140,10 @@ class MusicPlayer: NSObject {
     // MARK: - Private
     
     private func startPlaybackCheckTimer() {
+        if playbackCheckTimer != nil {
+            stopPlaybackCheckTimer()
+        }
+        
         playbackCheckTimer = NSTimer.scheduledTimerWithTimeInterval(1.0,
             target: self,
             selector: safeSelector("playbackCheckTimerCallback"),
@@ -141,7 +156,25 @@ class MusicPlayer: NSObject {
         playbackCheckTimer = nil
     }
     
+    private func startSeekTimerWithAction(action: Selector) {
+        if seekTimer != nil {
+            stopSeekTimer()
+        }
+        
+        seekTimer = NSTimer.scheduledTimerWithTimeInterval(0.2,
+            target: self,
+            selector: action,
+            userInfo: nil,
+            repeats: true)
+    }
+    
+    private func stopSeekTimer() {
+        seekTimer?.invalidate()
+        seekTimer = nil
+    }
+    
     private func threwError(error: Error) {
+        stopSeekTimer()
         delegate?.threwError(self, error: error)
         delegate?.changedState(self, state: MusicPlayer.State.Stopped)
     }
@@ -173,6 +206,18 @@ class MusicPlayer: NSObject {
         delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
+    func seekForwardTimerCallback() {
+        if seekTimer != nil {
+            player!.currentTime += 1.0
+        }
+    }
+    
+    func seekBackwardTimerCallback() {
+        if seekTimer != nil {
+            player!.currentTime -= 1.0
+        }
+    }
+    
     // MARK: - Internal
     
     func enableAudioSession(enable: Bool) {
@@ -202,9 +247,15 @@ class MusicPlayer: NSObject {
             return
         }
         
-        if player == nil || player!.url!.absoluteString != currentTrack.url.absoluteString {
+        let assetUrl = currentTrack.assetURL
+        guard assetUrl != nil else {
+            threwError(Error.PlayerInit)
+            return
+        }
+        
+        if player == nil || player!.url!.absoluteString != assetUrl!.absoluteString {
             do {
-                try player = AVAudioPlayer(contentsOfURL: currentTrack.url)
+                try player = AVAudioPlayer(contentsOfURL: assetUrl!)
             } catch _ {
                 threwError(Error.PlayerInit)
                 return
@@ -254,6 +305,14 @@ class MusicPlayer: NSObject {
         delegate?.changedState(self, state: State.Paused)
     }
     
+    func togglePlayPause() {
+        if isPlaying == false {
+            play()
+        } else {
+            pause()
+        }
+    }
+    
     func previous() {
         stop()
         
@@ -277,6 +336,56 @@ class MusicPlayer: NSObject {
 
         play()
     }
+    
+    func seekForward(event: MPSeekCommandEvent) {
+        guard player != nil else {
+            return
+        }
+        
+        switch event.type {
+        case .BeginSeeking:
+            seekForwardStart()
+            break
+        case .EndSeeking:
+            seekForwardEnd()
+            break
+        }
+    }
+    
+    func seekBackward(event: MPSeekCommandEvent) {
+        guard player != nil else {
+            return
+        }
+        
+        switch event.type {
+        case .BeginSeeking:
+            seekBackwardStart()
+            break
+        case .EndSeeking:
+            seekBackwardEnd()
+            break
+        }
+    }
+    
+    func seekForwardStart() {
+        seekStartDate = NSDate()
+        startSeekTimerWithAction(safeSelector("seekForwardTimerCallback"))
+    }
+    
+    func seekForwardEnd() {
+        stopSeekTimer()
+        Analytics.shared.sendTimedAppEvent("seek_forward", fromDate: seekStartDate, toDate: NSDate())
+    }
+    
+    func seekBackwardStart() {
+        seekStartDate = NSDate()
+        startSeekTimerWithAction(safeSelector("seekBackwardTimerCallback"))
+    }
+    
+    func seekBackwardEnd() {
+        stopSeekTimer()
+        Analytics.shared.sendTimedAppEvent("seek_backward", fromDate: seekStartDate, toDate: NSDate())
+    }
 
     func shuffle() {
         trackManager.shuffleTracks()
@@ -287,6 +396,9 @@ class MusicPlayer: NSObject {
 
 extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool) {
+        stopPlaybackCheckTimer()
+        stopSeekTimer()
+        
         if flag == false {
             threwError(Error.AVError)
             return

@@ -11,7 +11,6 @@ import MediaPlayer
 
 class Track: NSObject {
     private var mediaItemArtwork: MPMediaItemArtwork?
-
     private(set) var artist: String!
     private(set) var title: String!
     private(set) var duration: NSTimeInterval = 0
@@ -20,21 +19,25 @@ class Track: NSObject {
         return mediaItemArtwork?.imageWithSize(CGSizeMake(512, 512))
     }
     
-    init(var artist: String?, var title: String?, duration: NSTimeInterval, mediaItemArtwork: MPMediaItemArtwork?, url: NSURL) {
+    init(mediaItem: MPMediaItem) {
         super.init()
         
-        if artist == nil || artist!.characters.count == 0 {
-            artist = localized("unknown artist")
+        if let assetURL = mediaItem.assetURL {
+            var artist = mediaItem.artist
+            if artist == nil || artist!.characters.count == 0 {
+                artist = localized("unknown artist")
+            }
+            
+            var title = mediaItem.title
+            if title == nil || title!.characters.count == 0 {
+                title = localized("unknown track")
+            }
+            
+            self.artist = artist
+            self.title = title
+            self.duration = mediaItem.playbackDuration
+            self.mediaItemArtwork = mediaItem.artwork
+            self.url = assetURL
         }
-
-        if title == nil || title!.characters.count == 0 {
-            title = localized("unknown track")
-        }
-        
-        self.artist = artist
-        self.title = title
-        self.duration = duration
-        self.mediaItemArtwork = mediaItemArtwork
-        self.url = url
     }
 }

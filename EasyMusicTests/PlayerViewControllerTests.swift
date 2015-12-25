@@ -30,7 +30,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         playerViewController = UIStoryboard.main().instantiateInitialViewController() as? PlayerViewController
         playerViewController!.view.layoutIfNeeded()
-        UIApplication.sharedApplication().keyWindow?.rootViewController = playerViewController
+        UIApplication.sharedApplication().keyWindow!.rootViewController = playerViewController
     }
     
     override func tearDown() {
@@ -100,7 +100,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockControlsView.delegate = playerViewController
         playerViewController!.__controlsView = mockControlsView
         
-        let mockButton = UIButton()
+        let mockButton = PlayButton()
 
         // runnable
         mockControlsView.playButtonPressed(mockButton)
@@ -395,7 +395,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!.__controlsView = mockControlsView
         mockControlsView.delegate = playerViewController
         
-        let mockButton = UIButton()
+        let mockButton = PlayButton()
         
         // runnable
         mockControlsView.playButtonPressed(mockButton)
@@ -713,7 +713,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!.__controlsView = mockControlsView
         mockControlsView.delegate = playerViewController
         
-        let mockButton = UIButton()
+        let mockButton = ShuffleButton()
 
         // runnable
         mockControlsView.shuffleButtonPressed(mockButton)
@@ -739,8 +739,8 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var currentTrack: Track {
-                sharedTrack = super.currentTrack
+            override var currentResolvedTrack: Track {
+                sharedTrack = super.currentResolvedTrack
                 return sharedTrack
             }
         }
@@ -780,7 +780,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.repeatMode = MusicPlayer.RepeatMode.All
         playerViewController!.__musicPlayer = mockMusicPlayer
         
-        let mockButton = UIButton()
+        let mockButton = RepeatButton()
         let expectedRepeatMode = MusicPlayer.RepeatMode.None
         
         // runnable

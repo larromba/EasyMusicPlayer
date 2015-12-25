@@ -61,15 +61,7 @@ class Analytics {
             return
         }
         
-        let currentDate = NSDate()
-        let sessionTimeSecs = currentDate.timeIntervalSinceDate(sessionStartDate!)
-        let sessionTimeMilliSecs = NSNumber(unsignedInteger: UInt(sessionTimeSecs * 1000.0))
-        let item = GAIDictionaryBuilder.createTimingWithCategory("app",
-            interval: sessionTimeMilliSecs,
-            name: "session",
-            label: nil).build() as [NSObject : AnyObject]
-        
-        send(item)
+        sendTimedAppEvent("session", fromDate: sessionStartDate!, toDate: NSDate())
         sessionStartDate = nil
     }
     
@@ -97,8 +89,30 @@ class Analytics {
         sendEvent("domain:\(error.domain), code:\(error.code)", action: classId, category: "error")
     }
     
+    func sendTimedAppEvent(event: String, fromDate: NSDate, toDate: NSDate) {
+        let sessionTimeSecs = toDate.timeIntervalSinceDate(fromDate)
+        let sessionTimeMilliSecs = NSNumber(unsignedInteger: UInt(sessionTimeSecs * 1000.0))
+        let item = GAIDictionaryBuilder.createTimingWithCategory("app",
+            interval: sessionTimeMilliSecs,
+            name: event,
+            label: nil).build() as [NSObject : AnyObject]
+        
+        send(item)
+    }
+    
     // MARK: - Private
-
+    
+    private func sendTimedEvent(event: String, category: String, fromDate: NSDate, toDate: NSDate) {
+        let sessionTimeSecs = toDate.timeIntervalSinceDate(fromDate)
+        let sessionTimeMilliSecs = NSNumber(unsignedInteger: UInt(sessionTimeSecs * 1000.0))
+        let item = GAIDictionaryBuilder.createTimingWithCategory(category,
+            interval: sessionTimeMilliSecs,
+            name: event,
+            label: nil).build() as [NSObject : AnyObject]
+        
+        send(item)
+    }
+    
     private func sendEvent(event: String, action: String, category: String) {
         let item = GAIDictionaryBuilder.createEventWithCategory(category,
             action: action,

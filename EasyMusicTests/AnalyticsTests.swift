@@ -202,4 +202,26 @@ class AnalyticsTests: XCTestCase {
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
+    
+    func testSendTimedAppEvent() {
+        /**
+        expectations
+        - analytics event sent
+        */
+        trackerExpectation = expectationWithDescription("GAITracker.send(_)")
+        
+        // mocks
+        let mockTracker = MockTracker()
+        analytics!.__defaultTracker = mockTracker
+        
+        let mockEvent = ""
+        let mockFromDate = NSDate()
+        let mockToDate = NSDate()
+        
+        // runnable
+        analytics!.sendTimedAppEvent(mockEvent, fromDate: mockFromDate, toDate: mockToDate)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
 }
