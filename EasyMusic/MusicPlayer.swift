@@ -22,7 +22,7 @@ class MusicPlayer: NSObject {
     private var seekTimer: NSTimer?
     private var playingInBackground: Bool = false
     private var trackManager: TrackManager = TrackManager()
-    private var seekStartDate: NSDate!
+    private var seekStartDate: NSDate?
 
     var delegate: MusicPlayerDelegate?
     var repeatMode: RepeatMode = RepeatMode.None
@@ -400,7 +400,10 @@ class MusicPlayer: NSObject {
     
     func seekForwardEnd() {
         stopSeekTimer()
-        Analytics.shared.sendTimedAppEvent("seek_forward", fromDate: seekStartDate, toDate: NSDate())
+        
+        if let seekStartDate = seekStartDate {
+            Analytics.shared.sendTimedAppEvent("seek_forward", fromDate: seekStartDate, toDate: NSDate())
+        }
     }
     
     func seekBackwardStart() {
@@ -410,7 +413,10 @@ class MusicPlayer: NSObject {
     
     func seekBackwardEnd() {
         stopSeekTimer()
-        Analytics.shared.sendTimedAppEvent("seek_backward", fromDate: seekStartDate, toDate: NSDate())
+        
+        if let seekStartDate = seekStartDate {
+            Analytics.shared.sendTimedAppEvent("seek_backward", fromDate: seekStartDate, toDate: NSDate())
+        }
     }
 
     func shuffle() {
