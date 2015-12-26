@@ -11,7 +11,7 @@ import Social
 
 class ShareManager: NSObject {
     private weak var presenter: UIViewController!
-    private weak var track: Track!
+    private var track: Track!
     private var completion: ((Result, String?) -> Void)?
     private var ComposeViewController = SLComposeViewController.self
     private var AlertAction = UIAlertAction.self
@@ -40,7 +40,7 @@ class ShareManager: NSObject {
             popoverController.sourceRect = sender.bounds
             popoverController.permittedArrowDirections = UIPopoverArrowDirection.Any;
         }
-        self.presenter.presentViewController(choices, animated: true, completion: nil)
+        presenter.presentViewController(choices, animated: true, completion: nil)
     }
     
     // MARK: - Private
@@ -63,10 +63,12 @@ class ShareManager: NSObject {
                     self.completion?(Result.CancelledAfterChoice, serviceType)
                     break
                 }
+                self.track = nil
             }
             presenter.presentViewController(share, animated: true, completion: nil)
         } else {
-            self.completion?(Result.Error, serviceType)
+            completion?(Result.Error, serviceType)
+            track = nil
         }
     }
     

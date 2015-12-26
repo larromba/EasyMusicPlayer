@@ -10,14 +10,16 @@ import UIKit
 
 class PlayerButton: UIButton {
     override func awakeFromNib() {
-        addTarget(self, action: Selector("touchUpInside"), forControlEvents: UIControlEvents.TouchUpInside)
+        addTarget(self, action: safeSelector("touchUpInside"), forControlEvents: UIControlEvents.TouchUpInside)
     }
+    
+    // MARK: - Internal
     
     func touchUpInside() {
         let animation = createPulseAnimation()
         self.layer.addAnimation(animation, forKey: "pulseAnimation")
     }
-    
+        
     // MARK: - Private
     
     private func createPulseAnimation() -> CABasicAnimation {

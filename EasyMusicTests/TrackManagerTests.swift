@@ -7,24 +7,48 @@
 //
 
 import XCTest
+import MediaPlayer
 @testable import EasyMusic
+
+private let mockArtist = "artist"
+private let mockTitle = "title"
+private let mockDuration = 9.0
+private let mockImage = UIImage()
+private let mockArtwork = MPMediaItemArtwork(image: mockImage)
+private let mockAssetUrl = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
 
 class TrackManagerTests: XCTestCase {
     private let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
 
     private var trackManager: TrackManager?
-    private var mockTracks: [Track]!
+    private var mockTracks: [MPMediaItem]!
     
     override func setUp() {
         super.setUp()
         
+        class MockMediaItem: MPMediaItem {
+            override var artist: String { return mockArtist }
+            override var title: String { return mockTitle }
+            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var artwork: MPMediaItemArtwork { return mockArtwork }
+            override var assetURL: NSURL { return mockAssetUrl }
+        }
+        
+        class MockMediaItemNoArtistOrTitle: MPMediaItem {
+            override var artist: String? { return nil }
+            override var title: String? { return nil }
+            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var artwork: MPMediaItemArtwork { return mockArtwork }
+            override var assetURL: NSURL { return mockAssetUrl }
+        }
+        
         mockTracks = [
-            Track(artist: "Artist 1", title: "Title 1", duration: 219, mediaItemArtwork: nil, url: url),
-            Track(artist: "Artist 2", title: "Title 2", duration: 219, mediaItemArtwork: nil, url: url),
-            Track(artist: "Artist 3", title: "Title 3", duration: 219, mediaItemArtwork: nil, url: url),
-            Track(artist: "Artist 4", title: "Title 4", duration: 219, mediaItemArtwork: nil, url: url),
-            Track(artist: "Artist 5", title: "Title 5", duration: 219, mediaItemArtwork: nil, url: url),
-            Track(artist: "Artist 6", title: "Title 6", duration: 219, mediaItemArtwork: nil, url: url)
+            MockMediaItem(),
+            MockMediaItem(),
+            MockMediaItem(),
+            MockMediaItemNoArtistOrTitle(),
+            MockMediaItem(),
+            MockMediaItem()
         ]
         
         trackManager = TrackManager()
@@ -190,10 +214,46 @@ class TrackManagerTests: XCTestCase {
         trackManager!.__trackIndex = initialTrackIndex
         
         // runnable
-        let tracks = trackManager!.allTracks
+        let track = trackManager!.currentTrack
         
         // tests
-        XCTAssertEqual(tracks[initialTrackIndex], mockTracks[initialTrackIndex])
+        XCTAssertEqual(track, mockTracks[initialTrackIndex])
+    }
+    
+    func testCurrentResolvedTrack() {
+        /**
+         expectations
+         - current track resolved returned with artist and title populated
+         */
+         
+         // mocks
+        let initialTrackIndex = 3
+        trackManager!.__trackIndex = initialTrackIndex
+        
+        // runnable
+        let currentResolvedTrack = trackManager!.currentResolvedTrack
+
+        // tests
+        XCTAssertNotNil(currentResolvedTrack.artist)
+        XCTAssertNotNil(currentResolvedTrack.title)
+    }
+    
+    func testCurrentResolvedTrackIsCurrentTrack() {
+        /**
+         expectations
+         - current track resolved returned with artist and title populated
+         */
+         
+         // mocks
+        let initialTrackIndex = 2
+        trackManager!.__trackIndex = initialTrackIndex
+        
+        // runnable
+        let currentTrack = trackManager!.currentTrack
+        let currentResolvedTrack = trackManager!.currentResolvedTrack
+        
+        // tests
+        XCTAssertEqual(currentTrack.title, currentResolvedTrack.title)
     }
     
     func testCurrentTrackNumber() {

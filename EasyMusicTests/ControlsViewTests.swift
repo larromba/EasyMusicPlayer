@@ -254,6 +254,7 @@ class ControlsViewTests: XCTestCase {
         /**
          expectations:
          - remote previous button is enabled
+         - remote seek backward is enabled
          */
          
         // mocks
@@ -264,6 +265,7 @@ class ControlsViewTests: XCTestCase {
         
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().previousTrackCommand.enabled, enabled)
+        XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().seekBackwardCommand.enabled, enabled)
     }
     
     func testEnableNext() {
@@ -286,6 +288,7 @@ class ControlsViewTests: XCTestCase {
         /**
          expectations:
          - remote next button is enabled
+         - remote seek forward is enabled
          */
          
         // mocks
@@ -296,8 +299,43 @@ class ControlsViewTests: XCTestCase {
         
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().nextTrackCommand.enabled, enabled)
+        XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().seekForwardCommand.enabled, enabled)
     }
     
+    func testEnableSeekBackwardsRemoteOnly() {
+        /**
+         expectations:
+         - remote seek backwards is enabled
+         */
+         
+        // mocks
+        let enabled = true
+        
+        // runnable
+        controlsView!.enableSeekBackwardsRemoteOnly(enabled)
+        
+        // tests
+        XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().previousTrackCommand.enabled, enabled)
+        XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().seekBackwardCommand.enabled, enabled)
+    }
+    
+    func testEnableSeekForwardsRemoteOnly() {
+        /**
+         expectations:
+         - remote seek forwards is enabled
+         */
+         
+        // mocks
+        let enabled = true
+        
+        // runnable
+        controlsView!.enableSeekForwardsRemoteOnly(enabled)
+        
+        // tests
+        XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().nextTrackCommand.enabled, enabled)
+        XCTAssertEqual(MPRemoteCommandCenter.sharedCommandCenter().seekForwardCommand.enabled, enabled)
+    }
+
     func testEnableShuffle() {
         /**
          expectations:
@@ -471,6 +509,30 @@ extension ControlsViewTests: ControlsViewDelegate {
     }
     
     func nextPressed(sender: ControlsView) {
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
+    }
+    
+    func seekBackwardStart(sender: ControlsView) {
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
+    }
+    
+    func seekBackwardEnd(sender: ControlsView) {
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
+    }
+    
+    func seekForwardStart(sender: ControlsView) {
+        if let controlsExpectation = controlsExpectation {
+            controlsExpectation.fulfill()
+        }
+    }
+    
+    func seekForwardEnd(sender: ControlsView) {
         if let controlsExpectation = controlsExpectation {
             controlsExpectation.fulfill()
         }

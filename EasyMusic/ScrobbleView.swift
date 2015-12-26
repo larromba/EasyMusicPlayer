@@ -17,8 +17,6 @@ protocol ScrobbleViewDelegate {
 class ScrobbleView: UIView {
     @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
     @IBOutlet private weak var barView: UIView!
-
-    private var didLayoutSubviews: Bool = false
     
     var delegate: ScrobbleViewDelegate?
     override var userInteractionEnabled: Bool {
@@ -48,18 +46,15 @@ class ScrobbleView: UIView {
     
     override func awakeFromNib() {
         userInteractionEnabled = false
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        // ipad compatible
-        if didLayoutSubviews == false {
-            didLayoutSubviews = true
-            moveScrobblerToPoint(0.0)
-        }
+       
+        // ensure widest screens don't show the scrobbler when first appearing
+        moveScrobblerToPoint(-1000.0)
     }
 
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        barView.alpha = 0.65
+    }
+    
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
             let point = touch.locationInView(self)
@@ -92,7 +87,12 @@ class ScrobbleView: UIView {
     }
     
     private func animateTouchesEnded() {
-        
+        UIView.animateWithDuration(0.15,
+            delay: 0.0,
+            options: UIViewAnimationOptions.CurveEaseIn,
+            animations: { () -> Void in
+                self.barView.alpha = 1.0
+            }, completion: nil)
     }
     
     // MARK: - Internal
