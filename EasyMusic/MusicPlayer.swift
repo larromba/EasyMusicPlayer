@@ -109,6 +109,10 @@ class MusicPlayer: NSObject {
             selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
             name: UIApplicationDidBecomeActiveNotification,
             object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: safeSelector("\(Constant.Notification.AudioSessionRouteChange):"),
+            name: AVAudioSessionRouteChangeNotification,
+            object: nil)
         
         enableAudioSession(true)
         shuffle()
@@ -134,6 +138,9 @@ class MusicPlayer: NSObject {
             object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: UIApplicationWillResignActiveNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: AVAudioSessionRouteChangeNotification,
             object: nil)
     }
     
@@ -195,8 +202,27 @@ class MusicPlayer: NSObject {
         if playingInBackground == true && isPlaying == false {
             stop()
         }
+        
         playingInBackground = false
     }
+    
+    func audioSessionRouteChange(notifcation: NSNotification) {
+        if let rawValue = notifcation.userInfo?[AVAudioSessionRouteChangeReasonKey]?.unsignedIntegerValue {
+            if let reason = AVAudioSessionRouteChangeReason(rawValue: rawValue) {
+                switch reason {
+                case .NewDeviceAvailable, .OldDeviceUnavailable:
+                    if isPlaying == true {
+                        pause()
+                    }
+                    break
+                default:
+                    break
+                }
+            }
+        }
+    }
+    
+    // MARK: - Timer
     
     func playbackCheckTimerCallback() {
         guard player != nil else {
