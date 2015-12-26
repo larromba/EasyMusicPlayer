@@ -1,5 +1,5 @@
 //
-//  ScrobbleViewTests.swift
+//  ScrubberViewTests.swift
 //  EasyMusicTests
 //
 //  Created by Lee Arromba on 01/11/2015.
@@ -9,11 +9,12 @@
 import XCTest
 @testable import EasyMusic
 
+private var analyticsExpectation: XCTestExpectation?
 private var mockPoint: CGPoint!
 
-class ScrobbleViewTests: XCTestCase {
-    private var scrobbleView: ScrobbleView?
-    private var scrobbleViewExpectation: XCTestExpectation?
+class ScrubberViewTests: XCTestCase {
+    private var scrubberView: ScrubberView?
+    private var scrubberViewExpectation: XCTestExpectation?
 
     private class MockTouch : UITouch {
         override func locationInView(view: UIView?) -> CGPoint {
@@ -24,64 +25,66 @@ class ScrobbleViewTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        scrobbleView = ScrobbleView(frame: CGRectMake(0, 0, 100, 0))
-        scrobbleView!.delegate = self
+        scrubberView = ScrubberView(frame: CGRectMake(0, 0, 100, 0))
+        scrubberView!.delegate = self
     }
     
     override func tearDown() {
         super.tearDown()
         
-        scrobbleView = nil
-        scrobbleViewExpectation = nil
+        scrubberView = nil
+        scrubberViewExpectation = nil
+        analyticsExpectation = nil
+        Analytics.__shared = Analytics()
     }
     
     func testAwakeFromNib() {
         /**
         expectations
-        - scrobble view disabled
+        - scrubber view disabled
         */
         
-        scrobbleView!.awakeFromNib()
-        XCTAssertFalse(scrobbleView!.userInteractionEnabled)
+        scrubberView!.awakeFromNib()
+        XCTAssertFalse(scrubberView!.userInteractionEnabled)
     }
     
-    func testScrobble50() {
+    func testScrubber50() {
         /**
         expectations:
         - moves to 50% of the screen
         */
         
         // runnable
-        scrobbleView!.scrobbleToPercentage(0.5)
+        scrubberView!.scrubberToPercentage(0.5)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 50.0)
+        XCTAssertEqual(CGRectGetWidth(scrubberView!.__barView.bounds), 50.0)
     }
     
-    func testScrobble30() {
+    func testScrubber30() {
         /**
         expectations:
         - moves to 30% of the screen
         */
         
         // runnable
-        scrobbleView!.scrobbleToPercentage(0.3)
+        scrubberView!.scrubberToPercentage(0.3)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 30.0)
+        XCTAssertEqual(CGRectGetWidth(scrubberView!.__barView.bounds), 30.0)
     }
     
-    func testScrobble90() {
+    func testScrubber90() {
         /**
         expectations:
         - moves to 90% of the screen
         */
         
         // runnable
-        scrobbleView!.scrobbleToPercentage(0.9)
+        scrubberView!.scrubberToPercentage(0.9)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 90.0)
+        XCTAssertEqual(CGRectGetWidth(scrubberView!.__barView.bounds), 90.0)
     }
     
     func testTouchesMoved50() {
@@ -90,7 +93,7 @@ class ScrobbleViewTests: XCTestCase {
          - moves to 50% of the screen
          - delegate called
          */
-        scrobbleViewExpectation = expectationWithDescription("ScrobbleViewDelegate.touchMovedToPercentage(_, _)")
+        scrubberViewExpectation = expectationWithDescription("ScrubberViewDelegate.touchMovedToPercentage(_, _)")
         
         // mocks
         let mockTouch = MockTouch()
@@ -98,10 +101,10 @@ class ScrobbleViewTests: XCTestCase {
         mockPoint = CGPointMake(50, 0)
         
         // runnable
-        scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
+        scrubberView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 50.0)
+        XCTAssertEqual(CGRectGetWidth(scrubberView!.__barView.bounds), 50.0)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -117,10 +120,10 @@ class ScrobbleViewTests: XCTestCase {
         mockPoint = CGPointMake(30, 0)
 
         // runnable
-        scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
+        scrubberView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 30.0)
+        XCTAssertEqual(CGRectGetWidth(scrubberView!.__barView.bounds), 30.0)
     }
     
     func testTouchesMoved90() {
@@ -135,10 +138,10 @@ class ScrobbleViewTests: XCTestCase {
         mockPoint = CGPointMake(90, 0)
         
         // runnable
-        scrobbleView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
+        scrubberView!.touchesMoved(Set([mockTouch]), withEvent: mockEvent)
         
         // tests
-        XCTAssertEqual(CGRectGetWidth(scrobbleView!.__barView.bounds), 90.0)
+        XCTAssertEqual(CGRectGetWidth(scrubberView!.__barView.bounds), 90.0)
     }
     
     func testUserInteractionDisabledBarAlpha() {
@@ -148,10 +151,10 @@ class ScrobbleViewTests: XCTestCase {
          */
         
         // runnable
-        scrobbleView!.userInteractionEnabled = false
+        scrubberView!.userInteractionEnabled = false
         
         // tests
-        XCTAssertNotEqual(scrobbleView!.__barView, 1.0)
+        XCTAssertNotEqual(scrubberView!.__barView, 1.0)
     }
     
     func testTouchesEnded() {
@@ -159,32 +162,60 @@ class ScrobbleViewTests: XCTestCase {
         expectations:
         - delegate method called
         */
-        scrobbleViewExpectation = expectationWithDescription("ScrobbleViewDelegate.touchEndedAtPercentage(_, _)")
+        scrubberViewExpectation = expectationWithDescription("ScrubberViewDelegate.touchEndedAtPercentage(_, _)")
         
         // mocks
         let mockTouch = UITouch()
         let mockEvent = UIEvent()
         
         // runnable
-        scrobbleView!.touchesEnded(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
+        scrubberView!.touchesEnded(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAnalytics() {
+        /**
+        expectations
+        - analytics event sent
+        */
+        analyticsExpectation = expectationWithDescription("Analytics.shared.sendTimedAppEvent(_, _, _)")
+        
+        // mocks
+        class MockAnalytics: Analytics {
+            override func sendTimedAppEvent(event: String, fromDate: NSDate, toDate: NSDate) {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics.__shared = mockAnalytics
+        
+        let mockTouch = UITouch()
+        let mockEvent = UIEvent()
+        
+        // runnable
+        scrubberView!.touchesBegan(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
+        scrubberView!.touchesEnded(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
 }
 
-// MARK: - ScrobbleViewDelegate
+// MARK: - ScrubberViewDelegate
 
-extension ScrobbleViewTests: ScrobbleViewDelegate {
-    func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
-        if let scrobbleViewExpectation = scrobbleViewExpectation {
-            scrobbleViewExpectation.fulfill()
+extension ScrubberViewTests: ScrubberViewDelegate {
+    func touchMovedToPercentage(sender: ScrubberView, percentage: Float) {
+        if let scrubberViewExpectation = scrubberViewExpectation {
+            scrubberViewExpectation.fulfill()
         }
     }
     
-    func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float) {
-        if let scrobbleViewExpectation = scrobbleViewExpectation {
-            scrobbleViewExpectation.fulfill()
+    func touchEndedAtPercentage(sender: ScrubberView, percentage: Float) {
+        if let scrubberViewExpectation = scrubberViewExpectation {
+            scrubberViewExpectation.fulfill()
         }
     }
 }

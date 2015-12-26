@@ -40,7 +40,7 @@ class EasyMusicUITests: XCTestCase {
         app.buttons["StopButton"].tap()
     }
     
-    func testStopCantScrobble() {
+    func testStopCantScrubber() {
         XCUIApplication().staticTexts["00:00:00"].tap()
     }
     
@@ -61,7 +61,7 @@ class EasyMusicUITests: XCTestCase {
         XCUIApplication().buttons["ShuffleButton"].tap()
     }
     
-    func testScrobble() {
+    func testScrubber() {
         let app = XCUIApplication()
         app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(3).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Button).elementBoundByIndex(0).tap()
         app.staticTexts["00:00:00"].tap()
