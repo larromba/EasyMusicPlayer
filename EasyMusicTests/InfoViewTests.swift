@@ -66,10 +66,15 @@ class InfoViewTests: XCTestCase {
         */
         
         // runnable
-        infoView!.setTrackPosition(2, totalTracks: 3)
+        let trackPosition = 2
+        let totalTracks = 3
+        infoView!.setTrackPosition(trackPosition, totalTracks: totalTracks)
         
         // tests
-        XCTAssertEqual(infoView!.trackPositionLabel.text, "2 of 3")
+        let firstCharacter = String(infoView!.trackPositionLabel.text!.characters.first!)
+        let lastCharacter = String(infoView!.trackPositionLabel.text!.characters.last!)
+        XCTAssertEqual(Int(firstCharacter), trackPosition)
+        XCTAssertEqual(Int(lastCharacter), totalTracks)
     }
     
     func testClearTrackInfo() {
