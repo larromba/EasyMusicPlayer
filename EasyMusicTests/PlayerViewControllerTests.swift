@@ -114,7 +114,7 @@ class PlayerViewControllerTests: XCTestCase {
         expectations
         - Info view updates
         - Controls are in playing state
-        - Scrobble view is enabled
+        - Scrubber view is enabled
         */
         infoViewExpectation = expectationWithDescription("infoView.setInfoFromTrack(_)")
         controlsViewExpectation = expectationWithDescription("controlsView.setControlsPlaying()")
@@ -156,13 +156,13 @@ class PlayerViewControllerTests: XCTestCase {
         mockControlsView.delegate = playerViewController
         playerViewController!.__controlsView = mockControlsView
         
-        playerViewController!.__scrobbleView.userInteractionEnabled = false
+        playerViewController!.__scrubberView.userInteractionEnabled = false
         
         // runnable
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Playing)
 
         // tests
-        XCTAssertTrue(playerViewController!.__scrobbleView.userInteractionEnabled)
+        XCTAssertTrue(playerViewController!.__scrubberView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -219,7 +219,7 @@ class PlayerViewControllerTests: XCTestCase {
         NSNotificationCenter.defaultCenter().postNotification(notification)
         
         // tests
-        XCTAssertFalse(playerViewController!.__scrobbleView.userInteractionEnabled)
+        XCTAssertFalse(playerViewController!.__scrubberView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -408,7 +408,7 @@ class PlayerViewControllerTests: XCTestCase {
         /**
         expectations
         - Controls are in paused state
-        - Scrobble view is disabled
+        - Scrubber view is disabled
         */
         controlsViewExpectation = expectationWithDescription("controlsView.setControlsPaused()")
         
@@ -431,7 +431,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Paused)
         
         // tests
-        XCTAssertFalse(playerViewController!.__scrobbleView.userInteractionEnabled)
+        XCTAssertFalse(playerViewController!.__scrubberView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -615,7 +615,7 @@ class PlayerViewControllerTests: XCTestCase {
         /**
         expectations
         - Controls are in stopped state
-        - Scrobble view is disabled
+        - Scrubber view is disabled
         */
         controlsViewExpectation = expectationWithDescription("controlsView.setControlsStopped()")
         
@@ -638,7 +638,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Stopped)
         
         // tests
-        XCTAssertFalse(playerViewController!.__scrobbleView.userInteractionEnabled)
+        XCTAssertFalse(playerViewController!.__scrubberView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -646,7 +646,7 @@ class PlayerViewControllerTests: XCTestCase {
         /**
         expectations
         - Controls are in stopped state
-        - Scrobble view is disabled
+        - Scrubber view is disabled
         - Info is cleared
         */
         controlsViewExpectation = expectationWithDescription("controlsView.setControlsStopped()")
@@ -681,7 +681,7 @@ class PlayerViewControllerTests: XCTestCase {
         mockMusicPlayer.delegate!.changedState(mockMusicPlayer, state: MusicPlayer.State.Finished)
         
         // tests
-        XCTAssertFalse(playerViewController!.__scrobbleView.userInteractionEnabled)
+        XCTAssertFalse(playerViewController!.__scrubberView.userInteractionEnabled)
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -808,7 +808,7 @@ class PlayerViewControllerTests: XCTestCase {
         XCTAssertEqual(playerViewController!.__controlsView.repeatButton.buttonState, expectedRepeatButtonState)
     }
     
-    func testScrobbleTouchMoved() {
+    func testScrubberTouchMoved() {
         /**
         expectations
         - info view time is updated
@@ -837,16 +837,16 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!.__infoView = mockInfoView
         
         // runnable
-        playerViewController!.__scrobbleView.delegate!.touchMovedToPercentage(playerViewController!.__scrobbleView, percentage: 0.2)
+        playerViewController!.__scrubberView.delegate!.touchMovedToPercentage(playerViewController!.__scrubberView, percentage: 0.2)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
-    func testScrobbleTouchEnded() {
+    func testScrubberTouchEnded() {
         /**
         expectations
-        - Music player attempts to scrobble
+        - Music player attempts to scrubber
         */
         musicPlayerExpectation = expectationWithDescription("musicPlayer.time")
         
@@ -862,7 +862,7 @@ class PlayerViewControllerTests: XCTestCase {
         playerViewController!.__musicPlayer = mockMusicPlayer
         
         // runnable
-        playerViewController!.__scrobbleView.delegate!.touchEndedAtPercentage(playerViewController!.__scrobbleView, percentage: 0.2)
+        playerViewController!.__scrubberView.delegate!.touchEndedAtPercentage(playerViewController!.__scrubberView, percentage: 0.2)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })

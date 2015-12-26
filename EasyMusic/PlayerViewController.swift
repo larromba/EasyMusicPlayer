@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 
 class PlayerViewController: UIViewController {
-    @IBOutlet private weak var scrobbleView: ScrobbleView!
+    @IBOutlet private weak var scrubberView: ScrubberView!
     @IBOutlet private weak var infoView: InfoView!
     @IBOutlet private weak var controlsView: ControlsView!
     
@@ -23,7 +23,7 @@ class PlayerViewController: UIViewController {
         super.viewDidLoad()
         
         controlsView.delegate = self
-        scrobbleView.delegate = self
+        scrubberView.delegate = self
         
         if let repeatMode = UserData.repeatMode {
             musicPlayer.repeatMode = repeatMode
@@ -108,21 +108,21 @@ extension PlayerViewController: MusicPlayerDelegate {
             controlsView.setControlsPlaying()
             infoView.setInfoFromTrack(sender.currentResolvedTrack)
             infoView.setTrackPosition((musicPlayer.currentTrackNumber + 1), totalTracks: musicPlayer.numOfTracks)
-            scrobbleView.userInteractionEnabled = true
+            scrubberView.userInteractionEnabled = true
             updateSeekingControls()
             break
         case .Paused:
             controlsView.setControlsPaused()
-            scrobbleView.userInteractionEnabled = false
+            scrubberView.userInteractionEnabled = false
             break
         case .Stopped:
             controlsView.setControlsStopped()
-            scrobbleView.userInteractionEnabled = false
+            scrubberView.userInteractionEnabled = false
             break
         case .Finished:
             infoView.clearInfo()
             controlsView.setControlsStopped()
-            scrobbleView.userInteractionEnabled = false
+            scrubberView.userInteractionEnabled = false
             
             Analytics.shared.sendAlertEvent("finished_playlist",
                 classId: self.className())
@@ -144,7 +144,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         let track = musicPlayer.currentTrack
         let duration = track.playbackDuration
         let perc = Float(playbackTime / duration)
-        scrobbleView.scrobbleToPercentage(perc)
+        scrubberView.scrubberToPercentage(perc)
         infoView.setTime(playbackTime, duration: duration)
     }
     
@@ -192,10 +192,10 @@ extension PlayerViewController: MusicPlayerDelegate {
     }
 }
 
-// MARK: - ScrobbleViewDelegate
+// MARK: - ScrubberViewDelegate
 
-extension PlayerViewController: ScrobbleViewDelegate {
-    func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
+extension PlayerViewController: ScrubberViewDelegate {
+    func touchMovedToPercentage(sender: ScrubberView, percentage: Float) {
         let track = musicPlayer.currentTrack
         let duration = track.playbackDuration
         let time = duration * NSTimeInterval(percentage)
@@ -203,8 +203,8 @@ extension PlayerViewController: ScrobbleViewDelegate {
         userScrobbling = true
     }
     
-    func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float) {
-        Analytics.shared.sendButtonPressEvent("scrobble",
+    func touchEndedAtPercentage(sender: ScrubberView, percentage: Float) {
+        Analytics.shared.sendButtonPressEvent("scrubber",
             classId: self.className())
         
         let track = musicPlayer.currentTrack
@@ -352,9 +352,9 @@ extension PlayerViewController {
         get { return controlsView }
         set { controlsView = newValue }
     }
-    var __scrobbleView: ScrobbleView {
-        get { return scrobbleView }
-        set { scrobbleView = newValue }
+    var __scrubberView: ScrubberView {
+        get { return scrubberView }
+        set { scrubberView = newValue }
     }
     var __shareManager: ShareManager {
         get { return shareManager }

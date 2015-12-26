@@ -1,5 +1,5 @@
 //
-//  ScrobbleView.swift
+//  ScrubberView.swift
 //  EasyMusic
 //
 //  Created by Lee Arromba on 04/11/2015.
@@ -8,17 +8,18 @@
 
 import UIKit
 
-protocol ScrobbleViewDelegate {
-    func touchMovedToPercentage(sender: ScrobbleView, percentage: Float)
-    func touchEndedAtPercentage(sender: ScrobbleView, percentage: Float)
+protocol ScrubberViewDelegate {
+    func touchMovedToPercentage(sender: ScrubberView, percentage: Float)
+    func touchEndedAtPercentage(sender: ScrubberView, percentage: Float)
 }
 
 @IBDesignable
-class ScrobbleView: UIView {
+class ScrubberView: UIView {
     @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
     @IBOutlet private weak var barView: UIView!
     
-    var delegate: ScrobbleViewDelegate?
+    private var scrubberStartDate: NSDate?
+    var delegate: ScrubberViewDelegate?
     override var userInteractionEnabled: Bool {
         set {
             super.userInteractionEnabled = newValue
@@ -47,18 +48,21 @@ class ScrobbleView: UIView {
     override func awakeFromNib() {
         userInteractionEnabled = false
        
-        // ensure widest screens don't show the scrobbler when first appearing
-        moveScrobblerToPoint(-1000.0)
+        // ensure widest screens don't show the scrubber when first appearing
+        moveScrubberToPoint(-1000.0)
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        barView.alpha = 0.65
+        if touches.first != nil {
+            scrubberStartDate = NSDate()
+            barView.alpha = 0.65
+        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
             let point = touch.locationInView(self)
-            moveScrobblerToPoint(point.x)
+            moveScrubberToPoint(point.x)
             
             let w = CGRectGetWidth(bounds)
             let perc = Float(point.x / w)
@@ -68,6 +72,10 @@ class ScrobbleView: UIView {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
+            if let scrubberStartDate = scrubberStartDate {
+                Analytics.shared.sendTimedAppEvent("scrubber", fromDate: scrubberStartDate, toDate: NSDate())
+            }
+
             let point = touch.locationInView(self)
             let w = CGRectGetWidth(bounds)
             let perc = Float(point.x / w)
@@ -79,7 +87,7 @@ class ScrobbleView: UIView {
     
     // MARK: - Private
     
-    private func moveScrobblerToPoint(point: CGFloat) {
+    private func moveScrubberToPoint(point: CGFloat) {
         let w = CGRectGetWidth(bounds)
         let x = w - point
         trailingEdgeConstraint.constant = x
@@ -97,15 +105,15 @@ class ScrobbleView: UIView {
     
     // MARK: - Internal
     
-    func scrobbleToPercentage(percentage: Float) {
+    func scrubberToPercentage(percentage: Float) {
         let w = CGRectGetWidth(bounds)
         let point = w * CGFloat(percentage)
-        moveScrobblerToPoint(point)
+        moveScrubberToPoint(point)
     }
 }
 
 // MARK: - Testing
 
-extension ScrobbleView {
+extension ScrubberView {
     var __barView: UIView { return barView }
 }

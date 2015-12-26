@@ -1137,7 +1137,7 @@ class MusicPlayerTests: XCTestCase {
     }
 }
 
-// MARK: - ScrobbleViewDelegate
+// MARK: - ScrubberViewDelegate
 
 extension MusicPlayerTests: MusicPlayerDelegate {
     func threwError(sender: EasyMusic.MusicPlayer, error: EasyMusic.MusicPlayer.Error) {

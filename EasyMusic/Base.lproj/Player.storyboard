@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="186"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2NS-9q-oTg" customClass="ScrobbleView" customModule="EasyMusic" customModuleProvider="target">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2NS-9q-oTg" customClass="ScrubberView" customModule="EasyMusic" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="20" width="600" height="186"/>
                             </view>
                         </subviews>
@@ -48,7 +48,7 @@
                     <connections>
                         <outlet property="controlsView" destination="dLK-cV-3sn" id="4Oi-yW-b1Q"/>
                         <outlet property="infoView" destination="1La-OG-b54" id="idJ-aQ-PtG"/>
-                        <outlet property="scrobbleView" destination="2NS-9q-oTg" id="jo8-5E-mwP"/>
+                        <outlet property="scrubberView" destination="2NS-9q-oTg" id="jo8-5E-mwP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
