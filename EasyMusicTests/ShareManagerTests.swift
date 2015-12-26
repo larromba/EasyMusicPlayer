@@ -8,10 +8,26 @@
 
 import XCTest
 import Social
+import MediaPlayer
 @testable import EasyMusic
+
+private let mockArtist = "artist"
+private let mockTitle = "title"
+private let mockDuration = 9.0
+private let mockImage = UIImage()
+private let mockArtwork = MPMediaItemArtwork(image: mockImage)
+private let mockAssetUrl = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
 
 class ShareManagerTests: XCTestCase {
     private var shareManager: ShareManager?
+    
+    class MockMediaItem: MPMediaItem {
+        override var artist: String { return mockArtist }
+        override var title: String { return mockTitle }
+        override var playbackDuration: NSTimeInterval { return mockDuration }
+        override var artwork: MPMediaItemArtwork { return mockArtwork }
+        override var assetURL: NSURL { return mockAssetUrl }
+    }
     
     override func setUp() {
         super.setUp()
@@ -33,9 +49,9 @@ class ShareManagerTests: XCTestCase {
          
         // mocks
         let mockPresenter = UIViewController()
-        UIApplication.sharedApplication().keyWindow?.rootViewController = mockPresenter
+        UIApplication.sharedApplication().keyWindow!.rootViewController = mockPresenter
         
-        let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, mediaItemArtwork: nil, url: NSURL())
+        let mockTrack = Track(mediaItem: MockMediaItem())
         
         // runnable
         shareManager!.shareTrack(mockTrack, presenter: mockPresenter, sender: mockPresenter.view, completion: nil)
@@ -76,9 +92,9 @@ class ShareManagerTests: XCTestCase {
         shareManager!.__ComposeViewController = mockComposerViewController
         
         let mockPresenter = UIViewController()
-        UIApplication.sharedApplication().keyWindow?.rootViewController = mockPresenter
+        UIApplication.sharedApplication().keyWindow!.rootViewController = mockPresenter
         
-        let mockTrack = Track(artist: "artist", title: "title", duration: 0.0, mediaItemArtwork: nil, url: NSURL())
+        let mockTrack = Track(mediaItem: MockMediaItem())
         
         // runnable
         shareManager!.shareTrack(mockTrack, presenter: mockPresenter, sender: mockPresenter.view, completion: nil)

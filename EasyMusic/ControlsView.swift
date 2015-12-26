@@ -25,7 +25,7 @@ class ControlsView: UIView {
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var prevButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var shuffleButton: UIButton!
+    @IBOutlet weak var shuffleButton: ShuffleButton!
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var repeatButton: RepeatButton!
     
@@ -51,11 +51,6 @@ class ControlsView: UIView {
     
     override func awakeFromNib() {        
         setControlsStopped()
-        
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
-        commandCenter.togglePlayPauseCommand.enabled = false
-        commandCenter.seekBackwardCommand.enabled = false
-        commandCenter.seekForwardCommand.enabled = false
     }
     
     // MARK: - IBAction
@@ -132,13 +127,27 @@ class ControlsView: UIView {
     func enablePrevious(enable: Bool) {
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
         commandCenter.previousTrackCommand.enabled = enable
+        commandCenter.seekBackwardCommand.enabled = enable
         prevButton.enabled = enable
     }
     
     func enableNext(enable: Bool) {
         let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
         commandCenter.nextTrackCommand.enabled = enable
+        commandCenter.seekForwardCommand.enabled = enable
         nextButton.enabled = enable
+    }
+    
+    func enableSeekBackwardsRemoteOnly(enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
+        commandCenter.previousTrackCommand.enabled = enable
+        commandCenter.seekBackwardCommand.enabled = enable
+    }
+    
+    func enableSeekForwardsRemoteOnly(enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
+        commandCenter.nextTrackCommand.enabled = enable
+        commandCenter.seekForwardCommand.enabled = enable
     }
     
     func enablePlay(enable: Bool) {

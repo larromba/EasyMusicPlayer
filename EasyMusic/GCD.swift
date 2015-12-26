@@ -8,7 +8,7 @@
 
 import Foundation
 
-public func performAfterDelay(delay:Double, closure: (Void -> Void)!) {
+public func performAfterDelay(delay:Double, closure: (Void -> Void)) {
     dispatch_after(
         dispatch_time(
             DISPATCH_TIME_NOW,

@@ -10,6 +10,13 @@ import XCTest
 import MediaPlayer
 @testable import EasyMusic
 
+private let mockArtist = "artist"
+private let mockTitle = "title"
+private let mockDuration = 9.0
+private let mockImage = UIImage()
+private let mockArtwork = MPMediaItemArtwork(image: mockImage)
+private let mockAssetUrl = NSURL(string: "")!
+
 class InfoViewTests: XCTestCase {
     private var infoView: InfoView?
     
@@ -32,22 +39,24 @@ class InfoViewTests: XCTestCase {
          */
         
         // mocks
-        let artist = "artist"
-        let title = "title"
-        let duration = 9.0
-        let image = UIImage()
-        let artwork = MPMediaItemArtwork(image: image)
-        let url = NSURL(string: "")!
-        let track = Track(artist: artist, title: title, duration: duration, mediaItemArtwork: artwork, url: url)
+        class MockMediaItem: MPMediaItem {
+            override var artist: String { return mockArtist }
+            override var title: String { return mockTitle }
+            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var artwork: MPMediaItemArtwork { return mockArtwork }
+            override var assetURL: NSURL { return mockAssetUrl }
+        }
+        
+        let track = Track(mediaItem: MockMediaItem())
         
         // runnable
         infoView!.setInfoFromTrack(track)
         
         // tests
         XCTAssertNotNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
-        XCTAssertEqual(infoView!.artistLabel.text, artist)
-        XCTAssertEqual(infoView!.trackLabel.text, title)
-        XCTAssertEqual(infoView!.artworkImageView.image, image)
+        XCTAssertEqual(infoView!.artistLabel.text, mockArtist)
+        XCTAssertEqual(infoView!.trackLabel.text, mockTitle)
+        XCTAssertEqual(infoView!.artworkImageView.image, mockImage)
     }
     
     func testSetTrackPosition() {
@@ -57,10 +66,15 @@ class InfoViewTests: XCTestCase {
         */
         
         // runnable
-        infoView!.setTrackPosition(2, totalTracks: 3)
+        let trackPosition = 2
+        let totalTracks = 3
+        infoView!.setTrackPosition(trackPosition, totalTracks: totalTracks)
         
         // tests
-        XCTAssertEqual(infoView!.trackPositionLabel.text, "2 of 3")
+        let firstCharacter = String(infoView!.trackPositionLabel.text!.characters.first!)
+        let lastCharacter = String(infoView!.trackPositionLabel.text!.characters.last!)
+        XCTAssertEqual(Int(firstCharacter), trackPosition)
+        XCTAssertEqual(Int(lastCharacter), totalTracks)
     }
     
     func testClearTrackInfo() {

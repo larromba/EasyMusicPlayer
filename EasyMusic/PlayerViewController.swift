@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 class PlayerViewController: UIViewController {
     @IBOutlet private weak var scrobbleView: ScrobbleView!
@@ -89,9 +90,11 @@ class PlayerViewController: UIViewController {
         let trackNumber = musicPlayer.currentTrackNumber
         if trackNumber == 0 {
             controlsView.enablePrevious(false)
+            controlsView.enableSeekBackwardsRemoteOnly(true)
         }
         if (trackNumber == musicPlayer.numOfTracks - 1) {
             controlsView.enableNext(false)
+            controlsView.enableSeekForwardsRemoteOnly(true)
         }
     }
 }
@@ -103,7 +106,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         switch state {
         case .Playing:
             controlsView.setControlsPlaying()
-            infoView.setInfoFromTrack(sender.currentTrack)
+            infoView.setInfoFromTrack(sender.currentResolvedTrack)
             infoView.setTrackPosition((musicPlayer.currentTrackNumber + 1), totalTracks: musicPlayer.numOfTracks)
             scrobbleView.userInteractionEnabled = true
             updateSeekingControls()
@@ -139,9 +142,10 @@ extension PlayerViewController: MusicPlayerDelegate {
         }
         
         let track = musicPlayer.currentTrack
-        let perc = Float(playbackTime / track.duration)
+        let duration = track.playbackDuration
+        let perc = Float(playbackTime / duration)
         scrobbleView.scrobbleToPercentage(perc)
-        infoView.setTime(playbackTime, duration: track.duration)
+        infoView.setTime(playbackTime, duration: duration)
     }
     
     func threwError(sender: MusicPlayer, error: MusicPlayer.Error) {
@@ -171,7 +175,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             Analytics.shared.sendAlertEvent("track",
                 classId: self.className())
             
-            let track = musicPlayer.currentTrack
+            let track = musicPlayer.currentResolvedTrack
             alert = AlertController.createAlertWithTitle(localized("track error title"),
                 message: String(format: localized("track error msg"), track.title),
                 buttonTitle: localized("track error button"),
@@ -193,8 +197,9 @@ extension PlayerViewController: MusicPlayerDelegate {
 extension PlayerViewController: ScrobbleViewDelegate {
     func touchMovedToPercentage(sender: ScrobbleView, percentage: Float) {
         let track = musicPlayer.currentTrack
-        let time = track.duration * NSTimeInterval(percentage)
-        infoView.setTime(time, duration: track.duration)
+        let duration = track.playbackDuration
+        let time = duration * NSTimeInterval(percentage)
+        infoView.setTime(time, duration: duration)
         userScrobbling = true
     }
     
@@ -203,8 +208,9 @@ extension PlayerViewController: ScrobbleViewDelegate {
             classId: self.className())
         
         let track = musicPlayer.currentTrack
-        let time = track.duration * NSTimeInterval(percentage)
-        infoView.setTime(time, duration: track.duration)
+        let duration = track.playbackDuration
+        let time = duration * NSTimeInterval(percentage)
+        infoView.setTime(time, duration: duration)
         musicPlayer.time = time
         userScrobbling = false
     }
@@ -261,7 +267,7 @@ extension PlayerViewController: ControlsViewDelegate {
         Analytics.shared.sendButtonPressEvent("share",
             classId: self.className())
         
-        shareManager.shareTrack(musicPlayer.currentTrack,
+        shareManager.shareTrack(musicPlayer.currentResolvedTrack,
             presenter: self,
             sender: sender.shareButton,
             completion: { (result: ShareManager.Result, service: String?) in

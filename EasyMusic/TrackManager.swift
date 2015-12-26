@@ -10,13 +10,16 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
-    private var tracks: [Track] = []
+    private var tracks: [MPMediaItem] = []
     private var trackIndex: Int = 0
     
-    var allTracks: [Track] {
+    var allTracks: [MPMediaItem] {
         return tracks
     }
-    var currentTrack: Track {
+    var currentResolvedTrack: Track {
+        return Track(mediaItem: currentTrack)
+    }
+    var currentTrack: MPMediaItem {
         return tracks[currentTrackNumber]
     }
     var currentTrackNumber: Int {
@@ -26,36 +29,30 @@ class TrackManager {
         return tracks.count
     }
     
-    func createPlaylist() -> [Track] {
+    func createPlaylist() -> [MPMediaItem] {
         #if (arch(i386) || arch(x86_64)) && os(iOS) // if simulator
             
-            let image = UIImage(named: "arkist-rendezvous-fill_your_coffee")
-            let mediaItemArtwork = MPMediaItemArtwork(image: image!)
-            let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
-            let tracks = [
-                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, mediaItemArtwork: mediaItemArtwork, url: url),
-                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, mediaItemArtwork: mediaItemArtwork, url: url),
-                Track(artist: "Arkist", title: "Fill Your Coffee", duration: 219, mediaItemArtwork: mediaItemArtwork, url: url)]
+            class MockMediaItem: MPMediaItem {
+                let mediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "arkist-rendezvous-fill_your_coffee")!)
+                let assetUrl = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
+
+                override var artist: String { return "Arkist" }
+                override var title: String { return "Fill Your Coffee" }
+                override var playbackDuration: NSTimeInterval { return 219 }
+                override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
+                override var assetURL: NSURL { return assetUrl }
+            }
+            
+            let tracks = [MockMediaItem(), MockMediaItem(), MockMediaItem()]
             return tracks
             
         #else // device
-            
-            var tracks: [Track] = []
-            let songs = MPMediaQuery.songsQuery().items
-            for song: MPMediaItem in songs! {
-                if let urlProperty = song.assetURL {
-                    let track = Track(
-                        artist: song.artist,
-                        title: song.title,
-                        duration: song.playbackDuration,
-                        mediaItemArtwork: song.artwork,
-                        url: urlProperty)
-                    
-                    tracks.append(track)
-                }
+
+            if let songs = MPMediaQuery.songsQuery().items {
+                return songs
+            } else {
+                return []
             }
-            
-            return tracks
             
         #endif
     }
@@ -70,7 +67,7 @@ class TrackManager {
             mItems.exchangeObjectAtIndex(i, withObjectAtIndex: exchangeIndex)
         }
         
-        tracks = mItems as AnyObject as! [Track]
+        tracks = mItems as AnyObject as! [MPMediaItem]
         trackIndex = 0
     }
     
@@ -110,7 +107,7 @@ extension TrackManager {
         get { return trackIndex }
         set { trackIndex = newValue }
     }
-    var __tracks: [Track] {
+    var __tracks: [MPMediaItem] {
         get { return tracks }
         set { tracks = newValue }
     }
