@@ -18,6 +18,7 @@ class ScrobbleView: UIView {
     @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
     @IBOutlet private weak var barView: UIView!
     
+    private var scrobbleStartDate: NSDate!
     var delegate: ScrobbleViewDelegate?
     override var userInteractionEnabled: Bool {
         set {
@@ -52,7 +53,10 @@ class ScrobbleView: UIView {
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        barView.alpha = 0.65
+        if touches.first != nil {
+            scrobbleStartDate = NSDate()
+            barView.alpha = 0.65
+        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -68,6 +72,8 @@ class ScrobbleView: UIView {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let touch = touches.first {
+            Analytics.shared.sendTimedAppEvent("scrubber", fromDate: scrobbleStartDate, toDate: NSDate())
+
             let point = touch.locationInView(self)
             let w = CGRectGetWidth(bounds)
             let perc = Float(point.x / w)

@@ -9,6 +9,7 @@
 import XCTest
 @testable import EasyMusic
 
+private var analyticsExpectation: XCTestExpectation?
 private var mockPoint: CGPoint!
 
 class ScrobbleViewTests: XCTestCase {
@@ -33,6 +34,8 @@ class ScrobbleViewTests: XCTestCase {
         
         scrobbleView = nil
         scrobbleViewExpectation = nil
+        analyticsExpectation = nil
+        Analytics.__shared = Analytics()
     }
     
     func testAwakeFromNib() {
@@ -166,6 +169,34 @@ class ScrobbleViewTests: XCTestCase {
         let mockEvent = UIEvent()
         
         // runnable
+        scrobbleView!.touchesEnded(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAnalytics() {
+        /**
+        expectations
+        - analytics event sent
+        */
+        analyticsExpectation = expectationWithDescription("Analytics.shared.sendTimedAppEvent(_, _, _)")
+        
+        // mocks
+        class MockAnalytics: Analytics {
+            override func sendTimedAppEvent(event: String, fromDate: NSDate, toDate: NSDate) {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics.__shared = mockAnalytics
+        
+        let mockTouch = UITouch()
+        let mockEvent = UIEvent()
+        
+        // runnable
+        scrobbleView!.touchesBegan(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
         scrobbleView!.touchesEnded(Set(arrayLiteral: mockTouch), withEvent: mockEvent)
         
         // tests
