@@ -8,7 +8,7 @@
 
 "share format" = "%@ - %@ (via %@)";
 "share sheet title" = "quota";
-"share sheet desc" = "Dove vuoi condividere questo brano?";
+"share sheet desc" = "Dove vuoi condividere questa canzone?";
 "share option facebook" = "Facebook";
 "share option twitter" = "Twitter";
 "share option cancel" = "Cancellare";
