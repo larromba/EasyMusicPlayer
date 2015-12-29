@@ -809,7 +809,7 @@ class MusicPlayerTests: XCTestCase {
         performAfterDelay(1) { () -> (Void) in
             waitExpectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1, handler: { error in })
+        waitForExpectationsWithTimeout(2, handler: { error in })
     }
     
     func testNextTrackPlaysAutomatically() {

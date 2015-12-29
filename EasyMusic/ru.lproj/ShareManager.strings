@@ -8,7 +8,7 @@
 
 "share format" = "%@ - %@ (с помощью %@)";
 "share sheet title" = "Поделиться";
-"share sheet desc" = "Где вы хотите поделиться этот трек ?";
+"share sheet desc" = "Где вы хотите поделиться этой песни?";
 "share option facebook" = "facebook";
 "share option twitter" = "twitter";
 "share option cancel" = "Отмена";
