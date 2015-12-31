@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-protocol ControlsViewDelegate {
+protocol ControlsViewDelegate: class {
     func playPressed(sender: ControlsView)
     func stopPressed(sender: ControlsView)
     func prevPressed(sender: ControlsView)
@@ -29,7 +29,7 @@ class ControlsView: UIView {
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var repeatButton: RepeatButton!
     
-    var delegate: ControlsViewDelegate?
+    weak var delegate: ControlsViewDelegate?
     var repeatButtonState: RepeatButton.State {
         set {
             repeatButton.setButtonState(newValue)

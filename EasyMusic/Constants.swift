@@ -14,6 +14,7 @@ struct Constant {
         static let ApplicationWillResignActive = "applicationWillResignActive"
         static let ApplicationWillTerminate = "applicationWillTerminate"
         static let AudioSessionRouteChange = "audioSessionRouteChange"
+        static let AudioSessionInterruption = "audioSessionInterruption"
     }
     
     struct Bundle {

@@ -59,6 +59,7 @@ class MusicPlayerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         
+        NSNotificationCenter.defaultCenter().removeObserver(musicPlayer!)
         musicPlayer = nil
         musicPlayerExpectation = nil
         audioPlayerExpectation = nil
@@ -334,41 +335,6 @@ class MusicPlayerTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
-    func testPause() {
-        /**
-        expectations
-        - audio pauses
-        - delegate call
-        */
-        audioPlayerExpectation = expectationWithDescription("audioPlayer.pause()")
-        musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
-        
-        // mocks
-        class MockAudioPlayer: AVAudioPlayer {
-            override func pause() {
-                audioPlayerExpectation!.fulfill()
-            }
-        }
-        
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var numOfTracks: Int { return 1 }
-        }
-        
-        let mockMusicPlayer = MockMusicPlayer(delegate: self)
-        
-        let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
-        mockAudioPlayer.delegate = mockMusicPlayer
-        mockMusicPlayer.__player = mockAudioPlayer
-        
-        expectedState = MusicPlayer.State.Paused
-        
-        // runnable
-        mockMusicPlayer.pause()
-        
-        // tests
-        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
-    }
-    
     func testTogglePlay() {
         /**
         expectations
@@ -404,6 +370,79 @@ class MusicPlayerTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
+    func testPlayAudioSessionUninterrupted() {
+        /**
+        expectations
+        - audio plays
+        */
+        audioPlayerExpectation = expectationWithDescription("audioPlayer.play()")
+        
+        // mocks
+        class MockAudioPlayer: AVAudioPlayer {
+            override private func play() -> Bool {
+                audioPlayerExpectation!.fulfill()
+                return true
+            }
+        }
+        
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var numOfTracks: Int { return 1 }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: self)
+        mockMusicPlayer.__isAudioSessionInterrupted = true
+        
+        let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = mockMusicPlayer
+        mockMusicPlayer.__player = mockAudioPlayer
+        
+        let mockUserInfo: [NSObject: AnyObject] = [
+            AVAudioSessionInterruptionTypeKey : AVAudioSessionInterruptionType.Ended.rawValue
+        ]
+        let mockNotification = NSNotification(name: AVAudioSessionInterruptionNotification, object: nil, userInfo: mockUserInfo)
+        
+        // runnable
+        NSNotificationCenter.defaultCenter().postNotification(mockNotification)
+                
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testPause() {
+        /**
+        expectations
+        - audio pauses
+        - delegate call
+        */
+        audioPlayerExpectation = expectationWithDescription("audioPlayer.pause()")
+        musicPlayerDelegateStateExpectation = expectationWithDescription("MusicPlayerDelegate.changedState(_, _)")
+        
+        // mocks
+        class MockAudioPlayer: AVAudioPlayer {
+            override func pause() {
+                audioPlayerExpectation!.fulfill()
+            }
+        }
+        
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var numOfTracks: Int { return 1 }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: self)
+        
+        let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = mockMusicPlayer
+        mockMusicPlayer.__player = mockAudioPlayer
+        
+        expectedState = MusicPlayer.State.Paused
+        
+        // runnable
+        mockMusicPlayer.pause()
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
     func testTogglePause() {
         /**
         expectations
@@ -434,6 +473,80 @@ class MusicPlayerTests: XCTestCase {
         
         // runnable
         mockMusicPlayer.togglePlayPause()
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testPauseAudioSessionInterruptedWhenPlayingInForeground() {
+        /**
+        expectations
+        - audio pauses
+        */
+        audioPlayerExpectation = expectationWithDescription("audioPlayer.pause()")
+        
+        // mocks
+        class MockAudioPlayer: AVAudioPlayer {
+            override private func pause() {
+                audioPlayerExpectation!.fulfill()
+            }
+        }
+        
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var isPlaying: Bool { return true }
+            override var numOfTracks: Int { return 1 }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: self)
+        
+        let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = mockMusicPlayer
+        mockMusicPlayer.__player = mockAudioPlayer
+        
+        let mockUserInfo: [NSObject: AnyObject] = [
+            AVAudioSessionInterruptionTypeKey : AVAudioSessionInterruptionType.Began.rawValue
+        ]
+        let mockNotification = NSNotification(name: AVAudioSessionInterruptionNotification, object: nil, userInfo: mockUserInfo)
+        
+        // runnable
+        NSNotificationCenter.defaultCenter().postNotification(mockNotification)
+        
+        // tests
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testPauseAudioSessionInterruptedWhenPlayingInBackground() {
+        /**
+        expectations
+        - audio pauses
+        */
+        audioPlayerExpectation = expectationWithDescription("audioPlayer.pause()")
+        
+        // mocks
+        class MockAudioPlayer: AVAudioPlayer {
+            override private func pause() {
+                audioPlayerExpectation!.fulfill()
+            }
+        }
+        
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var numOfTracks: Int { return 1 }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: self)
+        mockMusicPlayer.__isPlayingInBackground = true
+
+        let mockAudioPlayer = try! MockAudioPlayer(contentsOfURL: audioUrl)
+        mockAudioPlayer.delegate = mockMusicPlayer
+        mockMusicPlayer.__player = mockAudioPlayer
+        
+        let mockUserInfo: [NSObject: AnyObject] = [
+            AVAudioSessionInterruptionTypeKey : AVAudioSessionInterruptionType.Began.rawValue
+        ]
+        let mockNotification = NSNotification(name: AVAudioSessionInterruptionNotification, object: nil, userInfo: mockUserInfo)
+        
+        // runnable
+        NSNotificationCenter.defaultCenter().postNotification(mockNotification)
         
         // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })

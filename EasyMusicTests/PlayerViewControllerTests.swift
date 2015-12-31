@@ -36,6 +36,7 @@ class PlayerViewControllerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         
+        NSNotificationCenter.defaultCenter().removeObserver(playerViewController!)
         playerViewController = nil
         musicPlayerExpectation = nil
         infoViewExpectation = nil
@@ -220,6 +221,37 @@ class PlayerViewControllerTests: XCTestCase {
         
         // tests
         XCTAssertFalse(playerViewController!.__scrubberView.userInteractionEnabled)
+        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAudioStopsOnEnteringAppAndThingsWentHorriblyWrong() {
+        /**
+        expectations
+        - audio stops
+        */
+        musicPlayerExpectation = expectationWithDescription("musicPlayer.stop()")
+        
+        // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override var isPlaying: Bool { return false }
+            override func stop() {
+                musicPlayerExpectation!.fulfill()
+            }
+        }
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        playerViewController!.__musicPlayer = mockMusicPlayer
+        
+        let mockControlsView = ControlsView()
+        mockControlsView.delegate = playerViewController
+        mockControlsView.setControlsPlaying()
+        playerViewController!.__controlsView = mockControlsView
+        
+        // runnable
+        let notification = NSNotification(name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().postNotification(notification)
+        
+        // tests
         waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
     }
     
@@ -846,8 +878,10 @@ class PlayerViewControllerTests: XCTestCase {
     func testScrubberTouchEnded() {
         /**
         expectations
-        - Music player attempts to scrubber
+        - Music player attempts to scrub
+        - Remote time set
         */
+        infoViewExpectation = expectationWithDescription("infoView.setRemoteTime(_, _)")
         musicPlayerExpectation = expectationWithDescription("musicPlayer.time")
         
         // mocks
@@ -858,8 +892,18 @@ class PlayerViewControllerTests: XCTestCase {
             }
         }
         
+        class MockInfoView: InfoView {
+            private override func className() -> String { return "InfoView" }
+            override func setRemoteTime(time: NSTimeInterval, duration: NSTimeInterval) {
+                infoViewExpectation!.fulfill()
+            }
+        }
+        
         let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
         playerViewController!.__musicPlayer = mockMusicPlayer
+        
+        let mockInfoView = MockInfoView()
+        playerViewController!.__infoView = mockInfoView
         
         // runnable
         playerViewController!.__scrubberView.delegate!.touchEndedAtPercentage(playerViewController!.__scrubberView, percentage: 0.2)

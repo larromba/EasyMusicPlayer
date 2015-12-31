@@ -40,7 +40,7 @@ class EasyMusicUITests: XCTestCase {
         app.buttons["StopButton"].tap()
     }
     
-    func testStopCantScrubber() {
+    func testStopCantScrub() {
         XCUIApplication().staticTexts["00:00:00"].tap()
     }
     
