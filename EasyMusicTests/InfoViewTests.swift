@@ -53,7 +53,12 @@ class InfoViewTests: XCTestCase {
         infoView!.setInfoFromTrack(track)
         
         // tests
-        XCTAssertNotNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
+        let nowPlayingInfo = MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo!
+        XCTAssertEqual(nowPlayingInfo[MPMediaItemPropertyTitle] as? String, mockTitle)
+        XCTAssertEqual(nowPlayingInfo[MPMediaItemPropertyArtist] as? String, mockArtist)
+        XCTAssertNotNil(nowPlayingInfo[MPMediaItemPropertyArtwork]) // cant test equals...
+        XCTAssertEqual((nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] as? NSNumber)!.doubleValue, mockDuration)
+        
         XCTAssertEqual(infoView!.artistLabel.text, mockArtist)
         XCTAssertEqual(infoView!.trackLabel.text, mockTitle)
         XCTAssertEqual(infoView!.artworkImageView.image, mockImage)
@@ -101,6 +106,25 @@ class InfoViewTests: XCTestCase {
         XCTAssertEqual(infoView!.timeLabel.text, "00:00:00")
         XCTAssertNil(infoView!.artworkImageView.image)
     }
+    
+    /* TODO for some reason this wont work with testSetTrackInfo()
+    func testSetRemoteTime10Secs() {
+        /**
+        expectations:
+        - remote time set correctly
+        */
+        
+        // mocks
+        let mockTime = 10.0
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = [MPNowPlayingInfoPropertyElapsedPlaybackTime : Double(-1.0)]
+        
+        // runnable
+        infoView!.setRemoteTime(mockTime, duration: 0)
+        
+        // tests
+        let time = (MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] as? NSNumber)!.doubleValue
+        XCTAssertEqual(time, mockTime)
+    }*/
     
     func testSetTime10Secs() {
         /**

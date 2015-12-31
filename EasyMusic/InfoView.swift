@@ -50,7 +50,7 @@ class InfoView: UIView {
             MPMediaItemPropertyTitle: track.title,
             MPMediaItemPropertyArtist: track.artist,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
-            MPNowPlayingInfoPropertyPlaybackRate: Float(1.0)
+            MPMediaItemPropertyPlaybackDuration: NSNumber(double: track.duration)
         ]
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
     }
@@ -69,6 +69,13 @@ class InfoView: UIView {
     func setTime(time: NSTimeInterval, duration: NSTimeInterval) {
         timeLabel.text = String(
             format: localized("time format"), stringFromTimeInterval(time))
+    }
+    
+    func setRemoteTime(time: NSTimeInterval, duration: NSTimeInterval) {
+        if var songInfo = MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo {
+            songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(double: time)
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+        }
     }
     
     func setTrackPosition(trackPosition: Int, totalTracks: Int) {
