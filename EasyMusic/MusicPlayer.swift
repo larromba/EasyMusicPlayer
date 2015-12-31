@@ -10,7 +10,7 @@ import Foundation
 import MediaPlayer
 import AVFoundation
 
-protocol MusicPlayerDelegate {
+protocol MusicPlayerDelegate: class {
     func threwError(sender: MusicPlayer, error: MusicPlayer.Error)
     func changedState(sender: MusicPlayer, state: MusicPlayer.State)
     func changedPlaybackTime(sender: MusicPlayer, playbackTime: NSTimeInterval)
@@ -20,11 +20,12 @@ class MusicPlayer: NSObject {
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: NSTimer?
     private var seekTimer: NSTimer?
-    private var playingInBackground: Bool = false
+    private var isPlayingInBackground: Bool = false
+    private var isAudioSessionInterrupted: Bool = false
     private var trackManager: TrackManager = TrackManager()
     private var seekStartDate: NSDate?
 
-    var delegate: MusicPlayerDelegate?
+    weak var delegate: MusicPlayerDelegate?
     var repeatMode: RepeatMode = RepeatMode.None
     var isPlaying: Bool {
         if let player = player {
@@ -97,6 +98,9 @@ class MusicPlayer: NSObject {
         commandCenter.seekForwardCommand.addTarget(self, action: safeSelector("seekForward:"))
         commandCenter.seekBackwardCommand.addTarget(self, action: safeSelector("seekBackward:"))
         
+        //TODO
+        //commandCenter.changePlaybackPositionCommand.addTarget(self, action: safeSelector("changePlaybackPosition:"))
+        
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationWillTerminate),
             name: UIApplicationWillTerminateNotification,
@@ -112,6 +116,10 @@ class MusicPlayer: NSObject {
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: safeSelector("\(Constant.Notification.AudioSessionRouteChange):"),
             name: AVAudioSessionRouteChangeNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: safeSelector("\(Constant.Notification.AudioSessionInterruption):"),
+            name: AVAudioSessionInterruptionNotification,
             object: nil)
         
         enableAudioSession(true)
@@ -130,17 +138,23 @@ class MusicPlayer: NSObject {
         commandCenter.seekForwardCommand.removeTarget(self)
         commandCenter.seekBackwardCommand.removeTarget(self)
         
+        //TODO
+        //commandCenter.changePlaybackPositionCommand.removeTarget(self)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: UIApplicationWillTerminateNotification,
-            object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: UIApplicationDidBecomeActiveNotification,
             object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: UIApplicationWillResignActiveNotification,
             object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: UIApplicationDidBecomeActiveNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
             name: AVAudioSessionRouteChangeNotification,
+            object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: AVAudioSessionInterruptionNotification,
             object: nil)
     }
     
@@ -194,16 +208,12 @@ class MusicPlayer: NSObject {
     
     func applicationWillResignActive() {
         if isPlaying == true {
-            playingInBackground = true
+            isPlayingInBackground = true
         }
     }
     
     func applicationDidBecomeActive() {
-        if playingInBackground == true && isPlaying == false {
-            stop()
-        }
-        
-        playingInBackground = false
+        isPlayingInBackground = false
     }
     
     func audioSessionRouteChange(notifcation: NSNotification) {
@@ -216,6 +226,27 @@ class MusicPlayer: NSObject {
                     }
                     break
                 default:
+                    break
+                }
+            }
+        }
+    }
+    
+    func audioSessionInterruption(notification: NSNotification) {
+        if let rawValue = notification.userInfo?[AVAudioSessionInterruptionTypeKey]?.unsignedIntegerValue {
+            if let reason = AVAudioSessionInterruptionType(rawValue: rawValue) {
+                switch reason {
+                case .Began:
+                    if isPlayingInBackground == true || isPlaying == true {
+                        isAudioSessionInterrupted = true
+                        pause()
+                    }
+                    break
+                case .Ended:
+                    if isAudioSessionInterrupted == true {
+                        isAudioSessionInterrupted = false
+                        play()
+                    }
                     break
                 }
             }
@@ -422,6 +453,11 @@ class MusicPlayer: NSObject {
     func shuffle() {
         trackManager.shuffleTracks()
     }
+    
+    // TODO: this doesn't work in ios9
+    //    func changePlaybackPosition(command: MPChangePlaybackPositionCommand) {
+    //
+    //    }
 }
 
 // MARK: - AVAudioPlayerDelegate
@@ -482,5 +518,13 @@ extension MusicPlayer {
     var __playbackCheckTimer: NSTimer? {
         get { return playbackCheckTimer }
         set { playbackCheckTimer = newValue }
+    }
+    var __isPlayingInBackground: Bool {
+        get { return isPlayingInBackground }
+        set { isPlayingInBackground = newValue }
+    }
+    var __isAudioSessionInterrupted: Bool {
+        get { return isAudioSessionInterrupted }
+        set { isAudioSessionInterrupted = newValue }
     }
 }

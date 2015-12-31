@@ -70,6 +70,11 @@ class PlayerViewController: UIViewController {
     
     func applicationDidBecomeActive() {
         checkTracksAvailable()
+        
+        // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
+        if controlsView.playButton.buttonState == PlayButton.State.Pause && musicPlayer.isPlaying == false {
+            musicPlayer.stop()
+        }
     }
     
     // MARK: - Private
@@ -211,6 +216,7 @@ extension PlayerViewController: ScrubberViewDelegate {
         let duration = track.playbackDuration
         let time = duration * NSTimeInterval(percentage)
         infoView.setTime(time, duration: duration)
+        infoView.setRemoteTime(time, duration: duration)
         musicPlayer.time = time
         userScrobbling = false
     }

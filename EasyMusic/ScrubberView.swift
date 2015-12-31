@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ScrubberViewDelegate {
+protocol ScrubberViewDelegate: class {
     func touchMovedToPercentage(sender: ScrubberView, percentage: Float)
     func touchEndedAtPercentage(sender: ScrubberView, percentage: Float)
 }
@@ -19,7 +19,7 @@ class ScrubberView: UIView {
     @IBOutlet private weak var barView: UIView!
     
     private var scrubberStartDate: NSDate?
-    var delegate: ScrubberViewDelegate?
+    weak var delegate: ScrubberViewDelegate?
     override var userInteractionEnabled: Bool {
         set {
             super.userInteractionEnabled = newValue
