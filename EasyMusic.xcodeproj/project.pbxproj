@@ -42,6 +42,8 @@
 		7FA25FC21C088A0B009FB59D /* UIAlertActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */; };
 		7FA60C971C110B9400D7D2DC /* InfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA60C991C110B9400D7D2DC /* InfoView.xib */; };
 		7FA60C9A1C110B9800D7D2DC /* ControlsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA60C9C1C110B9800D7D2DC /* ControlsView.xib */; };
+		7FB28D591C3B49EE0032F3E0 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB28D571C3B49EE0032F3E0 /* Fabric.framework */; };
+		7FB28D5A1C3B49EE0032F3E0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB28D581C3B49EE0032F3E0 /* Crashlytics.framework */; };
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
 		7FCFE9161BF4A40600981545 /* UIAlertControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */; };
 		7FCFE9181BF4A7C300981545 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9171BF4A7C300981545 /* UIImageExtensions.swift */; };
@@ -162,6 +164,8 @@
 		7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertActionExtensions.swift; sourceTree = "<group>"; };
 		7FA60C981C110B9400D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/InfoView.xib; sourceTree = "<group>"; };
 		7FA60C9B1C110B9800D7D2DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ControlsView.xib; sourceTree = "<group>"; };
+		7FB28D571C3B49EE0032F3E0 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		7FB28D581C3B49EE0032F3E0 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertControllerExtensions.swift; sourceTree = "<group>"; };
 		7FCFE9171BF4A7C300981545 /* UIImageExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
@@ -206,8 +210,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */,
+				7FB28D591C3B49EE0032F3E0 /* Fabric.framework in Frameworks */,
 				7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */,
 				7FF5B31F1BE654470044FCE5 /* MediaPlayer.framework in Frameworks */,
+				7FB28D5A1C3B49EE0032F3E0 /* Crashlytics.framework in Frameworks */,
 				A28EE74021A40A2699980218 /* Pods_EasyMusic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,6 +497,8 @@
 				DB9B730CF7E043A4CF525DD1 /* Pods_EasyMusic.framework */,
 				B00D47138B3090E5C493F327 /* Pods_EasyMusicTests.framework */,
 				CA23785C58A7CE2142722051 /* Pods_EasyMusicUITests.framework */,
+				7FB28D571C3B49EE0032F3E0 /* Fabric.framework */,
+				7FB28D581C3B49EE0032F3E0 /* Crashlytics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -523,6 +531,7 @@
 				7F8187AF1BF1FA4200BAF398 /* Embed Frameworks */,
 				5162B67ED100C5B89E70668E /* Embed Pods Frameworks */,
 				06A0BFFCD9352C0680DA3D68 /* Copy Pods Resources */,
+				7FB28D561C3B49B60032F3E0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -763,6 +772,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh base-lang.sh";
+		};
+		7FB28D561C3B49B60032F3E0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run cb81e37b184ac262f9d20e5cee8a9bb74a19a269 ebaa1da959ef2388924c7c3a574371c36191fccf2c30c3434e85d9384db139ac";
 		};
 		82417EC2FA81E98245B755B3 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1069,8 +1091,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = EasyMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
@@ -1090,6 +1117,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = EasyMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
