@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
             log("\nDEBUG BUILD\n")
         #endif
+        
+        Fabric.with([Crashlytics.self])
         
         do {
             try Analytics.shared.setup()
