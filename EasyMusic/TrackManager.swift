@@ -61,7 +61,7 @@ class TrackManager {
         let playlist = createPlaylist()
         let mItems = NSMutableArray(array: playlist)
         
-        for var i = 0; i < mItems.count - 1; ++i {
+        for i in 0 ..< mItems.count - 1 {
             let remainingCount = mItems.count - i;
             let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
             mItems.exchangeObjectAtIndex(i, withObjectAtIndex: exchangeIndex)

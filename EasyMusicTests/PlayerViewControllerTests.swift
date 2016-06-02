@@ -731,7 +731,7 @@ class PlayerViewControllerTests: XCTestCase {
             override func stop() {}
             override func play() {}
             override func shuffle() {
-                shuffleCount++ // called on init, so test is only valid for second call
+                shuffleCount += 1 // called on init, so test is only valid for second call
                 if shuffleCount == 2 {
                     musicPlayerExpectation!.fulfill()
                 }
