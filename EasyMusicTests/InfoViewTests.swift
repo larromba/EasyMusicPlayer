@@ -27,9 +27,9 @@ class InfoViewTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         infoView = nil
+        
+        super.tearDown()
     }
     
     func testSetTrackInfo() {

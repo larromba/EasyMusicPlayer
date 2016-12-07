@@ -57,8 +57,6 @@ class MusicPlayerTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         NotificationCenter.default.removeObserver(musicPlayer!)
         musicPlayer = nil
         musicPlayerExpectation = nil
@@ -75,6 +73,9 @@ class MusicPlayerTests: XCTestCase {
         methodOrder = nil
         mockPlaylist = nil
         Analytics.__shared = Analytics()
+        try? Analytics.__shared.setup()
+        
+        super.tearDown()
     }
     
     func testAudioSessionOnInit() {

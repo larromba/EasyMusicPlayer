@@ -35,10 +35,10 @@ class AnalyticsTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         analytics = nil
         trackerExpectation = nil
+        
+        super.tearDown()
     }
     
     func testSetup() {

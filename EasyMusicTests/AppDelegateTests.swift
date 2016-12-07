@@ -21,11 +21,12 @@ class AppDelegateTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         appDelegate = nil
         analyticsExpectation = nil
         Analytics.__shared = Analytics()
+        try? Analytics.__shared.setup()
+        
+        super.tearDown()
     }
     
     func testStartSession1() {

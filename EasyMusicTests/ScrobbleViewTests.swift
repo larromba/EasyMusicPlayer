@@ -30,12 +30,13 @@ class ScrubberViewTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         scrubberView = nil
         scrubberViewExpectation = nil
         analyticsExpectation = nil
         Analytics.__shared = Analytics()
+        try? Analytics.__shared.setup()
+        
+        super.tearDown()
     }
     
     func testAwakeFromNib() {

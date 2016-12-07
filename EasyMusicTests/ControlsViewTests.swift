@@ -22,10 +22,10 @@ class ControlsViewTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         controlsView = nil
         controlsExpectation = nil
+        
+        super.tearDown()
     }
     
     func testIsStoppedStateOnInit() {

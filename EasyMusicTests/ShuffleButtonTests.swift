@@ -14,9 +14,9 @@ private var animationExpectation: XCTestExpectation?
 
 class ShuffleButtonTests: XCTestCase {
     override func tearDown() {
-        super.tearDown()
-        
         animationExpectation = nil
+        
+        super.tearDown()
     }
     
     func testAnimation() {

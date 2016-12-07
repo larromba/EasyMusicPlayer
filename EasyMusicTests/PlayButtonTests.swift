@@ -20,9 +20,9 @@ class PlayButtonTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         playButton = nil
+        
+        super.tearDown()
     }
     
     func testPlayButtonState() {

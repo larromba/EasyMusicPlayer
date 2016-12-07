@@ -34,8 +34,6 @@ class PlayerViewControllerTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         NotificationCenter.default.removeObserver(playerViewController!)
         playerViewController = nil
         musicPlayerExpectation = nil
@@ -44,6 +42,9 @@ class PlayerViewControllerTests: XCTestCase {
         shareManagerExpectation = nil
         analyticsExpectation = nil
         Analytics.__shared = Analytics()
+        try? Analytics.__shared.setup()
+        
+        super.tearDown()
     }
     
     func testScreenAnalytics() {
@@ -293,8 +294,7 @@ class PlayerViewControllerTests: XCTestCase {
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
     }
     
-    //TODO: this
-    func _testNoMusicErrorDismissAction() {
+    func testNoMusicErrorDismissAction() {
         /**
          expectations
          - alert is presented after button pressed to dismiss original alert
@@ -333,7 +333,7 @@ class PlayerViewControllerTests: XCTestCase {
             waitExpectation.fulfill()
         }
     
-        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+        waitForExpectations(timeout: 2.0, handler: { error in XCTAssertNil(error) })
     }
     
     func testNoVolumeErrorIsThrown() {

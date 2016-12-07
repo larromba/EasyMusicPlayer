@@ -36,9 +36,9 @@ class ShareManagerTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         shareManager = nil
+        
+        super.tearDown()
     }
     
     func testShareOptionsPresented() {
@@ -114,6 +114,6 @@ class ShareManagerTests: XCTestCase {
             waitExpectation.fulfill()
         })
 
-        waitForExpectations(timeout: 2, handler: { error in XCTAssertNil(error) })
+        waitForExpectations(timeout: 5.0, handler: { error in XCTAssertNil(error) })
     }
 }

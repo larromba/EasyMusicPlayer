@@ -151,6 +151,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         let perc = Float(playbackTime / duration)
         scrubberView.scrubberToPercentage(perc)
         infoView.setTime(playbackTime, duration: duration)
+        infoView.setRemoteTime(playbackTime, duration: duration)
     }
     
     func threwError(_ sender: MusicPlayer, error: MusicPlayer.MusicError) {

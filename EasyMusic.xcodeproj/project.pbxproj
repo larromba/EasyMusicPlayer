@@ -1127,6 +1127,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = EasyMusic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
@@ -1151,6 +1152,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = EasyMusic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
@@ -1168,6 +1170,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EasyMusicTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1182,6 +1185,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EasyMusicTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1195,6 +1199,7 @@
 			baseConfigurationReference = 5100AE4777D559F567BF6CE3 /* Pods-EasyMusicUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = EasyMusicUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1209,6 +1214,7 @@
 			baseConfigurationReference = 0EB082B6DE418C265699C954 /* Pods-EasyMusicUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = EasyMusicUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

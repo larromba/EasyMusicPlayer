@@ -56,9 +56,9 @@ class TrackManagerTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         trackManager = nil
+        
+        super.tearDown()
     }
     
     func testShuffleTracks() {

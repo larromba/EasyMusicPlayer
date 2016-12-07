@@ -20,9 +20,9 @@ class RepeatButtonTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         repeatButton = nil
+        
+        super.tearDown()
     }
     
     func testButtonState() {
