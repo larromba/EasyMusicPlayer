@@ -89,7 +89,7 @@ class MusicPlayer: NSObject {
         
         self.delegate = delegate
 
-        let commandCenter = MPRemoteCommandCenter.shared();
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.togglePlayPauseCommand.addTarget(self, action: safeSelector("togglePlayPause"))
         commandCenter.pauseCommand.addTarget(self, action: safeSelector("pause"))
         commandCenter.playCommand.addTarget(self, action: safeSelector("play"))
@@ -97,9 +97,7 @@ class MusicPlayer: NSObject {
         commandCenter.nextTrackCommand.addTarget(self, action: safeSelector("next"))
         commandCenter.seekForwardCommand.addTarget(self, action: safeSelector("seekForward:"))
         commandCenter.seekBackwardCommand.addTarget(self, action: safeSelector("seekBackward:"))
-        
-        //TODO
-        //commandCenter.changePlaybackPositionCommand.addTarget(self, action: safeSelector("changePlaybackPosition:"))
+        commandCenter.changePlaybackPositionCommand.addTarget(self, action: safeSelector("changePlaybackPosition:"))
         
         NotificationCenter.default.addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationWillTerminate),
@@ -137,9 +135,7 @@ class MusicPlayer: NSObject {
         commandCenter.nextTrackCommand.removeTarget(self)
         commandCenter.seekForwardCommand.removeTarget(self)
         commandCenter.seekBackwardCommand.removeTarget(self)
-        
-        //TODO
-        //commandCenter.changePlaybackPositionCommand.removeTarget(self)
+        commandCenter.changePlaybackPositionCommand.removeTarget(self)
         
         NotificationCenter.default.removeObserver(self,
             name: NSNotification.Name.UIApplicationWillTerminate,
@@ -424,6 +420,10 @@ class MusicPlayer: NSObject {
         }
     }
     
+    func changePlaybackPosition(_ event: MPChangePlaybackPositionCommandEvent) {
+        time = event.positionTime
+    }
+    
     func seekForwardStart() {
         seekStartDate = Date()
         startSeekTimerWithAction(safeSelector("seekForwardTimerCallback"))
@@ -453,11 +453,6 @@ class MusicPlayer: NSObject {
     func shuffle() {
         trackManager.shuffleTracks()
     }
-    
-    // TODO: this doesn't work in ios9
-    //    func changePlaybackPosition(command: MPChangePlaybackPositionCommand) {
-    //
-    //    }
 }
 
 // MARK: - AVAudioPlayerDelegate
