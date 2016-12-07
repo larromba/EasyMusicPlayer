@@ -16,17 +16,17 @@ private let mockTitle = "title"
 private let mockDuration = 9.0
 private let mockImage = UIImage()
 private let mockArtwork = MPMediaItemArtwork(image: mockImage)
-private let mockAssetUrl = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
+private let mockAssetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 
 class ShareManagerTests: XCTestCase {
-    private var shareManager: ShareManager?
+    fileprivate var shareManager: ShareManager?
     
     class MockMediaItem: MPMediaItem {
         override var artist: String { return mockArtist }
         override var title: String { return mockTitle }
-        override var playbackDuration: NSTimeInterval { return mockDuration }
+        override var playbackDuration: TimeInterval { return mockDuration }
         override var artwork: MPMediaItemArtwork { return mockArtwork }
-        override var assetURL: NSURL { return mockAssetUrl }
+        override var assetURL: URL { return mockAssetUrl }
     }
     
     override func setUp() {
@@ -49,7 +49,7 @@ class ShareManagerTests: XCTestCase {
          
         // mocks
         let mockPresenter = UIViewController()
-        UIApplication.sharedApplication().keyWindow!.rootViewController = mockPresenter
+        UIApplication.shared.keyWindow!.rootViewController = mockPresenter
         
         let mockTrack = Track(mediaItem: MockMediaItem())
         
@@ -60,7 +60,7 @@ class ShareManagerTests: XCTestCase {
         XCTAssertTrue(mockPresenter.presentedViewController is UIAlertController)
         
         let presentedViewController = mockPresenter.presentedViewController as! UIAlertController
-        XCTAssertTrue(presentedViewController.preferredStyle == UIAlertControllerStyle.ActionSheet)
+        XCTAssertTrue(presentedViewController.preferredStyle == UIAlertControllerStyle.actionSheet)
     }
     
     func testShareFacebook() {
@@ -68,13 +68,13 @@ class ShareManagerTests: XCTestCase {
          expectations
          - facebook share opens
          */
-        let waitExpectation = expectationWithDescription("wait")
+        let waitExpectation = expectation(description: "wait")
         
         // mocks
         class MockAlertAction: UIAlertAction {
-            var mockHandler: (UIAlertAction -> Void)!
+            var mockHandler: ((UIAlertAction) -> Void)!
 
-            override class func withTitle(title: String?, style: UIAlertActionStyle, handler: (UIAlertAction -> Void)?) -> UIAlertAction {
+            override class func withTitle(_ title: String?, style: UIAlertActionStyle, handler: ((UIAlertAction) -> Void)?) -> UIAlertAction {
                 let alert = MockAlertAction(title: title, style: style, handler: handler)
                 alert.mockHandler = handler
                 return alert
@@ -82,7 +82,7 @@ class ShareManagerTests: XCTestCase {
         }
         
         class MockComposeViewController: SLComposeViewController {
-            override class func isAvailableForServiceType(serviceType: String!) -> Bool { return true }
+            override class func isAvailable(forServiceType serviceType: String!) -> Bool { return true }
         }
         
         let mockActionType = MockAlertAction.self
@@ -92,7 +92,7 @@ class ShareManagerTests: XCTestCase {
         shareManager!.__ComposeViewController = mockComposerViewController
         
         let mockPresenter = UIViewController()
-        UIApplication.sharedApplication().keyWindow!.rootViewController = mockPresenter
+        UIApplication.shared.keyWindow!.rootViewController = mockPresenter
         
         let mockTrack = Track(mediaItem: MockMediaItem())
         
@@ -102,7 +102,7 @@ class ShareManagerTests: XCTestCase {
         let presentedViewController = mockPresenter.presentedViewController as! UIAlertController
         let action = presentedViewController.actions[0] as! MockAlertAction
         
-        presentedViewController.dismissViewControllerAnimated(false, completion: { () -> Void in
+        presentedViewController.dismiss(animated: false, completion: { () -> Void in
             action.mockHandler(action)
 
             // tests
@@ -114,6 +114,6 @@ class ShareManagerTests: XCTestCase {
             waitExpectation.fulfill()
         })
 
-        waitForExpectationsWithTimeout(2, handler: { error in XCTAssertNil(error) })
+        waitForExpectations(timeout: 2, handler: { error in XCTAssertNil(error) })
     }
 }

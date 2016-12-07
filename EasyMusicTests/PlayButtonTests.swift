@@ -11,7 +11,7 @@ import XCTest
 @testable import EasyMusic
 
 class PlayButtonTests: XCTestCase {
-    private var playButton: PlayButton?
+    fileprivate var playButton: PlayButton?
     
     override func setUp() {
         super.setUp()
@@ -32,7 +32,7 @@ class PlayButtonTests: XCTestCase {
          */
         
         // mocks
-        let expected = PlayButton.State.Pause
+        let expected = PlayButton.State.pause
         
         // runnable
         playButton!.setButtonState(expected)
@@ -48,12 +48,12 @@ class PlayButtonTests: XCTestCase {
          */
         
         // mocks
-        playButton!.setBackgroundImage(nil, forState: UIControlState.Normal)
+        playButton!.setBackgroundImage(nil, for: UIControlState.normal)
         
         // runnable
-        playButton!.setButtonState(PlayButton.State.Pause)
+        playButton!.setButtonState(PlayButton.State.pause)
       
         // tests
-        XCTAssertNotNil(playButton!.backgroundImageForState(UIControlState.Normal))
+        XCTAssertNotNil(playButton!.backgroundImage(for: UIControlState.normal))
     }
 }

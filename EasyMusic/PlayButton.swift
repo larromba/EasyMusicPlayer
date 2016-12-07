@@ -10,11 +10,11 @@ import UIKit
 
 @IBDesignable
 class PlayButton: PlayerButton {
-    private(set) var buttonState: State = State.Play
+    fileprivate(set) var buttonState: State = State.play
 
     enum State {
-        case Play
-        case Pause
+        case play
+        case pause
     }
     
     override func awakeFromNib() {
@@ -29,16 +29,16 @@ class PlayButton: PlayerButton {
     
     // MARK: - Internal
     
-    func setButtonState(state: State) {
+    func setButtonState(_ state: State) {
         buttonState = state
         switch state {
-        case .Play:
+        case .play:
             setBackgroundImage(UIImage.safeImage(named: Constant.Image.PlayButton),
-                forState: UIControlState.Normal)
+                for: .normal)
             break
-        case .Pause:
+        case .pause:
             setBackgroundImage(UIImage.safeImage(named: Constant.Image.PauseButton),
-                forState: UIControlState.Normal)
+                for: .normal)
             break
         }
     }

@@ -12,7 +12,7 @@ extension UIView {
     public func loadXib() {
         let view = createViewFromNib()
         view.frame = bounds
-        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+        view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         addSubview(view)
     }
     
@@ -22,9 +22,9 @@ extension UIView {
     
     // MARK: - Private
     
-    private func createViewFromNib() -> UIView {
-        let nib = UINib(nibName: self.className(), bundle: NSBundle.safeMainBundle())
-        let view = nib.instantiateWithOwner(self, options: nil).first as! UIView
+    fileprivate func createViewFromNib() -> UIView {
+        let nib = UINib(nibName: self.className(), bundle: Bundle.safeMainBundle())
+        let view = nib.instantiate(withOwner: self, options: nil).first as! UIView
         return view
     }
 }

@@ -10,14 +10,14 @@ import UIKit
 import MediaPlayer
 
 class PlayerViewController: UIViewController {
-    @IBOutlet private weak var scrubberView: ScrubberView!
-    @IBOutlet private weak var infoView: InfoView!
-    @IBOutlet private weak var controlsView: ControlsView!
+    @IBOutlet fileprivate weak var scrubberView: ScrubberView!
+    @IBOutlet fileprivate weak var infoView: InfoView!
+    @IBOutlet fileprivate weak var controlsView: ControlsView!
     
-    private lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
-    private var shareManager: ShareManager = ShareManager()
-    private var userScrobbling: Bool = false
-    private var AlertController = UIAlertController.self
+    fileprivate lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
+    fileprivate var shareManager: ShareManager = ShareManager()
+    fileprivate var userScrobbling: Bool = false
+    fileprivate var AlertController = UIAlertController.self
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,31 +29,31 @@ class PlayerViewController: UIViewController {
             musicPlayer.repeatMode = repeatMode
             
             switch repeatMode {
-            case .None:
-                controlsView.repeatButtonState = RepeatButton.State.None
+            case .none:
+                controlsView.repeatButtonState = RepeatButton.State.none
                 break
-            case .One:
-                controlsView.repeatButtonState = RepeatButton.State.One
+            case .one:
+                controlsView.repeatButtonState = RepeatButton.State.one
                 break
-            case .All:
-                controlsView.repeatButtonState = RepeatButton.State.All
+            case .all:
+                controlsView.repeatButtonState = RepeatButton.State.all
                 break
             }
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
             selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
-            name: UIApplicationDidBecomeActiveNotification,
+            name: NSNotification.Name.UIApplicationDidBecomeActive,
             object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: UIApplicationDidBecomeActiveNotification,
+        NotificationCenter.default.removeObserver(self,
+            name: NSNotification.Name.UIApplicationDidBecomeActive,
             object: nil)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         Analytics.shared.sendScreenNameEvent(self.className())
@@ -72,21 +72,21 @@ class PlayerViewController: UIViewController {
         checkTracksAvailable()
         
         // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
-        if controlsView.playButton.buttonState == PlayButton.State.Pause && musicPlayer.isPlaying == false {
+        if controlsView.playButton.buttonState == PlayButton.State.pause && musicPlayer.isPlaying == false {
             musicPlayer.stop()
         }
     }
     
     // MARK: - Private
     
-    private func checkTracksAvailable() {
+    fileprivate func checkTracksAvailable() {
         if musicPlayer.numOfTracks == 0 {
-            threwError(musicPlayer, error: MusicPlayer.Error.NoMusic)
+            threwError(musicPlayer, error: MusicPlayer.MusicError.noMusic)
         }
     }
     
-    private func updateSeekingControls() {
-        if musicPlayer.repeatMode == MusicPlayer.RepeatMode.All {
+    fileprivate func updateSeekingControls() {
+        if musicPlayer.repeatMode == MusicPlayer.RepeatMode.all {
             controlsView.enablePrevious(true)
             controlsView.enableNext(true)
             return
@@ -107,27 +107,27 @@ class PlayerViewController: UIViewController {
 // MARK: - MusicPlayerDelegate
 
 extension PlayerViewController: MusicPlayerDelegate {
-    func changedState(sender: MusicPlayer, state: MusicPlayer.State) {
+    func changedState(_ sender: MusicPlayer, state: MusicPlayer.State) {
         switch state {
-        case .Playing:
+        case .playing:
             controlsView.setControlsPlaying()
             infoView.setInfoFromTrack(sender.currentResolvedTrack)
             infoView.setTrackPosition((musicPlayer.currentTrackNumber + 1), totalTracks: musicPlayer.numOfTracks)
-            scrubberView.userInteractionEnabled = true
+            scrubberView.isUserInteractionEnabled = true
             updateSeekingControls()
             break
-        case .Paused:
+        case .paused:
             controlsView.setControlsPaused()
-            scrubberView.userInteractionEnabled = false
+            scrubberView.isUserInteractionEnabled = false
             break
-        case .Stopped:
+        case .stopped:
             controlsView.setControlsStopped()
-            scrubberView.userInteractionEnabled = false
+            scrubberView.isUserInteractionEnabled = false
             break
-        case .Finished:
+        case .finished:
             infoView.clearInfo()
             controlsView.setControlsStopped()
-            scrubberView.userInteractionEnabled = false
+            scrubberView.isUserInteractionEnabled = false
             
             Analytics.shared.sendAlertEvent("finished_playlist",
                 classId: self.className())
@@ -135,13 +135,13 @@ extension PlayerViewController: MusicPlayerDelegate {
             let alert = AlertController.createAlertWithTitle(localized("finished alert title"),
                 message: localized("finished alert msg"),
                 buttonTitle: localized("finished alert button"))
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
             
             break
         }
     }
     
-    func changedPlaybackTime(sender: MusicPlayer, playbackTime: NSTimeInterval) {
+    func changedPlaybackTime(_ sender: MusicPlayer, playbackTime: TimeInterval) {
         guard userScrobbling == false else {
             return
         }
@@ -153,11 +153,11 @@ extension PlayerViewController: MusicPlayerDelegate {
         infoView.setTime(playbackTime, duration: duration)
     }
     
-    func threwError(sender: MusicPlayer, error: MusicPlayer.Error) {
+    func threwError(_ sender: MusicPlayer, error: MusicPlayer.MusicError) {
         var alert: UIAlertController!
         
         switch error {
-        case .NoMusic:
+        case .noMusic:
             Analytics.shared.sendAlertEvent("no_music",
                 classId: self.className())
             
@@ -168,7 +168,7 @@ extension PlayerViewController: MusicPlayerDelegate {
                     self.checkTracksAvailable()
             })
             break
-        case .NoVolume:
+        case .noVolume:
             Analytics.shared.sendAlertEvent("no_volume",
                 classId: self.className())
             
@@ -176,7 +176,7 @@ extension PlayerViewController: MusicPlayerDelegate {
                 message: localized("no volume error msg"),
                 buttonTitle: localized("no volume error button"))
             break
-        case .Decode, .PlayerInit, .AVError:
+        case .decode, .playerInit, .avError:
             Analytics.shared.sendAlertEvent("track",
                 classId: self.className())
             
@@ -193,28 +193,28 @@ extension PlayerViewController: MusicPlayerDelegate {
             break
         }
         
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 }
 
 // MARK: - ScrubberViewDelegate
 
 extension PlayerViewController: ScrubberViewDelegate {
-    func touchMovedToPercentage(sender: ScrubberView, percentage: Float) {
+    func touchMovedToPercentage(_ sender: ScrubberView, percentage: Float) {
         let track = musicPlayer.currentTrack
         let duration = track.playbackDuration
-        let time = duration * NSTimeInterval(percentage)
+        let time = duration * TimeInterval(percentage)
         infoView.setTime(time, duration: duration)
         userScrobbling = true
     }
     
-    func touchEndedAtPercentage(sender: ScrubberView, percentage: Float) {
+    func touchEndedAtPercentage(_ sender: ScrubberView, percentage: Float) {
         Analytics.shared.sendButtonPressEvent("scrubber",
             classId: self.className())
         
         let track = musicPlayer.currentTrack
         let duration = track.playbackDuration
-        let time = duration * NSTimeInterval(percentage)
+        let time = duration * TimeInterval(percentage)
         infoView.setTime(time, duration: duration)
         infoView.setRemoteTime(time, duration: duration)
         musicPlayer.time = time
@@ -225,7 +225,7 @@ extension PlayerViewController: ScrubberViewDelegate {
 // MARK: - ControlsViewDelegate
 
 extension PlayerViewController: ControlsViewDelegate {
-    func playPressed(sender: ControlsView) {
+    func playPressed(_ sender: ControlsView) {
         if musicPlayer.isPlaying == false {
             Analytics.shared.sendButtonPressEvent("play",
                 classId: self.className())
@@ -239,28 +239,28 @@ extension PlayerViewController: ControlsViewDelegate {
         }
     }
     
-    func stopPressed(sender: ControlsView) {
+    func stopPressed(_ sender: ControlsView) {
         Analytics.shared.sendButtonPressEvent("stop",
             classId: self.className())
         
         musicPlayer.stop()
     }
     
-    func prevPressed(sender: ControlsView) {
+    func prevPressed(_ sender: ControlsView) {
         Analytics.shared.sendButtonPressEvent("prev",
             classId: self.className())
         
         musicPlayer.previous()
     }
     
-    func nextPressed(sender: ControlsView) {
+    func nextPressed(_ sender: ControlsView) {
         Analytics.shared.sendButtonPressEvent("next",
             classId: self.className())
         
         musicPlayer.next()
     }
     
-    func shufflePressed(sender: ControlsView) {
+    func shufflePressed(_ sender: ControlsView) {
         Analytics.shared.sendButtonPressEvent("shuffle",
             classId: self.className())
         
@@ -269,7 +269,7 @@ extension PlayerViewController: ControlsViewDelegate {
         musicPlayer.play()
     }
     
-    func sharePressed(sender: ControlsView) {
+    func sharePressed(_ sender: ControlsView) {
         Analytics.shared.sendButtonPressEvent("share",
             classId: self.className())
         
@@ -279,16 +279,16 @@ extension PlayerViewController: ControlsViewDelegate {
             completion: { (result: ShareManager.Result, service: String?) in
                 var event: String!
                 switch result {
-                case .Success:
+                case .success:
                     event = "success_\(service)"
                     break
-                case .CancelledAfterChoice:
+                case .cancelledAfterChoice:
                     event = "cancelled-after-choice_\(service)"
                     break
-                case .CancelledBeforeChoice:
+                case .cancelledBeforeChoice:
                     event = "cancelled-before-choice_\(service)"
                     break
-                case .Error:
+                case .error:
                     event = "error_\(service)"
 
                     Analytics.shared.sendAlertEvent("share_account",
@@ -297,7 +297,7 @@ extension PlayerViewController: ControlsViewDelegate {
                     let alert = UIAlertController.createAlertWithTitle(self.localized("accounts error title"),
                         message: self.localized("accounts error msg"),
                         buttonTitle: self.localized("accounts error button"))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.present(alert, animated: true, completion: nil)
                     
                     break
                 }
@@ -307,24 +307,24 @@ extension PlayerViewController: ControlsViewDelegate {
         })
     }
     
-    func repeatPressed(sender: ControlsView) {
+    func repeatPressed(_ sender: ControlsView) {
         let buttonState: RepeatButton.State = sender.repeatButtonState
         var newButtonState: RepeatButton.State!
         var event: String!
         
         switch buttonState {
-        case .None:
-            newButtonState = RepeatButton.State.One
+        case .none:
+            newButtonState = RepeatButton.State.one
             event = "repeat-one"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.One
-        case .One:
-            newButtonState = RepeatButton.State.All
+            musicPlayer.repeatMode = MusicPlayer.RepeatMode.one
+        case .one:
+            newButtonState = RepeatButton.State.all
             event = "repeat-all"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.All
-        case .All:
-            newButtonState = RepeatButton.State.None
+            musicPlayer.repeatMode = MusicPlayer.RepeatMode.all
+        case .all:
+            newButtonState = RepeatButton.State.none
             event = "repeat-none"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.None
+            musicPlayer.repeatMode = MusicPlayer.RepeatMode.none
         }
         
         // update ui

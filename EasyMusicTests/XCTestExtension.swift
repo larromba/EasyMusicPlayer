@@ -8,9 +8,9 @@
 
 import XCTest
 
-func XCTAssertMethodOrderCorrect(methodOrder: [Int]) {
+func XCTAssertMethodOrderCorrect(_ methodOrder: [Int]) {
     var orderCorrect = true
-    for (index, element) in methodOrder.enumerate() {
+    for (index, element) in methodOrder.enumerated() {
         if element != index {
             orderCorrect = false
             break

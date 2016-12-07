@@ -8,13 +8,13 @@
 
 import Foundation
 
-public func safeAssert(condition: Bool, _ msg: String) {
+public func safeAssert(_ condition: Bool, _ msg: String) {
     if condition == false {
         log(msg)
     }
 }
 
-public func log(msg: String) {
+public func log(_ msg: String) {
     #if DEBUG
         print(msg)
     #endif

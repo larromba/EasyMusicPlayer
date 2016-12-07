@@ -11,7 +11,7 @@ import XCTest
 @testable import EasyMusic
 
 class RepeatButtonTests: XCTestCase {
-    private var repeatButton: RepeatButton?
+    fileprivate var repeatButton: RepeatButton?
     
     override func setUp() {
         super.setUp()
@@ -32,7 +32,7 @@ class RepeatButtonTests: XCTestCase {
          */
          
          // mocks
-        let expected = RepeatButton.State.All
+        let expected = RepeatButton.State.all
         
         // runnable
         repeatButton!.setButtonState(expected)
@@ -48,12 +48,12 @@ class RepeatButtonTests: XCTestCase {
          */
          
          // mocks
-        repeatButton!.setBackgroundImage(nil, forState: UIControlState.Normal)
+        repeatButton!.setBackgroundImage(nil, for: UIControlState.normal)
         
         // runnable
-        repeatButton!.setButtonState(RepeatButton.State.All)
+        repeatButton!.setButtonState(RepeatButton.State.all)
         
         // tests
-        XCTAssertNotNil(repeatButton!.backgroundImageForState(UIControlState.Normal))
+        XCTAssertNotNil(repeatButton!.backgroundImage(for: UIControlState.normal))
     }
 }

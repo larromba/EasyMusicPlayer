@@ -24,11 +24,11 @@ class ShuffleButtonTests: XCTestCase {
         expectations
         - animation is added
         */
-        animationExpectation = expectationWithDescription("layer.addAnimation(_, _)")
+        animationExpectation = expectation(description: "layer.addAnimation(_, _)")
         
         // mocks
         class MockLayer: CALayer {
-            override func addAnimation(anim: CAAnimation, forKey key: String?) {
+            override func add(_ anim: CAAnimation, forKey key: String?) {
                 let basicAnim = anim as! CABasicAnimation
                 if basicAnim.keyPath == "transform.rotation.z" {
                     animationExpectation!.fulfill()
@@ -48,6 +48,6 @@ class ShuffleButtonTests: XCTestCase {
         mockShuffleButton.touchUpInside()
         
         // tests
-        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
 }

@@ -33,7 +33,7 @@ class AppDelegateTests: XCTestCase {
         expectations
         - session started
         */
-        analyticsExpectation = expectationWithDescription("analytics.startSession()")
+        analyticsExpectation = expectation(description: "analytics.startSession()")
         
         // mocks
         class MockAnalytics: Analytics {
@@ -45,13 +45,13 @@ class AppDelegateTests: XCTestCase {
         let mockAnalytics = MockAnalytics()
         Analytics.__shared = mockAnalytics
         
-        let mockApplication = UIApplication.sharedApplication()
+        let mockApplication = UIApplication.shared
         
         // runnable
         appDelegate!.applicationWillEnterForeground(mockApplication)
         
         // tests
-        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testStartSession2() {
@@ -59,7 +59,7 @@ class AppDelegateTests: XCTestCase {
         expectations
         - session started
         */
-        analyticsExpectation = expectationWithDescription("analytics.startSession()")
+        analyticsExpectation = expectation(description: "analytics.startSession()")
         
         // mocks
         class MockAnalytics: Analytics {
@@ -71,13 +71,14 @@ class AppDelegateTests: XCTestCase {
         let mockAnalytics = MockAnalytics()
         Analytics.__shared = mockAnalytics
         
-        let mockApplication = UIApplication.sharedApplication()
+        let mockApplication = UIApplication.shared
         
         // runnable
-        appDelegate!.application(mockApplication, didFinishLaunchingWithOptions: nil)
+        let didFinish = appDelegate!.application(mockApplication, didFinishLaunchingWithOptions: nil)
         
         // tests
-        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+        XCTAssertTrue(didFinish)
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testEndSession() {
@@ -85,7 +86,7 @@ class AppDelegateTests: XCTestCase {
         expectations
         - session ended
         */
-        analyticsExpectation = expectationWithDescription("analytics.endSession()")
+        analyticsExpectation = expectation(description: "analytics.endSession()")
         
         // mocks
         class MockAnalytics: Analytics {
@@ -97,12 +98,12 @@ class AppDelegateTests: XCTestCase {
         let mockAnalytics = MockAnalytics()
         Analytics.__shared = mockAnalytics
         
-        let mockApplication = UIApplication.sharedApplication()
+        let mockApplication = UIApplication.shared
         
         // runnable
         appDelegate!.applicationDidEnterBackground(mockApplication)
         
         // tests
-        waitForExpectationsWithTimeout(1, handler: { error in XCTAssertNil(error) })
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
 }

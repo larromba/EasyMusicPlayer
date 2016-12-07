@@ -15,10 +15,10 @@ private let mockTitle = "title"
 private let mockDuration = 9.0
 private let mockImage = UIImage()
 private let mockArtwork = MPMediaItemArtwork(image: mockImage)
-private let mockAssetUrl = NSURL(string: "")!
+private let mockAssetUrl = URL(string: "http://www.google.com")!
 
 class InfoViewTests: XCTestCase {
-    private var infoView: InfoView?
+    fileprivate var infoView: InfoView?
     
     override func setUp() {
         super.setUp()
@@ -42,9 +42,9 @@ class InfoViewTests: XCTestCase {
         class MockMediaItem: MPMediaItem {
             override var artist: String { return mockArtist }
             override var title: String { return mockTitle }
-            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var playbackDuration: TimeInterval { return mockDuration }
             override var artwork: MPMediaItemArtwork { return mockArtwork }
-            override var assetURL: NSURL { return mockAssetUrl }
+            override var assetURL: URL { return mockAssetUrl }
         }
         
         let track = Track(mediaItem: MockMediaItem())
@@ -53,7 +53,7 @@ class InfoViewTests: XCTestCase {
         infoView!.setInfoFromTrack(track)
         
         // tests
-        let nowPlayingInfo = MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo!
+        let nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo!
         XCTAssertEqual(nowPlayingInfo[MPMediaItemPropertyTitle] as? String, mockTitle)
         XCTAssertEqual(nowPlayingInfo[MPMediaItemPropertyArtist] as? String, mockArtist)
         XCTAssertNotNil(nowPlayingInfo[MPMediaItemPropertyArtwork]) // cant test equals...
@@ -99,7 +99,7 @@ class InfoViewTests: XCTestCase {
         infoView!.clearInfo()
         
         // tests
-        XCTAssertNil(MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo)
+        XCTAssertNil(MPNowPlayingInfoCenter.default().nowPlayingInfo)
         XCTAssertNil(infoView!.artistLabel.text)
         XCTAssertNil(infoView!.trackLabel.text)
         XCTAssertNil(infoView!.trackPositionLabel.text)

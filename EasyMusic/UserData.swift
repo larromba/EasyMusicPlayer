@@ -11,17 +11,17 @@ import Foundation
 class UserData {
     class var repeatMode: MusicPlayer.RepeatMode? {
         get {
-            if let repeatModeData = NSUserDefaults.standardUserDefaults().objectForKey("repeatMode") as? NSNumber {
-                return MusicPlayer.RepeatMode(rawValue: repeatModeData.integerValue)
+            if let repeatModeData = UserDefaults.standard.object(forKey: "repeatMode") as? NSNumber {
+                return MusicPlayer.RepeatMode(rawValue: repeatModeData.intValue)
             }
             return nil
         }
         set {
             var repeatModeData: NSNumber?
             if newValue != nil {
-                repeatModeData = NSNumber(integer: newValue!.rawValue)
+                repeatModeData = NSNumber(value: newValue!.rawValue as Int)
             }
-            NSUserDefaults.standardUserDefaults().setObject(repeatModeData, forKey: "repeatMode")
+            UserDefaults.standard.set(repeatModeData, forKey: "repeatMode")
         }
     }
 }

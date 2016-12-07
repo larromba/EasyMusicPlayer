@@ -10,13 +10,13 @@ import UIKit
 import MediaPlayer
 
 class Track: NSObject {
-    private var mediaItemArtwork: MPMediaItemArtwork?
-    private(set) var artist: String!
-    private(set) var title: String!
-    private(set) var duration: NSTimeInterval = 0
-    private(set) var url: NSURL?
+    fileprivate var mediaItemArtwork: MPMediaItemArtwork?
+    fileprivate(set) var artist: String!
+    fileprivate(set) var title: String!
+    fileprivate(set) var duration: TimeInterval = 0
+    fileprivate(set) var url: URL?
     var artwork: UIImage? {
-        return mediaItemArtwork?.imageWithSize(CGSizeMake(512, 512))
+        return mediaItemArtwork?.image(at: CGSize(width: 512, height: 512))
     }
     
     init(mediaItem: MPMediaItem) {

@@ -33,7 +33,7 @@ class InfoView: UIView {
  
     // MARK: - Internal
     
-    func setInfoFromTrack(track: Track) {
+    func setInfoFromTrack(_ track: Track) {
         artistLabel.text = track.artist
         trackLabel.text = track.title
         artworkImageView.image = track.artwork
@@ -47,12 +47,12 @@ class InfoView: UIView {
         }
         
         let songInfo: [String: AnyObject] = [
-            MPMediaItemPropertyTitle: track.title,
-            MPMediaItemPropertyArtist: track.artist,
+            MPMediaItemPropertyTitle: track.title as AnyObject,
+            MPMediaItemPropertyArtist: track.artist as AnyObject,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
-            MPMediaItemPropertyPlaybackDuration: NSNumber(double: track.duration)
+            MPMediaItemPropertyPlaybackDuration: NSNumber(value: track.duration as Double)
         ]
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
     }
     
     func clearInfo() {
@@ -63,29 +63,29 @@ class InfoView: UIView {
         trackPositionLabel.text = nil
         artworkImageView.image = nil
         
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = nil
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
     }
     
-    func setTime(time: NSTimeInterval, duration: NSTimeInterval) {
+    func setTime(_ time: TimeInterval, duration: TimeInterval) {
         timeLabel.text = String(
             format: localized("time format"), stringFromTimeInterval(time))
     }
     
-    func setRemoteTime(time: NSTimeInterval, duration: NSTimeInterval) {
-        if var songInfo = MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo {
-            songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(double: time)
-            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+    func setRemoteTime(_ time: TimeInterval, duration: TimeInterval) {
+        if var songInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo {
+            songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(value: time as Double)
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
         }
     }
     
-    func setTrackPosition(trackPosition: Int, totalTracks: Int) {
+    func setTrackPosition(_ trackPosition: Int, totalTracks: Int) {
         trackPositionLabel.text = String(
             format: localized("track position format"), trackPosition, totalTracks)
     }
     
     // MARK: - Private
     
-    private func stringFromTimeInterval(timeInterval: NSTimeInterval) -> String {
+    fileprivate func stringFromTimeInterval(_ timeInterval: TimeInterval) -> String {
         let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60
