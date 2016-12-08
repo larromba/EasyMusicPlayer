@@ -42,7 +42,6 @@ class PlayerViewControllerTests: XCTestCase {
         shareManagerExpectation = nil
         analyticsExpectation = nil
         Analytics.__shared = Analytics()
-        try? Analytics.__shared.setup()
         
         super.tearDown()
     }
@@ -272,70 +271,6 @@ class PlayerViewControllerTests: XCTestCase {
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
     }
     
-    func testNoMusicErrorIsThrownOnBecomingActive() {
-        /**
-         expectations
-         - error alert is thrown
-         */
-         
-        // mocks
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var numOfTracks: Int { return 0 }
-        }
-        
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
-        playerViewController!.__musicPlayer = mockMusicPlayer
-        
-        // runnable
-        let notification = Notification(name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.post(notification)
-        
-        // tests
-        XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
-    }
-    
-    func testNoMusicErrorDismissAction() {
-        /**
-         expectations
-         - alert is presented after button pressed to dismiss original alert
-         */
-        let waitExpectation = expectation(description: "wait")
-        
-        // mocks
-        class MockAlertController: UIAlertController {
-            var mockButtonAction: ((Void) -> Void)!
-            
-            override class func withTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
-                let alert = MockAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                alert.mockButtonAction = buttonAction
-                return alert
-            }
-        }
-        
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var numOfTracks: Int { return 0 }
-        }
-        
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
-        playerViewController!.__musicPlayer = mockMusicPlayer
-        
-        playerViewController!.__AlertController = MockAlertController.self
-        
-        // runnable
-        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.MusicError.noMusic)
-        
-        // tests
-        let mockAlertController = playerViewController!.presentedViewController as! MockAlertController
-        mockAlertController.dismiss(animated: false) { () -> Void in
-            XCTAssertNil(self.playerViewController!.presentedViewController) // for sanity only
-            mockAlertController.mockButtonAction()
-            XCTAssertTrue(self.playerViewController!.presentedViewController is UIAlertController)
-            waitExpectation.fulfill()
-        }
-    
-        waitForExpectations(timeout: 2.0, handler: { error in XCTAssertNil(error) })
-    }
-    
     func testNoVolumeErrorIsThrown() {
         /**
          expectations
@@ -347,6 +282,22 @@ class PlayerViewControllerTests: XCTestCase {
         
         // runnable
         mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.MusicError.noVolume)
+        
+        // tests
+        XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
+    }
+    
+    func testAuthorizationErrorIsThrown() {
+        /**
+         expectations
+         - error alert is thrown
+         */
+        
+        // mocks
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+        
+        // runnable
+        mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.MusicError.authorization)
         
         // tests
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)

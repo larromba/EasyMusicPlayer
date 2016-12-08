@@ -1,0 +1,23 @@
+1.1
+        updating to swift 3.0
+
+        Fixing tests after upgrade
+
+        adding changePlaybackPositionCommand
+
+        code grooming
+
+        Fix: remote control bar jumping when hitting play / pause
+
+        Fix: NSAppTransportSecurity
+
+        Found some strange stuff in the analytics
+
+        Fix: unit test compile for device
+
+        Fix: version number / build number
+
+        Authorization 9.3
+
+1.0.1
+	[FIX] crashlytics issue 56939482f5d3a7f76bffde9a

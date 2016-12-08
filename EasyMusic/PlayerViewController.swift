@@ -57,8 +57,6 @@ class PlayerViewController: UIViewController {
         super.viewDidAppear(animated)
         
         Analytics.shared.sendScreenNameEvent(classForCoder)
-        
-        checkTracksAvailable()
     }
     
     override func didReceiveMemoryWarning() {
@@ -69,8 +67,6 @@ class PlayerViewController: UIViewController {
     // MARK: - Notification
     
     func applicationDidBecomeActive() {
-        checkTracksAvailable()
-        
         // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
         if controlsView.playButton.buttonState == PlayButton.State.pause && musicPlayer.isPlaying == false {
             musicPlayer.stop()
@@ -78,12 +74,6 @@ class PlayerViewController: UIViewController {
     }
     
     // MARK: - Private
-    
-    fileprivate func checkTracksAvailable() {
-        if musicPlayer.numOfTracks == 0 {
-            threwError(musicPlayer, error: MusicPlayer.MusicError.noMusic)
-        }
-    }
     
     fileprivate func updateSeekingControls() {
         if musicPlayer.repeatMode == MusicPlayer.RepeatMode.all {
@@ -162,10 +152,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             
             alert = AlertController.withTitle(localized("no music error title", classId: classForCoder),
                 message: localized("no music error msg", classId: classForCoder),
-                buttonTitle: localized("no music error button", classId: classForCoder),
-                buttonAction: {
-                    self.checkTracksAvailable()
-            })
+                buttonTitle: localized("no music error button", classId: classForCoder))
             break
         case .noVolume:
             Analytics.shared.sendAlertEvent("no_volume", classId: classForCoder)
@@ -187,6 +174,13 @@ extension PlayerViewController: MusicPlayerDelegate {
                         self.musicPlayer.next()
                     }
             })
+            break
+        case .authorization:
+            Analytics.shared.sendAlertEvent("authorization", classId: classForCoder)
+            
+            alert = AlertController.withTitle(localized("authorization error title", classId: classForCoder),
+                                              message: localized("authorization error message", classId: classForCoder),
+                                              buttonTitle: localized("authorization error button", classId: classForCoder))
             break
         }
         

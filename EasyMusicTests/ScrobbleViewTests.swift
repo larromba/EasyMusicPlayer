@@ -34,7 +34,6 @@ class ScrubberViewTests: XCTestCase {
         scrubberViewExpectation = nil
         analyticsExpectation = nil
         Analytics.__shared = Analytics()
-        try? Analytics.__shared.setup()
         
         super.tearDown()
     }

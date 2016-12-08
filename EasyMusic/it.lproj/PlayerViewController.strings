@@ -25,3 +25,7 @@
 "finished alert title" = "Fine";
 "finished alert msg" = "La playlist finito";
 "finished alert button" = "ok";
+
+"authorization error title" = "Autorizzazione";
+"authorization error message" = "In Impostazioni, si prega ci permettono l'accesso alla tua musica!";
+"authorization error button" = "ok";

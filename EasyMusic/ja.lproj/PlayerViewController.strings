@@ -25,3 +25,7 @@
 "finished alert title" = "終わり";
 "finished alert msg" = "あなたのプレイリストが終了";
 "finished alert button" = "OK";
+
+"authorization error title" = "承認";
+"authorization error message" = "設定で、あなたの音楽へのアクセスを許可してください！";
+"authorization error button" = "OK";

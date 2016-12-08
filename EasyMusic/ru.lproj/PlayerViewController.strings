@@ -25,3 +25,7 @@
 "finished alert title" = "Конец";
 "finished alert msg" = "Ваше плейлист закончил";
 "finished alert button" = "OK";
+
+"authorization error title" = "авторизация";
+"authorization error message" = "В настройках, пожалуйста, позвольте нам получить доступ к вашей музыке!";
+"authorization error button" = "OK";
