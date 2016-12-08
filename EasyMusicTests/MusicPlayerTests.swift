@@ -73,7 +73,6 @@ class MusicPlayerTests: XCTestCase {
         methodOrder = nil
         mockPlaylist = nil
         Analytics.__shared = Analytics()
-        try? Analytics.__shared.setup()
         
         super.tearDown()
     }
@@ -152,6 +151,33 @@ class MusicPlayerTests: XCTestCase {
         mockMusicPlayer.__player = mockAudioPlayer
         
         expectedState = MusicPlayer.State.playing
+        
+        // runnable
+        mockMusicPlayer.play()
+        
+        // tests
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testPlayNotAuthorized() {
+        /**
+         expectations
+         - delegate call
+         */
+        musicPlayerDelegateErrorExpectation = expectation(description: "MusicPlayerDelegate.threwError(_, _)")
+        
+        // mocks
+        class MockTrackManager: EasyMusic.TrackManager {
+            override var authorized: Bool { return false }
+            override func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
+                completion(false)
+            }
+        }
+        
+        let mockMusicPlayer = MusicPlayer(delegate: self)
+        mockMusicPlayer.__trackManager = MockTrackManager()
+        
+        expectedError = MusicPlayer.MusicError.authorization
         
         // runnable
         mockMusicPlayer.play()

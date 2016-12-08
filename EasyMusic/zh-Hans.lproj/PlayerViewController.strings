@@ -25,3 +25,7 @@
 "finished alert title" = "结束";
 "finished alert msg" = "您的播放列表完成";
 "finished alert button" = "好";
+
+"authorization error title" = "授权";
+"authorization error message" = "在设置中，请允许我们访问您的音乐！";
+"authorization error button" = "好";

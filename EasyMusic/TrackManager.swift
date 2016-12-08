@@ -28,7 +28,21 @@ class TrackManager {
     var numOfTracks: Int {
         return tracks.count
     }
+    var authorized: Bool {
+        if #available(iOS 9.3, *) {
+            return MPMediaLibrary.authorizationStatus() == .authorized
+        }
+        return true
+    }
     
+    init() {
+        setupNotifications()
+    }
+    
+    deinit {
+        tearDownNotifications()
+    }
+
     func createPlaylist() -> [MPMediaItem] {
         #if (arch(i386) || arch(x86_64)) && os(iOS) // if simulator
             
@@ -57,7 +71,29 @@ class TrackManager {
         #endif
     }
     
+    func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
+        if #available(iOS 9.3, *) {
+            MPMediaLibrary.requestAuthorization({ (status: MPMediaLibraryAuthorizationStatus) in
+                DispatchQueue.main.async(execute: {
+                    guard status == .authorized else {
+                        completion(false)
+                        return
+                    }
+                    self.setupNotifications()
+                    completion(true)
+                })
+            })
+            return
+        }
+        completion(true)
+    }
+    
     func shuffleTracks() {
+        guard authorized else {
+            tracks = [MPMediaItem]()
+            return
+        }
+        
         let playlist = createPlaylist()
         let mItems = NSMutableArray(array: playlist)
         
@@ -97,6 +133,35 @@ class TrackManager {
     
     func cueEnd() {
         trackIndex = numOfTracks - 1
+    }
+    
+    // MARK: - Private
+    
+    fileprivate func setupNotifications() {
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(mediaLibraryDidChangeNotification(_:)),
+            name: NSNotification.Name.MPMediaLibraryDidChange,
+            object: nil)
+        
+        guard authorized else {
+            return
+        }
+        MPMediaLibrary.default().beginGeneratingLibraryChangeNotifications()
+    }
+    
+    fileprivate func tearDownNotifications() {
+        NotificationCenter.default.removeObserver(self,
+            name: NSNotification.Name.MPMediaLibraryDidChange,
+            object: nil)
+        
+        guard authorized else {
+            return
+        }
+        MPMediaLibrary.default().endGeneratingLibraryChangeNotifications()
+    }
+    
+    @objc fileprivate func mediaLibraryDidChangeNotification(_ notification: NSNotification) {
+        shuffleTracks()
     }
 }
 

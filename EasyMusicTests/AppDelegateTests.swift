@@ -24,7 +24,6 @@ class AppDelegateTests: XCTestCase {
         appDelegate = nil
         analyticsExpectation = nil
         Analytics.__shared = Analytics()
-        try? Analytics.__shared.setup()
         
         super.tearDown()
     }

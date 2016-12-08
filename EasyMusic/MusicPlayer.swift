@@ -62,7 +62,7 @@ class MusicPlayer: NSObject {
     var volume: Float {
         return AVAudioSession.sharedInstance().outputVolume
     }
-    
+ 
     enum State {
         case playing
         case paused
@@ -76,6 +76,7 @@ class MusicPlayer: NSObject {
         case noMusic
         case noVolume
         case avError
+        case authorization
     }
     
     enum RepeatMode: Int {
@@ -196,6 +197,20 @@ class MusicPlayer: NSObject {
         delegate?.changedState(self, state: MusicPlayer.State.stopped)
     }
     
+    fileprivate func authorizeThenPerform(_ block: @escaping ((Void) -> Void)) {
+        guard trackManager.authorized else {
+            trackManager.authorize({ (_ success: Bool) in
+                guard success else {
+                    self.threwError(.authorization)
+                    return
+                }
+                block()
+            })
+            return
+        }
+        block()
+    }
+    
     // MARK: - Notifications
     
     func applicationWillTerminate(_ notifcation: Notification) {
@@ -290,47 +305,49 @@ class MusicPlayer: NSObject {
     }
     
     func play() {
-        guard numOfTracks > 0 else {
-            threwError(MusicError.noMusic)
-            return
-        }
-        
-        guard volume > 0.0 else {
-            threwError(MusicError.noVolume)
-            return
-        }
-        
-        let assetUrl = currentTrack.assetURL
-        guard assetUrl != nil else {
-            threwError(MusicError.playerInit)
-            return
-        }
-        
-        if player == nil || player!.url!.absoluteString != assetUrl!.absoluteString {
-            do {
-                try player = AVAudioPlayer(contentsOf: assetUrl!)
-            } catch _ {
-                threwError(MusicError.playerInit)
+        authorizeThenPerform({
+            guard self.numOfTracks > 0 else {
+                self.threwError(MusicError.noMusic)
                 return
             }
-            player!.delegate = self
-        }
-        
-        var success = player!.prepareToPlay()
-        guard success == true else {
-            threwError(MusicError.avError)
-            return
-        }
-                
-        success = player!.play()
-        guard success == true else {
-            threwError(MusicError.avError)
-            return
-        }
-        
-        startPlaybackCheckTimer()
-        
-        delegate?.changedState(self, state: State.playing)
+            
+            guard self.volume > 0.0 else {
+                self.threwError(MusicError.noVolume)
+                return
+            }
+            
+            let assetUrl = self.currentTrack.assetURL
+            guard assetUrl != nil else {
+                self.threwError(MusicError.playerInit)
+                return
+            }
+            
+            if self.player == nil || self.player!.url!.absoluteString != assetUrl!.absoluteString {
+                do {
+                    try self.player = AVAudioPlayer(contentsOf: assetUrl!)
+                } catch _ {
+                    self.threwError(MusicError.playerInit)
+                    return
+                }
+                self.player!.delegate = self
+            }
+            
+            var success = self.player!.prepareToPlay()
+            guard success == true else {
+                self.threwError(MusicError.avError)
+                return
+            }
+            
+            success = self.player!.play()
+            guard success == true else {
+                self.threwError(MusicError.avError)
+                return
+            }
+            
+            self.startPlaybackCheckTimer()
+            
+            self.delegate?.changedState(self, state: State.playing)
+        })
     }
     
     func stop() {
