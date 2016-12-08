@@ -50,6 +50,7 @@ class InfoView: UIView {
             MPMediaItemPropertyTitle: track.title as AnyObject,
             MPMediaItemPropertyArtist: track.artist as AnyObject,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? NSNumber ?? 0.0,
             MPMediaItemPropertyPlaybackDuration: NSNumber(value: track.duration as Double)
         ]
         MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
