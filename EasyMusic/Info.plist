@@ -60,5 +60,22 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <false/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>ssl.google-analytics.com</key>
+            <dict>
+                <key>NSThirdPartyExceptionMinimumTLSVersion</key>
+                <string>TLSv1.2</string>
+                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
 </dict>
 </plist>
