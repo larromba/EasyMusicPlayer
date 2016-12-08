@@ -49,8 +49,8 @@ class MusicPlayerTests: XCTestCase {
             MockMediaItem()]
         
 #if !((arch(i386) || arch(x86_64)) && os(iOS)) // if not simulator
-        let songs = MPMediaQuery.songsQuery().items
-        audioUrl = songs!.first!.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
+        let songs = MPMediaQuery.songs().items
+        audioUrl = songs!.first!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
 #else
         audioUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 #endif
@@ -135,7 +135,7 @@ class MusicPlayerTests: XCTestCase {
 
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool {
+            override func play() -> Bool {
                 audioPlayerExpectation!.fulfill()
                 return true
             }
@@ -260,7 +260,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func prepareToPlay() -> Bool { return false }
+            override func prepareToPlay() -> Bool { return false }
         }
         
         class MockMusicPlayer: EasyMusic.MusicPlayer {
@@ -291,7 +291,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool { return false }
+            override func play() -> Bool { return false }
         }
         
         class MockMusicPlayer: EasyMusic.MusicPlayer {
@@ -380,7 +380,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool {
+            override func play() -> Bool {
                 audioPlayerExpectation!.fulfill()
                 return true
             }
@@ -488,7 +488,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func pause() {
+            override func pause() {
                 audioPlayerExpectation!.fulfill()
             }
         }
@@ -525,7 +525,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func pause() {
+            override func pause() {
                 audioPlayerExpectation!.fulfill()
             }
         }
@@ -682,7 +682,7 @@ class MusicPlayerTests: XCTestCase {
 
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func stop() {
+            override func stop() {
                 audioPlayerExpectation!.fulfill()
             }
         }
@@ -716,7 +716,7 @@ class MusicPlayerTests: XCTestCase {
 
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func pause() {
+            override func pause() {
                 audioPlayerExpectation!.fulfill()
             }
         }
@@ -753,7 +753,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func pause() {
+            override func pause() {
                 audioPlayerExpectation!.fulfill()
             }
         }
@@ -789,11 +789,11 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool {
+            override func play() -> Bool {
                 methodOrder!.append(2)
                 return true
             }
-            override fileprivate func stop() {
+            override func stop() {
                 methodOrder!.append(0)
             }
         }
@@ -828,8 +828,8 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool { return true }
-            override fileprivate func stop() { }
+            override func play() -> Bool { return true }
+            override func stop() { }
         }
         
         class MockTrackManager: TrackManager {
@@ -860,11 +860,11 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool {
+            override func play() -> Bool {
                 methodOrder!.append(2)
                 return true
             }
-            override fileprivate func stop() {
+            override func stop() {
                 methodOrder!.append(0)
             }
         }
@@ -899,7 +899,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool {
+            override func play() -> Bool {
                 XCTFail()
                 return false
             }
@@ -937,7 +937,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool {
+            override func play() -> Bool {
                 musicPlayerExpectation!.fulfill()
                 return true
             }
@@ -976,8 +976,8 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAudioPlayer: AVAudioPlayer {
-            override fileprivate func play() -> Bool { return true }
-            override fileprivate func stop() { }
+            override func play() -> Bool { return true }
+            override func stop() { }
             override var currentTime: TimeInterval {
                 set {
                     super.currentTime = newValue
