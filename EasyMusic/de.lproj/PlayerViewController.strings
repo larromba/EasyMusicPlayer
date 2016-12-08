@@ -25,3 +25,7 @@
 "finished alert title" = "Ende";
 "finished alert msg" = "Deine Wiedergabeliste ist zu Ende";
 "finished alert button" = "OK";
+
+"authorization error title" = "Genehmigung";
+"authorization error message" = "In den Einstellungen erlauben Sie bitte den Zugriff auf Ihre Musik!";
+"authorization error button" = "OK";
