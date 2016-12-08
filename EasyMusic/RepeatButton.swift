@@ -10,12 +10,12 @@ import UIKit
 
 @IBDesignable
 class RepeatButton: PlayerButton {
-    private(set) var buttonState: State = State.None
+    fileprivate(set) var buttonState: State = State.none
     
     enum State {
-        case None
-        case One
-        case All
+        case none
+        case one
+        case all
     }
     
     override func awakeFromNib() {
@@ -30,20 +30,17 @@ class RepeatButton: PlayerButton {
     
     // MARK: - Internal
     
-    func setButtonState(state: State) {
+    func setButtonState(_ state: State) {
         buttonState = state
         switch state {
-        case .None:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatButton),
-                forState: UIControlState.Normal)
+        case .none:
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatButton), for: .normal)
             break
-        case .One:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatOneButton),
-                forState: UIControlState.Normal)
+        case .one:
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatOneButton), for: .normal)
             break
-        case .All:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatAllButton),
-                forState: UIControlState.Normal)
+        case .all:
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatAllButton), for: .normal)
             break
         }
     }

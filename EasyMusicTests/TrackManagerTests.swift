@@ -15,13 +15,13 @@ private let mockTitle = "title"
 private let mockDuration = 9.0
 private let mockImage = UIImage()
 private let mockArtwork = MPMediaItemArtwork(image: mockImage)
-private let mockAssetUrl = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
+private let mockAssetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 
 class TrackManagerTests: XCTestCase {
-    private let url = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
+    fileprivate let url = URL(fileURLWithPath: Constant.Path.DummyAudio)
 
-    private var trackManager: TrackManager?
-    private var mockTracks: [MPMediaItem]!
+    fileprivate var trackManager: TrackManager?
+    fileprivate var mockTracks: [MPMediaItem]!
     
     override func setUp() {
         super.setUp()
@@ -29,17 +29,17 @@ class TrackManagerTests: XCTestCase {
         class MockMediaItem: MPMediaItem {
             override var artist: String { return mockArtist }
             override var title: String { return mockTitle }
-            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var playbackDuration: TimeInterval { return mockDuration }
             override var artwork: MPMediaItemArtwork { return mockArtwork }
-            override var assetURL: NSURL { return mockAssetUrl }
+            override var assetURL: URL { return mockAssetUrl }
         }
         
         class MockMediaItemNoArtistOrTitle: MPMediaItem {
             override var artist: String? { return nil }
             override var title: String? { return nil }
-            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var playbackDuration: TimeInterval { return mockDuration }
             override var artwork: MPMediaItemArtwork { return mockArtwork }
-            override var assetURL: NSURL { return mockAssetUrl }
+            override var assetURL: URL { return mockAssetUrl }
         }
         
         mockTracks = [
@@ -56,9 +56,9 @@ class TrackManagerTests: XCTestCase {
     }
     
     override func tearDown() {
-        super.tearDown()
-        
         trackManager = nil
+        
+        super.tearDown()
     }
     
     func testShuffleTracks() {
@@ -73,7 +73,7 @@ class TrackManagerTests: XCTestCase {
         // tests
         let tracks = trackManager!.allTracks
         var tracksInTheSameOrder = 0
-        for (index, element) in tracks.enumerate() {
+        for (index, element) in tracks.enumerated() {
             if element == mockTracks[index] {
                 tracksInTheSameOrder = tracksInTheSameOrder + 1
             }

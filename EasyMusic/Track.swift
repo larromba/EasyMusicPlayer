@@ -9,27 +9,25 @@
 import UIKit
 import MediaPlayer
 
-class Track: NSObject {
-    private var mediaItemArtwork: MPMediaItemArtwork?
-    private(set) var artist: String!
-    private(set) var title: String!
-    private(set) var duration: NSTimeInterval = 0
-    private(set) var url: NSURL?
+struct Track {
+    fileprivate var mediaItemArtwork: MPMediaItemArtwork?
+    fileprivate(set) var artist: String!
+    fileprivate(set) var title: String!
+    fileprivate(set) var duration: TimeInterval = 0
+    fileprivate(set) var url: URL?
     var artwork: UIImage? {
-        return mediaItemArtwork?.imageWithSize(CGSizeMake(512, 512))
+        return mediaItemArtwork?.image(at: CGSize(width: 512, height: 512))
     }
     
     init(mediaItem: MPMediaItem) {
-        super.init()
-        
         var artist = mediaItem.artist
         if artist == nil || artist!.characters.count == 0 {
-            artist = localized("unknown artist")
+            artist = localized("unknown artist", classId: Track.self)
         }
         
         var title = mediaItem.title
         if title == nil || title!.characters.count == 0 {
-            title = localized("unknown track")
+            title = localized("unknown track", classId: Track.self)
         }
         
         self.artist = artist
@@ -37,5 +35,17 @@ class Track: NSObject {
         self.duration = mediaItem.playbackDuration
         self.mediaItemArtwork = mediaItem.artwork
         self.url = mediaItem.assetURL
+    }
+}
+
+// MARK: - Equatable
+
+extension Track: Equatable {
+    static func ==(lhs: Track, rhs: Track) -> Bool {
+        return (
+            lhs.artist == rhs.artist &&
+            lhs.title == rhs.title &&
+            lhs.url == rhs.url
+        )
     }
 }

@@ -9,22 +9,24 @@
 import UIKit
 
 extension UIView {
-    public func loadXib() {
+    func loadXib() {
         let view = createViewFromNib()
         view.frame = bounds
-        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+        view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         addSubview(view)
     }
     
-    public func nibView() -> UIView? {
+    func nibView() -> UIView? {
         return subviews.first
     }
     
     // MARK: - Private
     
-    private func createViewFromNib() -> UIView {
-        let nib = UINib(nibName: self.className(), bundle: NSBundle.safeMainBundle())
-        let view = nib.instantiateWithOwner(self, options: nil).first as! UIView
+    fileprivate func createViewFromNib() -> UIView {
+        let nib = UINib(nibName: "\(classForCoder)", bundle: Bundle.safeMainBundle())
+        guard let view = nib.instantiate(withOwner: self, options: nil).first as? UIView else {
+            fatalError("can't load view for \(self)")
+        }
         return view
     }
 }

@@ -10,8 +10,8 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
-    private var tracks: [MPMediaItem] = []
-    private var trackIndex: Int = 0
+    fileprivate var tracks: [MPMediaItem] = []
+    fileprivate var trackIndex: Int = 0
     
     var allTracks: [MPMediaItem] {
         return tracks
@@ -34,13 +34,13 @@ class TrackManager {
             
             class MockMediaItem: MPMediaItem {
                 let mediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "arkist-rendezvous-fill_your_coffee")!)
-                let assetUrl = NSURL(fileURLWithPath: Constant.Path.DummyAudio)
+                let assetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 
                 override var artist: String { return "Arkist" }
                 override var title: String { return "Fill Your Coffee" }
-                override var playbackDuration: NSTimeInterval { return 219 }
+                override var playbackDuration: TimeInterval { return 219 }
                 override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
-                override var assetURL: NSURL { return assetUrl }
+                override var assetURL: URL { return assetUrl }
             }
             
             let tracks = [MockMediaItem(), MockMediaItem(), MockMediaItem()]
@@ -48,7 +48,7 @@ class TrackManager {
             
         #else // device
 
-            if let songs = MPMediaQuery.songsQuery().items {
+            if let songs = MPMediaQuery.songs().items {
                 return songs
             } else {
                 return []
@@ -61,10 +61,10 @@ class TrackManager {
         let playlist = createPlaylist()
         let mItems = NSMutableArray(array: playlist)
         
-        for var i = 0; i < mItems.count - 1; ++i {
+        for i in 0 ..< mItems.count - 1 {
             let remainingCount = mItems.count - i;
             let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
-            mItems.exchangeObjectAtIndex(i, withObjectAtIndex: exchangeIndex)
+            mItems.exchangeObject(at: i, withObjectAt: exchangeIndex)
         }
         
         tracks = mItems as AnyObject as! [MPMediaItem]

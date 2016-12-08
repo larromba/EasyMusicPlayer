@@ -8,11 +8,6 @@
 
 import Foundation
 
-public func performAfterDelay(delay:Double, closure: (Void -> Void)) {
-    dispatch_after(
-        dispatch_time(
-            DISPATCH_TIME_NOW,
-            Int64(delay * Double(NSEC_PER_SEC))
-        ),
-        dispatch_get_main_queue(), closure)
+func performAfterDelay(_ delay:Double, closure: @escaping ((Void) -> Void)) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }

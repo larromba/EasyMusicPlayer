@@ -10,13 +10,13 @@ import Foundation
 import Google
 
 class Analytics {
-    private(set) static var shared = Analytics()
-    private var sessionStartDate: NSDate?
-    private var isSetup: Bool = false
+    fileprivate(set) static var shared = Analytics()
+    fileprivate var sessionStartDate: Date?
+    fileprivate var isSetup: Bool = false
     var dryRun: Bool = false
     
-    enum Error: ErrorType {
-        case Setup
+    enum AnalyticsError: Error {
+        case setup
     }
     
     // MARK: - Internal
@@ -27,24 +27,24 @@ class Analytics {
         
         if configureError != nil {
             log("Error configuring Google services: \(configureError)")
-            throw Error.Setup
+            throw AnalyticsError.setup
         }
         
         isSetup = true
         
         let gai = GAI.sharedInstance()
-        gai.trackUncaughtExceptions = true
+        gai?.trackUncaughtExceptions = true
     
         #if DEBUG
-            let path = NSBundle.safeMainBundle().pathForResource("GoogleService-Info", ofType: "plist")!
+            let path = Bundle.safeMainBundle().path(forResource: "GoogleService-Info", ofType: "plist")!
             let data = NSDictionary(contentsOfFile: path)!
             let devId = data["TRACKING_ID_DEV"] as! String
 
-            gai.defaultTracker = gai.trackerWithTrackingId(devId)
-            gai.dryRun = dryRun
-            gai.logger.logLevel = GAILogLevel.Warning
+            gai?.defaultTracker = gai?.tracker(withTrackingId: devId)
+            gai?.dryRun = dryRun
+            gai?.logger.logLevel = GAILogLevel.warning
         #else
-            gai.logger.logLevel = GAILogLevel.None
+            gai?.logger.logLevel = GAILogLevel.none
         #endif
     }
     
@@ -53,7 +53,7 @@ class Analytics {
             return
         }
         
-        sessionStartDate = NSDate()
+        sessionStartDate = Date()
     }
     
     func endSession() {
@@ -61,74 +61,75 @@ class Analytics {
             return
         }
         
-        sendTimedAppEvent("session", fromDate: sessionStartDate!, toDate: NSDate())
+        sendTimedAppEvent("session", fromDate: sessionStartDate!, toDate: Date())
         sessionStartDate = nil
     }
     
-    func sendScreenNameEvent(screenName: String) {
+    func sendScreenNameEvent(_ classId: AnyClass) {
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.set(kGAIScreenName, value: screenName)
-        let item = GAIDictionaryBuilder.createScreenView().build() as [NSObject : AnyObject]
+        tracker?.set(kGAIScreenName, value: "\(classId)")
+        let item = GAIDictionaryBuilder.createScreenView().build() as NSDictionary as! [AnyHashable: Any]
         
         send(item)
     }
     
-    func sendButtonPressEvent(event: String, classId: String) {
-        sendEvent(event, action: classId, category: "button_press")
+    func sendButtonPressEvent(_ event: String, classId: AnyClass) {
+        sendEvent(event, action: "\(classId)", category: "button_press")
     }
     
-    func sendShareEvent(event: String, classId: String) {
-        sendEvent(event, action: classId, category: "share")
+    func sendShareEvent(_ event: String, classId: AnyClass) {
+        sendEvent(event, action: "\(classId)", category: "share")
     }
     
-    func sendAlertEvent(event: String, classId: String) {
-        sendEvent(event, action: classId, category: "alert")
+    func sendAlertEvent(_ event: String, classId: AnyClass) {
+        sendEvent(event, action: "\(classId)", category: "alert")
     }
     
-    func sendErrorEvent(error: NSError, classId: String) {
-        sendEvent("domain:\(error.domain), code:\(error.code)", action: classId, category: "error")
+    func sendErrorEvent(_ error: Error, classId: AnyClass) {
+        let nsError = error as NSError
+        sendEvent("domain:\(nsError.domain), code:\(nsError.code)", action: "\(classId)", category: "error")
     }
     
-    func sendTimedAppEvent(event: String, fromDate: NSDate, toDate: NSDate) {
-        let sessionTimeSecs = toDate.timeIntervalSinceDate(fromDate)
-        let sessionTimeMilliSecs = NSNumber(unsignedInteger: UInt(sessionTimeSecs * 1000.0))
-        let item = GAIDictionaryBuilder.createTimingWithCategory("app",
+    func sendTimedAppEvent(_ event: String, fromDate: Date, toDate: Date) {
+        let sessionTimeSecs = toDate.timeIntervalSince(fromDate)
+        let sessionTimeMilliSecs = NSNumber(value: UInt(sessionTimeSecs * 1000.0) as UInt)
+        let item = GAIDictionaryBuilder.createTiming(withCategory: "app",
             interval: sessionTimeMilliSecs,
             name: event,
-            label: nil).build() as [NSObject : AnyObject]
+            label: nil).build() as NSDictionary as! [AnyHashable: Any]
         
         send(item)
     }
     
     // MARK: - Private
     
-    private func sendTimedEvent(event: String, category: String, fromDate: NSDate, toDate: NSDate) {
-        let sessionTimeSecs = toDate.timeIntervalSinceDate(fromDate)
-        let sessionTimeMilliSecs = NSNumber(unsignedInteger: UInt(sessionTimeSecs * 1000.0))
-        let item = GAIDictionaryBuilder.createTimingWithCategory(category,
+    fileprivate func sendTimedEvent(_ event: String, category: String, fromDate: Date, toDate: Date) {
+        let sessionTimeSecs = toDate.timeIntervalSince(fromDate)
+        let sessionTimeMilliSecs = NSNumber(value: UInt(sessionTimeSecs * 1000.0) as UInt)
+        let item = GAIDictionaryBuilder.createTiming(withCategory: category,
             interval: sessionTimeMilliSecs,
             name: event,
-            label: nil).build() as [NSObject : AnyObject]
+            label: nil).build() as NSDictionary as! [AnyHashable: Any]
         
         send(item)
     }
     
-    private func sendEvent(event: String, action: String, category: String) {
-        let item = GAIDictionaryBuilder.createEventWithCategory(category,
+    fileprivate func sendEvent(_ event: String, action: String, category: String) {
+        let item = GAIDictionaryBuilder.createEvent(withCategory: category,
             action: action,
             label: event,
-            value: nil).build() as [NSObject : AnyObject]
+            value: nil).build() as NSDictionary as! [AnyHashable: Any]
        
         send(item)
     }
     
-    private func send(item: [NSObject : AnyObject]) {
+    fileprivate func send(_ item: [AnyHashable: Any]) {
         guard isSetup == true else {
             return
         }
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(item)
+        tracker?.send(item)
     }
 }
 

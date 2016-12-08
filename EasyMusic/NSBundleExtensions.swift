@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension NSBundle {
-    public class func appName() -> String {
-        return NSBundle.safeMainBundle().objectForInfoDictionaryKey(Constant.Bundle.BundleDisplayName) as! String
+extension Bundle {
+    class func appName() -> String {
+        return Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleDisplayName) as! String
     }
     
-    public class func bundleIdentifier() -> String {
-        return NSBundle.safeMainBundle().objectForInfoDictionaryKey(Constant.Bundle.BundleIdentifier) as! String
+    class func bundleIdentifier() -> String {
+        return Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleIdentifier) as! String
     }
     
-    public class func safeMainBundle() -> NSBundle {
-        return NSBundle(identifier: Constant.Bundle.HardCodedMainBundleIdentifier)!
+    class func safeMainBundle() -> Bundle {
+        return Bundle(identifier: Constant.Bundle.HardCodedMainBundleIdentifier)!
     }
 }
