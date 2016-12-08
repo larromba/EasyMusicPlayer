@@ -9,20 +9,20 @@
 import UIKit
 
 protocol ScrubberViewDelegate: class {
-    func touchMovedToPercentage(sender: ScrubberView, percentage: Float)
-    func touchEndedAtPercentage(sender: ScrubberView, percentage: Float)
+    func touchMovedToPercentage(_ sender: ScrubberView, percentage: Float)
+    func touchEndedAtPercentage(_ sender: ScrubberView, percentage: Float)
 }
 
 @IBDesignable
 class ScrubberView: UIView {
-    @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var barView: UIView!
+    @IBOutlet fileprivate weak var trailingEdgeConstraint: NSLayoutConstraint!
+    @IBOutlet fileprivate weak var barView: UIView!
     
-    private var scrubberStartDate: NSDate?
+    fileprivate var scrubberStartDate: Date?
     weak var delegate: ScrubberViewDelegate?
-    override var userInteractionEnabled: Bool {
+    override var isUserInteractionEnabled: Bool {
         set {
-            super.userInteractionEnabled = newValue
+            super.isUserInteractionEnabled = newValue
             
             if newValue == true {
                 barView.alpha = 1.0
@@ -31,7 +31,7 @@ class ScrubberView: UIView {
             }
         }
         get {
-            return super.userInteractionEnabled
+            return super.isUserInteractionEnabled
         }
     }
     
@@ -46,38 +46,38 @@ class ScrubberView: UIView {
     }
     
     override func awakeFromNib() {
-        userInteractionEnabled = false
+        isUserInteractionEnabled = false
        
         // ensure widest screens don't show the scrubber when first appearing
         moveScrubberToPoint(-1000.0)
     }
 
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if touches.first != nil {
-            scrubberStartDate = NSDate()
+            scrubberStartDate = Date()
             barView.alpha = 0.65
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            let point = touch.locationInView(self)
+            let point = touch.location(in: self)
             moveScrubberToPoint(point.x)
             
-            let w = CGRectGetWidth(bounds)
+            let w = bounds.width
             let perc = Float(point.x / w)
             delegate?.touchMovedToPercentage(self, percentage: perc)
         }
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             if let scrubberStartDate = scrubberStartDate {
-                Analytics.shared.sendTimedAppEvent("scrubber", fromDate: scrubberStartDate, toDate: NSDate())
+                Analytics.shared.sendTimedAppEvent("scrubber", fromDate: scrubberStartDate, toDate: Date())
             }
 
-            let point = touch.locationInView(self)
-            let w = CGRectGetWidth(bounds)
+            let point = touch.location(in: self)
+            let w = bounds.width
             let perc = Float(point.x / w)
             delegate?.touchEndedAtPercentage(self, percentage: perc)
             
@@ -87,17 +87,17 @@ class ScrubberView: UIView {
     
     // MARK: - Private
     
-    private func moveScrubberToPoint(point: CGFloat) {
-        let w = CGRectGetWidth(bounds)
+    fileprivate func moveScrubberToPoint(_ point: CGFloat) {
+        let w = bounds.width
         let x = w - point
         trailingEdgeConstraint.constant = x
         layoutIfNeeded()
     }
     
-    private func animateTouchesEnded() {
-        UIView.animateWithDuration(0.15,
+    fileprivate func animateTouchesEnded() {
+        UIView.animate(withDuration: 0.15,
             delay: 0.0,
-            options: UIViewAnimationOptions.CurveEaseIn,
+            options: UIViewAnimationOptions.curveEaseIn,
             animations: { () -> Void in
                 self.barView.alpha = 1.0
             }, completion: nil)
@@ -105,8 +105,8 @@ class ScrubberView: UIView {
     
     // MARK: - Internal
     
-    func scrubberToPercentage(percentage: Float) {
-        let w = CGRectGetWidth(bounds)
+    func scrubberToPercentage(_ percentage: Float) {
+        let w = bounds.width
         let point = w * CGFloat(percentage)
         moveScrubberToPoint(point)
     }

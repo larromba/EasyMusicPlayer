@@ -17,7 +17,7 @@ class UserDataTests: XCTestCase {
          */
         
         // mocks
-        let expectedValue = MusicPlayer.RepeatMode.All
+        let expectedValue = MusicPlayer.RepeatMode.all
         
         // runnable
         UserData.repeatMode = expectedValue

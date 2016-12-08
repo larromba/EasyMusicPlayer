@@ -10,23 +10,23 @@ import UIKit
 
 class PlayerButton: UIButton {
     override func awakeFromNib() {
-        addTarget(self, action: safeSelector("touchUpInside"), forControlEvents: UIControlEvents.TouchUpInside)
+        addTarget(self, action: #selector(touchUpInside), for: UIControlEvents.touchUpInside)
     }
     
     // MARK: - Internal
     
     func touchUpInside() {
         let animation = createPulseAnimation()
-        self.layer.addAnimation(animation, forKey: "pulseAnimation")
+        self.layer.add(animation, forKey: "pulseAnimation")
     }
         
     // MARK: - Private
     
-    private func createPulseAnimation() -> CABasicAnimation {
+    fileprivate func createPulseAnimation() -> CABasicAnimation {
         let pulseAnimation = CABasicAnimation(keyPath: "transform.scale");
         pulseAnimation.duration = 0.1;
-        pulseAnimation.toValue = NSNumber(float: 1.2);
-        pulseAnimation.fromValue = NSNumber(float: 1.0)
+        pulseAnimation.toValue = NSNumber(value: 1.2 as Float)
+        pulseAnimation.fromValue = NSNumber(value: 1.0 as Float)
         pulseAnimation.autoreverses = true
         pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn);
         return pulseAnimation

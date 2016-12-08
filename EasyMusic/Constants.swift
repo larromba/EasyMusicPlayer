@@ -10,6 +10,7 @@ import Foundation
 
 struct Constant {
     struct Notification {
+        //TODO: remove?
         static let ApplicationDidBecomeActive = "applicationDidBecomeActive"
         static let ApplicationWillResignActive = "applicationWillResignActive"
         static let ApplicationWillTerminate = "applicationWillTerminate"

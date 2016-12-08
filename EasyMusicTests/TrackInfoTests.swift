@@ -15,7 +15,7 @@ private let mockTitle = "title"
 private let mockDuration = 9.0
 private let mockImage = UIImage()
 private let mockArtwork = MPMediaItemArtwork(image: mockImage)
-private let mockAssetUrl = NSURL(string: "")!
+private let mockAssetUrl = URL(string: "http://www.google.com")!
 
 class TrackInfoTests: XCTestCase {
     func testInitValid() {
@@ -28,9 +28,9 @@ class TrackInfoTests: XCTestCase {
         class MockMediaItem: MPMediaItem {
             override var artist: String { return mockArtist }
             override var title: String { return mockTitle }
-            override var playbackDuration: NSTimeInterval { return mockDuration }
+            override var playbackDuration: TimeInterval { return mockDuration }
             override var artwork: MPMediaItemArtwork { return mockArtwork }
-            override var assetURL: NSURL { return mockAssetUrl }
+            override var assetURL: URL { return mockAssetUrl }
         }
         
         // runnable

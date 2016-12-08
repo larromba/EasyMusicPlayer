@@ -10,13 +10,13 @@ import UIKit
 import MediaPlayer
 
 protocol ControlsViewDelegate: class {
-    func playPressed(sender: ControlsView)
-    func stopPressed(sender: ControlsView)
-    func prevPressed(sender: ControlsView)
-    func nextPressed(sender: ControlsView)
-    func shufflePressed(sender: ControlsView)
-    func sharePressed(sender: ControlsView)
-    func repeatPressed(sender: ControlsView)
+    func playPressed(_ sender: ControlsView)
+    func stopPressed(_ sender: ControlsView)
+    func prevPressed(_ sender: ControlsView)
+    func nextPressed(_ sender: ControlsView)
+    func shufflePressed(_ sender: ControlsView)
+    func sharePressed(_ sender: ControlsView)
+    func repeatPressed(_ sender: ControlsView)
 }
 
 @IBDesignable
@@ -55,43 +55,43 @@ class ControlsView: UIView {
     
     // MARK: - IBAction
     
-    @IBAction func playButtonPressed(sender: UIButton) {
+    @IBAction func playButtonPressed(_ sender: UIButton) {
         delegate?.playPressed(self)
     }
     
-    @IBAction func stopButtonPressed(sender: UIButton) {
+    @IBAction func stopButtonPressed(_ sender: UIButton) {
         delegate?.stopPressed(self)
     }
     
-    @IBAction func prevButtonPressed(sender: UIButton) {
+    @IBAction func prevButtonPressed(_ sender: UIButton) {
         delegate?.prevPressed(self)
     }
     
-    @IBAction func nextButtonPressed(sender: UIButton) {
+    @IBAction func nextButtonPressed(_ sender: UIButton) {
         delegate?.nextPressed(self)
     }
     
-    @IBAction func shuffleButtonPressed(sender: UIButton) {
+    @IBAction func shuffleButtonPressed(_ sender: UIButton) {
         delegate?.shufflePressed(self)
     }
     
-    @IBAction func shareButtonPressed(sender: UIButton) {
+    @IBAction func shareButtonPressed(_ sender: UIButton) {
         delegate?.sharePressed(self)
     }
     
-    @IBAction func repeatButtonPressed(sender: UIButton) {
+    @IBAction func repeatButtonPressed(_ sender: UIButton) {
         delegate?.repeatPressed(self)
     }
     
     // MARK: - Internal
     
     func setControlsPlaying() {
-        playButton.setButtonState(PlayButton.State.Pause)
+        playButton.setButtonState(PlayButton.State.pause)
         setControlsEnabled(true)
     }
     
     func setControlsPaused() {
-        playButton.setButtonState(PlayButton.State.Play)
+        playButton.setButtonState(PlayButton.State.play)
         
         enablePlay(true)
         enableShuffle(true)
@@ -103,7 +103,7 @@ class ControlsView: UIView {
     }
     
     func setControlsStopped() {
-        playButton.setButtonState(PlayButton.State.Play)
+        playButton.setButtonState(PlayButton.State.play)
         
         enablePlay(true)
         enableShuffle(true)
@@ -114,7 +114,7 @@ class ControlsView: UIView {
         enableStop(false)
     }
     
-    func setControlsEnabled(enabled: Bool) {
+    func setControlsEnabled(_ enabled: Bool) {
         enablePrevious(enabled)
         enableNext(enabled)
         enablePlay(enabled)
@@ -124,53 +124,53 @@ class ControlsView: UIView {
         enableRepeat(enabled)
     }
     
-    func enablePrevious(enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
-        commandCenter.previousTrackCommand.enabled = enable
-        commandCenter.seekBackwardCommand.enabled = enable
-        prevButton.enabled = enable
+    func enablePrevious(_ enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.shared();
+        commandCenter.previousTrackCommand.isEnabled = enable
+        commandCenter.seekBackwardCommand.isEnabled = enable
+        prevButton.isEnabled = enable
     }
     
-    func enableNext(enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
-        commandCenter.nextTrackCommand.enabled = enable
-        commandCenter.seekForwardCommand.enabled = enable
-        nextButton.enabled = enable
+    func enableNext(_ enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.shared();
+        commandCenter.nextTrackCommand.isEnabled = enable
+        commandCenter.seekForwardCommand.isEnabled = enable
+        nextButton.isEnabled = enable
     }
     
-    func enableSeekBackwardsRemoteOnly(enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
-        commandCenter.previousTrackCommand.enabled = enable
-        commandCenter.seekBackwardCommand.enabled = enable
+    func enableSeekBackwardsRemoteOnly(_ enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.shared();
+        commandCenter.previousTrackCommand.isEnabled = enable
+        commandCenter.seekBackwardCommand.isEnabled = enable
     }
     
-    func enableSeekForwardsRemoteOnly(enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
-        commandCenter.nextTrackCommand.enabled = enable
-        commandCenter.seekForwardCommand.enabled = enable
+    func enableSeekForwardsRemoteOnly(_ enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.shared();
+        commandCenter.nextTrackCommand.isEnabled = enable
+        commandCenter.seekForwardCommand.isEnabled = enable
     }
     
-    func enablePlay(enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
-        commandCenter.playCommand.enabled = enable
-        playButton.enabled = enable
+    func enablePlay(_ enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.shared();
+        commandCenter.playCommand.isEnabled = enable
+        playButton.isEnabled = enable
     }
     
-    func enableStop(enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.sharedCommandCenter();
-        commandCenter.stopCommand.enabled = enable
-        stopButton.enabled = enable
+    func enableStop(_ enable: Bool) {
+        let commandCenter = MPRemoteCommandCenter.shared();
+        commandCenter.stopCommand.isEnabled = enable
+        stopButton.isEnabled = enable
     }
     
-    func enableShare(enable: Bool) {
-        shareButton.enabled = enable
+    func enableShare(_ enable: Bool) {
+        shareButton.isEnabled = enable
     }
     
-    func enableShuffle(enable: Bool) {
-        shuffleButton.enabled = enable
+    func enableShuffle(_ enable: Bool) {
+        shuffleButton.isEnabled = enable
     }
     
-    func enableRepeat(enable: Bool) {
-        repeatButton.enabled = enable
+    func enableRepeat(_ enable: Bool) {
+        repeatButton.isEnabled = enable
     }
 }

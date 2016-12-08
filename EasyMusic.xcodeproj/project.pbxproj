@@ -27,11 +27,11 @@
 		7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */; };
 		7F409B9E1C0506F300DFD6C4 /* XCTestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */; };
 		7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */; };
+		7F6FF2761DF9544200D2A200 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6FF2751DF9544200D2A200 /* Localization.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
 		7F8187B51BF1FB9F00BAF398 /* ScrubberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7932001BEA7C7E00E2C153 /* ScrubberView.swift */; };
 		7F8187B81BF2011C00BAF398 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187B71BF2011C00BAF398 /* UIViewExtensions.swift */; };
-		7F8187BB1BF208F500BAF398 /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */; };
 		7F8187BD1BF20FDC00BAF398 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BC1BF20FDC00BAF398 /* InfoView.swift */; };
 		7F8187BF1BF2252A00BAF398 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BE1BF2252A00BAF398 /* ControlsView.swift */; };
 		7F92B6ED1C1994D600A5273A /* PlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6EC1C1994D600A5273A /* PlayerButton.swift */; };
@@ -122,11 +122,11 @@
 		7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareManagerTests.swift; sourceTree = "<group>"; };
 		7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExtension.swift; sourceTree = "<group>"; };
 		7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ShareManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7F6FF2751DF9544200D2A200 /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		7F7932001BEA7C7E00E2C153 /* ScrubberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrubberView.swift; sourceTree = "<group>"; };
 		7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7F8187B71BF2011C00BAF398 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
-		7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		7F8187BC1BF20FDC00BAF398 /* InfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InfoView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7F8187BE1BF2252A00BAF398 /* ControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
 		7F92B6EC1C1994D600A5273A /* PlayerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerButton.swift; sourceTree = "<group>"; };
@@ -263,6 +263,7 @@
 				7F4090561BF91BD000F449FD /* Log.swift */,
 				7F4090591BF928E800F449FD /* Constants.swift */,
 				7FD4F5FD1BFB75B600DCE572 /* GCD.swift */,
+				7F6FF2751DF9544200D2A200 /* Localization.swift */,
 			);
 			name = Global;
 			sourceTree = "<group>";
@@ -343,7 +344,6 @@
 			children = (
 				7F8187B71BF2011C00BAF398 /* UIViewExtensions.swift */,
 				7FCFE9171BF4A7C300981545 /* UIImageExtensions.swift */,
-				7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */,
 				7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */,
 				7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */,
 				7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */,
@@ -523,15 +523,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF5B30F1BE64E220044FCE5 /* Build configuration list for PBXNativeTarget "EasyMusic" */;
 			buildPhases = (
-				06AADD432B9AA84EE4884B13 /* 📦 Check Pods Manifest.lock */,
+				06AADD432B9AA84EE4884B13 /* [CP] Check Pods Manifest.lock */,
 				7F9AAE5A1C23072B00CB7316 /* Run Script */,
 				7FF5B2E31BE64E210044FCE5 /* Sources */,
 				7FF5B2E41BE64E210044FCE5 /* Frameworks */,
 				7FF5B2E51BE64E210044FCE5 /* Resources */,
 				7F8187AF1BF1FA4200BAF398 /* Embed Frameworks */,
 				7FB28D561C3B49B60032F3E0 /* ShellScript */,
-				A777BE21AC802E0EC5564A19 /* 📦 Embed Pods Frameworks */,
-				1F17CC11C61D8108CBC49174 /* 📦 Copy Pods Resources */,
+				A777BE21AC802E0EC5564A19 /* [CP] Embed Pods Frameworks */,
+				1F17CC11C61D8108CBC49174 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -546,12 +546,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF5B3121BE64E220044FCE5 /* Build configuration list for PBXNativeTarget "EasyMusicTests" */;
 			buildPhases = (
-				352DD405F4141D4512B761E2 /* 📦 Check Pods Manifest.lock */,
+				352DD405F4141D4512B761E2 /* [CP] Check Pods Manifest.lock */,
 				7FF5B2F71BE64E220044FCE5 /* Sources */,
 				7FF5B2F81BE64E220044FCE5 /* Frameworks */,
 				7FF5B2F91BE64E220044FCE5 /* Resources */,
-				F9FAEFB25288DDE996CD4855 /* 📦 Embed Pods Frameworks */,
-				02A839066548B495457D4074 /* 📦 Copy Pods Resources */,
+				F9FAEFB25288DDE996CD4855 /* [CP] Embed Pods Frameworks */,
+				02A839066548B495457D4074 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -567,11 +567,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FF5B3151BE64E220044FCE5 /* Build configuration list for PBXNativeTarget "EasyMusicUITests" */;
 			buildPhases = (
-				EF9ABF0AC86EEB745AD9C921 /* 📦 Check Pods Manifest.lock */,
+				EF9ABF0AC86EEB745AD9C921 /* [CP] Check Pods Manifest.lock */,
 				7FF5B3021BE64E220044FCE5 /* Sources */,
 				7FF5B3031BE64E220044FCE5 /* Frameworks */,
 				7FF5B3041BE64E220044FCE5 /* Resources */,
-				B39DCEE2472403E84E8C010B /* 📦 Copy Pods Resources */,
+				B39DCEE2472403E84E8C010B /* [CP] Copy Pods Resources */,
+				42C3E850EBF519BBFD0CDC88 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -590,19 +591,22 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Lee Arromba";
 				TargetAttributes = {
 					7FF5B2E61BE64E210044FCE5 = {
 						CreatedOnToolsVersion = 7.0.1;
 						DevelopmentTeam = Q25J5XBNX4;
+						LastSwiftMigration = 0810;
 					};
 					7FF5B2FA1BE64E220044FCE5 = {
 						CreatedOnToolsVersion = 7.0.1;
+						LastSwiftMigration = 0810;
 						TestTargetID = 7FF5B2E61BE64E210044FCE5;
 					};
 					7FF5B3051BE64E220044FCE5 = {
 						CreatedOnToolsVersion = 7.0.1;
+						LastSwiftMigration = 0810;
 						TestTargetID = 7FF5B2E61BE64E210044FCE5;
 					};
 				};
@@ -669,14 +673,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		02A839066548B495457D4074 /* 📦 Copy Pods Resources */ = {
+		02A839066548B495457D4074 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -684,29 +688,29 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusicTests/Pods-EasyMusicTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		06AADD432B9AA84EE4884B13 /* 📦 Check Pods Manifest.lock */ = {
+		06AADD432B9AA84EE4884B13 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		1F17CC11C61D8108CBC49174 /* 📦 Copy Pods Resources */ = {
+		1F17CC11C61D8108CBC49174 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,19 +718,34 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusic/Pods-EasyMusic-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		352DD405F4141D4512B761E2 /* 📦 Check Pods Manifest.lock */ = {
+		352DD405F4141D4512B761E2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		42C3E850EBF519BBFD0CDC88 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusicUITests/Pods-EasyMusicUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7F9AAE5A1C23072B00CB7316 /* Run Script */ = {
@@ -756,14 +775,14 @@
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run cb81e37b184ac262f9d20e5cee8a9bb74a19a269 ebaa1da959ef2388924c7c3a574371c36191fccf2c30c3434e85d9384db139ac";
 		};
-		A777BE21AC802E0EC5564A19 /* 📦 Embed Pods Frameworks */ = {
+		A777BE21AC802E0EC5564A19 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -771,14 +790,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusic/Pods-EasyMusic-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B39DCEE2472403E84E8C010B /* 📦 Copy Pods Resources */ = {
+		B39DCEE2472403E84E8C010B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -786,29 +805,29 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-EasyMusicUITests/Pods-EasyMusicUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EF9ABF0AC86EEB745AD9C921 /* 📦 Check Pods Manifest.lock */ = {
+		EF9ABF0AC86EEB745AD9C921 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		F9FAEFB25288DDE996CD4855 /* 📦 Embed Pods Frameworks */ = {
+		F9FAEFB25288DDE996CD4855 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -841,11 +860,11 @@
 				7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */,
 				7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */,
 				7F8187B81BF2011C00BAF398 /* UIViewExtensions.swift in Sources */,
+				7F6FF2761DF9544200D2A200 /* Localization.swift in Sources */,
 				7F92B6F51C1A09F100A5273A /* UserData.swift in Sources */,
 				7F4090551BF7E44900F449FD /* PlayButton.swift in Sources */,
 				7F8187B51BF1FB9F00BAF398 /* ScrubberView.swift in Sources */,
 				7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */,
-				7F8187BB1BF208F500BAF398 /* NSObjectExtensions.swift in Sources */,
 				7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */,
 				7F377B4D1C221B070004EBDC /* ShuffleButton.swift in Sources */,
 			);
@@ -1004,7 +1023,9 @@
 		7FF5B30D1BE64E220044FCE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1014,8 +1035,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1049,7 +1072,9 @@
 		7FF5B30E1BE64E220044FCE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1059,8 +1084,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1079,6 +1106,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1099,11 +1127,13 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = EasyMusic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1122,12 +1152,14 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = EasyMusic/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1138,9 +1170,11 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EasyMusicTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyMusic.app/EasyMusic";
 			};
 			name = Debug;
@@ -1151,9 +1185,11 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EasyMusicTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyMusic.app/EasyMusic";
 			};
 			name = Release;
@@ -1163,9 +1199,11 @@
 			baseConfigurationReference = 5100AE4777D559F567BF6CE3 /* Pods-EasyMusicUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = EasyMusicUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = EasyMusic;
 				USES_XCTRUNNER = YES;
 			};
@@ -1176,9 +1214,11 @@
 			baseConfigurationReference = 0EB082B6DE418C265699C954 /* Pods-EasyMusicUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = EasyMusicUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = EasyMusic;
 				USES_XCTRUNNER = YES;
 			};
