@@ -1178,7 +1178,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAnalytics: Analytics {
-            override func sendErrorEvent(_ error: Error, classId: String) {
+            override func sendErrorEvent(_ error: Error, classId: AnyClass) {
                 analyticsExpectation!.fulfill()
             }
         }

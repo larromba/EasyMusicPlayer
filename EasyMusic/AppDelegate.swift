@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch _ {
             log("Analytics setup failed")
         }
-        
         Analytics.shared.startSession()
         
         return true

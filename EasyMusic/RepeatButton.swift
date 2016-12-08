@@ -34,16 +34,13 @@ class RepeatButton: PlayerButton {
         buttonState = state
         switch state {
         case .none:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatButton),
-                for: .normal)
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatButton), for: .normal)
             break
         case .one:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatOneButton),
-                for: .normal)
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatOneButton), for: .normal)
             break
         case .all:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatAllButton),
-                for: .normal)
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatAllButton), for: .normal)
             break
         }
     }

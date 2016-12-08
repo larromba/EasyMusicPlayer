@@ -90,33 +90,33 @@ class MusicPlayer: NSObject {
         self.delegate = delegate
 
         let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.togglePlayPauseCommand.addTarget(self, action: safeSelector("togglePlayPause"))
-        commandCenter.pauseCommand.addTarget(self, action: safeSelector("pause"))
-        commandCenter.playCommand.addTarget(self, action: safeSelector("play"))
-        commandCenter.previousTrackCommand.addTarget(self, action: safeSelector("previous"))
-        commandCenter.nextTrackCommand.addTarget(self, action: safeSelector("next"))
-        commandCenter.seekForwardCommand.addTarget(self, action: safeSelector("seekForward:"))
-        commandCenter.seekBackwardCommand.addTarget(self, action: safeSelector("seekBackward:"))
-        commandCenter.changePlaybackPositionCommand.addTarget(self, action: safeSelector("changePlaybackPosition:"))
+        commandCenter.togglePlayPauseCommand.addTarget(self, action: #selector(togglePlayPause))
+        commandCenter.pauseCommand.addTarget(self, action: #selector(pause))
+        commandCenter.playCommand.addTarget(self, action: #selector(play))
+        commandCenter.previousTrackCommand.addTarget(self, action: #selector(previous))
+        commandCenter.nextTrackCommand.addTarget(self, action: #selector(next))
+        commandCenter.seekForwardCommand.addTarget(self, action: #selector(seekForward(_:)))
+        commandCenter.seekBackwardCommand.addTarget(self, action: #selector(seekBackward(_:)))
+        commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPosition(_:)))
         
         NotificationCenter.default.addObserver(self,
-            selector: safeSelector(Constant.Notification.ApplicationWillTerminate),
+            selector: #selector(applicationWillTerminate(_:)),
             name: NSNotification.Name.UIApplicationWillTerminate,
             object: nil)
         NotificationCenter.default.addObserver(self,
-            selector: safeSelector(Constant.Notification.ApplicationWillResignActive),
+            selector: #selector(applicationWillResignActive(_:)),
             name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil)
         NotificationCenter.default.addObserver(self,
-            selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
+            selector: #selector(applicationDidBecomeActive(_:)),
             name: NSNotification.Name.UIApplicationDidBecomeActive,
             object: nil)
         NotificationCenter.default.addObserver(self,
-            selector: safeSelector("\(Constant.Notification.AudioSessionRouteChange):"),
+            selector: #selector(audioSessionRouteChange(_:)),
             name: NSNotification.Name.AVAudioSessionRouteChange,
             object: nil)
         NotificationCenter.default.addObserver(self,
-            selector: safeSelector("\(Constant.Notification.AudioSessionInterruption):"),
+            selector: #selector(audioSessionInterruption(_:)),
             name: NSNotification.Name.AVAudioSessionInterruption,
             object: nil)
         
@@ -163,7 +163,7 @@ class MusicPlayer: NSObject {
         
         playbackCheckTimer = Timer.scheduledTimer(timeInterval: 1.0,
             target: self,
-            selector: safeSelector("playbackCheckTimerCallback"),
+            selector: #selector(playbackCheckTimerCallback),
             userInfo: nil,
             repeats: true)
     }
@@ -198,17 +198,17 @@ class MusicPlayer: NSObject {
     
     // MARK: - Notifications
     
-    func applicationWillTerminate() {
+    func applicationWillTerminate(_ notifcation: Notification) {
         enableAudioSession(false)
     }
     
-    func applicationWillResignActive() {
+    func applicationWillResignActive(_ notifcation: Notification) {
         if isPlaying == true {
             isPlayingInBackground = true
         }
     }
     
-    func applicationDidBecomeActive() {
+    func applicationDidBecomeActive(_ notifcation: Notification) {
         isPlayingInBackground = false
     }
     
@@ -426,7 +426,7 @@ class MusicPlayer: NSObject {
     
     func seekForwardStart() {
         seekStartDate = Date()
-        startSeekTimerWithAction(safeSelector("seekForwardTimerCallback"))
+        startSeekTimerWithAction(#selector(seekForwardTimerCallback))
     }
     
     func seekForwardEnd() {
@@ -439,7 +439,7 @@ class MusicPlayer: NSObject {
     
     func seekBackwardStart() {
         seekStartDate = Date()
-        startSeekTimerWithAction(safeSelector("seekBackwardTimerCallback"))
+        startSeekTimerWithAction(#selector(seekBackwardTimerCallback))
     }
     
     func seekBackwardEnd() {
@@ -492,7 +492,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
     
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
         if let error = error {
-            Analytics.shared.sendErrorEvent(error, classId: self.className())
+            Analytics.shared.sendErrorEvent(error, classId: classForCoder)
         }
         
         threwError(MusicError.decode)

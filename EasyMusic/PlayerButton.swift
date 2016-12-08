@@ -10,7 +10,7 @@ import UIKit
 
 class PlayerButton: UIButton {
     override func awakeFromNib() {
-        addTarget(self, action: safeSelector("touchUpInside"), for: UIControlEvents.touchUpInside)
+        addTarget(self, action: #selector(touchUpInside), for: UIControlEvents.touchUpInside)
     }
     
     // MARK: - Internal
@@ -25,7 +25,7 @@ class PlayerButton: UIButton {
     fileprivate func createPulseAnimation() -> CABasicAnimation {
         let pulseAnimation = CABasicAnimation(keyPath: "transform.scale");
         pulseAnimation.duration = 0.1;
-        pulseAnimation.toValue = NSNumber(value: 1.2 as Float);
+        pulseAnimation.toValue = NSNumber(value: 1.2 as Float)
         pulseAnimation.fromValue = NSNumber(value: 1.0 as Float)
         pulseAnimation.autoreverses = true
         pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn);

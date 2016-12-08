@@ -85,7 +85,7 @@ class AnalyticsTests: XCTestCase {
         let mockTracker = MockTrackerSetupFailed()
         analytics!.__defaultTracker = mockTracker
         
-        let mockEvent = ""
+        let mockEvent = AnalyticsTests.self
         
         analytics!.__isSetup = false
         
@@ -110,7 +110,7 @@ class AnalyticsTests: XCTestCase {
         let mockTracker = MockTracker()
         analytics!.__defaultTracker = mockTracker
         
-        let mockEvent = ""
+        let mockEvent = AnalyticsTests.self
         
         // runnable
         analytics!.sendScreenNameEvent(mockEvent)
@@ -131,7 +131,7 @@ class AnalyticsTests: XCTestCase {
         analytics!.__defaultTracker = mockTracker
         
         let mockEvent = ""
-        let mockClassId = ""
+        let mockClassId = AnalyticsTests.self
         
         // runnable
         analytics!.sendButtonPressEvent(mockEvent, classId: mockClassId)
@@ -152,7 +152,7 @@ class AnalyticsTests: XCTestCase {
         analytics!.__defaultTracker = mockTracker
         
         let mockEvent = ""
-        let mockClassId = ""
+        let mockClassId = AnalyticsTests.self
         
         // runnable
         analytics!.sendShareEvent(mockEvent, classId: mockClassId)
@@ -173,7 +173,7 @@ class AnalyticsTests: XCTestCase {
         analytics!.__defaultTracker = mockTracker
         
         let mockEvent = ""
-        let mockClassId = ""
+        let mockClassId = AnalyticsTests.self
         
         // runnable
         analytics!.sendAlertEvent(mockEvent, classId: mockClassId)
@@ -194,7 +194,7 @@ class AnalyticsTests: XCTestCase {
         analytics!.__defaultTracker = mockTracker
         
         let mockError = NSError(domain: "", code: 0, userInfo: nil)
-        let mockClassId = ""
+        let mockClassId = AnalyticsTests.self
         
         // runnable
         analytics!.sendErrorEvent(mockError, classId: mockClassId)

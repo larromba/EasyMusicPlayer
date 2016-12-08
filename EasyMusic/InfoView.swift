@@ -67,8 +67,7 @@ class InfoView: UIView {
     }
     
     func setTime(_ time: TimeInterval, duration: TimeInterval) {
-        timeLabel.text = String(
-            format: localized("time format"), stringFromTimeInterval(time))
+        timeLabel.text = String(format: localized("time format", classId: classForCoder), stringFromTimeInterval(time))
     }
     
     func setRemoteTime(_ time: TimeInterval, duration: TimeInterval) {
@@ -79,8 +78,7 @@ class InfoView: UIView {
     }
     
     func setTrackPosition(_ trackPosition: Int, totalTracks: Int) {
-        trackPositionLabel.text = String(
-            format: localized("track position format"), trackPosition, totalTracks)
+        trackPositionLabel.text = String(format: localized("track position format", classId: classForCoder), trackPosition, totalTracks)
     }
     
     // MARK: - Private
@@ -90,7 +88,6 @@ class InfoView: UIView {
         let seconds = interval % 60
         let minutes = (interval / 60) % 60
         let hours = (interval / 3600)
-        return String(
-            format: localized("time interval format"), hours, minutes, seconds)
+        return String(format: localized("time interval format", classId: classForCoder), hours, minutes, seconds)
     }
 }

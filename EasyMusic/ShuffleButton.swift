@@ -22,7 +22,7 @@ class ShuffleButton: PlayerButton {
         let spinAnimation = CABasicAnimation(keyPath: "transform.rotation.z");
         spinAnimation.duration = 0.2;
         spinAnimation.toValue = NSNumber(value: 1.2 as Float);
-        spinAnimation.fromValue = NSNumber(value: Float(M_PI * 2.0 * 2) as Float)
+        spinAnimation.fromValue = NSNumber(value: Float(M_PI * 4.0) as Float)
         spinAnimation.autoreverses = false
         spinAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut);
         return spinAnimation

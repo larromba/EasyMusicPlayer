@@ -56,7 +56,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockAnalytics: Analytics {
-            override func sendScreenNameEvent(_ screenName: String) {
+            override func sendScreenNameEvent(_ classId: AnyClass) {
                 analyticsExpectation!.fulfill()
             }
         }
@@ -87,7 +87,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockAnalytics: Analytics {
-            override func sendButtonPressEvent(_ event: String, classId: String) {
+            override func sendButtonPressEvent(_ event: String, classId: AnyClass) {
                 analyticsExpectation!.fulfill()
             }
         }
@@ -125,7 +125,7 @@ class PlayerViewControllerTests: XCTestCase {
         class MockInfoView: InfoView {
             var setInfoFromTrack: Bool = false
             var setTrackPosition: Bool = false
-            override func className() -> String { return "InfoView" }
+            override var classForCoder: AnyClass { return InfoView.self }
             override func setInfoFromTrack(_ track: Track) {
                 setInfoFromTrack = true
                 checkExpectation()
@@ -142,7 +142,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockControlsView: ControlsView {
-            override func className() -> String { return "ControlsView" }
+            override var classForCoder: AnyClass { return ControlsView.self }
             override func setControlsPlaying() {
                 controlsViewExpectation!.fulfill()
             }
@@ -180,7 +180,7 @@ class PlayerViewControllerTests: XCTestCase {
 
         // mocks
         class MockControlsView: ControlsView {
-            fileprivate override func className() -> String { return "ControlsView" }
+            override var classForCoder: AnyClass { return ControlsView.self }
             fileprivate override func setControlsStopped() {
                 controlsViewExpectation!.fulfill()
             }
@@ -305,7 +305,7 @@ class PlayerViewControllerTests: XCTestCase {
         class MockAlertController: UIAlertController {
             var mockButtonAction: ((Void) -> Void)!
             
-            override class func createAlertWithTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
+            override class func withTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
                 let alert = MockAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.alert)
                 alert.mockButtonAction = buttonAction
                 return alert
@@ -372,7 +372,7 @@ class PlayerViewControllerTests: XCTestCase {
         class MockAlertController: UIAlertController {
             var mockButtonAction: ((Void) -> Void)!
             
-            override class func createAlertWithTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
+            override class func withTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
                 let alert = MockAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.alert)
                 alert.mockButtonAction = buttonAction
                 return alert
@@ -413,7 +413,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockAnalytics: Analytics {
-            override func sendButtonPressEvent(_ event: String, classId: String) {
+            override func sendButtonPressEvent(_ event: String, classId: AnyClass) {
                 analyticsExpectation!.fulfill()
             }
         }
@@ -447,7 +447,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockControlsView: ControlsView {
-            override func className() -> String { return "ControlsView" }
+            override var classForCoder: AnyClass { return ControlsView.self }
             override func setControlsPaused() {
                 controlsViewExpectation!.fulfill()
             }
@@ -654,7 +654,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockControlsView: ControlsView {
-            override func className() -> String { return "ControlsView" }
+            override var classForCoder: AnyClass { return ControlsView.self }
             override func setControlsStopped() {
                 controlsViewExpectation!.fulfill()
             }
@@ -687,14 +687,14 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockControlsView: ControlsView {
-            override func className() -> String { return "ControlsView" }
+            override var classForCoder: AnyClass { return ControlsView.self }
             override func setControlsStopped() {
                 controlsViewExpectation!.fulfill()
             }
         }
         
         class MockInfoView: InfoView {
-            override func className() -> String { return "InfoView" }
+            override var classForCoder: AnyClass { return InfoView.self }
             override func clearInfo() {
                 infoViewExpectation!.fulfill()
             }
@@ -857,7 +857,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockInfoView: InfoView {
-            fileprivate override func className() -> String { return "InfoView" }
+            override var classForCoder: AnyClass { return InfoView.self }
             override func setTime(_ time: TimeInterval, duration: TimeInterval) {
                 infoViewExpectation!.fulfill()
             }
@@ -894,7 +894,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockInfoView: InfoView {
-            fileprivate override func className() -> String { return "InfoView" }
+            override var classForCoder: AnyClass { return InfoView.self }
             override func setRemoteTime(_ time: TimeInterval, duration: TimeInterval) {
                 infoViewExpectation!.fulfill()
             }

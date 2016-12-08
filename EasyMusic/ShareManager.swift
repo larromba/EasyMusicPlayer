@@ -9,7 +9,7 @@
 import Foundation
 import Social
 
-class ShareManager: NSObject {
+class ShareManager {
     fileprivate weak var presenter: UIViewController!
     fileprivate var track: Track!
     fileprivate var completion: ((Result, String?) -> Void)?
@@ -49,10 +49,10 @@ class ShareManager: NSObject {
     fileprivate func shareViaService(_ serviceType: String) {
         if ComposeViewController.isAvailable(forServiceType: serviceType) {
             guard let share = ComposeViewController.init(forServiceType: serviceType), let url = URL(string: Constant.Url.AppStoreLink) else {
-                self.completion?(Result.error, serviceType)
+                self.completion?(.error, serviceType)
                 return
             }
-            let text = String(format: localized("share format"),
+            let text = String(format: localized("share format", classId: ShareManager.self),
                 track.artist,
                 track.title,
                 Constant.String.AppName)
@@ -61,47 +61,47 @@ class ShareManager: NSObject {
             share.completionHandler = { (result:SLComposeViewControllerResult) in
                 switch result {
                 case .done:
-                    self.completion?(Result.success, serviceType)
+                    self.completion?(.success, serviceType)
                     break
                 case .cancelled:
-                    self.completion?(Result.cancelledAfterChoice, serviceType)
+                    self.completion?(.cancelledAfterChoice, serviceType)
                     break
                 }
                 self.track = nil
             }
             presenter.present(share, animated: true, completion: nil)
         } else {
-            completion?(Result.error, serviceType)
+            completion?(.error, serviceType)
             track = nil
         }
     }
     
     fileprivate func createShareChoices(completion: ((String?) -> Void)?) -> UIAlertController {
         let msg = UIAlertController(
-            title: localized("share sheet title"),
-            message: localized("share sheet desc"),
+            title: localized("share sheet title", classId: ShareManager.self),
+            message: localized("share sheet desc", classId: ShareManager.self),
             preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        msg.addAction(AlertAction.withTitle(localized("share option facebook"),
+        msg.addAction(AlertAction.withTitle(localized("share option facebook", classId: ShareManager.self),
             style: .default,
             handler: { (action: UIAlertAction) -> Void in
                 completion!(SLServiceTypeFacebook)
                 msg.dismiss(animated: true, completion: nil)
         }))
         
-        msg.addAction(AlertAction.withTitle(localized("share option twitter"),
+        msg.addAction(AlertAction.withTitle(localized("share option twitter", classId: ShareManager.self),
             style: .default,
             handler: { (action: UIAlertAction) -> Void in
                 completion!(SLServiceTypeTwitter)
                 msg.dismiss(animated: true, completion: nil)
         }))
         
-        msg.addAction(AlertAction.withTitle(localized("share option cancel"),
+        msg.addAction(AlertAction.withTitle(localized("share option cancel", classId: ShareManager.self),
             style: .cancel,
             handler: { (action: UIAlertAction) -> Void in
                 completion!(nil)
                 msg.dismiss(animated: true, completion: {
-                    self.completion?(Result.cancelledBeforeChoice, nil)
+                    self.completion?(.cancelledBeforeChoice, nil)
                 })
         }))
         

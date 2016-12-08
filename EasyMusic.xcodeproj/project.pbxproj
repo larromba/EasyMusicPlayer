@@ -27,11 +27,11 @@
 		7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */; };
 		7F409B9E1C0506F300DFD6C4 /* XCTestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */; };
 		7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */; };
+		7F6FF2761DF9544200D2A200 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6FF2751DF9544200D2A200 /* Localization.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
 		7F8187B51BF1FB9F00BAF398 /* ScrubberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7932001BEA7C7E00E2C153 /* ScrubberView.swift */; };
 		7F8187B81BF2011C00BAF398 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187B71BF2011C00BAF398 /* UIViewExtensions.swift */; };
-		7F8187BB1BF208F500BAF398 /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */; };
 		7F8187BD1BF20FDC00BAF398 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BC1BF20FDC00BAF398 /* InfoView.swift */; };
 		7F8187BF1BF2252A00BAF398 /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8187BE1BF2252A00BAF398 /* ControlsView.swift */; };
 		7F92B6ED1C1994D600A5273A /* PlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6EC1C1994D600A5273A /* PlayerButton.swift */; };
@@ -122,11 +122,11 @@
 		7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareManagerTests.swift; sourceTree = "<group>"; };
 		7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExtension.swift; sourceTree = "<group>"; };
 		7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ShareManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7F6FF2751DF9544200D2A200 /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		7F7932001BEA7C7E00E2C153 /* ScrubberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrubberView.swift; sourceTree = "<group>"; };
 		7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7F8187B71BF2011C00BAF398 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
-		7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		7F8187BC1BF20FDC00BAF398 /* InfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InfoView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7F8187BE1BF2252A00BAF398 /* ControlsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
 		7F92B6EC1C1994D600A5273A /* PlayerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerButton.swift; sourceTree = "<group>"; };
@@ -263,6 +263,7 @@
 				7F4090561BF91BD000F449FD /* Log.swift */,
 				7F4090591BF928E800F449FD /* Constants.swift */,
 				7FD4F5FD1BFB75B600DCE572 /* GCD.swift */,
+				7F6FF2751DF9544200D2A200 /* Localization.swift */,
 			);
 			name = Global;
 			sourceTree = "<group>";
@@ -343,7 +344,6 @@
 			children = (
 				7F8187B71BF2011C00BAF398 /* UIViewExtensions.swift */,
 				7FCFE9171BF4A7C300981545 /* UIImageExtensions.swift */,
-				7F8187BA1BF208F500BAF398 /* NSObjectExtensions.swift */,
 				7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */,
 				7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */,
 				7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */,
@@ -860,11 +860,11 @@
 				7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */,
 				7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */,
 				7F8187B81BF2011C00BAF398 /* UIViewExtensions.swift in Sources */,
+				7F6FF2761DF9544200D2A200 /* Localization.swift in Sources */,
 				7F92B6F51C1A09F100A5273A /* UserData.swift in Sources */,
 				7F4090551BF7E44900F449FD /* PlayButton.swift in Sources */,
 				7F8187B51BF1FB9F00BAF398 /* ScrubberView.swift in Sources */,
 				7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */,
-				7F8187BB1BF208F500BAF398 /* NSObjectExtensions.swift in Sources */,
 				7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */,
 				7F377B4D1C221B070004EBDC /* ShuffleButton.swift in Sources */,
 			);

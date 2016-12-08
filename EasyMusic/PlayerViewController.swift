@@ -42,7 +42,7 @@ class PlayerViewController: UIViewController {
         }
         
         NotificationCenter.default.addObserver(self,
-            selector: safeSelector(Constant.Notification.ApplicationDidBecomeActive),
+            selector: #selector(applicationDidBecomeActive),
             name: NSNotification.Name.UIApplicationDidBecomeActive,
             object: nil)
     }
@@ -56,7 +56,7 @@ class PlayerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        Analytics.shared.sendScreenNameEvent(self.className())
+        Analytics.shared.sendScreenNameEvent(classForCoder)
         
         checkTracksAvailable()
     }
@@ -129,12 +129,11 @@ extension PlayerViewController: MusicPlayerDelegate {
             controlsView.setControlsStopped()
             scrubberView.isUserInteractionEnabled = false
             
-            Analytics.shared.sendAlertEvent("finished_playlist",
-                classId: self.className())
+            Analytics.shared.sendAlertEvent("finished_playlist", classId: classForCoder)
             
-            let alert = AlertController.createAlertWithTitle(localized("finished alert title"),
-                message: localized("finished alert msg"),
-                buttonTitle: localized("finished alert button"))
+            let alert = AlertController.withTitle(localized("finished alert title", classId: classForCoder),
+                message: localized("finished alert msg", classId: classForCoder),
+                buttonTitle: localized("finished alert button", classId: classForCoder))
             present(alert, animated: true, completion: nil)
             
             break
@@ -159,32 +158,29 @@ extension PlayerViewController: MusicPlayerDelegate {
         
         switch error {
         case .noMusic:
-            Analytics.shared.sendAlertEvent("no_music",
-                classId: self.className())
+            Analytics.shared.sendAlertEvent("no_music", classId: classForCoder)
             
-            alert = AlertController.createAlertWithTitle(localized("no music error title"),
-                message: localized("no music error msg"),
-                buttonTitle: localized("no music error button"),
+            alert = AlertController.withTitle(localized("no music error title", classId: classForCoder),
+                message: localized("no music error msg", classId: classForCoder),
+                buttonTitle: localized("no music error button", classId: classForCoder),
                 buttonAction: {
                     self.checkTracksAvailable()
             })
             break
         case .noVolume:
-            Analytics.shared.sendAlertEvent("no_volume",
-                classId: self.className())
+            Analytics.shared.sendAlertEvent("no_volume", classId: classForCoder)
             
-            alert = AlertController.createAlertWithTitle(localized("no volume error title"),
-                message: localized("no volume error msg"),
-                buttonTitle: localized("no volume error button"))
+            alert = AlertController.withTitle(localized("no volume error title", classId: classForCoder),
+                message: localized("no volume error msg", classId: classForCoder),
+                buttonTitle: localized("no volume error button", classId: classForCoder))
             break
         case .decode, .playerInit, .avError:
-            Analytics.shared.sendAlertEvent("track",
-                classId: self.className())
+            Analytics.shared.sendAlertEvent("track", classId: classForCoder)
             
             let track = musicPlayer.currentResolvedTrack
-            alert = AlertController.createAlertWithTitle(localized("track error title"),
-                message: String(format: localized("track error msg"), track.title),
-                buttonTitle: localized("track error button"),
+            alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
+                message: String(format: localized("track error msg", classId: classForCoder), track.title),
+                buttonTitle: localized("track error button", classId: classForCoder),
                 buttonAction: {
                     let trackNumber = self.musicPlayer.currentTrackNumber
                     if (trackNumber < self.musicPlayer.numOfTracks) {
@@ -210,8 +206,7 @@ extension PlayerViewController: ScrubberViewDelegate {
     }
     
     func touchEndedAtPercentage(_ sender: ScrubberView, percentage: Float) {
-        Analytics.shared.sendButtonPressEvent("scrubber",
-            classId: self.className())
+        Analytics.shared.sendButtonPressEvent("scrubber", classId: classForCoder)
         
         let track = musicPlayer.currentTrack
         let duration = track.playbackDuration
@@ -228,42 +223,36 @@ extension PlayerViewController: ScrubberViewDelegate {
 extension PlayerViewController: ControlsViewDelegate {
     func playPressed(_ sender: ControlsView) {
         if musicPlayer.isPlaying == false {
-            Analytics.shared.sendButtonPressEvent("play",
-                classId: self.className())
-            
+            Analytics.shared.sendButtonPressEvent("play", classId: classForCoder)
+
             musicPlayer.play()
         } else {
-            Analytics.shared.sendButtonPressEvent("pause",
-                classId: self.className())
+            Analytics.shared.sendButtonPressEvent("pause", classId: classForCoder)
             
             musicPlayer.pause()
         }
     }
     
     func stopPressed(_ sender: ControlsView) {
-        Analytics.shared.sendButtonPressEvent("stop",
-            classId: self.className())
+        Analytics.shared.sendButtonPressEvent("stop", classId: classForCoder)
         
         musicPlayer.stop()
     }
     
     func prevPressed(_ sender: ControlsView) {
-        Analytics.shared.sendButtonPressEvent("prev",
-            classId: self.className())
+        Analytics.shared.sendButtonPressEvent("prev", classId: classForCoder)
         
         musicPlayer.previous()
     }
     
     func nextPressed(_ sender: ControlsView) {
-        Analytics.shared.sendButtonPressEvent("next",
-            classId: self.className())
+        Analytics.shared.sendButtonPressEvent("next", classId: classForCoder)
         
         musicPlayer.next()
     }
     
     func shufflePressed(_ sender: ControlsView) {
-        Analytics.shared.sendButtonPressEvent("shuffle",
-            classId: self.className())
+        Analytics.shared.sendButtonPressEvent("shuffle", classId: classForCoder)
         
         musicPlayer.stop()
         musicPlayer.shuffle()
@@ -271,8 +260,7 @@ extension PlayerViewController: ControlsViewDelegate {
     }
     
     func sharePressed(_ sender: ControlsView) {
-        Analytics.shared.sendButtonPressEvent("share",
-            classId: self.className())
+        Analytics.shared.sendButtonPressEvent("share", classId: classForCoder)
         
         shareManager.shareTrack(musicPlayer.currentResolvedTrack,
             presenter: self,
@@ -292,19 +280,17 @@ extension PlayerViewController: ControlsViewDelegate {
                 case .error:
                     event = "error_\(service)"
 
-                    Analytics.shared.sendAlertEvent("share_account",
-                        classId: self.className())
+                    Analytics.shared.sendAlertEvent("share_account", classId: self.classForCoder)
                     
-                    let alert = UIAlertController.createAlertWithTitle(self.localized("accounts error title"),
-                        message: self.localized("accounts error msg"),
-                        buttonTitle: self.localized("accounts error button"))
+                    let alert = UIAlertController.withTitle(localized("accounts error title", classId: self.classForCoder),
+                        message: localized("accounts error msg", classId: self.classForCoder),
+                        buttonTitle: localized("accounts error button", classId: self.classForCoder))
                     self.present(alert, animated: true, completion: nil)
                     
                     break
                 }
                 
-                Analytics.shared.sendShareEvent(event,
-                    classId: self.className())
+                Analytics.shared.sendShareEvent(event, classId: self.classForCoder)
         })
     }
     
@@ -336,8 +322,7 @@ extension PlayerViewController: ControlsViewDelegate {
         }
 
         // track analytics
-        Analytics.shared.sendButtonPressEvent(event,
-            classId: self.className())
+        Analytics.shared.sendButtonPressEvent(event, classId: classForCoder)
         
         // save repeat state
         UserData.repeatMode = musicPlayer.repeatMode

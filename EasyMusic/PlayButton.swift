@@ -33,12 +33,10 @@ class PlayButton: PlayerButton {
         buttonState = state
         switch state {
         case .play:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PlayButton),
-                for: .normal)
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PlayButton), for: .normal)
             break
         case .pause:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PauseButton),
-                for: .normal)
+            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PauseButton), for: .normal)
             break
         }
     }

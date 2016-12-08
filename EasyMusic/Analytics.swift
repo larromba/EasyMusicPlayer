@@ -65,29 +65,29 @@ class Analytics {
         sessionStartDate = nil
     }
     
-    func sendScreenNameEvent(_ screenName: String) {
+    func sendScreenNameEvent(_ classId: AnyClass) {
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker?.set(kGAIScreenName, value: screenName)
+        tracker?.set(kGAIScreenName, value: "\(classId)")
         let item = GAIDictionaryBuilder.createScreenView().build() as NSDictionary as! [AnyHashable: Any]
         
         send(item)
     }
     
-    func sendButtonPressEvent(_ event: String, classId: String) {
-        sendEvent(event, action: classId, category: "button_press")
+    func sendButtonPressEvent(_ event: String, classId: AnyClass) {
+        sendEvent(event, action: "\(classId)", category: "button_press")
     }
     
-    func sendShareEvent(_ event: String, classId: String) {
-        sendEvent(event, action: classId, category: "share")
+    func sendShareEvent(_ event: String, classId: AnyClass) {
+        sendEvent(event, action: "\(classId)", category: "share")
     }
     
-    func sendAlertEvent(_ event: String, classId: String) {
-        sendEvent(event, action: classId, category: "alert")
+    func sendAlertEvent(_ event: String, classId: AnyClass) {
+        sendEvent(event, action: "\(classId)", category: "alert")
     }
     
-    func sendErrorEvent(_ error: Error, classId: String) {
+    func sendErrorEvent(_ error: Error, classId: AnyClass) {
         let nsError = error as NSError
-        sendEvent("domain:\(nsError.domain), code:\(nsError.code)", action: classId, category: "error")
+        sendEvent("domain:\(nsError.domain), code:\(nsError.code)", action: "\(classId)", category: "error")
     }
     
     func sendTimedAppEvent(_ event: String, fromDate: Date, toDate: Date) {

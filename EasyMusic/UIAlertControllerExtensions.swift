@@ -9,11 +9,11 @@
 import UIKit
 
 extension UIAlertController {
-    public class func createAlertWithTitle(_ title: String?, message: String?, buttonTitle: String?) -> UIAlertController {
-        return createAlertWithTitle(title, message: message, buttonTitle: buttonTitle, buttonAction: nil)
+    class func withTitle(_ title: String?, message: String?, buttonTitle: String?) -> UIAlertController {
+        return withTitle(title, message: message, buttonTitle: buttonTitle, buttonAction: nil)
     }
     
-    public class func createAlertWithTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
+    class func withTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
         let alert = UIAlertController(
             title: title,
             message: message,
