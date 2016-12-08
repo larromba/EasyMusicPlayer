@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  EasyMusic
+
+  Created by Lee Arromba on 08/12/2016.
+  Copyright © 2016 Lee Arromba. All rights reserved.
+*/
+
+"NSAppleMusicUsageDescription" = "This app plays music from your library";

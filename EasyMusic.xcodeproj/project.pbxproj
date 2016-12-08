@@ -58,6 +58,7 @@
 		7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */; };
 		7FD4F5FE1BFB75B600DCE572 /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FD1BFB75B600DCE572 /* GCD.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
+		7FDCC3071DF9D57100E62194 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FDCC3091DF9D57100E62194 /* InfoPlist.strings */; };
 		7FE56F731C18702A00DAF1EE /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE56F721C18702A00DAF1EE /* AppDelegateTests.swift */; };
 		7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */; };
 		7FF5B2ED1BE64E210044FCE5 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EC1BE64E210044FCE5 /* PlayerViewController.swift */; };
@@ -181,6 +182,14 @@
 		7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InfoViewTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7FD4F5FD1BFB75B600DCE572 /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7FDCC3081DF9D57100E62194 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7FDCC30A1DF9D57600E62194 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7FDCC30B1DF9D57700E62194 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7FDCC30C1DF9D57700E62194 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7FDCC30D1DF9D57800E62194 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7FDCC30E1DF9D57800E62194 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		7FDCC30F1DF9D57B00E62194 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7FDCC3101DF9D57F00E62194 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7FE56F721C18702A00DAF1EE /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
 		7FF5B2E71BE64E210044FCE5 /* EasyMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -288,6 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				7FF5B2F61BE64E220044FCE5 /* Info.plist */,
+				7FDCC3091DF9D57100E62194 /* InfoPlist.strings */,
 				7F3A5F731C119A2E0065F16F /* GoogleService-Info.plist */,
 				7FF5B2F11BE64E210044FCE5 /* Assets.xcassets */,
 				7FCFE91F1BF4AD7D00981545 /* Xib */,
@@ -643,6 +653,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FCFE9321BF4B28200981545 /* ShareManager.strings in Resources */,
+				7FDCC3071DF9D57100E62194 /* InfoPlist.strings in Resources */,
 				7FF5B2F51BE64E220044FCE5 /* LaunchScreen.storyboard in Resources */,
 				7F9AAE611C23135900CB7316 /* ScrubberView.xib in Resources */,
 				7FCFE92F1BF4B27D00981545 /* PlayerViewController.strings in Resources */,
@@ -999,6 +1010,21 @@
 				7F9AAE751C2474AD00CB7316 /* ru */,
 			);
 			name = ShareManager.strings;
+			sourceTree = "<group>";
+		};
+		7FDCC3091DF9D57100E62194 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7FDCC3081DF9D57100E62194 /* en */,
+				7FDCC30A1DF9D57600E62194 /* Base */,
+				7FDCC30B1DF9D57700E62194 /* de */,
+				7FDCC30C1DF9D57700E62194 /* fr */,
+				7FDCC30D1DF9D57800E62194 /* it */,
+				7FDCC30E1DF9D57800E62194 /* zh-Hans */,
+				7FDCC30F1DF9D57B00E62194 /* ja */,
+				7FDCC3101DF9D57F00E62194 /* ru */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		7FF5B2EE1BE64E210044FCE5 /* Player.storyboard */ = {

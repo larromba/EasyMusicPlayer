@@ -54,7 +54,7 @@
 		</dict>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string></string>
+	<string>This app plays music from your library</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
