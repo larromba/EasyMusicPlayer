@@ -6,8 +6,6 @@
 //  Copyright © 2015 Lee Arromba. All rights reserved.
 //
 
-// TODO: - Analytics, add alert test
-
 import XCTest
 import UIKit
 import AVFoundation
@@ -65,6 +63,30 @@ class PlayerViewControllerTests: XCTestCase {
         
         // runnable
         playerViewController!.viewDidAppear(false)
+        
+        // tests
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testAlertAnalytics() {
+        /**
+         expectations
+         - analytics event sent
+         */
+        analyticsExpectation = expectation(description: "analytics.sendAlertEvent(_)")
+        
+        // mocks
+        class MockAnalytics: Analytics {
+            override func sendAlertEvent(_ event: String, classId: AnyClass) {
+                analyticsExpectation!.fulfill()
+            }
+        }
+        
+        let mockAnalytics = MockAnalytics()
+        Analytics.__shared = mockAnalytics
+        
+        // runnable
+        playerViewController!.threwError(playerViewController!.__musicPlayer, error: .noMusic)
         
         // tests
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
