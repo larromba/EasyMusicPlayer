@@ -468,7 +468,9 @@ class MusicPlayer: NSObject {
     }
 
     func shuffle() {
-        trackManager.shuffleTracks()
+        authorizeThenPerform({
+            self.trackManager.shuffleTracks()
+        })
     }
 }
 
