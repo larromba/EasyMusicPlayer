@@ -137,7 +137,11 @@ extension PlayerViewController: MusicPlayerDelegate {
         
         let track = musicPlayer.currentTrack
         let duration = track.playbackDuration
-        let perc = Float(playbackTime / duration)
+        var perc: Float = 0.0
+        if duration > 0 {
+            perc = Float(playbackTime / duration)
+        }
+        
         scrubberView.scrubberToPercentage(perc)
         infoView.setTime(playbackTime, duration: duration)
         infoView.setRemoteTime(playbackTime, duration: duration)
@@ -148,6 +152,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         
         switch error {
         case .noMusic:
+            infoView.clearInfo()
             Analytics.shared.sendAlertEvent("no_music", classId: classForCoder)
             
             alert = AlertController.withTitle(localized("no music error title", classId: classForCoder),

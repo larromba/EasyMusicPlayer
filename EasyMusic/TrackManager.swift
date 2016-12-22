@@ -20,6 +20,9 @@ class TrackManager {
         return Track(mediaItem: currentTrack)
     }
     var currentTrack: MPMediaItem {
+        guard currentTrackNumber < tracks.count else {
+            return MPMediaItem() // safety
+        }
         return tracks[currentTrackNumber]
     }
     var currentTrackNumber: Int {
@@ -82,6 +85,7 @@ class TrackManager {
     func shuffleTracks() {
         guard authorized else {
             tracks = []
+            trackIndex = 0
             return
         }
         
