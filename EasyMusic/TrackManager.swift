@@ -20,6 +20,9 @@ class TrackManager {
         return Track(mediaItem: currentTrack)
     }
     var currentTrack: MPMediaItem {
+        guard currentTrackNumber < tracks.count else {
+            return MPMediaItem() // safety
+        }
         return tracks[currentTrackNumber]
     }
     var currentTrackNumber: Int {
@@ -82,6 +85,7 @@ class TrackManager {
     func shuffleTracks() {
         guard authorized else {
             tracks = []
+            trackIndex = 0
             return
         }
         
@@ -89,10 +93,12 @@ class TrackManager {
         let playlist = createPlaylist()
         let mItems = NSMutableArray(array: playlist)
         
-        for i in 0 ..< mItems.count - 1 {
-            let remainingCount = mItems.count - i;
-            let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
-            mItems.exchangeObject(at: i, withObjectAt: exchangeIndex)
+        if mItems.count > 0 {
+            for i in 0 ..< mItems.count - 1 {
+                let remainingCount = mItems.count - i;
+                let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
+                mItems.exchangeObject(at: i, withObjectAt: exchangeIndex)
+            }
         }
         
         tracks = mItems as AnyObject as! [MPMediaItem]
