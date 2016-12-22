@@ -89,10 +89,12 @@ class TrackManager {
         let playlist = createPlaylist()
         let mItems = NSMutableArray(array: playlist)
         
-        for i in 0 ..< mItems.count - 1 {
-            let remainingCount = mItems.count - i;
-            let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
-            mItems.exchangeObject(at: i, withObjectAt: exchangeIndex)
+        if mItems.count > 0 {
+            for i in 0 ..< mItems.count - 1 {
+                let remainingCount = mItems.count - i;
+                let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
+                mItems.exchangeObject(at: i, withObjectAt: exchangeIndex)
+            }
         }
         
         tracks = mItems as AnyObject as! [MPMediaItem]

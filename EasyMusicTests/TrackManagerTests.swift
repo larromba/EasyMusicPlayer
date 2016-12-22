@@ -82,6 +82,22 @@ class TrackManagerTests: XCTestCase {
         XCTAssert(tracksInTheSameOrder != mockTracks.count)
     }
     
+    func testShuffleTracksNoMusic() {
+        /**
+         expectations
+         - shuffle doesnt crash when there are no tracks
+         */
+        
+        // mocks
+        trackManager!.__tracks = []
+        
+        // runnable
+        trackManager!.shuffleTracks()
+        
+        // tests
+        XCTAssertTrue(true)
+    }
+    
     func testCuePrevious() {
         /**
          expectations
