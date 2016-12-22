@@ -293,6 +293,32 @@ class PlayerViewControllerTests: XCTestCase {
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
     }
     
+    func testNoMusicErrorClearsInfo() {
+        infoViewExpectation = expectation(description: "infoView.clearInfo()")
+        
+        /**
+         expectations
+         - error alert is thrown
+         */
+        
+        // mocks
+        class MockInfoView: InfoView {
+            override var classForCoder: AnyClass { return InfoView.self }
+            override func clearInfo() {
+                infoViewExpectation!.fulfill()
+            }
+        }
+        let mockInfoView = MockInfoView()
+        playerViewController!.__infoView = mockInfoView
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+
+        // runnable
+        playerViewController?.threwError(mockMusicPlayer, error: .noMusic)
+        
+        // tests
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+    }
+    
     func testNoVolumeErrorIsThrown() {
         /**
          expectations
