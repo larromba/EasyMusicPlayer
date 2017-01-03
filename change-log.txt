@@ -1,3 +1,17 @@
+1.1.1
+        Fix: crash when no music
+
+        Adding scribble design
+
+        Found in photos
+
+        Bump version
+
+        Fix: minor music player crashes / issues
+            missing icons ios10
+
+        bump build number
+
 1.1
         updating to swift 3.0
 
