@@ -172,13 +172,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             let track = musicPlayer.currentResolvedTrack
             alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
                 message: String(format: localized("track error msg", classId: classForCoder), track.title),
-                buttonTitle: localized("track error button", classId: classForCoder),
-                buttonAction: {
-                    let trackNumber = self.musicPlayer.currentTrackNumber
-                    if (trackNumber < self.musicPlayer.numOfTracks) {
-                        self.musicPlayer.next()
-                    }
-            })
+                buttonTitle: localized("track error button", classId: classForCoder))
             break
         case .authorization:
             Analytics.shared.sendAlertEvent("authorization", classId: classForCoder)
