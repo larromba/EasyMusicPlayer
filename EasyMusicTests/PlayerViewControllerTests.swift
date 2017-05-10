@@ -353,45 +353,18 @@ class PlayerViewControllerTests: XCTestCase {
     
     func testPlayErrorGeneric() {
         /**
-        expectations
-        - music player attempts to play next track after alert is dismissed
-        - an error alert is thrown
-        */
-        musicPlayerExpectation = expectation(description: "musicPlayer.next()")
+         expectations
+         - error alert is thrown
+         */
         
         // mocks
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var numOfTracks: Int { return 2 }
-            override var currentTrackNumber: Int { return 1 }
-            override func next() {
-                musicPlayerExpectation!.fulfill()
-            }
-        }
-        
-        class MockAlertController: UIAlertController {
-            var mockButtonAction: ((Void) -> Void)!
-            
-            override class func withTitle(_ title: String?, message: String?, buttonTitle: String?, buttonAction: ((Void) -> Void)?) -> UIAlertController {
-                let alert = MockAlertController(title: "", message: "", preferredStyle: UIAlertControllerStyle.alert)
-                alert.mockButtonAction = buttonAction
-                return alert
-            }
-        }
-
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
-        playerViewController!.__musicPlayer = mockMusicPlayer
-        
-        playerViewController!.__AlertController = MockAlertController.self
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
         
         // runnable
         mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.MusicError.decode)
         
         // tests
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
-        
-        let mockAlertController = playerViewController!.presentedViewController as! MockAlertController
-        mockAlertController.mockButtonAction()
-        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testPause() {
