@@ -25,7 +25,7 @@ class Analytics {
         var configureError: NSError?
         GGLContext.sharedInstance().configureWithError(&configureError)
         
-        if configureError != nil {
+        if let configureError = configureError {
             log("Error configuring Google services: \(configureError)")
             throw AnalyticsError.setup
         }

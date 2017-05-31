@@ -1,44 +1,68 @@
-1.1.2
-        fix: error plays next song
+1.1.3 (31/05/2017)
+    Added small version number on main screen
 
-        fix: image placeholder
+1.1.2 (10/05/2017)
+    fix: error plays next song
 
-        fix: UI tests
+    fix: image placeholder
 
-1.1.1
-        Fix: crash when no music
+    fix: UI tests
 
-        Adding scribble design
+1.1.1 (22/12/2016)
+    Fix: crash when no music
 
-        Found in photos
+    Adding scribble design
 
-        Bump version
+    Found in photos
 
-        Fix: minor music player crashes / issues
-            missing icons ios10
+    Bump version
 
-        bump build number
+    Fix: minor music player crashes / issues
+        missing icons ios10
 
-1.1
-        updating to swift 3.0
+    bump build number
 
-        Fixing tests after upgrade
+1.1 (10/12/2016)
+    updating to swift 3.0
 
-        adding changePlaybackPositionCommand
+    Fixing tests after upgrade
 
-        code grooming
+    adding changePlaybackPositionCommand
 
-        Fix: remote control bar jumping when hitting play / pause
+    code grooming
 
-        Fix: NSAppTransportSecurity
+    Fix: remote control bar jumping when hitting play / pause
 
-        Found some strange stuff in the analytics
+    Fix: NSAppTransportSecurity
 
-        Fix: unit test compile for device
+    Found some strange stuff in the analytics
 
-        Fix: version number / build number
+    Fix: unit test compile for device
 
-        Authorization 9.3
+    Fix: version number / build number
 
-1.0.1
-	[FIX] crashlytics issue 56939482f5d3a7f76bffde9a
+    Authorization 9.3
+
+1.0.1 (03/02/2016)
+    [FIX] crashlytics issue 56939482f5d3a7f76bffde9a
+
+1.0.0 (05/01/2016) (Tier: 1)
+    Play, Pause, Next, Previous, Shuffle
+
+    Time scrubber bar
+
+    Repeat none / one / all
+
+    Share music on Twitter & Facebook
+
+    Play music in the background
+
+    Control music from your homescreen and lockscreen
+
+SKU: 112122015
+Apple ID: 1067558718
+
+
+----
+
+possible bug: press >> 5 times and it locks up?
