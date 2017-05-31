@@ -22,28 +22,16 @@ class MusicPlayer: NSObject {
     fileprivate var seekTimer: Timer?
     fileprivate var isPlayingInBackground: Bool = false
     fileprivate var isAudioSessionInterrupted: Bool = false
-    fileprivate var trackManager: TrackManager = TrackManager()
     fileprivate var seekStartDate: Date?
 
     weak var delegate: MusicPlayerDelegate?
+    var trackManager: TrackManager = TrackManager()
     var repeatMode: RepeatMode = RepeatMode.none
     var isPlaying: Bool {
         if let player = player {
             return player.isPlaying
         }
         return false
-    }
-    var currentResolvedTrack: Track {
-        return trackManager.currentResolvedTrack
-    }
-    var currentTrack: MPMediaItem {
-        return trackManager.currentTrack
-    }
-    var currentTrackNumber: Int {
-        return trackManager.currentTrackNumber
-    }
-    var numOfTracks: Int {
-        return trackManager.numOfTracks
     }
     var time: TimeInterval {
         set {
@@ -193,8 +181,8 @@ class MusicPlayer: NSObject {
     
     fileprivate func threwError(_ error: MusicError) {
         stopSeekTimer()
-        delegate?.threwError(self, error: error)
         delegate?.changedState(self, state: MusicPlayer.State.stopped)
+        delegate?.threwError(self, error: error)
     }
     
     fileprivate func authorizeThenPerform(_ block: @escaping ((Void) -> Void)) {
@@ -306,46 +294,36 @@ class MusicPlayer: NSObject {
     
     func play() {
         authorizeThenPerform({
-            guard self.numOfTracks > 0 else {
+            guard self.trackManager.numOfTracks > 0 else {
                 self.threwError(MusicError.noMusic)
                 return
             }
-            
             guard self.volume > 0.0 else {
                 self.threwError(MusicError.noVolume)
                 return
             }
-            
-            let assetUrl = self.currentTrack.assetURL
-            guard assetUrl != nil else {
+            guard let assetUrl = self.trackManager.currentTrack.assetURL else {
                 self.threwError(MusicError.playerInit)
                 return
             }
             
-            if self.player == nil || self.player!.url!.absoluteString != assetUrl!.absoluteString {
+            if self.player == nil || self.player!.url?.absoluteString != assetUrl.absoluteString {
                 do {
-                    try self.player = AVAudioPlayer(contentsOf: assetUrl!)
+                    let player = try AVAudioPlayer(contentsOf: assetUrl)
+                    player.delegate = self
+                    self.player = player
                 } catch _ {
                     self.threwError(MusicError.playerInit)
                     return
                 }
-                self.player!.delegate = self
             }
             
-            var success = self.player!.prepareToPlay()
-            guard success == true else {
+            guard self.player!.prepareToPlay(), self.player!.play() else {
                 self.threwError(MusicError.avError)
                 return
             }
-            
-            success = self.player!.play()
-            guard success == true else {
-                self.threwError(MusicError.avError)
-                return
-            }
-            
+
             self.startPlaybackCheckTimer()
-            
             self.delegate?.changedState(self, state: State.playing)
         })
     }
@@ -356,6 +334,7 @@ class MusicPlayer: NSObject {
         }
         
         player!.stop()
+        player = nil
         
         stopPlaybackCheckTimer()
         time = 0.0
@@ -524,10 +503,6 @@ extension MusicPlayer {
     var __player: AVAudioPlayer? {
         get { return player }
         set { player = newValue }
-    }
-    var __trackManager: TrackManager {
-        get { return trackManager }
-        set { trackManager = newValue }
     }
     var __playbackCheckTimer: Timer? {
         get { return playbackCheckTimer }
