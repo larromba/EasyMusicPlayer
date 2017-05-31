@@ -26,7 +26,12 @@ struct Constant {
     }
     
     struct Path {
-        static let DummyAudio = "/Users/larromba/Documents/Business/Pink Chicken/personal/EasyMusic/[TestTunes]/Bounce.mp3"
+        /*
+         check this path if you get test errors:
+
+         fatal error: 'try!' expression unexpectedly raised an error: Error Domain=NSOSStatusErrorDomain Code=2003334207 "(null)": file /Library/Caches/com.apple.xbs/Sources/swiftlang/swiftlang-802.0.53/src/swift/stdlib/public/core/ErrorType.swift, line 182
+         */
+        static let DummyAudio = "/Users/larromba/Documents/Business/Pink Chicken/[apps]/EasyMusicPlayer/[TestTunes]/Bounce.mp3"
     }
     
     struct Storyboard {
