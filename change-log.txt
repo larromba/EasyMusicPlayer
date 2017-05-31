@@ -1,3 +1,7 @@
+1.1.4 (01/06/2017)
+    fix: pressing >> continuously locks up player
+    scrubber bar improvements
+
 1.1.3 (31/05/2017)
     Added small version number on main screen
 
