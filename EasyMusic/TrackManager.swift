@@ -132,6 +132,12 @@ class TrackManager {
     func cueEnd() {
         trackIndex = numOfTracks - 1
     }
+    
+    func removeTrack(atIndex index: Int) -> Bool {
+        tracks.remove(at: index)
+        trackIndex -= 1
+        return true
+    }
 }
 
 // MARK: - Testing

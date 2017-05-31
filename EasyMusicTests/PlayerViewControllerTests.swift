@@ -351,20 +351,42 @@ class PlayerViewControllerTests: XCTestCase {
         XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
     }
     
+    /**
+     bug: pressing >> continuously locks up player
+     investigation: logic state from generic error (avError / playerInit / decode)
+     introduced: 1.1.2
+     reporter: rs@apoplus.info
+     date: 31/05/2017
+     */
     func testPlayErrorGeneric() {
         /**
          expectations
-         - error alert is thrown
+         - track removed from track manager 
+         - next track is played
          */
+        musicPlayerExpectation = expectation(description: "musicPlayer.next()")
         
         // mocks
-        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            override func next() {
+                musicPlayerExpectation!.fulfill()
+            }
+        }
+        
+        let mockTrackManager = TrackManager()
+        let mockItem = MPMediaItem()
+        mockTrackManager.__tracks = [MPMediaItem(), mockItem, MPMediaItem()]
+        mockTrackManager.__trackIndex = 1
+        
+        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        mockMusicPlayer.trackManager = mockTrackManager
         
         // runnable
         mockMusicPlayer.delegate!.threwError(mockMusicPlayer, error: MusicPlayer.MusicError.decode)
         
         // tests
-        XCTAssertTrue(playerViewController!.presentedViewController is UIAlertController)
+        XCTAssertFalse(mockTrackManager.__tracks.contains(where: { $0 === mockItem }))
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testPause() {
@@ -477,11 +499,12 @@ class PlayerViewControllerTests: XCTestCase {
          */
         
         // mocks
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
+        class MockTrackManager: EasyMusic.TrackManager {
             override var numOfTracks: Int { return 1 }
         }
         
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+        mockMusicPlayer.trackManager = MockTrackManager()
         playerViewController!.__musicPlayer = mockMusicPlayer
         
         // runnable
@@ -497,13 +520,14 @@ class PlayerViewControllerTests: XCTestCase {
          - button not disabled
          */
          
-         // mocks
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
+        // mocks
+        class MockTrackManager: EasyMusic.TrackManager {
             override var numOfTracks: Int { return 1 }
         }
         
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
         mockMusicPlayer.repeatMode = MusicPlayer.RepeatMode.all
+        mockMusicPlayer.trackManager = MockTrackManager()
         playerViewController!.__musicPlayer = mockMusicPlayer
         
         // runnable
@@ -550,11 +574,12 @@ class PlayerViewControllerTests: XCTestCase {
          */
          
         // mocks
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
+        class MockTrackManager: EasyMusic.TrackManager {
             override var numOfTracks: Int { return 1 }
         }
         
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+        mockMusicPlayer.trackManager = MockTrackManager()
         playerViewController!.__musicPlayer = mockMusicPlayer
         
         // runnable
@@ -571,11 +596,12 @@ class PlayerViewControllerTests: XCTestCase {
         */
 
         // mocks
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
+        class MockTrackManager: EasyMusic.TrackManager {
             override var numOfTracks: Int { return 1 }
         }
         
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+        mockMusicPlayer.trackManager = MockTrackManager()
         mockMusicPlayer.repeatMode = MusicPlayer.RepeatMode.all
         playerViewController!.__musicPlayer = mockMusicPlayer
         
@@ -743,7 +769,7 @@ class PlayerViewControllerTests: XCTestCase {
             }
         }
         
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
+        class MockTrackManager: EasyMusic.TrackManager {
             override var currentResolvedTrack: Track {
                 sharedTrack = super.currentResolvedTrack
                 return sharedTrack
@@ -753,7 +779,8 @@ class PlayerViewControllerTests: XCTestCase {
         let mockShareManager = MockShareManager()
         playerViewController!.__shareManager = mockShareManager
 
-        let mockMusicPlayer = MockMusicPlayer(delegate: playerViewController!)
+        let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
+        mockMusicPlayer.trackManager = MockTrackManager()
         playerViewController!.__musicPlayer = mockMusicPlayer
         
         let mockControlsView = ControlsView()

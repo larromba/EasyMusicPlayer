@@ -85,12 +85,12 @@ class PlayerViewController: UIViewController {
             return
         }
         
-        let trackNumber = musicPlayer.currentTrackNumber
+        let trackNumber = musicPlayer.trackManager.currentTrackNumber
         if trackNumber == 0 {
             controlsView.enablePrevious(false)
             controlsView.enableSeekBackwardsRemoteOnly(true)
         }
-        if (trackNumber == musicPlayer.numOfTracks - 1) {
+        if (trackNumber == musicPlayer.trackManager.numOfTracks - 1) {
             controlsView.enableNext(false)
             controlsView.enableSeekForwardsRemoteOnly(true)
         }
@@ -104,8 +104,8 @@ extension PlayerViewController: MusicPlayerDelegate {
         switch state {
         case .playing:
             controlsView.setControlsPlaying()
-            infoView.setInfoFromTrack(sender.currentResolvedTrack)
-            infoView.setTrackPosition((musicPlayer.currentTrackNumber + 1), totalTracks: musicPlayer.numOfTracks)
+            infoView.setInfoFromTrack(sender.trackManager.currentResolvedTrack)
+            infoView.setTrackPosition((sender.trackManager.currentTrackNumber + 1), totalTracks: sender.trackManager.numOfTracks)
             scrubberView.isUserInteractionEnabled = true
             updateSeekingControls()
             break
@@ -128,7 +128,6 @@ extension PlayerViewController: MusicPlayerDelegate {
                 message: localized("finished alert msg", classId: classForCoder),
                 buttonTitle: localized("finished alert button", classId: classForCoder))
             present(alert, animated: true, completion: nil)
-            
             break
         }
     }
@@ -138,7 +137,7 @@ extension PlayerViewController: MusicPlayerDelegate {
             return
         }
         
-        let track = musicPlayer.currentTrack
+        let track = musicPlayer.trackManager.currentTrack
         let duration = track.playbackDuration
         var perc: Float = 0.0
         if duration > 0 {
@@ -151,7 +150,7 @@ extension PlayerViewController: MusicPlayerDelegate {
     }
     
     func threwError(_ sender: MusicPlayer, error: MusicPlayer.MusicError) {
-        var alert: UIAlertController!
+        var alert: UIAlertController?
         
         switch error {
         case .noMusic:
@@ -172,10 +171,14 @@ extension PlayerViewController: MusicPlayerDelegate {
         case .decode, .playerInit, .avError:
             Analytics.shared.sendAlertEvent("track", classId: classForCoder)
             
-            let track = musicPlayer.currentResolvedTrack
-            alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
-                message: String(format: localized("track error msg", classId: classForCoder), track.title),
-                buttonTitle: localized("track error button", classId: classForCoder))
+            let trackManager = sender.trackManager
+            if sender.trackManager.removeTrack(atIndex: trackManager.currentTrackNumber) {
+                sender.next()
+            } else {
+                alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
+                    message: localized("track error msg", classId: classForCoder),
+                    buttonTitle: localized("track error button", classId: classForCoder))
+            }
             break
         case .authorization:
             Analytics.shared.sendAlertEvent("authorization", classId: classForCoder)
@@ -186,7 +189,9 @@ extension PlayerViewController: MusicPlayerDelegate {
             break
         }
         
-        present(alert, animated: true, completion: nil)
+        if let alert = alert {
+            present(alert, animated: true, completion: nil)
+        }
     }
 }
 
@@ -194,7 +199,7 @@ extension PlayerViewController: MusicPlayerDelegate {
 
 extension PlayerViewController: ScrubberViewDelegate {
     func touchMovedToPercentage(_ sender: ScrubberView, percentage: Float) {
-        let track = musicPlayer.currentTrack
+        let track = musicPlayer.trackManager.currentTrack
         let duration = track.playbackDuration
         let time = duration * TimeInterval(percentage)
         infoView.setTime(time, duration: duration)
@@ -204,7 +209,7 @@ extension PlayerViewController: ScrubberViewDelegate {
     func touchEndedAtPercentage(_ sender: ScrubberView, percentage: Float) {
         Analytics.shared.sendButtonPressEvent("scrubber", classId: classForCoder)
         
-        let track = musicPlayer.currentTrack
+        let track = musicPlayer.trackManager.currentTrack
         let duration = track.playbackDuration
         let time = duration * TimeInterval(percentage)
         infoView.setTime(time, duration: duration)
@@ -258,7 +263,7 @@ extension PlayerViewController: ControlsViewDelegate {
     func sharePressed(_ sender: ControlsView) {
         Analytics.shared.sendButtonPressEvent("share", classId: classForCoder)
         
-        shareManager.shareTrack(musicPlayer.currentResolvedTrack,
+        shareManager.shareTrack(musicPlayer.trackManager.currentResolvedTrack,
             presenter: self,
             sender: sender.shareButton,
             completion: { (result: ShareManager.Result, service: String?) in
@@ -282,7 +287,6 @@ extension PlayerViewController: ControlsViewDelegate {
                         message: localized("accounts error msg", classId: self.classForCoder),
                         buttonTitle: localized("accounts error button", classId: self.classForCoder))
                     self.present(alert, animated: true, completion: nil)
-                    
                     break
                 }
                 
