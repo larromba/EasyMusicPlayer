@@ -37,8 +37,8 @@ class MusicPlayer: NSObject {
         set {
             if let player = player {
                 player.currentTime = newValue
-                delegate?.changedPlaybackTime(self, playbackTime: time)
             }
+            delegate?.changedPlaybackTime(self, playbackTime: time)
         }
         get {
             if let player = player {
@@ -459,6 +459,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopPlaybackCheckTimer()
         stopSeekTimer()
+        time = 0.0
         
         if flag == false {
             threwError(MusicError.avError)

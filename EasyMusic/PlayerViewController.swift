@@ -105,7 +105,7 @@ extension PlayerViewController: MusicPlayerDelegate {
         case .playing:
             controlsView.setControlsPlaying()
             infoView.setInfoFromTrack(sender.trackManager.currentResolvedTrack)
-            infoView.setTrackPosition((musicPlayer.trackManager.currentTrackNumber + 1), totalTracks: musicPlayer.trackManager.numOfTracks)
+            infoView.setTrackPosition((sender.trackManager.currentTrackNumber + 1), totalTracks: sender.trackManager.numOfTracks)
             scrubberView.isUserInteractionEnabled = true
             updateSeekingControls()
             break
@@ -128,7 +128,6 @@ extension PlayerViewController: MusicPlayerDelegate {
                 message: localized("finished alert msg", classId: classForCoder),
                 buttonTitle: localized("finished alert button", classId: classForCoder))
             present(alert, animated: true, completion: nil)
-            
             break
         }
     }
