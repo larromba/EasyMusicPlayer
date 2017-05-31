@@ -13,6 +13,7 @@ class PlayerViewController: UIViewController {
     @IBOutlet fileprivate weak var scrubberView: ScrubberView!
     @IBOutlet fileprivate weak var infoView: InfoView!
     @IBOutlet fileprivate weak var controlsView: ControlsView!
+    @IBOutlet fileprivate weak var appVersionLabel: UILabel!
     
     fileprivate lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
     fileprivate var shareManager: ShareManager = ShareManager()
@@ -21,6 +22,8 @@ class PlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        appVersionLabel.text = Bundle.appVersion()
         
         controlsView.delegate = self
         scrubberView.delegate = self
@@ -262,16 +265,16 @@ extension PlayerViewController: ControlsViewDelegate {
                 var event: String!
                 switch result {
                 case .success:
-                    event = "success_\(service)"
+                    event = "success_\(service ?? "nil")"
                     break
                 case .cancelledAfterChoice:
-                    event = "cancelled-after-choice_\(service)"
+                    event = "cancelled-after-choice_\(service ?? "nil")"
                     break
                 case .cancelledBeforeChoice:
-                    event = "cancelled-before-choice_\(service)"
+                    event = "cancelled-before-choice_\(service ?? "nil")"
                     break
                 case .error:
-                    event = "error_\(service)"
+                    event = "error_\(service ?? "nil")"
 
                     Analytics.shared.sendAlertEvent("share_account", classId: self.classForCoder)
                     
