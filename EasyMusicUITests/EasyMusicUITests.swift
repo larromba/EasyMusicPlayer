@@ -25,7 +25,7 @@ class EasyMusicUITests: XCTestCase {
     
     func testBasicUsage() {
         let app = XCUIApplication()
-        let element = app.otherElements.containing(.staticText, identifier:"v1.1.3").children(matching: .other).element(boundBy: 3).children(matching: .other).element
+        let element = app.otherElements.containing(.staticText, identifier:"v1.1.4").children(matching: .other).element(boundBy: 3).children(matching: .other).element
         let button = element.children(matching: .other).element(boundBy: 1).children(matching: .button).element(boundBy: 0)
         button.tap()
         app.staticTexts["00:00:01"].tap()
