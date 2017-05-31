@@ -13,6 +13,10 @@ extension Bundle {
         return Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleDisplayName) as! String
     }
     
+    class func appVersion() -> String {
+        return "v\(Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleVersion) as? String ?? "?")"
+    }
+    
     class func bundleIdentifier() -> String {
         return Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleIdentifier) as! String
     }
