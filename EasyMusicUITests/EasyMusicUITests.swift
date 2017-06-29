@@ -13,7 +13,7 @@ class EasyMusicUITests: XCTestCase {
         super.setUp()
         
         continueAfterFailure = false
-        XCUIDevice.shared().orientation = .portrait
+        XCUIDevice.shared.orientation = .portrait
         XCUIApplication().launch()
     }
     
