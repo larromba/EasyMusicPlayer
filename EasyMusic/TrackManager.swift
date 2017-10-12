@@ -10,8 +10,14 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
+    private enum Key: String {
+        case tracks
+    }
+    
     fileprivate var tracks: [MPMediaItem] = []
     fileprivate var trackIndex: Int = 0
+    fileprivate var userDefaults: UserDefaults = .standard
+    fileprivate var MediaQueryType: MPMediaQuery.Type = MPMediaQuery.self
     
     var allTracks: [MPMediaItem] {
         return tracks
@@ -61,7 +67,7 @@ class TrackManager {
             
         #else // device
 
-            if let songs = MPMediaQuery.songs().items {
+            if let songs = MediaQueryType.songs().items {
                 return songs
             } else {
                 return []
@@ -80,6 +86,27 @@ class TrackManager {
             return
         }
         completion(true)
+    }
+    
+    func loadTracks() {
+        guard authorized else {
+            tracks = []
+            trackIndex = 0
+            return
+        }
+        guard
+            let data = userDefaults.object(forKey: Key.tracks.rawValue) as? Data,
+            let trackIDs = NSKeyedUnarchiver.unarchiveObject(with: data) as? [UInt64], trackIDs.count > 0 else {
+            return
+        }
+        let query = MediaQueryType.songs()
+        tracks = trackIDs.flatMap({ (id: UInt64) -> [MPMediaItem]? in
+            let predicate = MPMediaPropertyPredicate(value: id, forProperty: MPMediaItemPropertyPersistentID)
+            query.addFilterPredicate(predicate)
+            let items = query.items
+            query.removeFilterPredicate(predicate)
+            return items
+        }).reduce([], +)
     }
     
     func shuffleTracks() {
@@ -103,6 +130,7 @@ class TrackManager {
         
         tracks = mItems as AnyObject as! [MPMediaItem]
         trackIndex = 0
+        saveTracks(tracks)
     }
     
     func cuePrevious() -> Bool {
@@ -138,6 +166,15 @@ class TrackManager {
         trackIndex -= 1
         return true
     }
+    
+    // MARK: - Private
+    
+    private func saveTracks(_ tracks: [MPMediaItem]) {
+        let trackIDs = tracks.map { return $0.persistentID }
+        let data = NSKeyedArchiver.archivedData(withRootObject: trackIDs)
+        userDefaults.set(data, forKey: Key.tracks.rawValue)
+        userDefaults.synchronize()
+    }
 }
 
 // MARK: - Testing
@@ -150,5 +187,13 @@ extension TrackManager {
     var __tracks: [MPMediaItem] {
         get { return tracks }
         set { tracks = newValue }
+    }
+    var __userDefaults: UserDefaults {
+        get { return userDefaults }
+        set { userDefaults = newValue }
+    }
+    var __MediaQueryType: MPMediaQuery.Type {
+        get { return MediaQueryType }
+        set { MediaQueryType = newValue }
     }
 }

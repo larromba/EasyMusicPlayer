@@ -110,7 +110,12 @@ class MusicPlayer: NSObject {
             object: nil)
         
         enableAudioSession(true)
-        shuffle()
+        authorizeThenPerform({
+            self.trackManager.loadTracks()
+            if self.trackManager.numOfTracks == 0 {
+                self.trackManager.shuffleTracks()
+            }
+        })
     }
     
     deinit {
@@ -445,7 +450,7 @@ class MusicPlayer: NSObject {
             Analytics.shared.sendTimedAppEvent("seek_backward", fromDate: seekStartDate, toDate: Date())
         }
     }
-
+    
     func shuffle() {
         authorizeThenPerform({
             self.trackManager.shuffleTracks()
