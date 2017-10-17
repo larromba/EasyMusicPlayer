@@ -53,7 +53,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockAnalytics: Analytics {
-            override func sendScreenNameEvent(_ classId: AnyClass) {
+            override func sendScreenNameEvent(_ classId: Any) {
                 analyticsExpectation!.fulfill()
             }
         }
@@ -77,7 +77,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockAnalytics: Analytics {
-            override func sendAlertEvent(_ event: String, classId: AnyClass) {
+            override func sendAlertEvent(_ event: String, classId: Any) {
                 analyticsExpectation!.fulfill()
             }
         }
@@ -108,7 +108,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockAnalytics: Analytics {
-            override func sendButtonPressEvent(_ event: String, classId: AnyClass) {
+            override func sendButtonPressEvent(_ event: String, classId: Any) {
                 analyticsExpectation!.fulfill()
             }
         }
@@ -407,7 +407,7 @@ class PlayerViewControllerTests: XCTestCase {
         }
         
         class MockAnalytics: Analytics {
-            override func sendButtonPressEvent(_ event: String, classId: AnyClass) {
+            override func sendButtonPressEvent(_ event: String, classId: Any) {
                 analyticsExpectation!.fulfill()
             }
         }
@@ -725,15 +725,10 @@ class PlayerViewControllerTests: XCTestCase {
         
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            var shuffleCount = 0
-            
             override func stop() {}
             override func play() {}
             override func shuffle() {
-                shuffleCount += 1 // called on init, so test is only valid for second call
-                if shuffleCount == 2 {
-                    musicPlayerExpectation!.fulfill()
-                }
+                musicPlayerExpectation!.fulfill()
             }
         }
         

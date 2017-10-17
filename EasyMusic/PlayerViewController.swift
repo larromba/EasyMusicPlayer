@@ -69,7 +69,7 @@ class PlayerViewController: UIViewController {
     
     // MARK: - Notification
     
-    func applicationDidBecomeActive() {
+    @objc func applicationDidBecomeActive() {
         // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
         if controlsView.playButton.buttonState == PlayButton.State.pause && musicPlayer.isPlaying == false {
             musicPlayer.stop()

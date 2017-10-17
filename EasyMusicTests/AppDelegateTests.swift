@@ -63,6 +63,7 @@ class AppDelegateTests: XCTestCase {
         
         // mocks
         class MockAnalytics: Analytics {
+            override func setup() throws {}
             override func startSession() {
                 analyticsExpectation!.fulfill()
             }
