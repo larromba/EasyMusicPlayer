@@ -110,7 +110,12 @@ class MusicPlayer: NSObject {
             object: nil)
         
         enableAudioSession(true)
-        shuffle()
+        authorizeThenPerform({
+            self.trackManager.loadTracks()
+            if self.trackManager.numOfTracks == 0 {
+                self.trackManager.shuffleTracks()
+            }
+        })
     }
     
     deinit {
@@ -185,7 +190,7 @@ class MusicPlayer: NSObject {
         delegate?.threwError(self, error: error)
     }
     
-    fileprivate func authorizeThenPerform(_ block: @escaping ((Void) -> Void)) {
+    fileprivate func authorizeThenPerform(_ block: @escaping (() -> Void)) {
         guard trackManager.authorized else {
             trackManager.authorize({ (_ success: Bool) in
                 guard success else {
@@ -201,21 +206,21 @@ class MusicPlayer: NSObject {
     
     // MARK: - Notifications
     
-    func applicationWillTerminate(_ notifcation: Notification) {
+    @objc func applicationWillTerminate(_ notifcation: Notification) {
         enableAudioSession(false)
     }
     
-    func applicationWillResignActive(_ notifcation: Notification) {
+    @objc func applicationWillResignActive(_ notifcation: Notification) {
         if isPlaying == true {
             isPlayingInBackground = true
         }
     }
     
-    func applicationDidBecomeActive(_ notifcation: Notification) {
+    @objc func applicationDidBecomeActive(_ notifcation: Notification) {
         isPlayingInBackground = false
     }
     
-    func audioSessionRouteChange(_ notifcation: Notification) {
+    @objc func audioSessionRouteChange(_ notifcation: Notification) {
         if let rawValue = (notifcation.userInfo?[AVAudioSessionRouteChangeReasonKey] as AnyObject).uintValue {
             if let reason = AVAudioSessionRouteChangeReason(rawValue: rawValue) {
                 switch reason {
@@ -231,7 +236,7 @@ class MusicPlayer: NSObject {
         }
     }
     
-    func audioSessionInterruption(_ notification: Notification) {
+    @objc func audioSessionInterruption(_ notification: Notification) {
         if let rawValue = (notification.userInfo?[AVAudioSessionInterruptionTypeKey] as AnyObject).uintValue {
             if let reason = AVAudioSessionInterruptionType(rawValue: rawValue) {
                 switch reason {
@@ -254,7 +259,7 @@ class MusicPlayer: NSObject {
     
     // MARK: - Timer
     
-    func playbackCheckTimerCallback() {
+    @objc func playbackCheckTimerCallback() {
         guard player != nil else {
             return
         }
@@ -262,13 +267,13 @@ class MusicPlayer: NSObject {
         delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
-    func seekForwardTimerCallback() {
+    @objc func seekForwardTimerCallback() {
         if seekTimer != nil {
             player!.currentTime += 1.0
         }
     }
     
-    func seekBackwardTimerCallback() {
+    @objc func seekBackwardTimerCallback() {
         if seekTimer != nil {
             player!.currentTime -= 1.0
         }
@@ -292,7 +297,7 @@ class MusicPlayer: NSObject {
         }
     }
     
-    func play() {
+    @objc func play() {
         authorizeThenPerform({
             guard self.trackManager.numOfTracks > 0 else {
                 self.threwError(MusicError.noMusic)
@@ -342,7 +347,7 @@ class MusicPlayer: NSObject {
         delegate?.changedState(self, state: State.stopped)
     }
     
-    func pause() {
+    @objc func pause() {
         guard player != nil else {
             return
         }
@@ -354,7 +359,7 @@ class MusicPlayer: NSObject {
         delegate?.changedState(self, state: State.paused)
     }
     
-    func togglePlayPause() {
+    @objc func togglePlayPause() {
         if isPlaying == false {
             play()
         } else {
@@ -362,7 +367,7 @@ class MusicPlayer: NSObject {
         }
     }
     
-    func previous() {
+    @objc func previous() {
         stop()
         
         let result = trackManager.cuePrevious()
@@ -373,7 +378,7 @@ class MusicPlayer: NSObject {
         play()
     }
     
-    func next() {
+    @objc func next() {
         stop()
         
         let result = trackManager.cueNext()
@@ -386,7 +391,7 @@ class MusicPlayer: NSObject {
         play()
     }
     
-    func seekForward(_ event: MPSeekCommandEvent) {
+    @objc func seekForward(_ event: MPSeekCommandEvent) {
         guard player != nil else {
             return
         }
@@ -401,7 +406,7 @@ class MusicPlayer: NSObject {
         }
     }
     
-    func seekBackward(_ event: MPSeekCommandEvent) {
+    @objc func seekBackward(_ event: MPSeekCommandEvent) {
         guard player != nil else {
             return
         }
@@ -416,7 +421,7 @@ class MusicPlayer: NSObject {
         }
     }
     
-    func changePlaybackPosition(_ event: MPChangePlaybackPositionCommandEvent) {
+    @objc func changePlaybackPosition(_ event: MPChangePlaybackPositionCommandEvent) {
         time = event.positionTime
     }
     
@@ -445,7 +450,7 @@ class MusicPlayer: NSObject {
             Analytics.shared.sendTimedAppEvent("seek_backward", fromDate: seekStartDate, toDate: Date())
         }
     }
-
+    
     func shuffle() {
         authorizeThenPerform({
             self.trackManager.shuffleTracks()

@@ -5,18 +5,20 @@ use_frameworks!
 
 target 'EasyMusic' do
 
-    pod 'Google/Analytics'
-
+    pod 'Firebase/Analytics'
+    pod 'Fabric'
+    pod 'Crashlytics'
+    
     target 'EasyMusicTests' do
         inherit! :search_paths
         
-        pod 'Google/Analytics'
+        pod 'Firebase/Analytics'
     end
 
     target 'EasyMusicUITests' do
         inherit! :search_paths
         
-        pod 'Google/Analytics'
+        pod 'Firebase/Analytics'
     end
 end
 

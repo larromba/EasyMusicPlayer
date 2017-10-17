@@ -1,51 +1,47 @@
 //
 //  Analytics.swift
-//  EasyMusic
+//  EasyLife
 //
 //  Created by Lee Arromba on 04/12/2015.
 //  Copyright © 2015 Lee Arromba. All rights reserved.
 //
 
 import Foundation
-import Google
+import FirebaseAnalytics
 
 class Analytics {
     fileprivate(set) static var shared = Analytics()
     fileprivate var sessionStartDate: Date?
-    fileprivate var isSetup: Bool = false
-    var dryRun: Bool = false
+    fileprivate var isSetup: Bool
+    fileprivate var AnalyticsType: FirebaseAnalytics.Analytics.Type
     
     enum AnalyticsError: Error {
         case setup
     }
     
+    init() {
+        sessionStartDate = nil
+        isSetup = false
+        AnalyticsType = FirebaseAnalytics.Analytics.self
+    }
+    
+    // TESTING
+    
+    init(type: FirebaseAnalytics.Analytics.Type, isSetup: Bool, sessionStartDate: Date) {
+        self.sessionStartDate = sessionStartDate
+        self.isSetup = isSetup
+        self.AnalyticsType = type
+    }
+    
     // MARK: - Internal
     
     func setup() throws {
-        var configureError: NSError?
-        GGLContext.sharedInstance().configureWithError(&configureError)
-        
-        if let configureError = configureError {
-            log("Error configuring Google services: \(configureError)")
+        let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
+        guard let options = FirebaseOptions(contentsOfFile: path) else {
             throw AnalyticsError.setup
         }
-        
+        FirebaseApp.configure(options: options)
         isSetup = true
-        
-        let gai = GAI.sharedInstance()
-        gai?.trackUncaughtExceptions = true
-    
-        #if DEBUG
-            let path = Bundle.safeMainBundle().path(forResource: "GoogleService-Info", ofType: "plist")!
-            let data = NSDictionary(contentsOfFile: path)!
-            let devId = data["TRACKING_ID_DEV"] as! String
-
-            gai?.defaultTracker = gai?.tracker(withTrackingId: devId)
-            gai?.dryRun = dryRun
-            gai?.logger.logLevel = GAILogLevel.warning
-        #else
-            gai?.logger.logLevel = GAILogLevel.none
-        #endif
     }
     
     func startSession() {
@@ -54,6 +50,7 @@ class Analytics {
         }
         
         sessionStartDate = Date()
+        logEvent(withName: AnalyticsEventAppOpen, parameters: nil)
     }
     
     func endSession() {
@@ -61,75 +58,63 @@ class Analytics {
             return
         }
         
-        sendTimedAppEvent("session", fromDate: sessionStartDate!, toDate: Date())
+        sendTimedAppEvent("app_closed", fromDate: sessionStartDate!, toDate: Date())
         sessionStartDate = nil
     }
     
-    func sendScreenNameEvent(_ classId: AnyClass) {
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker?.set(kGAIScreenName, value: "\(classId)")
-        let item = GAIDictionaryBuilder.createScreenView().build() as NSDictionary as! [AnyHashable: Any]
-        
-        send(item)
+    func sendScreenNameEvent(_ classId: Any) {
+        logEvent(withName: "\(classId)", parameters: nil)
     }
     
-    func sendButtonPressEvent(_ event: String, classId: AnyClass) {
-        sendEvent(event, action: "\(classId)", category: "button_press")
+    func sendEvent(_ event: String, classId: Any) {
+        logEvent(withName: "\(classId)", parameters: [
+            "event" : event as NSString
+            ])
     }
     
-    func sendShareEvent(_ event: String, classId: AnyClass) {
-        sendEvent(event, action: "\(classId)", category: "share")
+    func sendButtonPressEvent(_ event: String, classId: Any) {
+        logEvent(withName: "\(classId)", parameters: [
+            "button_press" : event as NSString
+            ])
     }
     
-    func sendAlertEvent(_ event: String, classId: AnyClass) {
-        sendEvent(event, action: "\(classId)", category: "alert")
+    func sendShareEvent(_ event: String, classId: Any) {
+        logEvent(withName: "\(classId)", parameters: [
+            "share" : event as NSString
+            ])
     }
     
-    func sendErrorEvent(_ error: Error, classId: AnyClass) {
+    func sendAlertEvent(_ event: String, classId: Any) {
+        logEvent(withName: "\(classId)", parameters: [
+            "alert" : event as NSString
+            ])
+    }
+    
+    func sendErrorEvent(_ error: Error, classId: Any) {
         let nsError = error as NSError
-        sendEvent("domain:\(nsError.domain), code:\(nsError.code)", action: "\(classId)", category: "error")
+        logEvent(withName: "\(classId)", parameters: [
+            "error-domain" : nsError.domain as NSString,
+            "error-code" : NSNumber(integerLiteral: nsError.code),
+            "error-description": nsError.localizedDescription as NSString
+            ])
     }
     
     func sendTimedAppEvent(_ event: String, fromDate: Date, toDate: Date) {
         let sessionTimeSecs = toDate.timeIntervalSince(fromDate)
         let sessionTimeMilliSecs = NSNumber(value: UInt(sessionTimeSecs * 1000.0) as UInt)
-        let item = GAIDictionaryBuilder.createTiming(withCategory: "app",
-            interval: sessionTimeMilliSecs,
-            name: event,
-            label: nil).build() as NSDictionary as! [AnyHashable: Any]
-        
-        send(item)
+        logEvent(withName: event, parameters: [
+            "time" : sessionTimeMilliSecs
+            ])
     }
     
     // MARK: - Private
     
-    fileprivate func sendTimedEvent(_ event: String, category: String, fromDate: Date, toDate: Date) {
-        let sessionTimeSecs = toDate.timeIntervalSince(fromDate)
-        let sessionTimeMilliSecs = NSNumber(value: UInt(sessionTimeSecs * 1000.0) as UInt)
-        let item = GAIDictionaryBuilder.createTiming(withCategory: category,
-            interval: sessionTimeMilliSecs,
-            name: event,
-            label: nil).build() as NSDictionary as! [AnyHashable: Any]
-        
-        send(item)
-    }
-    
-    fileprivate func sendEvent(_ event: String, action: String, category: String) {
-        let item = GAIDictionaryBuilder.createEvent(withCategory: category,
-            action: action,
-            label: event,
-            value: nil).build() as NSDictionary as! [AnyHashable: Any]
-       
-        send(item)
-    }
-    
-    fileprivate func send(_ item: [AnyHashable: Any]) {
+    fileprivate func logEvent(withName name: String, parameters: [String: NSObject]?) {
         guard isSetup == true else {
             return
         }
         
-        let tracker = GAI.sharedInstance().defaultTracker
-        tracker?.send(item)
+        AnalyticsType.logEvent(name, parameters: parameters)
     }
 }
 
@@ -140,9 +125,9 @@ extension Analytics {
         set { shared = newValue }
         get { return shared }
     }
-    var __defaultTracker: GAITracker {
-        set { GAI.sharedInstance().defaultTracker = newValue }
-        get { return GAI.sharedInstance().defaultTracker }
+    var __AnalyticsType: FirebaseAnalytics.Analytics.Type {
+        set { AnalyticsType = newValue }
+        get { return AnalyticsType }
     }
     var __isSetup: Bool {
         set { isSetup = newValue }

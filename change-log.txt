@@ -1,3 +1,7 @@
+1.2.0 (12/10/2017)
+    playlist now saves
+    updated analytics
+
 1.1.4 (01/06/2017)
     fix: pressing >> continuously locks up player
     scrubber bar improvements
@@ -68,5 +72,7 @@ Apple ID: 1067558718
 
 
 ----
+
+save playlist
 
 possible bug: press >> 5 times and it locks up?

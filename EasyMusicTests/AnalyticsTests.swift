@@ -7,21 +7,16 @@
 //
 
 import XCTest
-import Google
+import FirebaseAnalytics
 @testable import EasyMusic
 
 private var trackerExpectation: XCTestExpectation?
 
 class AnalyticsTests: XCTestCase {
-    fileprivate var analytics: Analytics?
+    fileprivate var analytics: EasyMusic.Analytics!
     
-    class MockTracker: NSObject, GAITracker {
-        @objc var name: String! = ""
-        @objc var allowIDFACollection: Bool = false
-        override init() { }
-        @objc func set(_ parameterName: String!, value: String!) { }
-        @objc func get(_ parameterName: String!) -> String! { return "" }
-        @objc func send(_ parameters: [AnyHashable: Any]!) {
+    class MockTracker: FirebaseAnalytics.Analytics {
+        @objc override class func logEvent(_ name: String, parameters: [String: Any]?) -> () {
             trackerExpectation!.fulfill()
         }
     }
@@ -29,9 +24,7 @@ class AnalyticsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        analytics = Analytics()
-        _ = try! analytics!.setup()
-        analytics!.dryRun = true
+        analytics = Analytics(type: MockTracker.self, isSetup: true, sessionStartDate: Date())
     }
     
     override func tearDown() {
@@ -41,187 +34,79 @@ class AnalyticsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testSetup() {
-        do {
-            try analytics!.setup()
-        } catch _ {
-            XCTFail()
-        }
+    func testStartSessionSendsEvent() {
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
+        
+        analytics.startSession()
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testSessionSendsEvent() {
-        /**
-        expectations
-        - analytics event sent
-        */
-        trackerExpectation = expectation(description: "GAITracker.send(_)")
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
         
-        // mocks
-        let mockTracker = MockTracker()
-        analytics!.__defaultTracker = mockTracker
-        
-        // runnable
-        analytics!.startSession()
-        analytics!.endSession()
-        
-        // tests
+        analytics.endSession()
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testSetupFailDoesntSendEvent() {
-        /**
-        expectations
-        - analytics doesnt event sent
-        */
         let waitExpectation = expectation(description: "wait")
         
-        // mocks
         class MockTrackerSetupFailed: MockTracker {
-            override func send(_ parameters: [AnyHashable: Any]!) {
+            @objc override class func logEvent(_ name: String, parameters: [String: Any]?) -> () {
                 XCTFail()
             }
         }
+        analytics = Analytics(type: MockTrackerSetupFailed.self, isSetup: false, sessionStartDate: Date())
         
-        let mockTracker = MockTrackerSetupFailed()
-        analytics!.__defaultTracker = mockTracker
-        
-        let mockEvent = AnalyticsTests.self
-        
-        analytics!.__isSetup = false
-        
-        // runnable
-        analytics!.sendScreenNameEvent(mockEvent)
+        analytics.sendScreenNameEvent(AnalyticsTests.self)
         performAfterDelay(1) { () -> Void in
             waitExpectation.fulfill()
         }
-        
-        // tests
         waitForExpectations(timeout: 2, handler: { error in XCTAssertNil(error) })
     }
     
     func testScreenNameSendsEvent() {
-        /**
-        expectations
-        - analytics event sent
-        */
-        trackerExpectation = expectation(description: "GAITracker.send(_)")
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
         
-        // mocks
-        let mockTracker = MockTracker()
-        analytics!.__defaultTracker = mockTracker
-        
-        let mockEvent = AnalyticsTests.self
-        
-        // runnable
-        analytics!.sendScreenNameEvent(mockEvent)
-        
-        // tests
+        analytics.sendScreenNameEvent(AnalyticsTests.self)
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testButtonPressSendsEvent() {
-        /**
-        expectations
-        - analytics event sent
-        */
-        trackerExpectation = expectation(description: "GAITracker.send(_)")
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
         
-        // mocks
-        let mockTracker = MockTracker()
-        analytics!.__defaultTracker = mockTracker
-        
-        let mockEvent = ""
-        let mockClassId = AnalyticsTests.self
-        
-        // runnable
-        analytics!.sendButtonPressEvent(mockEvent, classId: mockClassId)
-        
-        // tests
+        analytics.sendButtonPressEvent("", classId: AnalyticsTests.self)
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testShareSendsEvent() {
-        /**
-        expectations
-        - analytics event sent
-        */
-        trackerExpectation = expectation(description: "GAITracker.send(_)")
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
         
-        // mocks
-        let mockTracker = MockTracker()
-        analytics!.__defaultTracker = mockTracker
-        
-        let mockEvent = ""
-        let mockClassId = AnalyticsTests.self
-        
-        // runnable
-        analytics!.sendShareEvent(mockEvent, classId: mockClassId)
-        
-        // tests
+        analytics.sendShareEvent("", classId: AnalyticsTests.self)
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testAlertSendsEvent() {
-        /**
-        expectations
-        - analytics event sent
-        */
-        trackerExpectation = expectation(description: "GAITracker.send(_)")
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
         
-        // mocks
-        let mockTracker = MockTracker()
-        analytics!.__defaultTracker = mockTracker
-        
-        let mockEvent = ""
-        let mockClassId = AnalyticsTests.self
-        
-        // runnable
-        analytics!.sendAlertEvent(mockEvent, classId: mockClassId)
-        
-        // tests
+        analytics.sendAlertEvent("", classId: AnalyticsTests.self)
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testErrorSendsEvent() {
-        /**
-        expectations
-        - analytics event sent
-        */
-        trackerExpectation = expectation(description: "GAITracker.send(_)")
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
         
-        // mocks
-        let mockTracker = MockTracker()
-        analytics!.__defaultTracker = mockTracker
+        let error = NSError(domain: "", code: 0, userInfo: nil)
         
-        let mockError = NSError(domain: "", code: 0, userInfo: nil)
-        let mockClassId = AnalyticsTests.self
-        
-        // runnable
-        analytics!.sendErrorEvent(mockError, classId: mockClassId)
-        
-        // tests
+        analytics.sendErrorEvent(error, classId: AnalyticsTests.self)
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
     func testSendTimedAppEvent() {
-        /**
-        expectations
-        - analytics event sent
-        */
-        trackerExpectation = expectation(description: "GAITracker.send(_)")
+        trackerExpectation = expectation(description: "FIRAnalytics.logEvent(_:, _:)")
         
-        // mocks
-        let mockTracker = MockTracker()
-        analytics!.__defaultTracker = mockTracker
-        
-        let mockEvent = ""
-        let mockFromDate = Date()
-        let mockToDate = Date()
-        
-        // runnable
-        analytics!.sendTimedAppEvent(mockEvent, fromDate: mockFromDate, toDate: mockToDate)
-        
-        // tests
+        analytics.sendTimedAppEvent("", fromDate: Date(), toDate: Date())
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
 }
+

@@ -15,7 +15,7 @@ class PlayerButton: UIButton {
     
     // MARK: - Internal
     
-    func touchUpInside() {
+    @objc func touchUpInside() {
         let animation = createPulseAnimation()
         self.layer.add(animation, forKey: "pulseAnimation")
     }

@@ -123,6 +123,67 @@ class MusicPlayerTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
+    func testLoadOnInit() {
+        /**
+         expectations
+         - tracks load on init
+         */
+        musicPlayerExpectation = expectation(description: "trackManager.loadTracks(_)")
+        
+        // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            class MockTrackManager: TrackManager {
+                override func loadTracks() {
+                    musicPlayerExpectation!.fulfill()
+                }
+            }
+            override var trackManager: TrackManager {
+                get {
+                    return MockTrackManager()
+                }
+                set {}
+            }
+        }
+        
+        // runnable
+        _ = MockMusicPlayer(delegate: self)
+        
+        // tests
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+    }
+    
+    func testShuffleOnInit() {
+        /**
+         expectations
+         - tracks shuffle on init
+         */
+        musicPlayerExpectation = expectation(description: "trackManager.loadTracks(_)")
+        
+        // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            class MockTrackManager: TrackManager {
+                override var numOfTracks: Int {
+                    return 0
+                }
+                override func shuffleTracks() {
+                     musicPlayerExpectation!.fulfill()
+                }
+            }
+            override var trackManager: TrackManager {
+                get {
+                    return MockTrackManager()
+                }
+                set {}
+            }
+        }
+        
+        // runnable
+        _ = MockMusicPlayer(delegate: self)
+        
+        // tests
+        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+    }
+    
     func testPlay() {
         /**
         expectations
@@ -1244,7 +1305,7 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockAnalytics: Analytics {
-            override func sendErrorEvent(_ error: Error, classId: AnyClass) {
+            override func sendErrorEvent(_ error: Error, classId: Any) {
                 analyticsExpectation!.fulfill()
             }
         }

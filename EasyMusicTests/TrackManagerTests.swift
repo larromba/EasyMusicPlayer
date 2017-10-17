@@ -16,12 +16,11 @@ private let mockDuration = 9.0
 private let mockImage = UIImage()
 private let mockArtwork = MPMediaItemArtwork(image: mockImage)
 private let mockAssetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
+private var mockTracks: [MPMediaItem]!
 
 class TrackManagerTests: XCTestCase {
     fileprivate let url = URL(fileURLWithPath: Constant.Path.DummyAudio)
-
     fileprivate var trackManager: TrackManager?
-    fileprivate var mockTracks: [MPMediaItem]!
     
     override func setUp() {
         super.setUp()
@@ -96,6 +95,78 @@ class TrackManagerTests: XCTestCase {
         
         // tests
         XCTAssertTrue(true)
+    }
+    
+    func testShuffleSavesTracks() {
+        /**
+         expectations
+         - tracks save
+         */
+        
+        // mocks
+        class MockUserDefaults: UserDefaults {
+            var didSetValue: Bool = false
+            var didSynchronize: Bool = false
+            var values: [UInt64] = []
+            override func set(_ value: Any?, forKey defaultName: String) {
+                if let value = value as? Data, let values = NSKeyedUnarchiver.unarchiveObject(with: value) as? [UInt64] {
+                    self.values = values
+                }
+                didSetValue = true
+            }
+            override func synchronize() -> Bool {
+                didSynchronize = true
+                return true
+            }
+        }
+        let userDefaults = MockUserDefaults()
+        trackManager!.__userDefaults = userDefaults
+
+        // runnable
+        trackManager!.shuffleTracks()
+        
+        // tests
+        XCTAssertTrue(userDefaults.didSetValue)
+        XCTAssertTrue(userDefaults.didSynchronize)
+        XCTAssertEqual(userDefaults.values.count, 3)
+    }
+    
+    func testLoadTracks() {
+        /**
+         expectations
+         - tracks load
+         */
+        
+        // mocks
+        class MockUserDefaults: UserDefaults {
+            var didGetObject: Bool = false
+            var value: Any?
+            override func object(forKey defaultName: String) -> Any? {
+                didGetObject = true
+                return value
+            }
+        }
+        let userDefaults = MockUserDefaults()
+        userDefaults.value = NSKeyedArchiver.archivedData(withRootObject: [0])
+        trackManager!.__userDefaults = userDefaults
+        
+        class MockMediaQuery: MPMediaQuery {
+            override class func songs() -> MPMediaQuery {
+                return MockMediaQuery()
+            }
+            override var items: [MPMediaItem]? {
+                return mockTracks
+            }
+        }
+        trackManager!.__MediaQueryType = MockMediaQuery.self
+        
+        // runnable
+        trackManager!.loadTracks()
+        
+        // tests
+        XCTAssertTrue(userDefaults.didGetObject)
+        XCTAssertEqual(trackManager!.allTracks.count, 6)
+        XCTAssertEqual(trackManager!.allTracks.first, mockTracks.first)
     }
     
     func testCuePrevious() {
