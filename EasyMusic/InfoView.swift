@@ -52,8 +52,8 @@ class InfoView: UIView {
             MPMediaItemPropertyTitle: track.title,
             MPMediaItemPropertyArtist: track.artist,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
-            MPNowPlayingInfoPropertyElapsedPlaybackTime: remoteInfo.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] ?? NSNumber(value: 0.0),
-            MPMediaItemPropertyPlaybackDuration: NSNumber(value: track.duration)
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: remoteInfo.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] ?? 0.0,
+            MPMediaItemPropertyPlaybackDuration: track.duration
         ]
         if #available(iOS 10.0, *) {
             songInfo[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
@@ -80,7 +80,7 @@ class InfoView: UIView {
         guard var songInfo = remoteInfo.nowPlayingInfo else {
             return
         }
-        songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(value: time)
+        songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = time
         remoteInfo.nowPlayingInfo = songInfo
     }
     

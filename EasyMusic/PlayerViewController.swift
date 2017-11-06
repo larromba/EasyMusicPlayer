@@ -112,8 +112,8 @@ extension PlayerViewController: MusicPlayerDelegate {
             controlsView.setControlsStopped()
             scrubberView.isUserInteractionEnabled = false
         case .finished:
-            infoView.clearInfo()
             controlsView.setControlsStopped()
+            infoView.clearInfo()
             scrubberView.isUserInteractionEnabled = false
             
             Analytics.shared.sendAlertEvent("finished_playlist", classId: classForCoder)
