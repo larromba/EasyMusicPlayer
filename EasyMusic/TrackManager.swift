@@ -10,19 +10,13 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
-    private enum Key: String {
-        case tracks
-        case currentTrackID
-    }
-    
     private var tracks: [MPMediaItem] = []
     private var trackIndex: Int = 0 {
         didSet {
-            userDefaults.set(currentTrack.persistentID, forKey: Key.currentTrackID.rawValue)
-            userDefaults.synchronize()
+            userData.currentTrackID = currentTrack.persistentID
         }
     }
-    private var userDefaults: UserDefaults = .standard
+    private var userData: UserData = UserData()
     private var MediaQueryType: MPMediaQuery.Type = MPMediaQuery.self
     
     var allTracks: [MPMediaItem] {
@@ -101,9 +95,8 @@ class TrackManager {
             return
         }
         guard
-            let data = userDefaults.object(forKey: Key.tracks.rawValue) as? Data,
-            let currentTrackID = userDefaults.object(forKey: Key.currentTrackID.rawValue) as? UInt64,
-            let trackIDs = NSKeyedUnarchiver.unarchiveObject(with: data) as? [UInt64], trackIDs.count > 0 else {
+            let currentTrackID = userData.currentTrackID,
+            let trackIDs = userData.trackIDs, trackIDs.count > 0 else {
             return
         }
         let query = MediaQueryType.songs()
@@ -175,10 +168,7 @@ class TrackManager {
     // MARK: - Private
     
     private func saveTracks(_ tracks: [MPMediaItem]) {
-        let trackIDs = tracks.map { return $0.persistentID }
-        let data = NSKeyedArchiver.archivedData(withRootObject: trackIDs)
-        userDefaults.set(data, forKey: Key.tracks.rawValue)
-        userDefaults.synchronize()
+        userData.trackIDs = tracks.map { return $0.persistentID }
     }
 }
 
@@ -193,9 +183,9 @@ extension TrackManager {
         get { return tracks }
         set { tracks = newValue }
     }
-    var __userDefaults: UserDefaults {
-        get { return userDefaults }
-        set { userDefaults = newValue }
+    var __userData: UserData {
+        get { return userData }
+        set { userData = newValue }
     }
     var __MediaQueryType: MPMediaQuery.Type {
         get { return MediaQueryType }

@@ -19,6 +19,7 @@ class PlayerViewController: UIViewController {
     private var shareManager: ShareManager = ShareManager()
     private var userScrobbling: Bool = false
     private var AlertController = UIAlertController.self
+    private var userData: UserData = UserData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,7 @@ class PlayerViewController: UIViewController {
         controlsView.delegate = self
         scrubberView.delegate = self
         
-        if let repeatMode = UserData.repeatMode {
+        if let repeatMode = userData.repeatMode {
             musicPlayer.repeatMode = repeatMode
             
             switch repeatMode {
@@ -312,7 +313,7 @@ extension PlayerViewController: ControlsViewDelegate {
         Analytics.shared.sendButtonPressEvent(event, classId: classForCoder)
         
         // save repeat state
-        UserData.repeatMode = musicPlayer.repeatMode
+        userData.repeatMode = musicPlayer.repeatMode
     }
 }
 
@@ -346,5 +347,9 @@ extension PlayerViewController {
     var __userScrobbling: Bool {
         get { return userScrobbling }
         set { userScrobbling = newValue }
+    }
+    var __userData: UserData {
+        get { return userData }
+        set { userData = newValue }
     }
 }

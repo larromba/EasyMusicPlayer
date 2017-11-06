@@ -824,8 +824,10 @@ class PlayerViewControllerTests: XCTestCase {
          */
          
         // mocks
-        UserData.repeatMode = MusicPlayer.RepeatMode.all
-       
+        let userData = UserData(userDefaults: UserDefaults(suiteName: "test")!)
+        userData.repeatMode = MusicPlayer.RepeatMode.all
+        playerViewController!.__userData = userData
+
         let expectedRepeatButtonState = RepeatButton.State.all
 
         // runnable

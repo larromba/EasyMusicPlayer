@@ -120,8 +120,9 @@ class TrackManagerTests: XCTestCase {
             }
         }
         let userDefaults = MockUserDefaults()
-        trackManager!.__userDefaults = userDefaults
-
+        let userData = UserData(userDefaults: userDefaults)
+        trackManager!.__userData = userData
+        
         // runnable
         trackManager!.shuffleTracks()
         
@@ -138,10 +139,12 @@ class TrackManagerTests: XCTestCase {
          */
         
         // mocks
-        let userDefaults = UserDefaults()
+        let userDefaults = UserDefaults(suiteName: "test")!
         userDefaults.set(NSKeyedArchiver.archivedData(withRootObject: [0, 1, 2]), forKey: "tracks")
         userDefaults.set(1, forKey: "currentTrackID")
-        trackManager!.__userDefaults = userDefaults
+        
+        let userData = UserData(userDefaults: userDefaults)
+        trackManager!.__userData = userData
         
         class MockMediaQuery: MPMediaQuery {
             var count = 0

@@ -1,5 +1,5 @@
-1.2.1 ?
-    fixed headphone bug
+1.2.1 (06/11/2017)
+    fixed headphone unplugged bug
     ios11 fixes
     now saves last played track
 

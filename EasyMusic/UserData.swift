@@ -7,17 +7,55 @@
 //
 
 import Foundation
+import MediaPlayer
 
 class UserData {
-    class var repeatMode: MusicPlayer.RepeatMode? {
+    private enum Key: String {
+        case repeatMode
+        case tracks
+        case currentTrackID
+    }
+    
+    private var userDefaults: UserDefaults
+    
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+    }
+    
+    var repeatMode: MusicPlayer.RepeatMode? {
         get {
-            if let repeatModeData = UserDefaults.standard.object(forKey: "repeatMode") as? NSNumber {
+            if let repeatModeData = userDefaults.object(forKey: Key.repeatMode.rawValue) as? NSNumber {
                 return MusicPlayer.RepeatMode(rawValue: repeatModeData.intValue)
             }
             return nil
         }
         set {
-            UserDefaults.standard.set(newValue?.rawValue, forKey: "repeatMode")
+            userDefaults.set(newValue?.rawValue, forKey: Key.repeatMode.rawValue)
+            userDefaults.synchronize()
+        }
+    }
+    
+    var currentTrackID: MPMediaEntityPersistentID? {
+        get {
+            return userDefaults.object(forKey: Key.currentTrackID.rawValue) as? MPMediaEntityPersistentID
+        }
+        set {
+            userDefaults.set(newValue, forKey: Key.currentTrackID.rawValue)
+            userDefaults.synchronize()
+        }
+    }
+    
+    var trackIDs: [MPMediaEntityPersistentID]? {
+        get {
+            if let data = userDefaults.object(forKey: Key.tracks.rawValue) as? Data {
+                return NSKeyedUnarchiver.unarchiveObject(with: data) as? [MPMediaEntityPersistentID]
+            }
+            return nil
+        }
+        set {
+            let data = NSKeyedArchiver.archivedData(withRootObject: newValue ?? [])
+            userDefaults.set(data, forKey: Key.tracks.rawValue)
+            userDefaults.synchronize()
         }
     }
 }
