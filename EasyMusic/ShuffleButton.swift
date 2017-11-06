@@ -18,7 +18,7 @@ class ShuffleButton: PlayerButton {
     
     // MARK: - Private
     
-    fileprivate func createSpinAnimation() -> CABasicAnimation {
+    private func createSpinAnimation() -> CABasicAnimation {
         let spinAnimation = CABasicAnimation(keyPath: "transform.rotation.z");
         spinAnimation.duration = 0.2;
         spinAnimation.toValue = NSNumber(value: 1.2 as Float);

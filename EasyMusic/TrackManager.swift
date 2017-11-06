@@ -14,10 +14,10 @@ class TrackManager {
         case tracks
     }
     
-    fileprivate var tracks: [MPMediaItem] = []
-    fileprivate var trackIndex: Int = 0
-    fileprivate var userDefaults: UserDefaults = .standard
-    fileprivate var MediaQueryType: MPMediaQuery.Type = MPMediaQuery.self
+    private var tracks: [MPMediaItem] = []
+    private var trackIndex: Int = 0
+    private var userDefaults: UserDefaults = .standard
+    private var MediaQueryType: MPMediaQuery.Type = MPMediaQuery.self
     
     var allTracks: [MPMediaItem] {
         return tracks

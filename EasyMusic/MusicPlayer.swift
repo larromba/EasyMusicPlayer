@@ -17,12 +17,12 @@ protocol MusicPlayerDelegate: class {
 }
 
 class MusicPlayer: NSObject {
-    fileprivate var player: AVAudioPlayer?
-    fileprivate var playbackCheckTimer: Timer?
-    fileprivate var seekTimer: Timer?
-    fileprivate var isPlayingInBackground: Bool = false
-    fileprivate var isAudioSessionInterrupted: Bool = false
-    fileprivate var seekStartDate: Date?
+    private var player: AVAudioPlayer?
+    private var playbackCheckTimer: Timer?
+    private var seekTimer: Timer?
+    private var isPlayingInBackground: Bool = false
+    private var isAudioSessionInterrupted: Bool = false
+    private var seekStartDate: Date?
 
     weak var delegate: MusicPlayerDelegate?
     var trackManager: TrackManager = TrackManager()
@@ -150,7 +150,7 @@ class MusicPlayer: NSObject {
     
     // MARK: - Private
     
-    fileprivate func startPlaybackCheckTimer() {
+    private func startPlaybackCheckTimer() {
         if playbackCheckTimer != nil {
             stopPlaybackCheckTimer()
         }
@@ -162,12 +162,12 @@ class MusicPlayer: NSObject {
             repeats: true)
     }
     
-    fileprivate func stopPlaybackCheckTimer() {
+    private func stopPlaybackCheckTimer() {
         playbackCheckTimer?.invalidate()
         playbackCheckTimer = nil
     }
     
-    fileprivate func startSeekTimerWithAction(_ action: Selector) {
+    private func startSeekTimerWithAction(_ action: Selector) {
         if seekTimer != nil {
             stopSeekTimer()
         }
@@ -179,18 +179,18 @@ class MusicPlayer: NSObject {
             repeats: true)
     }
     
-    fileprivate func stopSeekTimer() {
+    private func stopSeekTimer() {
         seekTimer?.invalidate()
         seekTimer = nil
     }
     
-    fileprivate func threwError(_ error: MusicError) {
+    private func threwError(_ error: MusicError) {
         stopSeekTimer()
         delegate?.changedState(self, state: MusicPlayer.State.stopped)
         delegate?.threwError(self, error: error)
     }
     
-    fileprivate func authorizeThenPerform(_ block: @escaping (() -> Void)) {
+    private func authorizeThenPerform(_ block: @escaping (() -> Void)) {
         guard trackManager.authorized else {
             trackManager.authorize({ (_ success: Bool) in
                 guard success else {

@@ -22,7 +22,7 @@ class PlayerButton: UIButton {
         
     // MARK: - Private
     
-    fileprivate func createPulseAnimation() -> CABasicAnimation {
+    private func createPulseAnimation() -> CABasicAnimation {
         let pulseAnimation = CABasicAnimation(keyPath: "transform.scale");
         pulseAnimation.duration = 0.1;
         pulseAnimation.toValue = NSNumber(value: 1.2 as Float)

@@ -10,10 +10,10 @@ import Foundation
 import FirebaseAnalytics
 
 class Analytics {
-    fileprivate(set) static var shared = Analytics()
-    fileprivate var sessionStartDate: Date?
-    fileprivate var isSetup: Bool
-    fileprivate var AnalyticsType: FirebaseAnalytics.Analytics.Type
+    private(set) static var shared = Analytics()
+    private var sessionStartDate: Date?
+    private var isSetup: Bool
+    private var AnalyticsType: FirebaseAnalytics.Analytics.Type
     
     enum AnalyticsError: Error {
         case setup
@@ -109,7 +109,7 @@ class Analytics {
     
     // MARK: - Private
     
-    fileprivate func logEvent(withName name: String, parameters: [String: NSObject]?) {
+    private func logEvent(withName name: String, parameters: [String: NSObject]?) {
         guard isSetup == true else {
             return
         }

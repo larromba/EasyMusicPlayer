@@ -13,7 +13,7 @@ import FirebaseAnalytics
 private var trackerExpectation: XCTestExpectation?
 
 class AnalyticsTests: XCTestCase {
-    fileprivate var analytics: EasyMusic.Analytics!
+    private var analytics: EasyMusic.Analytics!
     
     class MockTracker: FirebaseAnalytics.Analytics {
         @objc override class func logEvent(_ name: String, parameters: [String: Any]?) -> () {

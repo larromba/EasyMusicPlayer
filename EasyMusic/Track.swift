@@ -10,11 +10,11 @@ import UIKit
 import MediaPlayer
 
 struct Track {
-    fileprivate var mediaItemArtwork: MPMediaItemArtwork?
-    fileprivate(set) var artist: String!
-    fileprivate(set) var title: String!
-    fileprivate(set) var duration: TimeInterval = 0
-    fileprivate(set) var url: URL?
+    private var mediaItemArtwork: MPMediaItemArtwork?
+    private(set) var artist: String!
+    private(set) var title: String!
+    private(set) var duration: TimeInterval = 0
+    private(set) var url: URL?
     var artwork: UIImage? {
         return mediaItemArtwork?.image(at: CGSize(width: 512, height: 512))
     }

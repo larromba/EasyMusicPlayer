@@ -19,8 +19,8 @@ private let mockAssetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 private var mockTracks: [MPMediaItem]!
 
 class TrackManagerTests: XCTestCase {
-    fileprivate let url = URL(fileURLWithPath: Constant.Path.DummyAudio)
-    fileprivate var trackManager: TrackManager?
+    private let url = URL(fileURLWithPath: Constant.Path.DummyAudio)
+    private var trackManager: TrackManager?
     
     override func setUp() {
         super.setUp()

@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 class RepeatButton: PlayerButton {
-    fileprivate(set) var buttonState: State = State.none
+    private(set) var buttonState: State = State.none
     
     enum State {
         case none

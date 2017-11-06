@@ -84,7 +84,7 @@ class InfoView: UIView {
     
     // MARK: - Private
     
-    fileprivate func stringFromTimeInterval(_ timeInterval: TimeInterval) -> String {
+    private func stringFromTimeInterval(_ timeInterval: TimeInterval) -> String {
         let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60

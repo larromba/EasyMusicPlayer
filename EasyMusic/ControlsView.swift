@@ -125,39 +125,39 @@ class ControlsView: UIView {
     }
     
     func enablePrevious(_ enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.shared();
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.previousTrackCommand.isEnabled = enable
         commandCenter.seekBackwardCommand.isEnabled = enable
         prevButton.isEnabled = enable
     }
     
     func enableNext(_ enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.shared();
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.nextTrackCommand.isEnabled = enable
         commandCenter.seekForwardCommand.isEnabled = enable
         nextButton.isEnabled = enable
     }
     
     func enableSeekBackwardsRemoteOnly(_ enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.shared();
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.previousTrackCommand.isEnabled = enable
         commandCenter.seekBackwardCommand.isEnabled = enable
     }
     
     func enableSeekForwardsRemoteOnly(_ enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.shared();
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.nextTrackCommand.isEnabled = enable
         commandCenter.seekForwardCommand.isEnabled = enable
     }
     
     func enablePlay(_ enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.shared();
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.playCommand.isEnabled = enable
         playButton.isEnabled = enable
     }
     
     func enableStop(_ enable: Bool) {
-        let commandCenter = MPRemoteCommandCenter.shared();
+        let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.stopCommand.isEnabled = enable
         stopButton.isEnabled = enable
     }

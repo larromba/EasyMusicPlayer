@@ -21,7 +21,7 @@ private var sharedTrack: Track!
 private var _isPlaying: Bool = false
 
 class PlayerViewControllerTests: XCTestCase {
-    fileprivate var playerViewController: PlayerViewController?
+    private var playerViewController: PlayerViewController?
     
     override func setUp() {
         super.setUp()
@@ -202,7 +202,7 @@ class PlayerViewControllerTests: XCTestCase {
         // mocks
         class MockControlsView: ControlsView {
             override var classForCoder: AnyClass { return ControlsView.self }
-            fileprivate override func setControlsStopped() {
+            override func setControlsStopped() {
                 controlsViewExpectation!.fulfill()
             }
         }
@@ -215,7 +215,7 @@ class PlayerViewControllerTests: XCTestCase {
         
         class MockAudioPlayer: AVAudioPlayer {
             override var isPlaying: Bool { return false }
-            fileprivate override func stop() { }
+            override func stop() { }
             override var currentTime: TimeInterval {
                 get { return 0.0 }
                 set {}

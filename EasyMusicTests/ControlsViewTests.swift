@@ -11,8 +11,8 @@ import MediaPlayer
 @testable import EasyMusic
 
 class ControlsViewTests: XCTestCase {
-    fileprivate var controlsView: ControlsView?
-    fileprivate var controlsExpectation: XCTestExpectation?
+    private var controlsView: ControlsView?
+    private var controlsExpectation: XCTestExpectation?
     
     override func setUp() {
         super.setUp()

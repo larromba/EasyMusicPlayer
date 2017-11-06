@@ -10,15 +10,15 @@ import UIKit
 import MediaPlayer
 
 class PlayerViewController: UIViewController {
-    @IBOutlet fileprivate weak var scrubberView: ScrubberView!
-    @IBOutlet fileprivate weak var infoView: InfoView!
-    @IBOutlet fileprivate weak var controlsView: ControlsView!
-    @IBOutlet fileprivate weak var appVersionLabel: UILabel!
+    @IBOutlet private weak var scrubberView: ScrubberView!
+    @IBOutlet private weak var infoView: InfoView!
+    @IBOutlet private weak var controlsView: ControlsView!
+    @IBOutlet private weak var appVersionLabel: UILabel!
     
-    fileprivate lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
-    fileprivate var shareManager: ShareManager = ShareManager()
-    fileprivate var userScrobbling: Bool = false
-    fileprivate var AlertController = UIAlertController.self
+    private lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
+    private var shareManager: ShareManager = ShareManager()
+    private var userScrobbling: Bool = false
+    private var AlertController = UIAlertController.self
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +78,7 @@ class PlayerViewController: UIViewController {
     
     // MARK: - Private
     
-    fileprivate func updateSeekingControls() {
+    private func updateSeekingControls() {
         if musicPlayer.repeatMode == MusicPlayer.RepeatMode.all {
             controlsView.enablePrevious(true)
             controlsView.enableNext(true)

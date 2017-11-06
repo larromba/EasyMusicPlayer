@@ -19,7 +19,7 @@ private let mockArtwork = MPMediaItemArtwork(image: mockImage)
 private let mockAssetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 
 class ShareManagerTests: XCTestCase {
-    fileprivate var shareManager: ShareManager?
+    private var shareManager: ShareManager?
     
     class MockMediaItem: MPMediaItem {
         override var artist: String { return mockArtist }

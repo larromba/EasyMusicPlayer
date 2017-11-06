@@ -26,8 +26,8 @@ private var methodOrder: [Int]?
 private var audioUrl: URL!
 
 class MusicPlayerTests: XCTestCase {
-    fileprivate var musicPlayer: EasyMusic.MusicPlayer?
-    fileprivate var mockPlaylist: [MPMediaItem]?
+    private var musicPlayer: EasyMusic.MusicPlayer?
+    private var mockPlaylist: [MPMediaItem]?
 
     class GenericMockMediaItem: MPMediaItem {
         override var artist: String { return "artist" }
@@ -1362,7 +1362,7 @@ class MusicPlayerTests: XCTestCase {
         musicPlayer!.__player = mockAudioPlayer
         
         class MockTimer: Timer {
-            fileprivate override func invalidate() {
+            override func invalidate() {
                 musicPlayerExpectation!.fulfill()
             }
         }

@@ -11,7 +11,7 @@ import XCTest
 @testable import EasyMusic
 
 class PlayButtonTests: XCTestCase {
-    fileprivate var playButton: PlayButton?
+    private var playButton: PlayButton?
     
     override func setUp() {
         super.setUp()
