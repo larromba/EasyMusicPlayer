@@ -25,8 +25,8 @@ class PlayerButton: UIButton {
     private func createPulseAnimation() -> CABasicAnimation {
         let pulseAnimation = CABasicAnimation(keyPath: "transform.scale");
         pulseAnimation.duration = 0.1;
-        pulseAnimation.toValue = NSNumber(value: 1.2 as Float)
-        pulseAnimation.fromValue = NSNumber(value: 1.0 as Float)
+        pulseAnimation.toValue = 1.2
+        pulseAnimation.fromValue = 1.0
         pulseAnimation.autoreverses = true
         pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn);
         return pulseAnimation

@@ -87,7 +87,7 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
             override func enableAudioSession(_ enable: Bool) {
-                if enable == true {
+                if enable {
                     musicPlayerExpectation!.fulfill()
                 }
             }
@@ -110,7 +110,7 @@ class MusicPlayerTests: XCTestCase {
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
             override func enableAudioSession(_ enable: Bool) {
-                if enable == false {
+                if !enable {
                     musicPlayerExpectation!.fulfill()
                 }
             }
@@ -826,35 +826,21 @@ class MusicPlayerTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }
     
-    func testStopHeadphonesRemoved() {
+    func testPauseWhenHeadphonesRemoved() {
         /**
         expectations
         - audio pauses
         */
-        audioPlayerExpectation = expectation(description: "audioPlayer.pause()")
-
         // mocks
-        class MockAudioPlayer: AVAudioPlayer {
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            var isPaused: Bool = false
+            override var isPlaying: Bool { return true }
             override func pause() {
-                audioPlayerExpectation!.fulfill()
+                isPaused = true
             }
         }
-        
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var isPlaying: Bool { return true }
-        }
-        
-        class MockTrackManager: EasyMusic.TrackManager {
-            override var numOfTracks: Int { return 1 }
-        }
-        
         let mockMusicPlayer = MockMusicPlayer(delegate: self)
-        mockMusicPlayer.trackManager = MockTrackManager()
-        
-        let mockAudioPlayer = try! MockAudioPlayer(contentsOf: audioUrl)
-        mockAudioPlayer.delegate = mockMusicPlayer
-        mockMusicPlayer.__player = mockAudioPlayer
-        
+
         let mockUserInfo: [AnyHashable: Any] = [
             AVAudioSessionRouteChangeReasonKey : AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue
         ]
@@ -864,48 +850,43 @@ class MusicPlayerTests: XCTestCase {
         NotificationCenter.default.post(mockNotification)
         
         // tests
-        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+        XCTAssertTrue(mockMusicPlayer.isPaused)
     }
     
-    func testStopHeadphonesAttached() {
+    func testPlayWhenHeadphonesAttached() {
         /**
         expectations
-        - audio pauses
+        - audio plays
         */
-        audioPlayerExpectation = expectation(description: "audioPlayer.pause()")
-        
         // mocks
-        class MockAudioPlayer: AVAudioPlayer {
-            override func pause() {
-                audioPlayerExpectation!.fulfill()
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            var _isPlaying: Bool = false
+            var isPlayed: Bool = false
+            override var isPlaying: Bool { return _isPlaying }
+            override func play() {
+                isPlayed = true
             }
         }
-        
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override var isPlaying: Bool { return true }
-        }
-        
-        class MockTrackManager: EasyMusic.TrackManager {
-            override var numOfTracks: Int { return 1 }
-        }
-        
         let mockMusicPlayer = MockMusicPlayer(delegate: self)
-        mockMusicPlayer.trackManager = MockTrackManager()
-        
-        let mockAudioPlayer = try! MockAudioPlayer(contentsOf: audioUrl)
-        mockAudioPlayer.delegate = mockMusicPlayer
-        mockMusicPlayer.__player = mockAudioPlayer
-        
-        let mockUserInfo: [AnyHashable: Any] = [
-            AVAudioSessionRouteChangeReasonKey : AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue
+        mockMusicPlayer._isPlaying = true
+
+        var mockUserInfo: [AnyHashable: Any] = [
+            AVAudioSessionRouteChangeReasonKey : AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue
         ]
-        let mockNotification = Notification(name: NSNotification.Name.AVAudioSessionRouteChange, object: nil, userInfo: mockUserInfo)
+        var mockNotification = Notification(name: NSNotification.Name.AVAudioSessionRouteChange, object: nil, userInfo: mockUserInfo)
         
         // runnable
         NotificationCenter.default.post(mockNotification)
+        mockMusicPlayer._isPlaying = false
+       
+        mockUserInfo = [
+            AVAudioSessionRouteChangeReasonKey : AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue
+        ]
+        mockNotification = Notification(name: NSNotification.Name.AVAudioSessionRouteChange, object: nil, userInfo: mockUserInfo)
+        NotificationCenter.default.post(mockNotification)
         
         // tests
-        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+        XCTAssertTrue(mockMusicPlayer.isPlayed)
     }
     
     func testPrevious() {

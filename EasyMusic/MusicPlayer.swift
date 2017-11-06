@@ -20,6 +20,7 @@ class MusicPlayer: NSObject {
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: Timer?
     private var seekTimer: Timer?
+    private var isHeadphonesRemovedByMistake: Bool = false
     private var isPlayingInBackground: Bool = false
     private var isAudioSessionInterrupted: Bool = false
     private var seekStartDate: Date?
@@ -211,7 +212,7 @@ class MusicPlayer: NSObject {
     }
     
     @objc func applicationWillResignActive(_ notifcation: Notification) {
-        if isPlaying == true {
+        if isPlaying {
             isPlayingInBackground = true
         }
     }
@@ -221,34 +222,45 @@ class MusicPlayer: NSObject {
     }
     
     @objc func audioSessionRouteChange(_ notifcation: Notification) {
-        if let rawValue = (notifcation.userInfo?[AVAudioSessionRouteChangeReasonKey] as AnyObject).uintValue {
-            if let reason = AVAudioSessionRouteChangeReason(rawValue: rawValue) {
-                switch reason {
-                case .newDeviceAvailable, .oldDeviceUnavailable:
-                    if isPlaying == true {
-                        pause()
-                    }
-                default:
-                    break
-                }
+        guard
+            let rawValue = (notifcation.userInfo?[AVAudioSessionRouteChangeReasonKey] as? NSNumber)?.uintValue,
+            let reason = AVAudioSessionRouteChangeReason(rawValue: rawValue) else {
+            return
+        }
+        switch reason {
+        case .oldDeviceUnavailable:
+            if isPlaying {
+                isHeadphonesRemovedByMistake = true
+                pause()
             }
+        case .newDeviceAvailable:
+            if !isPlaying && self.isHeadphonesRemovedByMistake {
+                play()
+            }
+        default:
+            break
         }
     }
     
     @objc func audioSessionInterruption(_ notification: Notification) {
-        if let rawValue = (notification.userInfo?[AVAudioSessionInterruptionTypeKey] as AnyObject).uintValue {
-            if let reason = AVAudioSessionInterruptionType(rawValue: rawValue) {
-                switch reason {
-                case .began:
-                    if isPlayingInBackground == true || isPlaying == true {
-                        isAudioSessionInterrupted = true
-                        pause()
-                    }
-                case .ended:
-                    if isAudioSessionInterrupted == true {
-                        isAudioSessionInterrupted = false
-                        play()
-                    }
+        guard
+            let rawValue = (notification.userInfo?[AVAudioSessionInterruptionTypeKey] as? NSNumber)?.uintValue,
+            let reason = AVAudioSessionInterruptionType(rawValue: rawValue) else {
+            return
+        }
+        switch reason {
+        case .began:
+            if isPlayingInBackground || isPlaying {
+                DispatchQueue.main.async {
+                    self.isAudioSessionInterrupted = true
+                    self.pause()
+                }
+            }
+        case .ended:
+            if isAudioSessionInterrupted {
+                DispatchQueue.main.async {
+                    self.isAudioSessionInterrupted = false
+                    self.play()
                 }
             }
         }
@@ -260,7 +272,6 @@ class MusicPlayer: NSObject {
         guard player != nil else {
             return
         }
-        
         delegate?.changedPlaybackTime(self, playbackTime: player!.currentTime)
     }
     
@@ -326,6 +337,7 @@ class MusicPlayer: NSObject {
             }
 
             self.startPlaybackCheckTimer()
+            self.isHeadphonesRemovedByMistake = false
             self.delegate?.changedState(self, state: State.playing)
         })
     }
@@ -357,10 +369,10 @@ class MusicPlayer: NSObject {
     }
     
     @objc func togglePlayPause() {
-        if isPlaying == false {
-            play()
-        } else {
+        if isPlaying {
             pause()
+        } else {
+            play()
         }
     }
     
@@ -368,7 +380,7 @@ class MusicPlayer: NSObject {
         stop()
         
         let result = trackManager.cuePrevious()
-        if repeatMode == RepeatMode.all && result == false {
+        if repeatMode == .all && !result {
             trackManager.cueEnd()
         }
        
@@ -379,9 +391,9 @@ class MusicPlayer: NSObject {
         stop()
         
         let result = trackManager.cueNext()
-        if repeatMode == RepeatMode.all && result == false {
+        if repeatMode == .all && !result {
             trackManager.cueStart()
-        } else if result == false {
+        } else if !result {
             return
         }
 
@@ -459,7 +471,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
         stopSeekTimer()
         time = 0.0
         
-        if flag == false {
+        if !flag {
             threwError(MusicError.avError)
             return
         }
@@ -467,7 +479,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
         switch repeatMode {
         case .none:
             let result = trackManager.cueNext()
-            if result == false {
+            if !result {
                 trackManager.cueStart()
                 delegate?.changedState(self, state: State.finished)
                 return
@@ -477,7 +489,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
             play()
         case .all:
             let result = trackManager.cueNext()
-            if result == false {
+            if !result {
                 trackManager.cueStart()
             }
             play()

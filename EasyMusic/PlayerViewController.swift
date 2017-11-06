@@ -68,7 +68,7 @@ class PlayerViewController: UIViewController {
     
     @objc func applicationDidBecomeActive() {
         // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
-        if controlsView.playButton.buttonState == PlayButton.State.pause && musicPlayer.isPlaying == false {
+        if controlsView.playButton.buttonState == .pause && !musicPlayer.isPlaying {
             musicPlayer.stop()
         }
     }
@@ -76,7 +76,7 @@ class PlayerViewController: UIViewController {
     // MARK: - Private
     
     private func updateSeekingControls() {
-        if musicPlayer.repeatMode == MusicPlayer.RepeatMode.all {
+        if musicPlayer.repeatMode == .all {
             controlsView.enablePrevious(true)
             controlsView.enableNext(true)
             return
@@ -126,7 +126,7 @@ extension PlayerViewController: MusicPlayerDelegate {
     }
     
     func changedPlaybackTime(_ sender: MusicPlayer, playbackTime: TimeInterval) {
-        guard userScrobbling == false else {
+        guard !userScrobbling else {
             return
         }
         
@@ -212,14 +212,14 @@ extension PlayerViewController: ScrubberViewDelegate {
 
 extension PlayerViewController: ControlsViewDelegate {
     func playPressed(_ sender: ControlsView) {
-        if musicPlayer.isPlaying == false {
-            Analytics.shared.sendButtonPressEvent("play", classId: classForCoder)
-
-            musicPlayer.play()
-        } else {
+        if musicPlayer.isPlaying {
             Analytics.shared.sendButtonPressEvent("pause", classId: classForCoder)
             
             musicPlayer.pause()
+        } else {
+            Analytics.shared.sendButtonPressEvent("play", classId: classForCoder)
+            
+            musicPlayer.play()
         }
     }
     
@@ -302,7 +302,7 @@ extension PlayerViewController: ControlsViewDelegate {
         // update ui
         sender.repeatButtonState = newButtonState
         
-        if musicPlayer.isPlaying == true {
+        if musicPlayer.isPlaying {
             updateSeekingControls()
         }
 

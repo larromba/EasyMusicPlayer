@@ -45,7 +45,7 @@ class Analytics {
     }
     
     func startSession() {
-        guard isSetup == true else {
+        guard isSetup else {
             return
         }
         
@@ -68,40 +68,40 @@ class Analytics {
     
     func sendEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "event" : event as NSString
+            "event" : event
             ])
     }
     
     func sendButtonPressEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "button_press" : event as NSString
+            "button_press" : event
             ])
     }
     
     func sendShareEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "share" : event as NSString
+            "share" : event
             ])
     }
     
     func sendAlertEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "alert" : event as NSString
+            "alert" : event
             ])
     }
     
     func sendErrorEvent(_ error: Error, classId: Any) {
         let nsError = error as NSError
         logEvent(withName: "\(classId)", parameters: [
-            "error-domain" : nsError.domain as NSString,
-            "error-code" : NSNumber(integerLiteral: nsError.code),
-            "error-description": nsError.localizedDescription as NSString
+            "error-domain" : nsError.domain,
+            "error-code" : nsError.code,
+            "error-description": nsError.localizedDescription
             ])
     }
     
     func sendTimedAppEvent(_ event: String, fromDate: Date, toDate: Date) {
         let sessionTimeSecs = toDate.timeIntervalSince(fromDate)
-        let sessionTimeMilliSecs = NSNumber(value: UInt(sessionTimeSecs * 1000.0) as UInt)
+        let sessionTimeMilliSecs = sessionTimeSecs * 1000.0
         logEvent(withName: event, parameters: [
             "time" : sessionTimeMilliSecs
             ])
@@ -109,8 +109,8 @@ class Analytics {
     
     // MARK: - Private
     
-    private func logEvent(withName name: String, parameters: [String: NSObject]?) {
-        guard isSetup == true else {
+    private func logEvent(withName name: String, parameters: [String: Any]?) {
+        guard isSetup else {
             return
         }
         

@@ -24,7 +24,7 @@ class ScrubberView: UIView {
         set {
             super.isUserInteractionEnabled = newValue
             
-            if newValue == true {
+            if newValue {
                 barView.alpha = 1.0
             } else {
                 barView.alpha = 0.5

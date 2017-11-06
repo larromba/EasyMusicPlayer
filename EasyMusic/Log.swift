@@ -9,7 +9,7 @@
 import Foundation
 
 func safeAssert(_ condition: Bool, _ msg: String) {
-    if condition == false {
+    if !condition {
         log(msg)
     }
 }

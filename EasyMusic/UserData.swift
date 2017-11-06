@@ -17,11 +17,7 @@ class UserData {
             return nil
         }
         set {
-            var repeatModeData: NSNumber?
-            if newValue != nil {
-                repeatModeData = NSNumber(value: newValue!.rawValue as Int)
-            }
-            UserDefaults.standard.set(repeatModeData, forKey: "repeatMode")
+            UserDefaults.standard.set(newValue?.rawValue, forKey: "repeatMode")
         }
     }
 }

@@ -46,12 +46,12 @@ class InfoView: UIView {
             mediaItemArtwork = MPMediaItemArtwork(image: placeholderImage)
         }
         
-        let songInfo: [String: AnyObject] = [
-            MPMediaItemPropertyTitle: track.title as AnyObject,
-            MPMediaItemPropertyArtist: track.artist as AnyObject,
+        let songInfo: [String: Any] = [
+            MPMediaItemPropertyTitle: track.title,
+            MPMediaItemPropertyArtist: track.artist,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
-            MPNowPlayingInfoPropertyElapsedPlaybackTime: MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? NSNumber ?? 0.0,
-            MPMediaItemPropertyPlaybackDuration: NSNumber(value: track.duration as Double)
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] ?? 0.0,
+            MPMediaItemPropertyPlaybackDuration: NSNumber(value: track.duration)
         ]
         MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
     }
@@ -73,7 +73,7 @@ class InfoView: UIView {
     
     func setRemoteTime(_ time: TimeInterval, duration: TimeInterval) {
         if var songInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo {
-            songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(value: time as Double)
+            songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(value: time)
             MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
         }
     }
