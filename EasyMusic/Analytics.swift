@@ -36,9 +36,10 @@ class Analytics {
     // MARK: - Internal
     
     func setup() throws {
-        let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
-        guard let options = FirebaseOptions(contentsOfFile: path) else {
-            throw AnalyticsError.setup
+        guard
+            let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+            let options = FirebaseOptions(contentsOfFile: path) else {
+                throw AnalyticsError.setup
         }
         FirebaseApp.configure(options: options)
         isSetup = true
@@ -54,12 +55,11 @@ class Analytics {
     }
     
     func endSession() {
-        guard sessionStartDate != nil else {
+        guard let sessionStartDate = sessionStartDate else {
             return
         }
-        
-        sendTimedAppEvent("app_closed", fromDate: sessionStartDate!, toDate: Date())
-        sessionStartDate = nil
+        sendTimedAppEvent("app_closed", fromDate: sessionStartDate, toDate: Date())
+        self.sessionStartDate = nil
     }
     
     func sendScreenNameEvent(_ classId: Any) {

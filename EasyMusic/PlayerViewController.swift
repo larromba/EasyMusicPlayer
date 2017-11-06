@@ -64,15 +64,6 @@ class PlayerViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Notification
-    
-    @objc func applicationDidBecomeActive() {
-        // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
-        if controlsView.playButton.buttonState == .pause && !musicPlayer.isPlaying {
-            musicPlayer.stop()
-        }
-    }
-    
     // MARK: - Private
     
     private func updateSeekingControls() {
@@ -90,6 +81,15 @@ class PlayerViewController: UIViewController {
         if (trackNumber == musicPlayer.trackManager.numOfTracks - 1) {
             controlsView.enableNext(false)
             controlsView.enableSeekForwardsRemoteOnly(true)
+        }
+    }
+    
+    // MARK: - Notification
+    
+    @objc private func applicationDidBecomeActive() {
+        // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
+        if controlsView.playButton.buttonState == .pause && !musicPlayer.isPlaying {
+            musicPlayer.stop()
         }
     }
 }
@@ -147,9 +147,9 @@ extension PlayerViewController: MusicPlayerDelegate {
         
         switch error {
         case .noMusic:
-            infoView.clearInfo()
             Analytics.shared.sendAlertEvent("no_music", classId: classForCoder)
-            
+
+            infoView.clearInfo()
             alert = AlertController.withTitle(localized("no music error title", classId: classForCoder),
                 message: localized("no music error msg", classId: classForCoder),
                 buttonTitle: localized("no music error button", classId: classForCoder))
@@ -159,17 +159,19 @@ extension PlayerViewController: MusicPlayerDelegate {
             alert = AlertController.withTitle(localized("no volume error title", classId: classForCoder),
                 message: localized("no volume error msg", classId: classForCoder),
                 buttonTitle: localized("no volume error button", classId: classForCoder))
-        case .decode, .playerInit, .avError:
+        case .avError:
+            Analytics.shared.sendAlertEvent("av_error", classId: classForCoder)
+            
+            let format = localized("track error msg", classId: classForCoder)
+            alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
+                message: String(format: format, sender.trackManager.currentResolvedTrack.title),
+                buttonTitle: localized("track error button", classId: classForCoder))
+        case .decode, .playerInit:
             Analytics.shared.sendAlertEvent("track", classId: classForCoder)
             
             let trackManager = sender.trackManager
-            if sender.trackManager.removeTrack(atIndex: trackManager.currentTrackNumber) {
-                sender.next()
-            } else {
-                alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
-                    message: localized("track error msg", classId: classForCoder),
-                    buttonTitle: localized("track error button", classId: classForCoder))
-            }
+            trackManager.removeTrack(atIndex: trackManager.currentTrackNumber)
+            sender.next()
         case .authorization:
             Analytics.shared.sendAlertEvent("authorization", classId: classForCoder)
             
@@ -256,7 +258,7 @@ extension PlayerViewController: ControlsViewDelegate {
             presenter: self,
             sender: sender.shareButton,
             completion: { (result: ShareManager.Result, service: String?) in
-                var event: String!
+                let event: String
                 switch result {
                 case .success:
                     event = "success_\(service ?? "nil")"
@@ -281,22 +283,22 @@ extension PlayerViewController: ControlsViewDelegate {
     
     func repeatPressed(_ sender: ControlsView) {
         let buttonState: RepeatButton.State = sender.repeatButtonState
-        var newButtonState: RepeatButton.State!
-        var event: String!
+        let newButtonState: RepeatButton.State
+        let event: String
         
         switch buttonState {
         case .none:
             newButtonState = RepeatButton.State.one
             event = "repeat-one"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.one
+            musicPlayer.repeatMode = .one
         case .one:
             newButtonState = RepeatButton.State.all
             event = "repeat-all"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.all
+            musicPlayer.repeatMode = .all
         case .all:
             newButtonState = RepeatButton.State.none
             event = "repeat-none"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.none
+            musicPlayer.repeatMode = .none
         }
         
         // update ui

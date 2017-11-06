@@ -1,3 +1,7 @@
+1.2.1 ?
+    fixed headphone bug
+    ios11 fixes
+
 1.2.0 (12/10/2017)
     playlist now saves
     updated analytics
@@ -72,7 +76,5 @@ Apple ID: 1067558718
 
 
 ----
-
-save playlist
 
 possible bug: press >> 5 times and it locks up?

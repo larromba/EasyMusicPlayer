@@ -77,28 +77,30 @@ class MusicPlayerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testAudioSessionOnInit() {
-        /**
-        expectations
-        - enableAudioSession should be set to true on init
-        */
-        musicPlayerExpectation = expectation(description: "musicPlayer.enableAudioSession(_)")
-        
-        // mocks
-        class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override func enableAudioSession(_ enable: Bool) {
-                if enable {
-                    musicPlayerExpectation!.fulfill()
-                }
-            }
-        }
-        
-        // runnable
-        _ = MockMusicPlayer(delegate: self)
-        
-        // tests
-        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
-    }
+    // FIXME: todo
+//    func testAudioSessionOnPlay() {
+//        /**
+//        expectations
+//        - enableAudioSession should be set to true on init
+//        */
+//        musicPlayerExpectation = expectation(description: "musicPlayer.enableAudioSession(_)")
+//
+//        // mocks
+//        class MockMusicPlayer: EasyMusic.MusicPlayer {
+//            override func enableAudioSession(_ enable: Bool) -> Bool {
+//                if enable {
+//                    musicPlayerExpectation!.fulfill()
+//                }
+//                return enable
+//            }
+//        }
+//
+//        // runnable
+//        _ = MockMusicPlayer(delegate: self)
+//
+//        // tests
+//        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
+//    }
     
     func testAudioSessionOnDeinit() {
         /**
@@ -109,10 +111,11 @@ class MusicPlayerTests: XCTestCase {
         
         // mocks
         class MockMusicPlayer: EasyMusic.MusicPlayer {
-            override func enableAudioSession(_ enable: Bool) {
+            override func enableAudioSession(_ enable: Bool) -> Bool {
                 if !enable {
                     musicPlayerExpectation!.fulfill()
                 }
+                return enable
             }
         }
         
@@ -887,6 +890,38 @@ class MusicPlayerTests: XCTestCase {
         
         // tests
         XCTAssertTrue(mockMusicPlayer.isPlayed)
+    }
+    
+    func testNoPlayWhenHeadphonesAttached() {
+        /**
+         expectations
+         - audio doesnt play
+         */
+        // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            var _isPlaying: Bool = false
+            override var isPlaying: Bool { return _isPlaying }
+            override func play() {
+                XCTFail()
+            }
+        }
+        let mockMusicPlayer = MockMusicPlayer(delegate: self)
+        mockMusicPlayer._isPlaying = true
+        
+        var mockUserInfo: [AnyHashable: Any] = [
+            AVAudioSessionRouteChangeReasonKey : AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue
+        ]
+        var mockNotification = Notification(name: NSNotification.Name.AVAudioSessionRouteChange, object: nil, userInfo: mockUserInfo)
+        
+        // runnable
+        NotificationCenter.default.post(mockNotification)
+        mockMusicPlayer._isPlaying = true // assume track was played through speaker
+        
+        mockUserInfo = [
+            AVAudioSessionRouteChangeReasonKey : AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue
+        ]
+        mockNotification = Notification(name: NSNotification.Name.AVAudioSessionRouteChange, object: nil, userInfo: mockUserInfo)
+        NotificationCenter.default.post(mockNotification)
     }
     
     func testPrevious() {

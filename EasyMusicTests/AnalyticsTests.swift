@@ -16,7 +16,7 @@ class AnalyticsTests: XCTestCase {
     private var analytics: EasyMusic.Analytics!
     
     class MockTracker: FirebaseAnalytics.Analytics {
-        @objc override class func logEvent(_ name: String, parameters: [String: Any]?) -> () {
+        override class func logEvent(_ name: String, parameters: [String: Any]?) -> () {
             trackerExpectation!.fulfill()
         }
     }
@@ -52,7 +52,7 @@ class AnalyticsTests: XCTestCase {
         let waitExpectation = expectation(description: "wait")
         
         class MockTrackerSetupFailed: MockTracker {
-            @objc override class func logEvent(_ name: String, parameters: [String: Any]?) -> () {
+            override class func logEvent(_ name: String, parameters: [String: Any]?) -> () {
                 XCTFail()
             }
         }

@@ -117,18 +117,16 @@ class TrackManager {
         }
         
         // NSNotification.Name.MPMediaLibraryDidChange indicates when the music library changes, but an automatic refresh isn't required as we create a new playlist each time
-        let playlist = createPlaylist()
-        let mItems = NSMutableArray(array: playlist)
-        
-        if mItems.count > 0 {
-            for i in 0 ..< mItems.count - 1 {
-                let remainingCount = mItems.count - i;
+        var playlist = createPlaylist()
+        if playlist.count > 0 {
+            for i in 0 ..< playlist.count-1 {
+                let remainingCount = playlist.count - i;
                 let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
-                mItems.exchangeObject(at: i, withObjectAt: exchangeIndex)
+                playlist.swapAt(i, exchangeIndex)
             }
         }
         
-        tracks = mItems as AnyObject as! [MPMediaItem]
+        tracks = playlist
         trackIndex = 0
         saveTracks(tracks)
     }
@@ -161,10 +159,9 @@ class TrackManager {
         trackIndex = numOfTracks - 1
     }
     
-    func removeTrack(atIndex index: Int) -> Bool {
+    func removeTrack(atIndex index: Int) {
         tracks.remove(at: index)
         trackIndex -= 1
-        return true
     }
     
     // MARK: - Private
