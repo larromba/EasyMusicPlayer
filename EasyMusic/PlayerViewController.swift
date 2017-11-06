@@ -33,14 +33,11 @@ class PlayerViewController: UIViewController {
             
             switch repeatMode {
             case .none:
-                controlsView.repeatButtonState = RepeatButton.State.none
-                break
+                controlsView.repeatButtonState = .none
             case .one:
-                controlsView.repeatButtonState = RepeatButton.State.one
-                break
+                controlsView.repeatButtonState = .one
             case .all:
-                controlsView.repeatButtonState = RepeatButton.State.all
-                break
+                controlsView.repeatButtonState = .all
             }
         }
         
@@ -108,15 +105,12 @@ extension PlayerViewController: MusicPlayerDelegate {
             infoView.setTrackPosition((sender.trackManager.currentTrackNumber + 1), totalTracks: sender.trackManager.numOfTracks)
             scrubberView.isUserInteractionEnabled = true
             updateSeekingControls()
-            break
         case .paused:
             controlsView.setControlsPaused()
             scrubberView.isUserInteractionEnabled = false
-            break
         case .stopped:
             controlsView.setControlsStopped()
             scrubberView.isUserInteractionEnabled = false
-            break
         case .finished:
             infoView.clearInfo()
             controlsView.setControlsStopped()
@@ -128,7 +122,6 @@ extension PlayerViewController: MusicPlayerDelegate {
                 message: localized("finished alert msg", classId: classForCoder),
                 buttonTitle: localized("finished alert button", classId: classForCoder))
             present(alert, animated: true, completion: nil)
-            break
         }
     }
     
@@ -160,14 +153,12 @@ extension PlayerViewController: MusicPlayerDelegate {
             alert = AlertController.withTitle(localized("no music error title", classId: classForCoder),
                 message: localized("no music error msg", classId: classForCoder),
                 buttonTitle: localized("no music error button", classId: classForCoder))
-            break
         case .noVolume:
             Analytics.shared.sendAlertEvent("no_volume", classId: classForCoder)
             
             alert = AlertController.withTitle(localized("no volume error title", classId: classForCoder),
                 message: localized("no volume error msg", classId: classForCoder),
                 buttonTitle: localized("no volume error button", classId: classForCoder))
-            break
         case .decode, .playerInit, .avError:
             Analytics.shared.sendAlertEvent("track", classId: classForCoder)
             
@@ -179,14 +170,12 @@ extension PlayerViewController: MusicPlayerDelegate {
                     message: localized("track error msg", classId: classForCoder),
                     buttonTitle: localized("track error button", classId: classForCoder))
             }
-            break
         case .authorization:
             Analytics.shared.sendAlertEvent("authorization", classId: classForCoder)
             
             alert = AlertController.withTitle(localized("authorization error title", classId: classForCoder),
                                               message: localized("authorization error message", classId: classForCoder),
                                               buttonTitle: localized("authorization error button", classId: classForCoder))
-            break
         }
         
         if let alert = alert {
@@ -271,13 +260,10 @@ extension PlayerViewController: ControlsViewDelegate {
                 switch result {
                 case .success:
                     event = "success_\(service ?? "nil")"
-                    break
                 case .cancelledAfterChoice:
                     event = "cancelled-after-choice_\(service ?? "nil")"
-                    break
                 case .cancelledBeforeChoice:
                     event = "cancelled-before-choice_\(service ?? "nil")"
-                    break
                 case .error:
                     event = "error_\(service ?? "nil")"
 
@@ -287,7 +273,6 @@ extension PlayerViewController: ControlsViewDelegate {
                         message: localized("accounts error msg", classId: self.classForCoder),
                         buttonTitle: localized("accounts error button", classId: self.classForCoder))
                     self.present(alert, animated: true, completion: nil)
-                    break
                 }
                 
                 Analytics.shared.sendShareEvent(event, classId: self.classForCoder)

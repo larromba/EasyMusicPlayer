@@ -62,10 +62,8 @@ class ShareManager {
                 switch result {
                 case .done:
                     self.completion?(.success, serviceType)
-                    break
                 case .cancelled:
                     self.completion?(.cancelledAfterChoice, serviceType)
-                    break
                 }
                 self.track = nil
             }

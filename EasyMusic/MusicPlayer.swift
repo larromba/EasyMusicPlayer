@@ -228,7 +228,6 @@ class MusicPlayer: NSObject {
                     if isPlaying == true {
                         pause()
                     }
-                    break
                 default:
                     break
                 }
@@ -245,13 +244,11 @@ class MusicPlayer: NSObject {
                         isAudioSessionInterrupted = true
                         pause()
                     }
-                    break
                 case .ended:
                     if isAudioSessionInterrupted == true {
                         isAudioSessionInterrupted = false
                         play()
                     }
-                    break
                 }
             }
         }
@@ -399,10 +396,8 @@ class MusicPlayer: NSObject {
         switch event.type {
         case .beginSeeking:
             seekForwardStart()
-            break
         case .endSeeking:
             seekForwardEnd()
-            break
         }
     }
     
@@ -414,10 +409,8 @@ class MusicPlayer: NSObject {
         switch event.type {
         case .beginSeeking:
             seekBackwardStart()
-            break
         case .endSeeking:
             seekBackwardEnd()
-            break
         }
     }
     
@@ -480,17 +473,14 @@ extension MusicPlayer: AVAudioPlayerDelegate {
                 return
             }
             play()
-            break
         case .one:
             play()
-            break
         case .all:
             let result = trackManager.cueNext()
             if result == false {
                 trackManager.cueStart()
             }
             play()
-            break
         }
     }
     
