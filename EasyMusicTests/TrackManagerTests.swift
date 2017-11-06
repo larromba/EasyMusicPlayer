@@ -138,35 +138,34 @@ class TrackManagerTests: XCTestCase {
          */
         
         // mocks
-        class MockUserDefaults: UserDefaults {
-            var didGetObject: Bool = false
-            var value: Any?
-            override func object(forKey defaultName: String) -> Any? {
-                didGetObject = true
-                return value
-            }
-        }
-        let userDefaults = MockUserDefaults()
-        userDefaults.value = NSKeyedArchiver.archivedData(withRootObject: [0])
+        let userDefaults = UserDefaults()
+        userDefaults.set(NSKeyedArchiver.archivedData(withRootObject: [0, 1, 2]), forKey: "tracks")
+        userDefaults.set(1, forKey: "currentTrackID")
         trackManager!.__userDefaults = userDefaults
         
         class MockMediaQuery: MPMediaQuery {
+            var count = 0
+            class MockMediaItem: MPMediaItem {
+                var _persistentID: MPMediaEntityPersistentID = 0
+                override var persistentID: MPMediaEntityPersistentID { return _persistentID }
+            }
             override class func songs() -> MPMediaQuery {
                 return MockMediaQuery()
             }
             override var items: [MPMediaItem]? {
-                return mockTracks
+                let item = MockMediaItem(); item._persistentID = MPMediaEntityPersistentID(count); count += 1
+                return [item]
             }
         }
         trackManager!.__MediaQueryType = MockMediaQuery.self
+        trackManager!.__tracks = []
         
         // runnable
         trackManager!.loadTracks()
         
         // tests
-        XCTAssertTrue(userDefaults.didGetObject)
-        XCTAssertEqual(trackManager!.allTracks.count, 6)
-        XCTAssertEqual(trackManager!.allTracks.first, mockTracks.first)
+        XCTAssertEqual(trackManager!.allTracks.count, 3)
+        XCTAssertEqual(trackManager!.currentTrack.persistentID, 1)
     }
     
     func testCuePrevious() {

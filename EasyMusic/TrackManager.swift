@@ -12,10 +12,16 @@ import MediaPlayer
 class TrackManager {
     private enum Key: String {
         case tracks
+        case currentTrackID
     }
     
     private var tracks: [MPMediaItem] = []
-    private var trackIndex: Int = 0
+    private var trackIndex: Int = 0 {
+        didSet {
+            userDefaults.set(currentTrack.persistentID, forKey: Key.currentTrackID.rawValue)
+            userDefaults.synchronize()
+        }
+    }
     private var userDefaults: UserDefaults = .standard
     private var MediaQueryType: MPMediaQuery.Type = MPMediaQuery.self
     
@@ -26,7 +32,7 @@ class TrackManager {
         return Track(mediaItem: currentTrack)
     }
     var currentTrack: MPMediaItem {
-        guard currentTrackNumber < tracks.count else {
+        guard currentTrackNumber >= 0, currentTrackNumber < tracks.count else {
             return MPMediaItem() // safety
         }
         return tracks[currentTrackNumber]
@@ -96,6 +102,7 @@ class TrackManager {
         }
         guard
             let data = userDefaults.object(forKey: Key.tracks.rawValue) as? Data,
+            let currentTrackID = userDefaults.object(forKey: Key.currentTrackID.rawValue) as? UInt64,
             let trackIDs = NSKeyedUnarchiver.unarchiveObject(with: data) as? [UInt64], trackIDs.count > 0 else {
             return
         }
@@ -107,6 +114,7 @@ class TrackManager {
             query.removeFilterPredicate(predicate)
             return items
         }).reduce([], +)
+        trackIndex = trackIDs.index(of: currentTrackID) ?? 0
     }
     
     func shuffleTracks() {

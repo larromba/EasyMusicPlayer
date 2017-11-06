@@ -77,30 +77,27 @@ class MusicPlayerTests: XCTestCase {
         super.tearDown()
     }
     
-    // FIXME: todo
-//    func testAudioSessionOnPlay() {
-//        /**
-//        expectations
-//        - enableAudioSession should be set to true on init
-//        */
-//        musicPlayerExpectation = expectation(description: "musicPlayer.enableAudioSession(_)")
-//
-//        // mocks
-//        class MockMusicPlayer: EasyMusic.MusicPlayer {
-//            override func enableAudioSession(_ enable: Bool) -> Bool {
-//                if enable {
-//                    musicPlayerExpectation!.fulfill()
-//                }
-//                return enable
-//            }
-//        }
-//
-//        // runnable
-//        _ = MockMusicPlayer(delegate: self)
-//
-//        // tests
-//        waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
-//    }
+    func testAudioSessionOnPlay() {
+        /**
+        expectations
+        - enableAudioSession should be set to true on play
+        */
+        // mocks
+        class MockMusicPlayer: EasyMusic.MusicPlayer {
+            var didSetEnable = false
+            override func enableAudioSession(_ enable: Bool) -> Bool {
+                didSetEnable = true
+                return enable
+            }
+        }
+        let musicPlayer = MockMusicPlayer(delegate: self)
+
+        // runnable
+        musicPlayer.play()
+
+        // tests
+        XCTAssertTrue(musicPlayer.didSetEnable)
+    }
     
     func testAudioSessionOnDeinit() {
         /**
