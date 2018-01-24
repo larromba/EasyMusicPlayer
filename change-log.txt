@@ -1,3 +1,8 @@
+1.2.1 (06/11/2017)
+    fixed headphone unplugged bug
+    ios11 fixes
+    now saves last played track
+
 1.2.0 (12/10/2017)
     playlist now saves
     updated analytics
@@ -69,10 +74,3 @@
 
 SKU: 112122015
 Apple ID: 1067558718
-
-
-----
-
-save playlist
-
-possible bug: press >> 5 times and it locks up?

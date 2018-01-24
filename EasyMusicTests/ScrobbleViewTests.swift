@@ -13,10 +13,10 @@ private var analyticsExpectation: XCTestExpectation?
 private var mockPoint: CGPoint!
 
 class ScrubberViewTests: XCTestCase {
-    fileprivate var scrubberView: ScrubberView?
-    fileprivate var scrubberViewExpectation: XCTestExpectation?
+    private var scrubberView: ScrubberView?
+    private var scrubberViewExpectation: XCTestExpectation?
 
-    fileprivate class MockTouch : UITouch {
+    private class MockTouch : UITouch {
         override func location(in view: UIView?) -> CGPoint {
             return mockPoint
         }

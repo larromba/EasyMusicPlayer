@@ -18,7 +18,7 @@ private let mockArtwork = MPMediaItemArtwork(image: mockImage)
 private let mockAssetUrl = URL(string: "http://www.google.com")!
 
 class InfoViewTests: XCTestCase {
-    fileprivate var infoView: InfoView?
+    private var infoView: InfoView?
     
     override func setUp() {
         super.setUp()

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import MediaPlayer
 
 func XCTAssertMethodOrderCorrect(_ methodOrder: [Int]) {
     var orderCorrect = true

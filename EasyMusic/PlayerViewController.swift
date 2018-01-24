@@ -10,15 +10,16 @@ import UIKit
 import MediaPlayer
 
 class PlayerViewController: UIViewController {
-    @IBOutlet fileprivate weak var scrubberView: ScrubberView!
-    @IBOutlet fileprivate weak var infoView: InfoView!
-    @IBOutlet fileprivate weak var controlsView: ControlsView!
-    @IBOutlet fileprivate weak var appVersionLabel: UILabel!
+    @IBOutlet private weak var scrubberView: ScrubberView!
+    @IBOutlet private weak var infoView: InfoView!
+    @IBOutlet private weak var controlsView: ControlsView!
+    @IBOutlet private weak var appVersionLabel: UILabel!
     
-    fileprivate lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
-    fileprivate var shareManager: ShareManager = ShareManager()
-    fileprivate var userScrobbling: Bool = false
-    fileprivate var AlertController = UIAlertController.self
+    private lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
+    private var shareManager: ShareManager = ShareManager()
+    private var userScrobbling: Bool = false
+    private var AlertController = UIAlertController.self
+    private var userData: UserData = UserData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,19 +29,16 @@ class PlayerViewController: UIViewController {
         controlsView.delegate = self
         scrubberView.delegate = self
         
-        if let repeatMode = UserData.repeatMode {
+        if let repeatMode = userData.repeatMode {
             musicPlayer.repeatMode = repeatMode
             
             switch repeatMode {
             case .none:
-                controlsView.repeatButtonState = RepeatButton.State.none
-                break
+                controlsView.repeatButtonState = .none
             case .one:
-                controlsView.repeatButtonState = RepeatButton.State.one
-                break
+                controlsView.repeatButtonState = .one
             case .all:
-                controlsView.repeatButtonState = RepeatButton.State.all
-                break
+                controlsView.repeatButtonState = .all
             }
         }
         
@@ -67,19 +65,10 @@ class PlayerViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Notification
-    
-    @objc func applicationDidBecomeActive() {
-        // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
-        if controlsView.playButton.buttonState == PlayButton.State.pause && musicPlayer.isPlaying == false {
-            musicPlayer.stop()
-        }
-    }
-    
     // MARK: - Private
     
-    fileprivate func updateSeekingControls() {
-        if musicPlayer.repeatMode == MusicPlayer.RepeatMode.all {
+    private func updateSeekingControls() {
+        if musicPlayer.repeatMode == .all {
             controlsView.enablePrevious(true)
             controlsView.enableNext(true)
             return
@@ -95,6 +84,15 @@ class PlayerViewController: UIViewController {
             controlsView.enableSeekForwardsRemoteOnly(true)
         }
     }
+    
+    // MARK: - Notification
+    
+    @objc private func applicationDidBecomeActive() {
+        // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong so reset the player
+        if controlsView.playButton.buttonState == .pause && !musicPlayer.isPlaying {
+            musicPlayer.stop()
+        }
+    }
 }
 
 // MARK: - MusicPlayerDelegate
@@ -108,18 +106,15 @@ extension PlayerViewController: MusicPlayerDelegate {
             infoView.setTrackPosition((sender.trackManager.currentTrackNumber + 1), totalTracks: sender.trackManager.numOfTracks)
             scrubberView.isUserInteractionEnabled = true
             updateSeekingControls()
-            break
         case .paused:
             controlsView.setControlsPaused()
             scrubberView.isUserInteractionEnabled = false
-            break
         case .stopped:
             controlsView.setControlsStopped()
             scrubberView.isUserInteractionEnabled = false
-            break
         case .finished:
-            infoView.clearInfo()
             controlsView.setControlsStopped()
+            infoView.clearInfo()
             scrubberView.isUserInteractionEnabled = false
             
             Analytics.shared.sendAlertEvent("finished_playlist", classId: classForCoder)
@@ -128,12 +123,11 @@ extension PlayerViewController: MusicPlayerDelegate {
                 message: localized("finished alert msg", classId: classForCoder),
                 buttonTitle: localized("finished alert button", classId: classForCoder))
             present(alert, animated: true, completion: nil)
-            break
         }
     }
     
     func changedPlaybackTime(_ sender: MusicPlayer, playbackTime: TimeInterval) {
-        guard userScrobbling == false else {
+        guard !userScrobbling else {
             return
         }
         
@@ -154,39 +148,37 @@ extension PlayerViewController: MusicPlayerDelegate {
         
         switch error {
         case .noMusic:
-            infoView.clearInfo()
             Analytics.shared.sendAlertEvent("no_music", classId: classForCoder)
-            
+
+            infoView.clearInfo()
             alert = AlertController.withTitle(localized("no music error title", classId: classForCoder),
                 message: localized("no music error msg", classId: classForCoder),
                 buttonTitle: localized("no music error button", classId: classForCoder))
-            break
         case .noVolume:
             Analytics.shared.sendAlertEvent("no_volume", classId: classForCoder)
             
             alert = AlertController.withTitle(localized("no volume error title", classId: classForCoder),
                 message: localized("no volume error msg", classId: classForCoder),
                 buttonTitle: localized("no volume error button", classId: classForCoder))
-            break
-        case .decode, .playerInit, .avError:
+        case .avError:
+            Analytics.shared.sendAlertEvent("av_error", classId: classForCoder)
+            
+            let format = localized("track error msg", classId: classForCoder)
+            alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
+                message: String(format: format, sender.trackManager.currentResolvedTrack.title),
+                buttonTitle: localized("track error button", classId: classForCoder))
+        case .decode, .playerInit:
             Analytics.shared.sendAlertEvent("track", classId: classForCoder)
             
             let trackManager = sender.trackManager
-            if sender.trackManager.removeTrack(atIndex: trackManager.currentTrackNumber) {
-                sender.next()
-            } else {
-                alert = AlertController.withTitle(localized("track error title", classId: classForCoder),
-                    message: localized("track error msg", classId: classForCoder),
-                    buttonTitle: localized("track error button", classId: classForCoder))
-            }
-            break
+            trackManager.removeTrack(atIndex: trackManager.currentTrackNumber)
+            sender.next()
         case .authorization:
             Analytics.shared.sendAlertEvent("authorization", classId: classForCoder)
             
             alert = AlertController.withTitle(localized("authorization error title", classId: classForCoder),
                                               message: localized("authorization error message", classId: classForCoder),
                                               buttonTitle: localized("authorization error button", classId: classForCoder))
-            break
         }
         
         if let alert = alert {
@@ -223,14 +215,14 @@ extension PlayerViewController: ScrubberViewDelegate {
 
 extension PlayerViewController: ControlsViewDelegate {
     func playPressed(_ sender: ControlsView) {
-        if musicPlayer.isPlaying == false {
-            Analytics.shared.sendButtonPressEvent("play", classId: classForCoder)
-
-            musicPlayer.play()
-        } else {
+        if musicPlayer.isPlaying {
             Analytics.shared.sendButtonPressEvent("pause", classId: classForCoder)
             
             musicPlayer.pause()
+        } else {
+            Analytics.shared.sendButtonPressEvent("play", classId: classForCoder)
+            
+            musicPlayer.play()
         }
     }
     
@@ -267,17 +259,14 @@ extension PlayerViewController: ControlsViewDelegate {
             presenter: self,
             sender: sender.shareButton,
             completion: { (result: ShareManager.Result, service: String?) in
-                var event: String!
+                let event: String
                 switch result {
                 case .success:
                     event = "success_\(service ?? "nil")"
-                    break
                 case .cancelledAfterChoice:
                     event = "cancelled-after-choice_\(service ?? "nil")"
-                    break
                 case .cancelledBeforeChoice:
                     event = "cancelled-before-choice_\(service ?? "nil")"
-                    break
                 case .error:
                     event = "error_\(service ?? "nil")"
 
@@ -287,7 +276,6 @@ extension PlayerViewController: ControlsViewDelegate {
                         message: localized("accounts error msg", classId: self.classForCoder),
                         buttonTitle: localized("accounts error button", classId: self.classForCoder))
                     self.present(alert, animated: true, completion: nil)
-                    break
                 }
                 
                 Analytics.shared.sendShareEvent(event, classId: self.classForCoder)
@@ -296,28 +284,28 @@ extension PlayerViewController: ControlsViewDelegate {
     
     func repeatPressed(_ sender: ControlsView) {
         let buttonState: RepeatButton.State = sender.repeatButtonState
-        var newButtonState: RepeatButton.State!
-        var event: String!
+        let newButtonState: RepeatButton.State
+        let event: String
         
         switch buttonState {
         case .none:
             newButtonState = RepeatButton.State.one
             event = "repeat-one"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.one
+            musicPlayer.repeatMode = .one
         case .one:
             newButtonState = RepeatButton.State.all
             event = "repeat-all"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.all
+            musicPlayer.repeatMode = .all
         case .all:
             newButtonState = RepeatButton.State.none
             event = "repeat-none"
-            musicPlayer.repeatMode = MusicPlayer.RepeatMode.none
+            musicPlayer.repeatMode = .none
         }
         
         // update ui
         sender.repeatButtonState = newButtonState
         
-        if musicPlayer.isPlaying == true {
+        if musicPlayer.isPlaying {
             updateSeekingControls()
         }
 
@@ -325,7 +313,7 @@ extension PlayerViewController: ControlsViewDelegate {
         Analytics.shared.sendButtonPressEvent(event, classId: classForCoder)
         
         // save repeat state
-        UserData.repeatMode = musicPlayer.repeatMode
+        userData.repeatMode = musicPlayer.repeatMode
     }
 }
 
@@ -359,5 +347,9 @@ extension PlayerViewController {
     var __userScrobbling: Bool {
         get { return userScrobbling }
         set { userScrobbling = newValue }
+    }
+    var __userData: UserData {
+        get { return userData }
+        set { userData = newValue }
     }
 }

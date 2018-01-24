@@ -19,8 +19,8 @@ private let mockAssetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 private var mockTracks: [MPMediaItem]!
 
 class TrackManagerTests: XCTestCase {
-    fileprivate let url = URL(fileURLWithPath: Constant.Path.DummyAudio)
-    fileprivate var trackManager: TrackManager?
+    private let url = URL(fileURLWithPath: Constant.Path.DummyAudio)
+    private var trackManager: TrackManager?
     
     override func setUp() {
         super.setUp()
@@ -120,8 +120,9 @@ class TrackManagerTests: XCTestCase {
             }
         }
         let userDefaults = MockUserDefaults()
-        trackManager!.__userDefaults = userDefaults
-
+        let userData = UserData(userDefaults: userDefaults)
+        trackManager!.__userData = userData
+        
         // runnable
         trackManager!.shuffleTracks()
         
@@ -138,35 +139,36 @@ class TrackManagerTests: XCTestCase {
          */
         
         // mocks
-        class MockUserDefaults: UserDefaults {
-            var didGetObject: Bool = false
-            var value: Any?
-            override func object(forKey defaultName: String) -> Any? {
-                didGetObject = true
-                return value
-            }
-        }
-        let userDefaults = MockUserDefaults()
-        userDefaults.value = NSKeyedArchiver.archivedData(withRootObject: [0])
-        trackManager!.__userDefaults = userDefaults
+        let userDefaults = UserDefaults(suiteName: "test")!
+        userDefaults.set(NSKeyedArchiver.archivedData(withRootObject: [0, 1, 2]), forKey: "tracks")
+        userDefaults.set(1, forKey: "currentTrackID")
+        
+        let userData = UserData(userDefaults: userDefaults)
+        trackManager!.__userData = userData
         
         class MockMediaQuery: MPMediaQuery {
+            var count = 0
+            class MockMediaItem: MPMediaItem {
+                var _persistentID: MPMediaEntityPersistentID = 0
+                override var persistentID: MPMediaEntityPersistentID { return _persistentID }
+            }
             override class func songs() -> MPMediaQuery {
                 return MockMediaQuery()
             }
             override var items: [MPMediaItem]? {
-                return mockTracks
+                let item = MockMediaItem(); item._persistentID = MPMediaEntityPersistentID(count); count += 1
+                return [item]
             }
         }
         trackManager!.__MediaQueryType = MockMediaQuery.self
+        trackManager!.__tracks = []
         
         // runnable
         trackManager!.loadTracks()
         
         // tests
-        XCTAssertTrue(userDefaults.didGetObject)
-        XCTAssertEqual(trackManager!.allTracks.count, 6)
-        XCTAssertEqual(trackManager!.allTracks.first, mockTracks.first)
+        XCTAssertEqual(trackManager!.allTracks.count, 3)
+        XCTAssertEqual(trackManager!.currentTrack.persistentID, 1)
     }
     
     func testCuePrevious() {

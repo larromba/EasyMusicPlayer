@@ -11,7 +11,7 @@ import XCTest
 @testable import EasyMusic
 
 class RepeatButtonTests: XCTestCase {
-    fileprivate var repeatButton: RepeatButton?
+    private var repeatButton: RepeatButton?
     
     override func setUp() {
         super.setUp()
