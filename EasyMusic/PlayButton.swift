@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 class PlayButton: PlayerButton {
-    fileprivate(set) var buttonState: State = State.play
+    private(set) var buttonState: State = State.play
 
     enum State {
         case play
@@ -34,10 +34,8 @@ class PlayButton: PlayerButton {
         switch state {
         case .play:
             setBackgroundImage(UIImage.safeImage(named: Constant.Image.PlayButton), for: .normal)
-            break
         case .pause:
             setBackgroundImage(UIImage.safeImage(named: Constant.Image.PauseButton), for: .normal)
-            break
         }
     }
 }

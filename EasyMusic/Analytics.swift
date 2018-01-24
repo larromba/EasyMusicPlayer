@@ -10,10 +10,10 @@ import Foundation
 import FirebaseAnalytics
 
 class Analytics {
-    fileprivate(set) static var shared = Analytics()
-    fileprivate var sessionStartDate: Date?
-    fileprivate var isSetup: Bool
-    fileprivate var AnalyticsType: FirebaseAnalytics.Analytics.Type
+    private(set) static var shared = Analytics()
+    private var sessionStartDate: Date?
+    private var isSetup: Bool
+    private var AnalyticsType: FirebaseAnalytics.Analytics.Type
     
     enum AnalyticsError: Error {
         case setup
@@ -36,16 +36,17 @@ class Analytics {
     // MARK: - Internal
     
     func setup() throws {
-        let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
-        guard let options = FirebaseOptions(contentsOfFile: path) else {
-            throw AnalyticsError.setup
+        guard
+            let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+            let options = FirebaseOptions(contentsOfFile: path) else {
+                throw AnalyticsError.setup
         }
         FirebaseApp.configure(options: options)
         isSetup = true
     }
     
     func startSession() {
-        guard isSetup == true else {
+        guard isSetup else {
             return
         }
         
@@ -54,12 +55,11 @@ class Analytics {
     }
     
     func endSession() {
-        guard sessionStartDate != nil else {
+        guard let sessionStartDate = sessionStartDate else {
             return
         }
-        
-        sendTimedAppEvent("app_closed", fromDate: sessionStartDate!, toDate: Date())
-        sessionStartDate = nil
+        sendTimedAppEvent("app_closed", fromDate: sessionStartDate, toDate: Date())
+        self.sessionStartDate = nil
     }
     
     func sendScreenNameEvent(_ classId: Any) {
@@ -68,40 +68,40 @@ class Analytics {
     
     func sendEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "event" : event as NSString
+            "event" : event
             ])
     }
     
     func sendButtonPressEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "button_press" : event as NSString
+            "button_press" : event
             ])
     }
     
     func sendShareEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "share" : event as NSString
+            "share" : event
             ])
     }
     
     func sendAlertEvent(_ event: String, classId: Any) {
         logEvent(withName: "\(classId)", parameters: [
-            "alert" : event as NSString
+            "alert" : event
             ])
     }
     
     func sendErrorEvent(_ error: Error, classId: Any) {
         let nsError = error as NSError
         logEvent(withName: "\(classId)", parameters: [
-            "error-domain" : nsError.domain as NSString,
-            "error-code" : NSNumber(integerLiteral: nsError.code),
-            "error-description": nsError.localizedDescription as NSString
+            "error-domain" : nsError.domain,
+            "error-code" : nsError.code,
+            "error-description": nsError.localizedDescription
             ])
     }
     
     func sendTimedAppEvent(_ event: String, fromDate: Date, toDate: Date) {
         let sessionTimeSecs = toDate.timeIntervalSince(fromDate)
-        let sessionTimeMilliSecs = NSNumber(value: UInt(sessionTimeSecs * 1000.0) as UInt)
+        let sessionTimeMilliSecs = sessionTimeSecs * 1000.0
         logEvent(withName: event, parameters: [
             "time" : sessionTimeMilliSecs
             ])
@@ -109,8 +109,8 @@ class Analytics {
     
     // MARK: - Private
     
-    fileprivate func logEvent(withName name: String, parameters: [String: NSObject]?) {
-        guard isSetup == true else {
+    private func logEvent(withName name: String, parameters: [String: Any]?) {
+        guard isSetup else {
             return
         }
         

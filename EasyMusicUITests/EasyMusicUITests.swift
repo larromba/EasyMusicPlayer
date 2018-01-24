@@ -33,7 +33,7 @@ class EasyMusicUITests: XCTestCase {
         app.buttons["ShuffleButton"].tap()
         app.buttons["PreviousButton"].tap()
         app.buttons["NextButton"].tap()
-        app.buttons["RepeatAllButton"].tap()
+        app.buttons["RepeatButton"].tap()
         app.buttons["ShareButton"].tap()
         app.sheets["Share"].buttons["Cancel"].tap()
         stopbuttonButton.tap()

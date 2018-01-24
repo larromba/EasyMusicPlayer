@@ -22,7 +22,7 @@ extension UIView {
     
     // MARK: - Private
     
-    fileprivate func createViewFromNib() -> UIView {
+    private func createViewFromNib() -> UIView {
         let nib = UINib(nibName: "\(classForCoder)", bundle: Bundle.safeMainBundle())
         guard let view = nib.instantiate(withOwner: self, options: nil).first as? UIView else {
             fatalError("can't load view for \(self)")

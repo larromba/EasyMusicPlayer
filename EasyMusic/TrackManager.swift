@@ -10,14 +10,14 @@ import Foundation
 import MediaPlayer
 
 class TrackManager {
-    private enum Key: String {
-        case tracks
+    private var tracks: [MPMediaItem] = []
+    private var trackIndex: Int = 0 {
+        didSet {
+            userData.currentTrackID = currentTrack.persistentID
+        }
     }
-    
-    fileprivate var tracks: [MPMediaItem] = []
-    fileprivate var trackIndex: Int = 0
-    fileprivate var userDefaults: UserDefaults = .standard
-    fileprivate var MediaQueryType: MPMediaQuery.Type = MPMediaQuery.self
+    private var userData: UserData = UserData()
+    private var MediaQueryType: MPMediaQuery.Type = MPMediaQuery.self
     
     var allTracks: [MPMediaItem] {
         return tracks
@@ -26,7 +26,7 @@ class TrackManager {
         return Track(mediaItem: currentTrack)
     }
     var currentTrack: MPMediaItem {
-        guard currentTrackNumber < tracks.count else {
+        guard currentTrackNumber >= 0, currentTrackNumber < tracks.count else {
             return MPMediaItem() // safety
         }
         return tracks[currentTrackNumber]
@@ -95,8 +95,8 @@ class TrackManager {
             return
         }
         guard
-            let data = userDefaults.object(forKey: Key.tracks.rawValue) as? Data,
-            let trackIDs = NSKeyedUnarchiver.unarchiveObject(with: data) as? [UInt64], trackIDs.count > 0 else {
+            let currentTrackID = userData.currentTrackID,
+            let trackIDs = userData.trackIDs, trackIDs.count > 0 else {
             return
         }
         let query = MediaQueryType.songs()
@@ -107,6 +107,7 @@ class TrackManager {
             query.removeFilterPredicate(predicate)
             return items
         }).reduce([], +)
+        trackIndex = trackIDs.index(of: currentTrackID) ?? 0
     }
     
     func shuffleTracks() {
@@ -117,18 +118,16 @@ class TrackManager {
         }
         
         // NSNotification.Name.MPMediaLibraryDidChange indicates when the music library changes, but an automatic refresh isn't required as we create a new playlist each time
-        let playlist = createPlaylist()
-        let mItems = NSMutableArray(array: playlist)
-        
-        if mItems.count > 0 {
-            for i in 0 ..< mItems.count - 1 {
-                let remainingCount = mItems.count - i;
+        var playlist = createPlaylist()
+        if playlist.count > 0 {
+            for i in 0 ..< playlist.count-1 {
+                let remainingCount = playlist.count - i;
                 let exchangeIndex = i + Int(arc4random_uniform(UInt32(remainingCount)))
-                mItems.exchangeObject(at: i, withObjectAt: exchangeIndex)
+                playlist.swapAt(i, exchangeIndex)
             }
         }
         
-        tracks = mItems as AnyObject as! [MPMediaItem]
+        tracks = playlist
         trackIndex = 0
         saveTracks(tracks)
     }
@@ -161,19 +160,15 @@ class TrackManager {
         trackIndex = numOfTracks - 1
     }
     
-    func removeTrack(atIndex index: Int) -> Bool {
+    func removeTrack(atIndex index: Int) {
         tracks.remove(at: index)
         trackIndex -= 1
-        return true
     }
     
     // MARK: - Private
     
     private func saveTracks(_ tracks: [MPMediaItem]) {
-        let trackIDs = tracks.map { return $0.persistentID }
-        let data = NSKeyedArchiver.archivedData(withRootObject: trackIDs)
-        userDefaults.set(data, forKey: Key.tracks.rawValue)
-        userDefaults.synchronize()
+        userData.trackIDs = tracks.map { return $0.persistentID }
     }
 }
 
@@ -188,9 +183,9 @@ extension TrackManager {
         get { return tracks }
         set { tracks = newValue }
     }
-    var __userDefaults: UserDefaults {
-        get { return userDefaults }
-        set { userDefaults = newValue }
+    var __userData: UserData {
+        get { return userData }
+        set { userData = newValue }
     }
     var __MediaQueryType: MPMediaQuery.Type {
         get { return MediaQueryType }

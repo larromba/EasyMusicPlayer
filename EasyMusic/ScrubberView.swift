@@ -15,16 +15,16 @@ protocol ScrubberViewDelegate: class {
 
 @IBDesignable
 class ScrubberView: UIView {
-    @IBOutlet fileprivate weak var trailingEdgeConstraint: NSLayoutConstraint!
-    @IBOutlet fileprivate weak var barView: UIView!
+    @IBOutlet private weak var trailingEdgeConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var barView: UIView!
     
-    fileprivate var scrubberStartDate: Date?
+    private var scrubberStartDate: Date?
     weak var delegate: ScrubberViewDelegate?
     override var isUserInteractionEnabled: Bool {
         set {
             super.isUserInteractionEnabled = newValue
             
-            if newValue == true {
+            if newValue {
                 barView.alpha = 1.0
             } else {
                 barView.alpha = 0.5
@@ -87,14 +87,14 @@ class ScrubberView: UIView {
     
     // MARK: - Private
     
-    fileprivate func moveScrubberToPoint(_ point: CGFloat) {
+    private func moveScrubberToPoint(_ point: CGFloat) {
         let w = bounds.width
         let x = w - point
         trailingEdgeConstraint.constant = x
         layoutIfNeeded()
     }
     
-    fileprivate func animateTouchesEnded() {
+    private func animateTouchesEnded() {
         UIView.animate(withDuration: 0.15,
             delay: 0.0,
             options: UIViewAnimationOptions.curveEaseIn,

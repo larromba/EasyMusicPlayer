@@ -17,6 +17,8 @@ class InfoView: UIView {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var artworkImageView: UIImageView!
     
+    private let remoteInfo: MPNowPlayingInfoCenter = .default()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         loadXib()
@@ -46,14 +48,17 @@ class InfoView: UIView {
             mediaItemArtwork = MPMediaItemArtwork(image: placeholderImage)
         }
         
-        let songInfo: [String: AnyObject] = [
-            MPMediaItemPropertyTitle: track.title as AnyObject,
-            MPMediaItemPropertyArtist: track.artist as AnyObject,
+        var songInfo: [String: Any] = [
+            MPMediaItemPropertyTitle: track.title,
+            MPMediaItemPropertyArtist: track.artist,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
-            MPNowPlayingInfoPropertyElapsedPlaybackTime: MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? NSNumber ?? 0.0,
-            MPMediaItemPropertyPlaybackDuration: NSNumber(value: track.duration as Double)
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: remoteInfo.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] ?? 0.0,
+            MPMediaItemPropertyPlaybackDuration: track.duration
         ]
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
+        if #available(iOS 10.0, *) {
+            songInfo[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
+        }
+        remoteInfo.nowPlayingInfo = songInfo
     }
     
     func clearInfo() {
@@ -64,18 +69,19 @@ class InfoView: UIView {
         trackPositionLabel.text = nil
         artworkImageView.image = nil
         
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+        remoteInfo.nowPlayingInfo = nil
     }
-    
+
     func setTime(_ time: TimeInterval, duration: TimeInterval) {
         timeLabel.text = String(format: localized("time format", classId: classForCoder), stringFromTimeInterval(time))
     }
     
     func setRemoteTime(_ time: TimeInterval, duration: TimeInterval) {
-        if var songInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo {
-            songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = NSNumber(value: time as Double)
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
+        guard var songInfo = remoteInfo.nowPlayingInfo else {
+            return
         }
+        songInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = time
+        remoteInfo.nowPlayingInfo = songInfo
     }
     
     func setTrackPosition(_ trackPosition: Int, totalTracks: Int) {
@@ -84,7 +90,7 @@ class InfoView: UIView {
     
     // MARK: - Private
     
-    fileprivate func stringFromTimeInterval(_ timeInterval: TimeInterval) -> String {
+    private func stringFromTimeInterval(_ timeInterval: TimeInterval) -> String {
         let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60

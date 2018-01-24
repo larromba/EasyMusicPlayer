@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 class RepeatButton: PlayerButton {
-    fileprivate(set) var buttonState: State = State.none
+    private(set) var buttonState: State = State.none
     
     enum State {
         case none
@@ -35,13 +35,10 @@ class RepeatButton: PlayerButton {
         switch state {
         case .none:
             setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatButton), for: .normal)
-            break
         case .one:
             setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatOneButton), for: .normal)
-            break
         case .all:
             setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatAllButton), for: .normal)
-            break
         }
     }
 }
