@@ -26,6 +26,8 @@
 		7F409B9A1C04ED4500DFD6C4 /* TrackManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B991C04ED4500DFD6C4 /* TrackManagerTests.swift */; };
 		7F409B9C1C04F31600DFD6C4 /* ShareManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */; };
 		7F409B9E1C0506F300DFD6C4 /* XCTestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */; };
+		7F4D217720EE77B400E53B8B /* Queue.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F4D217620EE77B400E53B8B /* Queue.storyboard */; };
+		7F4D217B20EE88B800E53B8B /* QueueAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4D217A20EE88B800E53B8B /* QueueAnimation.swift */; };
 		7F56AF9F1BE8C6B60033ED07 /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */; };
 		7F6FF2761DF9544200D2A200 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6FF2751DF9544200D2A200 /* Localization.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
@@ -123,6 +125,8 @@
 		7F409B991C04ED4500DFD6C4 /* TrackManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackManagerTests.swift; sourceTree = "<group>"; };
 		7F409B9B1C04F31600DFD6C4 /* ShareManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareManagerTests.swift; sourceTree = "<group>"; };
 		7F409B9D1C0506F300DFD6C4 /* XCTestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestExtension.swift; sourceTree = "<group>"; };
+		7F4D217620EE77B400E53B8B /* Queue.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Queue.storyboard; sourceTree = "<group>"; };
+		7F4D217A20EE88B800E53B8B /* QueueAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueAnimation.swift; sourceTree = "<group>"; };
 		7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ShareManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7F6FF2751DF9544200D2A200 /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		7F7932001BEA7C7E00E2C153 /* ScrubberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrubberView.swift; sourceTree = "<group>"; };
@@ -338,6 +342,7 @@
 				7F56AF9E1BE8C6B60033ED07 /* ShareManager.swift */,
 				7F92B6F41C1A09F100A5273A /* UserData.swift */,
 				7F3A5F761C119AFE0065F16F /* Analytics.swift */,
+				7F4D217A20EE88B800E53B8B /* QueueAnimation.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -366,6 +371,7 @@
 		7FCFE91D1BF4AD6800981545 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				7F4D217620EE77B400E53B8B /* Queue.storyboard */,
 				7FF5B2EE1BE64E210044FCE5 /* Player.storyboard */,
 				7FF5B2F31BE64E220044FCE5 /* LaunchScreen.storyboard */,
 			);
@@ -608,7 +614,7 @@
 				TargetAttributes = {
 					7FF5B2E61BE64E210044FCE5 = {
 						CreatedOnToolsVersion = 7.0.1;
-						DevelopmentTeam = Q25J5XBNX4;
+						DevelopmentTeam = PFC77GK3D7;
 						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -670,6 +676,7 @@
 				7FA60C9A1C110B9800D7D2DC /* ControlsView.xib in Resources */,
 				7F3A5F741C119A2E0065F16F /* GoogleService-Info.plist in Resources */,
 				7FCFE92C1BF4B27500981545 /* InfoView.strings in Resources */,
+				7F4D217720EE77B400E53B8B /* Queue.storyboard in Resources */,
 				7FF5B2F01BE64E210044FCE5 /* Player.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -892,6 +899,7 @@
 				7FCFE9161BF4A40600981545 /* UIAlertControllerExtensions.swift in Sources */,
 				7FF5B31D1BE654220044FCE5 /* MusicPlayer.swift in Sources */,
 				7F4090681BFA096600F449FD /* UIStoryboardExtensions.swift in Sources */,
+				7F4D217B20EE88B800E53B8B /* QueueAnimation.swift in Sources */,
 				7F3A5F771C119AFE0065F16F /* Analytics.swift in Sources */,
 				7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */,
 				7FCFE9181BF4A7C300981545 /* UIImageExtensions.swift in Sources */,
@@ -1190,6 +1198,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PFC77GK3D7;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1216,6 +1225,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = PFC77GK3D7;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

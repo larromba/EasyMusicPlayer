@@ -14,12 +14,17 @@ class PlayerViewController: UIViewController {
     @IBOutlet private weak var infoView: InfoView!
     @IBOutlet private weak var controlsView: ControlsView!
     @IBOutlet private weak var appVersionLabel: UILabel!
-    
+    @IBOutlet private weak var topLayoutConstraint: NSLayoutConstraint!
+
     private lazy var musicPlayer: MusicPlayer = MusicPlayer(delegate: self)
     private var shareManager: ShareManager = ShareManager()
     private var userScrobbling: Bool = false
     private var AlertController = UIAlertController.self
     private var userData: UserData = UserData()
+	private lazy var queueAnimation: QueueAnimation = {
+		return QueueAnimation(controls: controlsView, topConstraint: topLayoutConstraint)
+	}()
+	private let test: UIViewController =  UIViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +33,7 @@ class PlayerViewController: UIViewController {
         
         controlsView.delegate = self
         scrubberView.delegate = self
-        
+
         if let repeatMode = userData.repeatMode {
             musicPlayer.repeatMode = repeatMode
             
@@ -58,6 +63,9 @@ class PlayerViewController: UIViewController {
         super.viewDidAppear(animated)
         
         Analytics.shared.sendScreenNameEvent(classForCoder)
+
+		test.transitioningDelegate = self
+		present(test, animated: true, completion: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -315,6 +323,18 @@ extension PlayerViewController: ControlsViewDelegate {
         // save repeat state
         userData.repeatMode = musicPlayer.repeatMode
     }
+}
+
+// MARK: - UIViewControllerAnimatedTransitioning
+
+extension PlayerViewController: UIViewControllerTransitioningDelegate {
+	func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+		return queueAnimation
+	}
+
+	func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+		return queueAnimation
+	}
 }
 
 // MARK - Testing
