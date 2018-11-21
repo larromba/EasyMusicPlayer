@@ -1,41 +1,24 @@
-//
-//  AppDelegate.swift
-//  EasyMusic
-//
-//  Created by Lee Arromba on 01/11/2015.
-//  Copyright © 2015 Lee Arromba. All rights reserved.
-//
-
 import UIKit
-import Fabric
-import Crashlytics
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
+    private var appController: AppControlling?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
-            log("\nDEBUG BUILD\n")
-        #endif
-        
-        Fabric.with([Crashlytics.self])
-        
-        do {
-            try Analytics.shared.setup()
-        } catch _ {
-            log("Analytics setup failed")
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else {
+            log("app is in test mode")
+            return true
         }
-        Analytics.shared.startSession()
-        
+        #endif
+
+        guard let viewController = window?.rootViewController as? PlayerViewController else {
+            fatalError("expected PlayerViewController")
+        }
+        appController = AppControllerFactory.make(playerViewController: viewController)
+
         return true
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        Analytics.shared.endSession()
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        Analytics.shared.startSession()
     }
 }

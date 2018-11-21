@@ -8,20 +8,32 @@
 
 import Foundation
 
+// TODO: assetionfailure
 extension Bundle {
-    class func appName() -> String {
-        return Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleDisplayName) as! String
+    static var appName: String {
+        guard let bundleName = Bundle.safeMain.object(forInfoDictionaryKey: "CFBundleName") as? String else {
+            assertionFailure("bundleName is nil")
+            return ""
+        }
+        return bundleName
     }
-    
-    class func appVersion() -> String {
-        return "v\(Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleVersion) as? String ?? "?")"
+
+    static var appVersion: String {
+        guard let bundleVersion = Bundle.safeMain.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else {
+            assertionFailure("appVersion is nil")
+            return ""
+        }
+        return "v\(bundleVersion)"
     }
-    
-    class func bundleIdentifier() -> String {
-        return Bundle.safeMainBundle().object(forInfoDictionaryKey: Constant.Bundle.BundleIdentifier) as! String
+
+    static var bundleIdentifier: String {
+        guard let bundleIdentifier = Bundle.safeMain.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String else {
+            return ""
+        }
+        return bundleIdentifier
     }
-    
-    class func safeMainBundle() -> Bundle {
-        return Bundle(identifier: Constant.Bundle.HardCodedMainBundleIdentifier)!
+
+    static var safeMain: Bundle {
+        return Bundle(identifier: "com.pinkchicken.easymusicplayer")!
     }
 }

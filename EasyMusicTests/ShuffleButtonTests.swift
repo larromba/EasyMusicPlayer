@@ -15,17 +15,17 @@ private var animationExpectation: XCTestExpectation?
 class ShuffleButtonTests: XCTestCase {
     override func tearDown() {
         animationExpectation = nil
-        
+
         super.tearDown()
     }
-    
+
     func testAnimation() {
         /**
         expectations
         - animation is added
         */
         animationExpectation = expectation(description: "layer.addAnimation(_, _)")
-        
+
         // mocks
         class MockLayer: CALayer {
             override func add(_ anim: CAAnimation, forKey key: String?) {
@@ -35,18 +35,18 @@ class ShuffleButtonTests: XCTestCase {
                 }
             }
         }
-        
+
         class MockShuffleButton: ShuffleButton {
             override var layer: CALayer {
                 return MockLayer()
             }
         }
-        
+
         let mockShuffleButton = MockShuffleButton()
-        
+
         // runnable
         mockShuffleButton.touchUpInside()
-        
+
         // tests
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }

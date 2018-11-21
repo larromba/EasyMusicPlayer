@@ -15,10 +15,10 @@ private var animationExpectation: XCTestExpectation?
 class PlayerButtonTests: XCTestCase {
     override func tearDown() {
         animationExpectation = nil
-        
+
         super.tearDown()
     }
-    
+
     func testAnimation() {
         /**
          expectations
@@ -35,18 +35,18 @@ class PlayerButtonTests: XCTestCase {
                 }
             }
         }
-        
+
         class MockPlayerButton: PlayerButton {
             override var layer: CALayer {
                 return MockLayer()
             }
         }
-        
+
         let mockPlayerButton = MockPlayerButton()
-        
+
         // runnable
         mockPlayerButton.touchUpInside()
-        
+
         // tests
         waitForExpectations(timeout: 1, handler: { error in XCTAssertNil(error) })
     }

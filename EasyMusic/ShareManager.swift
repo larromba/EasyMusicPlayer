@@ -1,39 +1,39 @@
-//
-//  ShareManager.swift
-//  EasyMusic
-//
-//  Created by Lee Arromba on 03/11/2015.
-//  Copyright © 2015 Lee Arromba. All rights reserved.
-//
-
 import Foundation
 import Social
 
-class ShareManager {
+enum ShareResult {
+    case success
+    case cancelledAfterChoice
+    case cancelledBeforeChoice
+    case error
+}
+
+protocol ShareManaging {
+    func shareTrack(_ track: Track, presenter: UIViewController, sender: UIView,
+                    completion: ((ShareResult, String?) -> Void)?)
+}
+
+final class ShareManager: ShareManaging {
     private weak var presenter: UIViewController?
     private var track: Track?
-    private var completion: ((Result, String?) -> Void)?
-    private var ComposeViewController = SLComposeViewController.self
-    private var AlertAction = UIAlertAction.self
-    
-    enum Result {
-        case success
-        case cancelledAfterChoice
-        case cancelledBeforeChoice
-        case error
+    private var completion: ((ShareResult, String?) -> Void)?
+    private let appStoreLink: URL
+    //TODO: this
+//    private var ComposeViewController = SLComposeViewController.self
+//    private var AlertAction = UIAlertAction.self
+
+    init(appStoreLink: URL) {
+        self.appStoreLink = appStoreLink
     }
-    
-    // MARK: - Internal
-    
-    func shareTrack(_ track: Track, presenter: UIViewController, sender: UIView, completion: ((Result, String?) -> Void)?) {
+
+    func shareTrack(_ track: Track, presenter: UIViewController, sender: UIView,
+                    completion: ((ShareResult, String?) -> Void)?) {
         self.presenter = presenter
         self.track = track
-        self.completion = completion;
-        
-        let choices = createShareChoices { (service: String?) -> Void in
-            guard let service = service else {
-                return
-            }
+        self.completion = completion
+
+        let choices = makeShareChoices { (service: String?) -> Void in
+            guard let service = service else { return }
             self.shareViaService(service)
         }
         if let popoverController = choices.popoverPresentationController {
@@ -43,22 +43,51 @@ class ShareManager {
         }
         presenter.present(choices, animated: true, completion: nil)
     }
-    
+
     // MARK: - Private
-    
+
+    private func makeShareChoices(completion: ((String?) -> Void)?) -> UIAlertController {
+        let msg = UIAlertController(
+            title: L10n.shareSheetTitle,
+            message: L10n.shareSheetDesc,
+            preferredStyle: UIAlertControllerStyle.actionSheet)
+
+        msg.addAction(UIAlertAction.withTitle(L10n.shareOptionFacebook,
+            style: .default,
+            handler: { (_: UIAlertAction) -> Void in
+                completion?(SLServiceTypeFacebook)
+                msg.dismiss(animated: true, completion: nil)
+        }))
+
+        msg.addAction(UIAlertAction.withTitle(L10n.shareOptionTwitter,
+            style: .default,
+            handler: { (_: UIAlertAction) -> Void in
+                completion?(SLServiceTypeTwitter)
+                msg.dismiss(animated: true, completion: nil)
+        }))
+
+        msg.addAction(UIAlertAction.withTitle(L10n.shareOptionCancel,
+            style: .cancel,
+            handler: { (_: UIAlertAction) -> Void in
+                completion?(nil)
+                msg.dismiss(animated: true, completion: {
+                    self.completion?(.cancelledBeforeChoice, nil)
+                })
+        }))
+
+        return msg
+    }
+
     private func shareViaService(_ serviceType: String) {
-        if let presenter = presenter, let track = track, ComposeViewController.isAvailable(forServiceType: serviceType) {
-            guard let share = ComposeViewController.init(forServiceType: serviceType), let url = URL(string: Constant.Url.AppStoreLink) else {
+        if let presenter = presenter, let track = track, SLComposeViewController.isAvailable(forServiceType: serviceType) {
+            guard let share = SLComposeViewController.init(forServiceType: serviceType) else {
                 self.completion?(.error, serviceType)
                 return
             }
-            let text = String(format: localized("share format", classId: ShareManager.self),
-                track.artist,
-                track.title,
-                Constant.String.AppName)
+            let text = L10n.shareFormat(track.artist, track.title, Bundle.appName)
             share.setInitialText(text)
-            share.add(url)
-            share.completionHandler = { (result:SLComposeViewControllerResult) in
+            share.add(appStoreLink)
+            share.completionHandler = { (result: SLComposeViewControllerResult) in
                 switch result {
                 case .done:
                     self.completion?(.success, serviceType)
@@ -72,50 +101,5 @@ class ShareManager {
             completion?(.error, serviceType)
             track = nil
         }
-    }
-    
-    private func createShareChoices(completion: ((String?) -> Void)?) -> UIAlertController {
-        let msg = UIAlertController(
-            title: localized("share sheet title", classId: ShareManager.self),
-            message: localized("share sheet desc", classId: ShareManager.self),
-            preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-        msg.addAction(AlertAction.withTitle(localized("share option facebook", classId: ShareManager.self),
-            style: .default,
-            handler: { (action: UIAlertAction) -> Void in
-                completion?(SLServiceTypeFacebook)
-                msg.dismiss(animated: true, completion: nil)
-        }))
-        
-        msg.addAction(AlertAction.withTitle(localized("share option twitter", classId: ShareManager.self),
-            style: .default,
-            handler: { (action: UIAlertAction) -> Void in
-                completion?(SLServiceTypeTwitter)
-                msg.dismiss(animated: true, completion: nil)
-        }))
-        
-        msg.addAction(AlertAction.withTitle(localized("share option cancel", classId: ShareManager.self),
-            style: .cancel,
-            handler: { (action: UIAlertAction) -> Void in
-                completion?(nil)
-                msg.dismiss(animated: true, completion: {
-                    self.completion?(.cancelledBeforeChoice, nil)
-                })
-        }))
-        
-        return msg
-    }
-}
-
-// MARK: - Testing
-
-extension ShareManager {
-    var __ComposeViewController: SLComposeViewController.Type {
-        get { return ComposeViewController }
-        set { ComposeViewController = newValue }
-    }
-    var __AlertAction: UIAlertAction.Type {
-        get { return AlertAction }
-        set { AlertAction = newValue }
     }
 }

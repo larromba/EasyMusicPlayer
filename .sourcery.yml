@@ -1,0 +1,6 @@
+sources:
+  - ./EasyMusic
+templates:
+  - ./Templates
+output:
+  ./Generated

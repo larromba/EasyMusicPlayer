@@ -1,0 +1,40 @@
+/* 
+  Localizable.strings
+  EasyMusic
+
+  Created by Lee Arromba on 21/11/2018.
+  Copyright © 2018 Lee Arromba. All rights reserved.
+*/
+
+"unknown artist" = "Artiste inconnu";
+"unknown track" = "Inconnu Titre";
+
+"time format" = "%@";
+"time interval format" = "%02d:%02d:%02d";
+"track position format" = "%i sur %i";
+
+"no music error title" = "Erreur";
+"no music error msg" = "Vous avez pas de musique";
+"no music error button" = "D'accord";
+"no volume error title" = "Erreur";
+"no volume error msg" = "Votre volume est trop faible";
+"no volume error button" = "D'accord";
+"track error title" = "Erreur";
+"track error msg" = "Ne pouvait pas jouer '%@'";
+"track error button" = "D'accord";
+"accounts error title" = "Comptes";
+"accounts error msg" = "S'il vous plaît vérifier vos comptes sociaux sont correctement configuré et essayez à nouveau";
+"accounts error button" = "D'accord";
+"finished alert title" = "Fin";
+"finished alert msg" = "Votre playlist terminé";
+"finished alert button" = "D'accord";
+"authorization error title" = "Autorisation";
+"authorization error message" = "Dans le menu Paramètres, accédez à votre musique!";
+"authorization error button" = "D'accord";
+
+"share format" = "%@ - %@ (passant par %@)";
+"share sheet title" = "Partagez";
+"share sheet desc" = "Où voulez-vous partager cette chanson?";
+"share option facebook" = "Facebook";
+"share option twitter" = "Twitter";
+"share option cancel" = "Annuler";

@@ -1,21 +1,19 @@
-//
-//  Log.swift
-//  EasyMusic
-//
-//  Created by Lee Arromba on 15/11/2015.
-//  Copyright © 2015 Lee Arromba. All rights reserved.
-//
-
 import Foundation
-
-func safeAssert(_ condition: Bool, _ msg: String) {
-    if !condition {
-        log(msg)
-    }
-}
 
 func log(_ msg: String) {
     #if DEBUG
-        print(msg)
+    print("ℹ️ \(msg)")
+    #endif
+}
+
+func log_warning(_ msg: String) {
+    #if DEBUG
+    print("⚠️ \(msg)")
+    #endif
+}
+
+func log_error(_ msg: String) {
+    #if DEBUG
+    print("❌ \(msg)")
     #endif
 }

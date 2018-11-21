@@ -23,7 +23,7 @@ class TrackInfoTests: XCTestCase {
          expectations:
          - object properties are initialised correctly
          */
-        
+
         // mocks
         class MockMediaItem: MPMediaItem {
             override var artist: String { return mockArtist }
@@ -32,10 +32,10 @@ class TrackInfoTests: XCTestCase {
             override var artwork: MPMediaItemArtwork { return mockArtwork }
             override var assetURL: URL { return mockAssetUrl }
         }
-        
+
         // runnable
         let track = Track(mediaItem: MockMediaItem())
-        
+
         // tests
         XCTAssertEqual(track.artist, mockArtist)
         XCTAssertEqual(track.title, mockTitle)

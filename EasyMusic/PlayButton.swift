@@ -1,41 +1,30 @@
-//
-//  PlayButton.swift
-//  EasyMusic
-//
-//  Created by Lee Arromba on 14/11/2015.
-//  Copyright © 2015 Lee Arromba. All rights reserved.
-//
-
 import UIKit
 
-@IBDesignable
-class PlayButton: PlayerButton {
-    private(set) var buttonState: State = State.play
+protocol PlayButtonable {
+    var viewState: PlayButtonViewState? { get set }
+}
 
-    enum State {
-        case play
-        case pause
+@IBDesignable
+final class PlayButton: UIButton, PlayButtonable {
+    var viewState: PlayButtonViewState? {
+        didSet { _ = viewState.map(bind) }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        setButtonState(buttonState)
+        _ = viewState.map(bind)
     }
-    
+
+    // MARK: - private
+
+    private func bind(_ viewState: PlayButtonViewState) {
+        setBackgroundImage(viewState.image, for: .normal)
+    }
+}
+
+extension PlayButton {
     override func prepareForInterfaceBuilder() {
-        setButtonState(buttonState)
-    }
-    
-    // MARK: - Internal
-    
-    func setButtonState(_ state: State) {
-        buttonState = state
-        switch state {
-        case .play:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PlayButton), for: .normal)
-        case .pause:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.PauseButton), for: .normal)
-        }
+        bind(PlayButtonViewState(state: .play, isEnabled: true))
+        super.prepareForInterfaceBuilder()
     }
 }

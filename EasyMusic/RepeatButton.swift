@@ -1,44 +1,30 @@
-//
-//  RepeatButton.swift
-//  EasyMusic
-//
-//  Created by Lee Arromba on 10/12/2015.
-//  Copyright © 2015 Lee Arromba. All rights reserved.
-//
-
 import UIKit
 
+protocol RepeatButtonable {
+    var viewState: RepeatButtonViewState? { get set }
+}
+
 @IBDesignable
-class RepeatButton: PlayerButton {
-    private(set) var buttonState: State = State.none
-    
-    enum State {
-        case none
-        case one
-        case all
+final class RepeatButton: UIButton, RepeatButtonable {
+    var viewState: RepeatButtonViewState? {
+        didSet { _ = viewState.map(bind) }
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        setButtonState(buttonState)
+        _ = viewState.map(bind)
     }
-    
+
+    // MARK: - private
+
+    private func bind(_ viewState: RepeatButtonViewState) {
+        setBackgroundImage(viewState.image, for: .normal)
+    }
+}
+
+extension RepeatButton {
     override func prepareForInterfaceBuilder() {
-        setButtonState(buttonState)
-    }
-    
-    // MARK: - Internal
-    
-    func setButtonState(_ state: State) {
-        buttonState = state
-        switch state {
-        case .none:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatButton), for: .normal)
-        case .one:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatOneButton), for: .normal)
-        case .all:
-            setBackgroundImage(UIImage.safeImage(named: Constant.Image.RepeatAllButton), for: .normal)
-        }
+        bind(RepeatButtonViewState(state: .all, isEnabled: true))
+        super.prepareForInterfaceBuilder()
     }
 }
