@@ -82,24 +82,13 @@ final class PlayerController: PlayerControlling {
     private func applicationDidBecomeActive() {
         // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong...
         // so stop (reset) the player
+        // TODO: refactor: if !controlsController.isPlayShowing()
         guard let controlsState = controlsController.viewState else { return }
         if controlsState.playButton.state == .pause && !musicPlayer.isPlaying {
             musicPlayer.stop()
         }
     }
 }
-
-//// MARK: - UIViewControllerAnimatedTransitioning
-//
-//extension PlayerController: UIViewControllerTransitioningDelegate {
-//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return queueAnimation
-//    }
-//
-//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return queueAnimation
-//    }
-//}
 
 // MARK: - MusicPlayerDelegate
 
@@ -108,7 +97,7 @@ extension PlayerController: MusicPlayerDelegate {
         switch state {
         case .playing:
             controlsController.setControlsPlaying()
-            infoController.setInfoFromTrack(sender.currentResolvedTrack)
+            infoController.setInfoFromTrack(sender.currentTrack.resolved)
             infoController.setTrackPosition((sender.currentTrackNumber + 1), totalTracks: sender.numOfTracks)
             scrubberController.setIsUserInteractionEnabled(true)
             updateSeekingControls()
@@ -147,7 +136,7 @@ extension PlayerController: MusicPlayerDelegate {
         case .noVolume:
             alertController.showAlert(.noVolume)
         case .avError:
-            alertController.showAlert(.trackError(title: player.currentResolvedTrack.title))
+            alertController.showAlert(.trackError(title: player.currentTrack.resolved.title))
         case .decode, .playerInit:
             player.skip()
         case .authorization:
@@ -206,7 +195,7 @@ extension PlayerController: ControlsViewDelegate {
 
     func controlsPressedShare(_ viewController: ControlsViewControlling) {
         shareManager.shareTrack(
-            musicPlayer.currentResolvedTrack,
+            musicPlayer.currentTrack.resolved,
             presenter: self.viewController.casted,
             sender: viewController.shareButton,
             completion: { [weak self] (result: ShareResult, _: String?) in

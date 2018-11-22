@@ -48,11 +48,11 @@ class MusicPlayerTests: XCTestCase {
             GenericMockMediaItem(),
             GenericMockMediaItem()]
 
-#if !((arch(i386) || arch(x86_64)) && os(iOS)) // if not simulator
+#if targetEnvironment(simulator) // if not simulator
+        audioUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
+#else
         let songs = MPMediaQuery.songs().items
         audioUrl = songs!.first!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-#else
-        audioUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 #endif
     }
 

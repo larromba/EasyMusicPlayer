@@ -1,11 +1,3 @@
-//
-//  UIAlertActionExtensions.swift
-//  EasyMusic
-//
-//  Created by Lee Arromba on 27/11/2015.
-//  Copyright © 2015 Lee Arromba. All rights reserved.
-//
-
 import UIKit
 
 extension UIAlertAction {

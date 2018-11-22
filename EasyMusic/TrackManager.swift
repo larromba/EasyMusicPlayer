@@ -3,7 +3,6 @@ import MediaPlayer
 
 protocol TrackManaging {
     var allTracks: [MPMediaItem] { get }
-    var currentResolvedTrack: Track { get }
     var currentTrack: MPMediaItem { get }
     var currentTrackNumber: Int { get }
     var numOfTracks: Int { get }
@@ -45,7 +44,8 @@ final class TrackManager: TrackManaging {
     }
     var currentTrack: MPMediaItem {
         guard currentTrackNumber >= 0, currentTrackNumber < tracks.count else {
-            return MPMediaItem() // safety
+            assertionFailure("unexpected state")
+            return MPMediaItem()
         }
         return tracks[currentTrackNumber]
     }
@@ -65,9 +65,12 @@ final class TrackManager: TrackManaging {
         }
 
         // TODO: refactor
-        #if (arch(i386) || arch(x86_64)) && os(iOS) // if simulator
+        #if targetEnvironment(simulator)
             class MockMediaItem: MPMediaItem {
-                let mediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "arkist-rendezvous-fill_your_coffee")!)
+                let image = UIImage(named: "arkist-rendezvous-fill_your_coffee")!
+                lazy var mediaItemArtwork = MPMediaItemArtwork(boundsSize: image.size) { _ -> UIImage in
+                    return self.image
+                }
                 let assetUrl = URL(fileURLWithPath: kDummyAudio)
 
                 override var artist: String { return "Arkist" }
@@ -79,7 +82,7 @@ final class TrackManager: TrackManaging {
 
             let tracks = [MockMediaItem(), MockMediaItem(), MockMediaItem()]
             return tracks
-        #else // device
+        #else
             if let songs = MPMediaQuery.songs().items {
                 return songs
             } else {
@@ -88,6 +91,7 @@ final class TrackManager: TrackManaging {
         #endif
     }
 
+    // TODO: remove out
     func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
         MPMediaLibrary.requestAuthorization({ (status: MPMediaLibraryAuthorizationStatus) in
             DispatchQueue.main.async(execute: {

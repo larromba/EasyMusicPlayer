@@ -36,7 +36,6 @@
 		7F71B81C21A55AD200135925 /* ControlsViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81B21A55AD200135925 /* ControlsViewState.swift */; };
 		7F71B81E21A55C4300135925 /* RepeatButtonViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81D21A55C4300135925 /* RepeatButtonViewState.swift */; };
 		7F71B82021A55D8D00135925 /* PlayButtonViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81F21A55D8D00135925 /* PlayButtonViewState.swift */; };
-		7F71B82221A55FBB00135925 /* ButtonAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82121A55FBB00135925 /* ButtonAnimation.swift */; };
 		7F71B82721A5638300135925 /* GenericButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82621A5638300135925 /* GenericButtonState.swift */; };
 		7F71B82921A5898500135925 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82821A5898500135925 /* Error.swift */; };
 		7F71B82B21A58E4300135925 /* RemoteControlling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82A21A58E4300135925 /* RemoteControlling.swift */; };
@@ -53,9 +52,9 @@
 		7F71B85021A5DF1000135925 /* NowPlayingInfoCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B84F21A5DF1000135925 /* NowPlayingInfoCenter.swift */; };
 		7F71B85121A5E18000135925 /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FD1BFB75B600DCE572 /* GCD.swift */; };
 		7F71B85321A5E82E00135925 /* PlayerViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85221A5E82E00135925 /* PlayerViewState.swift */; };
-		7F71B85521A604C300135925 /* ButtonAnimatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85421A604C300135925 /* ButtonAnimatable.swift */; };
 		7F71B85721A606EE00135925 /* UIButtonAnimationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85621A606EE00135925 /* UIButtonAnimationExtensions.swift */; };
 		7F71B85921A60B4800135925 /* MusicPlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85821A60B4800135925 /* MusicPlayerState.swift */; };
+		7F71B85B21A6211B00135925 /* MPMediaItemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85A21A6211B00135925 /* MPMediaItemExtensions.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
 		7F92B6EF1C19979200A5273A /* PlayerButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */; };
@@ -123,7 +122,6 @@
 		7F71B81B21A55AD200135925 /* ControlsViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsViewState.swift; sourceTree = "<group>"; };
 		7F71B81D21A55C4300135925 /* RepeatButtonViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatButtonViewState.swift; sourceTree = "<group>"; };
 		7F71B81F21A55D8D00135925 /* PlayButtonViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButtonViewState.swift; sourceTree = "<group>"; };
-		7F71B82121A55FBB00135925 /* ButtonAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonAnimation.swift; sourceTree = "<group>"; };
 		7F71B82621A5638300135925 /* GenericButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericButtonState.swift; sourceTree = "<group>"; };
 		7F71B82821A5898500135925 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		7F71B82A21A58E4300135925 /* RemoteControlling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlling.swift; sourceTree = "<group>"; };
@@ -146,9 +144,9 @@
 		7F71B84D21A5DCBB00135925 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		7F71B84F21A5DF1000135925 /* NowPlayingInfoCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingInfoCenter.swift; sourceTree = "<group>"; };
 		7F71B85221A5E82E00135925 /* PlayerViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewState.swift; sourceTree = "<group>"; };
-		7F71B85421A604C300135925 /* ButtonAnimatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonAnimatable.swift; sourceTree = "<group>"; };
 		7F71B85621A606EE00135925 /* UIButtonAnimationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonAnimationExtensions.swift; sourceTree = "<group>"; };
 		7F71B85821A60B4800135925 /* MusicPlayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerState.swift; sourceTree = "<group>"; };
+		7F71B85A21A6211B00135925 /* MPMediaItemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMediaItemExtensions.swift; sourceTree = "<group>"; };
 		7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerButtonTests.swift; sourceTree = "<group>"; };
@@ -275,8 +273,6 @@
 		7F71B82C21A58E4700135925 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				7F71B85421A604C300135925 /* ButtonAnimatable.swift */,
-				7F71B82121A55FBB00135925 /* ButtonAnimation.swift */,
 				7F71B82A21A58E4300135925 /* RemoteControlling.swift */,
 				7F71B83121A5922100135925 /* Keyable.swift */,
 				7F71B83321A5926B00135925 /* Mockable.swift */,
@@ -360,6 +356,7 @@
 				7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */,
 				7F4090671BFA096600F449FD /* UIStoryboardExtensions.swift */,
 				7F71B85621A606EE00135925 /* UIButtonAnimationExtensions.swift */,
+				7F71B85A21A6211B00135925 /* MPMediaItemExtensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -666,7 +663,6 @@
 				7F71B85321A5E82E00135925 /* PlayerViewState.swift in Sources */,
 				7F71B80D21A4872300135925 /* ScrubberViewController.swift in Sources */,
 				7F71B83421A5926B00135925 /* Mockable.swift in Sources */,
-				7F71B82221A55FBB00135925 /* ButtonAnimation.swift in Sources */,
 				7FA25FC21C088A0B009FB59D /* UIAlertActionExtensions.swift in Sources */,
 				7F71B82921A5898500135925 /* Error.swift in Sources */,
 				7F71B85921A60B4800135925 /* MusicPlayerState.swift in Sources */,
@@ -694,6 +690,7 @@
 				7F71B81821A4A75900135925 /* ControlsController.swift in Sources */,
 				7F71B80B21A4871B00135925 /* ScrubberController.swift in Sources */,
 				7F71B82021A55D8D00135925 /* PlayButtonViewState.swift in Sources */,
+				7F71B85B21A6211B00135925 /* MPMediaItemExtensions.swift in Sources */,
 				7F71B84A21A5CAD300135925 /* assets-images.swift in Sources */,
 				7F71B82E21A5903D00135925 /* DataManager.swift in Sources */,
 				7F71B82721A5638300135925 /* GenericButtonState.swift in Sources */,
@@ -701,7 +698,6 @@
 				7F92B6F51C1A09F100A5273A /* UserService.swift in Sources */,
 				7F4090551BF7E44900F449FD /* PlayButton.swift in Sources */,
 				7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */,
-				7F71B85521A604C300135925 /* ButtonAnimatable.swift in Sources */,
 				7F71B81E21A55C4300135925 /* RepeatButtonViewState.swift in Sources */,
 				7F71B85721A606EE00135925 /* UIButtonAnimationExtensions.swift in Sources */,
 				7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */,

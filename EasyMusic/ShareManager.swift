@@ -52,35 +52,43 @@ final class ShareManager: ShareManaging {
             message: L10n.shareSheetDesc,
             preferredStyle: UIAlertControllerStyle.actionSheet)
 
-        msg.addAction(UIAlertAction.withTitle(L10n.shareOptionFacebook,
+        msg.addAction(UIAlertAction.withTitle(
+            L10n.shareOptionFacebook,
             style: .default,
             handler: { (_: UIAlertAction) -> Void in
                 completion?(SLServiceTypeFacebook)
                 msg.dismiss(animated: true, completion: nil)
-        }))
+            }
+        ))
 
-        msg.addAction(UIAlertAction.withTitle(L10n.shareOptionTwitter,
+        msg.addAction(UIAlertAction.withTitle(
+            L10n.shareOptionTwitter,
             style: .default,
             handler: { (_: UIAlertAction) -> Void in
                 completion?(SLServiceTypeTwitter)
                 msg.dismiss(animated: true, completion: nil)
-        }))
+            }
+        ))
 
-        msg.addAction(UIAlertAction.withTitle(L10n.shareOptionCancel,
+        msg.addAction(UIAlertAction.withTitle(
+            L10n.shareOptionCancel,
             style: .cancel,
             handler: { (_: UIAlertAction) -> Void in
                 completion?(nil)
                 msg.dismiss(animated: true, completion: {
                     self.completion?(.cancelledBeforeChoice, nil)
                 })
-        }))
+            }
+        ))
 
         return msg
     }
 
     private func shareViaService(_ serviceType: String) {
-        if let presenter = presenter, let track = track, SLComposeViewController.isAvailable(forServiceType: serviceType) {
-            guard let share = SLComposeViewController.init(forServiceType: serviceType) else {
+        // TODO: SLComposeViewController
+        let isAvailable = SLComposeViewController.isAvailable(forServiceType: serviceType)
+        if let presenter = presenter, let track = track, isAvailable {
+            guard let share = SLComposeViewController(forServiceType: serviceType) else {
                 self.completion?(.error, serviceType)
                 return
             }

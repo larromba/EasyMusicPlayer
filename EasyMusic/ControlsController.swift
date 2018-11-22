@@ -102,12 +102,12 @@ final class ControlsController: ControlsControlling {
     }
 
     func enableSeekBackwardsRemoteOnly(_ enable: Bool) {
-        remote.previousTrackCommand.isEnabled = enable
+        remote.previousTrackCommand.isEnabled = enable // TODO: should it be here?
         remote.seekBackwardCommand.isEnabled = enable
     }
 
     func enableSeekForwardsRemoteOnly(_ enable: Bool) {
-        remote.nextTrackCommand.isEnabled = enable
+        remote.nextTrackCommand.isEnabled = enable // TODO: should it be here?
         remote.seekForwardCommand.isEnabled = enable
     }
 

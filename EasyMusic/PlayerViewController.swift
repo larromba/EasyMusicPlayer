@@ -1,5 +1,5 @@
-import UIKit
 import MediaPlayer
+import UIKit
 
 protocol PlayerViewControlling: AnyObject {
     var viewState: PlayerViewState? { get set }
@@ -10,7 +10,6 @@ protocol PlayerViewControlling: AnyObject {
 
 final class PlayerViewController: UIViewController, PlayerViewControlling {
     @IBOutlet private(set) weak var appVersionLabel: UILabel!
-    @IBOutlet private(set) weak var topLayoutConstraint: NSLayoutConstraint! // TODO: ?
 
     var viewState: PlayerViewState? {
         didSet { _ = viewState.map(bind) }

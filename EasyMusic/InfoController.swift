@@ -25,18 +25,22 @@ final class InfoController: InfoControlling {
             artwork: track.artwork
         )
 
-        var mediaItemArtwork: MPMediaItemArtwork!
+        let trackArtwork: UIImage
         if let artwork = track.artwork {
-            mediaItemArtwork = MPMediaItemArtwork(image: artwork)
+            trackArtwork = artwork
         } else {
-            mediaItemArtwork = MPMediaItemArtwork(image: Asset.imagePlaceholder.image)
+            trackArtwork = Asset.imagePlaceholder.image
         }
+        let mediaItemArtwork = MPMediaItemArtwork(boundsSize: trackArtwork.size) { _ -> UIImage in
+            return trackArtwork
+        }
+        let playbackTime = remoteInfo.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] ?? 0.0
 
         remoteInfo.nowPlayingInfo = [
             MPMediaItemPropertyTitle: track.title,
             MPMediaItemPropertyArtist: track.artist,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
-            MPNowPlayingInfoPropertyElapsedPlaybackTime: remoteInfo.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] ?? 0.0,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: playbackTime,
             MPMediaItemPropertyPlaybackDuration: track.duration,
             MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue
         ]

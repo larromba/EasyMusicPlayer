@@ -1,5 +1,5 @@
-import UIKit
 import MediaPlayer
+import UIKit
 
 enum AppControllerFactory {
     static func make(playerViewController: PlayerViewController) -> AppControlling {
