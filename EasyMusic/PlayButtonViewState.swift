@@ -1,18 +1,13 @@
 import UIKit
 
-enum PlayState {
-    case play
-    case pause
-}
-
 struct PlayButtonViewState {
     let state: PlayState
     let isEnabled: Bool
     var image: UIImage {
         switch state {
-        case .play:
+        case .playing:
             return Asset.playButton.image
-        case .pause:
+        case .paused, .finished, .stopped:
             return Asset.pauseButton.image
         }
     }

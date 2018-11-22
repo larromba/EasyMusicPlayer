@@ -18,8 +18,8 @@ private let mockImage = UIImage()
 private let mockArtwork = MPMediaItemArtwork(image: mockImage)
 private let mockAssetUrl = URL(fileURLWithPath: Constant.Path.DummyAudio)
 
-class ShareManagerTests: XCTestCase {
-    private var shareManager: ShareManager?
+class SharingServiceTests: XCTestCase {
+    private var shareManager: SharingService?
 
     class MockMediaItem: MPMediaItem {
         override var artist: String { return mockArtist }
@@ -32,7 +32,7 @@ class ShareManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        shareManager = ShareManager()
+        shareManager = SharingService()
     }
 
     override func tearDown() {

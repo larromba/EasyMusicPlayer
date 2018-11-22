@@ -2,14 +2,14 @@ import Foundation
 import MediaPlayer
 
 protocol UserServicing: AnyObject {
-    var repeatMode: RepeatState? { get set }
+    var repeatState: RepeatState? { get set }
     var currentTrackID: MPMediaEntityPersistentID? { get set }
     var trackIDs: [MPMediaEntityPersistentID]? { get set }
 }
 
 final class UserService: UserServicing {
     private enum Key: String, Keyable {
-        case repeatMode
+        case repeatState
         case tracks
         case currentTrackID
     }
@@ -20,15 +20,15 @@ final class UserService: UserServicing {
         self.dataManager = dataManager
     }
 
-    var repeatMode: RepeatState? {
+    var repeatState: RepeatState? {
         get {
-            guard let rawValue: String = dataManager.load(key: Key.repeatMode) else {
+            guard let rawValue: String = dataManager.load(key: Key.repeatState) else {
                 return nil
             }
             return RepeatState(rawValue: rawValue)
         }
         set {
-            dataManager.save(newValue?.rawValue, key: Key.repeatMode)
+            dataManager.save(newValue?.rawValue, key: Key.repeatState)
         }
     }
 

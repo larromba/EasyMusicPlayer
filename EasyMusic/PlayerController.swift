@@ -11,7 +11,7 @@ final class PlayerController: PlayerControlling {
     private let controlsController: ControlsControlling
     private let alertController: AlertControlling
     private let musicPlayer: MusicPlaying
-    private let shareManager: ShareManaging
+    private let shareManager: SharingServicable
     private let userService: UserServicing
     private var isUserScrobbling: Bool = false
 
@@ -22,7 +22,7 @@ final class PlayerController: PlayerControlling {
          alertController: AlertControlling,
          musicPlayer: MusicPlaying,
          userService: UserServicing,
-         shareManager: ShareManaging) {
+         shareManager: SharingServicable) {
         self.viewController = viewController
         self.scrubberController = scrubberController
         self.infoController = infoController
@@ -37,19 +37,16 @@ final class PlayerController: PlayerControlling {
     // MARK: - private
 
     private func setup() {
-        // delegate
         scrubberController.setDelegate(self)
+        controlsController.setDelegate(self)
         musicPlayer.setDelegate(delegate: self)
-        viewController.controlsViewController.setDelegate(self)
 
-        // view state
-        if let repeatMode = userService.repeatMode {
-            musicPlayer.repeatState = repeatMode
-            controlsController.repeatButtonState = repeatMode
+        if let repeatMode = userService.repeatState {
+            musicPlayer.setRepeatState(repeatMode)
+            controlsController.setRepeatState(repeatMode)
         }
         viewController.viewState = PlayerViewState(appVersion: Bundle.appVersion)
 
-        // notification
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationDidBecomeActive),
@@ -58,32 +55,14 @@ final class PlayerController: PlayerControlling {
         )
     }
 
-    private func updateSeekingControls() {
-        if musicPlayer.repeatState == .all {
-            controlsController.setPreviousIsEnabled(true)
-            controlsController.setNextIsEnabled(true)
-            return
-        }
-
-        let trackNumber = musicPlayer.currentTrackNumber
-        if trackNumber == 0 {
-            controlsController.setPreviousIsEnabled(false)
-            controlsController.setSeekBackwardsIsEnabled(true)
-        }
-        if trackNumber == (musicPlayer.numOfTracks - 1) {
-            controlsController.setNextIsEnabled(false)
-            controlsController.setSeekForwardsIsEnabled(true)
-        }
-    }
-
     // MARK: - notification
 
     @objc
     private func applicationDidBecomeActive() {
-        // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong...
-        // so stop (reset) the player
-        guard let playState = controlsController.playButtonState else { return }
-        if playState == .pause && !musicPlayer.isPlaying {
+        // if play button is no longr in sync (by being equal) to play state, stop the player
+        // e.g. if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong
+        guard let playButtonState = controlsController.playButtonState else { return }
+        if playButtonState == musicPlayer.state.playState {
             musicPlayer.stop()
         }
     }
@@ -92,14 +71,15 @@ final class PlayerController: PlayerControlling {
 // MARK: - MusicPlayerDelegate
 
 extension PlayerController: MusicPlayerDelegate {
-    func musicPlayer(_ sender: MusicPlayer, changedState state: MusicPlayerState) {
+    func musicPlayer(_ sender: MusicPlayer, changedState state: PlayState) {
+        controlsController.setMusicPlayerState(sender.state)
         switch state {
         case .playing:
             controlsController.setControlsPlaying()
-            infoController.setInfoFromTrack(sender.currentTrack.resolved)
-            infoController.setTrackPosition((sender.currentTrackNumber + 1), totalTracks: sender.numOfTracks)
+            infoController.setInfoFromTrack(sender.state.currentTrack.resolved)
+            infoController.setTrackPosition((sender.state.currentTrackNumber + 1),
+                                            totalTracks: sender.state.numOfTracks)
             scrubberController.setIsUserInteractionEnabled(true)
-            updateSeekingControls()
         case .paused:
             controlsController.setControlsPaused()
             scrubberController.setIsUserInteractionEnabled(false)
@@ -120,7 +100,7 @@ extension PlayerController: MusicPlayerDelegate {
     func musicPlayer(_ sender: MusicPlayer, changedPlaybackTime playbackTime: TimeInterval) {
         guard !isUserScrobbling else { return }
 
-        let duration = musicPlayer.currentTrack.playbackDuration
+        let duration = musicPlayer.state.currentTrack.playbackDuration
         let percentage = duration > 0 ? playbackTime / duration : 0
 
         scrubberController.moveScrubber(percentage: Float(percentage))
@@ -135,7 +115,7 @@ extension PlayerController: MusicPlayerDelegate {
         case .noVolume:
             alertController.showAlert(.noVolume)
         case .avError:
-            alertController.showAlert(.trackError(title: player.currentTrack.resolved.title))
+            alertController.showAlert(.trackError(title: player.state.currentTrack.resolved.title))
         case .decode, .playerInit:
             player.skip()
         case .authorization:
@@ -149,86 +129,69 @@ extension PlayerController: MusicPlayerDelegate {
 extension PlayerController: ScrubberControllerDelegate {
     func scrubberController(_ controller: ScrubberControlling, touchMovedToPercentage percentage: Float) {
         isUserScrobbling = true
-        let duration = musicPlayer.currentTrack.playbackDuration
+        let duration = musicPlayer.state.currentTrack.playbackDuration
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
     }
 
     func scrubberController(_ controller: ScrubberControlling, touchEndedAtPercentage percentage: Float) {
-        let duration = musicPlayer.currentTrack.playbackDuration
+        let duration = musicPlayer.state.currentTrack.playbackDuration
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
-        musicPlayer.time = time
+        musicPlayer.setTime(time)
         isUserScrobbling = false
     }
 }
 
-// MARK: - ControlsViewDelegate
+// MARK: - ControlsDelegate
 
-extension PlayerController: ControlsViewDelegate {
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay play: UIButton) {
-        play.pulse()
-        if musicPlayer.isPlaying {
+extension PlayerController: ControlsDelegate {
+    func controlsControllerPressedPlay(_ controller: ControlsControlling) {
+        if musicPlayer.state.isPlaying {
             musicPlayer.pause()
         } else {
             musicPlayer.play()
         }
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop stop: UIButton) {
-        stop.pulse()
+    func controlsControllerPressedStop(_ controller: ControlsControlling) {
         musicPlayer.stop()
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev prev: UIButton) {
-        prev.pulse()
+    func controlsControllerPressedPrev(_ controller: ControlsControlling) {
         musicPlayer.previous()
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext next: UIButton) {
-        next.pulse()
+    func controlsControllerPressedNext(_ controller: ControlsControlling) {
         musicPlayer.next()
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle shuffle: UIButton) {
-        shuffle.pulse()
-        shuffle.spin()
-
+    func controlsControllerPressedShuffle(_ controller: ControlsControlling) {
         musicPlayer.stop()
         musicPlayer.shuffle()
         musicPlayer.play()
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShare share: UIButton) {
-        shareManager.shareTrack(
-            musicPlayer.currentTrack.resolved,
-            presenter: self.viewController.casted,
-            sender: viewController.shareButton,
-            completion: { [weak self] (result: ShareResult, _: String?) in
-                switch result {
-                case .error:
-                    self?.alertController.showAlert(.shareError)
-                default:
-                    break
-                }
-            })
+    func controlsControllerPressedShare(_ controller: ControlsControlling) {
+        // TODO: this
+//        shareManager.shareTrack(
+//            musicPlayer.state.currentTrack.resolved,
+//            presenter: self.viewController.casted,
+//            sender: viewController.shareButton,
+//            completion: { [weak self] (result: ShareResult, _: String?) in
+//                switch result {
+//                case .error:
+//                    self?.alertController.showAlert(.shareError)
+//                default:
+//                    break
+//                }
+//            })
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat repeat: UIButton) {
-        guard let viewState = viewController.viewState else { return }
-        let currentRepeatState = viewState.repeatButton.state
-        let nextRepeatState = currentRepeatState.next()
-
-        // update
-        let repeatButtonState = viewState.repeatButton.copy(state: nextRepeatState)
-        viewController.viewState = viewController.viewState?.copy(repeatButton: repeatButtonState)
-        musicPlayer.repeatState = nextRepeatState
-        if musicPlayer.isPlaying {
-            updateSeekingControls()
-        }
-
-        // save
-        userService.repeatMode = nextRepeatState
+    func controlsControllerPressedRepeat(_ controller: ControlsControlling) {
+        guard let repeatState = controller.repeatButtonState else { return }
+        musicPlayer.setRepeatState(repeatState)
+        userService.repeatState = repeatState
     }
 }
 

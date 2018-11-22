@@ -17,14 +17,12 @@ protocol TrackManaging {
     func removeTrack(atIndex index: Int)
 }
 
-// TODO: change this path
-let kDummyAudio = "/Users/larromba/Documents/Code Private/EasyMusicPlayer/[TestTunes]/Bounce.mp3"
-
 // TODO: MPMediaQuery
 final class TrackManager: TrackManaging {
     private var tracks: [MPMediaItem] = []
     private var trackIndex: Int = 0 {
         didSet {
+            guard trackIndex >= 0, trackIndex < tracks.count else { return }
             userService.currentTrackID = currentTrack.persistentID
         }
     }
@@ -68,7 +66,7 @@ final class TrackManager: TrackManaging {
                 lazy var mediaItemArtwork = MPMediaItemArtwork(boundsSize: image.size) { _ -> UIImage in
                     return self.image
                 }
-                let assetUrl = URL(fileURLWithPath: kDummyAudio)
+                let assetUrl = URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
 
                 override var artist: String { return "Arkist" }
                 override var title: String { return "Fill Your Coffee" }

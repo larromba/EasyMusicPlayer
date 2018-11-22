@@ -89,5 +89,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>DummyAudioPath</key>
+	<string>$(PROJECT_DIR)/[audio]/arkist - fill your coffee.m4a</string>
 </dict>
 </plist>

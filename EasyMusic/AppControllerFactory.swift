@@ -17,9 +17,13 @@ enum AppControllerFactory {
         let userService = UserService(dataManager: dataManager)
         let authorization = MusicAuthorization(authorizer: MPMediaLibrary.self)
         let trackManager = TrackManager(userService: userService, authorization: authorization)
+        let seeker = Seeker(seekInterval: 0.2)
+        let interruptionHandler = MusicInterupptionHandler()
+        let clock = Clock(timeInterval: 1.0)
         let musicPlayer = MusicPlayer(trackManager: trackManager, remote: remoteCommandCenter,
-                                      audioSession: AVAudioSession.sharedInstance())
-        let shareManager = ShareManager(appStoreLink: URL(string: "https://itunes.apple.com/app/id1067558718")!)
+                                      audioSession: AVAudioSession.sharedInstance(), authorization: authorization,
+                                      seeker: seeker, interruptionHandler: interruptionHandler, clock: clock)
+        let shareManager = SharingService(appStoreLink: URL(string: "https://itunes.apple.com/app/id1067558718")!)
 
         let playerController = PlayerController(
             viewController: playerViewController,

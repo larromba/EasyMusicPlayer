@@ -756,8 +756,8 @@ class PlayerViewControllerTests: XCTestCase {
         shareManagerExpectation = expectation(description: "shareManager.shareTrack(_, _)")
 
         // mocks
-        class MockShareManager: ShareManager {
-            override func shareTrack(_ track: Track, presenter: UIViewController, sender: UIView, completion: ((ShareManager.Result, String?) -> Void)?) {
+        class MockSharingService: SharingService {
+            override func shareTrack(_ track: Track, presenter: UIViewController, sender: UIView, completion: ((SharingService.Result, String?) -> Void)?) {
                 if sharedTrack == track {
                     shareManagerExpectation!.fulfill()
                 }
@@ -771,8 +771,8 @@ class PlayerViewControllerTests: XCTestCase {
             }
         }
 
-        let mockShareManager = MockShareManager()
-        playerViewController!.__shareManager = mockShareManager
+        let mockSharingService = MockSharingService()
+        playerViewController!.__shareManager = mockSharingService
 
         let mockMusicPlayer = MusicPlayer(delegate: playerViewController!)
         mockMusicPlayer.trackManager = MockTrackManager()

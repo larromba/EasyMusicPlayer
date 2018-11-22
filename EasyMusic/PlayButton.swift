@@ -24,7 +24,7 @@ final class PlayButton: UIButton, PlayButtonable {
 
 extension PlayButton {
     override func prepareForInterfaceBuilder() {
-        bind(PlayButtonViewState(state: .play, isEnabled: true))
+        bind(PlayButtonViewState(state: .playing, isEnabled: true))
         super.prepareForInterfaceBuilder()
     }
 }
