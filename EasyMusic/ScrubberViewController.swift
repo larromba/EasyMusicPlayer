@@ -1,9 +1,12 @@
 import UIKit
 
 protocol ScrubberViewDelegate: AnyObject {
-    func scrubber(_ scrubber: ScrubberViewControlling, touchesBegan touches: Set<UITouch>, with event: UIEvent?)
-    func scrubber(_ scrubber: ScrubberViewControlling, touchesMoved touches: Set<UITouch>, with event: UIEvent?)
-    func scrubber(_ scrubber: ScrubberViewControlling, touchesEnded touches: Set<UITouch>, with event: UIEvent?)
+    func scrubberViewController(_ viewController: ScrubberViewControlling,
+                                touchesBegan touches: Set<UITouch>, with event: UIEvent?)
+    func scrubberViewController(_ viewController: ScrubberViewControlling,
+                                touchesMoved touches: Set<UITouch>, with event: UIEvent?)
+    func scrubberViewController(_ viewController: ScrubberViewControlling,
+                                touchesEnded touches: Set<UITouch>, with event: UIEvent?)
 }
 
 protocol ScrubberViewControlling: AnyObject {
@@ -34,15 +37,15 @@ final class ScrubberViewController: UIViewController, ScrubberViewControlling {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.scrubber(self, touchesBegan: touches, with: event)
+        delegate?.scrubberViewController(self, touchesBegan: touches, with: event)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.scrubber(self, touchesMoved: touches, with: event)
+        delegate?.scrubberViewController(self, touchesMoved: touches, with: event)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.scrubber(self, touchesEnded: touches, with: event)
+        delegate?.scrubberViewController(self, touchesEnded: touches, with: event)
     }
 
     // MARK: - private

@@ -12,9 +12,8 @@ final class AlertController: AlertControlling {
     }
 
     func showAlert(_ alert: Alert) {
-        // TODO: UIAlertController.withTitle
-        let alertViewController = UIAlertController.withTitle(alert.title, message: alert.text,
-                                                              buttonTitle: alert.buttonTitle)
-        viewController.present(alertViewController, animated: true, completion: nil)
+        let alertController = UIAlertController(title: alert.title, message: alert.text, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: alert.buttonTitle, style: .default))
+        viewController.present(alertController, animated: true, completion: nil)
     }
 }

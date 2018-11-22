@@ -51,35 +51,35 @@ final class ShareManager: ShareManaging {
             title: L10n.shareSheetTitle,
             message: L10n.shareSheetDesc,
             preferredStyle: UIAlertControllerStyle.actionSheet)
-
-        msg.addAction(UIAlertAction.withTitle(
-            L10n.shareOptionFacebook,
-            style: .default,
-            handler: { (_: UIAlertAction) -> Void in
-                completion?(SLServiceTypeFacebook)
-                msg.dismiss(animated: true, completion: nil)
-            }
-        ))
-
-        msg.addAction(UIAlertAction.withTitle(
-            L10n.shareOptionTwitter,
-            style: .default,
-            handler: { (_: UIAlertAction) -> Void in
-                completion?(SLServiceTypeTwitter)
-                msg.dismiss(animated: true, completion: nil)
-            }
-        ))
-
-        msg.addAction(UIAlertAction.withTitle(
-            L10n.shareOptionCancel,
-            style: .cancel,
-            handler: { (_: UIAlertAction) -> Void in
-                completion?(nil)
-                msg.dismiss(animated: true, completion: {
-                    self.completion?(.cancelledBeforeChoice, nil)
-                })
-            }
-        ))
+        //TODO: this
+//        msg.addAction(UIAlertAction.withTitle(
+//            L10n.shareOptionFacebook,
+//            style: .default,
+//            handler: { (_: UIAlertAction) -> Void in
+//                completion?(SLServiceTypeFacebook)
+//                msg.dismiss(animated: true, completion: nil)
+//            }
+//        ))
+//
+//        msg.addAction(UIAlertAction.withTitle(
+//            L10n.shareOptionTwitter,
+//            style: .default,
+//            handler: { (_: UIAlertAction) -> Void in
+//                completion?(SLServiceTypeTwitter)
+//                msg.dismiss(animated: true, completion: nil)
+//            }
+//        ))
+//
+//        msg.addAction(UIAlertAction.withTitle(
+//            L10n.shareOptionCancel,
+//            style: .cancel,
+//            handler: { (_: UIAlertAction) -> Void in
+//                completion?(nil)
+//                msg.dismiss(animated: true, completion: {
+//                    self.completion?(.cancelledBeforeChoice, nil)
+//                })
+//            }
+//        ))
 
         return msg
     }

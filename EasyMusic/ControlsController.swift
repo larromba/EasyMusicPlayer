@@ -3,21 +3,21 @@ import MediaPlayer
 
 protocol ControlsControlling: AnyObject {
     var repeatButtonState: RepeatState? { get set }
-    var viewState: ControlsViewState? { get }
+    var playButtonState: PlayState? { get }
 
     func setControlsPlaying()
     func setControlsPaused()
     func setControlsStopped()
-    func setControlsEnabled(_ enabled: Bool)
-    func enablePrevious(_ enable: Bool)
-    func enableNext(_ enable: Bool)
-    func enableSeekBackwardsRemoteOnly(_ enable: Bool)
-    func enableSeekForwardsRemoteOnly(_ enable: Bool)
-    func enablePlay(_ enable: Bool)
-    func enableStop(_ enable: Bool)
-    func enableShare(_ enable: Bool)
-    func enableShuffle(_ enable: Bool)
-    func enableRepeat(_ enable: Bool)
+    func setControlsIsEnabled(_ isEnabled: Bool)
+    func setPreviousIsEnabled(_ isEnabled: Bool)
+    func setNextIsEnabled(_ isEnabled: Bool)
+    func setSeekBackwardsIsEnabled(_ isEnabled: Bool)
+    func setSeekForwardsIsEnabled(_ isEnabled: Bool)
+    func setPlayIsEnabled(_ isEnabled: Bool)
+    func setStopIsEnabled(_ isEnabled: Bool)
+    func setShareIsEnabled(_ isEnabled: Bool)
+    func setShuffleIsEnabled(_ isEnabled: Bool)
+    func setRepeatIsEnabled(_ isEnabled: Bool)
 }
 
 final class ControlsController: ControlsControlling {
@@ -36,6 +36,9 @@ final class ControlsController: ControlsControlling {
             return viewController.viewState?.repeatButton.state
         }
     }
+    var playButtonState: PlayState? {
+        return viewController.viewState?.playButton.state
+    }
 
     init(viewController: ControlsViewControlling, remote: RemoteControlling) {
         self.viewController = viewController
@@ -46,98 +49,98 @@ final class ControlsController: ControlsControlling {
     func setControlsPlaying() {
         guard let viewState = viewController.viewState else { return }
         viewController.viewState = viewState.copy(playButton: viewState.playButton.copy(state: .pause))
-        setControlsEnabled(true)
+        setControlsIsEnabled(true)
     }
 
     func setControlsPaused() {
         guard let viewState = viewController.viewState else { return }
         viewController.viewState = viewState.copy(playButton: viewState.playButton.copy(state: .play))
 
-        enablePlay(true)
-        enableShuffle(true)
-        enableStop(true)
+        setPlayIsEnabled(true)
+        setShuffleIsEnabled(true)
+        setStopIsEnabled(true)
 
-        enablePrevious(false)
-        enableNext(false)
-        enableShare(false)
+        setPreviousIsEnabled(false)
+        setNextIsEnabled(false)
+        setShareIsEnabled(false)
     }
 
     func setControlsStopped() {
         guard let viewState = viewController.viewState else { return }
         viewController.viewState = viewState.copy(playButton: viewState.playButton.copy(state: .play))
 
-        enablePlay(true)
-        enableShuffle(true)
+        setPlayIsEnabled(true)
+        setShuffleIsEnabled(true)
 
-        enablePrevious(false)
-        enableNext(false)
-        enableShare(false)
-        enableStop(false)
+        setPreviousIsEnabled(false)
+        setNextIsEnabled(false)
+        setShareIsEnabled(false)
+        setStopIsEnabled(false)
     }
 
-    func setControlsEnabled(_ enabled: Bool) {
-        enablePrevious(enabled)
-        enableNext(enabled)
-        enablePlay(enabled)
-        enableStop(enabled)
-        enableShuffle(enabled)
-        enableShare(enabled)
-        enableRepeat(enabled)
+    func setControlsIsEnabled(_ isEnabled: Bool) {
+        setPreviousIsEnabled(isEnabled)
+        setNextIsEnabled(isEnabled)
+        setPlayIsEnabled(isEnabled)
+        setStopIsEnabled(isEnabled)
+        setShuffleIsEnabled(isEnabled)
+        setShareIsEnabled(isEnabled)
+        setRepeatIsEnabled(isEnabled)
     }
 
-    func enablePrevious(_ enable: Bool) {
-        remote.previousTrackCommand.isEnabled = enable
-        remote.seekBackwardCommand.isEnabled = enable
+    func setPreviousIsEnabled(_ isEnabled: Bool) {
+        remote.previousTrackCommand.isEnabled = isEnabled
+        remote.seekBackwardCommand.isEnabled = isEnabled
 
         guard let viewState = viewController.viewState else { return }
-        viewController.viewState = viewState.copy(prevButton: viewState.prevButton.copy(isEnabled: enable))
+        viewController.viewState = viewState.copy(prevButton: viewState.prevButton.copy(isEnabled: isEnabled))
     }
 
-    func enableNext(_ enable: Bool) {
-        remote.nextTrackCommand.isEnabled = enable
-        remote.seekForwardCommand.isEnabled = enable
+    func setNextIsEnabled(_ isEnabled: Bool) {
+        remote.nextTrackCommand.isEnabled = isEnabled
+        remote.seekForwardCommand.isEnabled = isEnabled
 
         guard let viewState = viewController.viewState else { return }
-        viewController.viewState = viewState.copy(nextButton: viewState.nextButton.copy(isEnabled: enable))
+        viewController.viewState = viewState.copy(nextButton: viewState.nextButton.copy(isEnabled: isEnabled))
     }
 
-    func enableSeekBackwardsRemoteOnly(_ enable: Bool) {
-        remote.previousTrackCommand.isEnabled = enable // TODO: should it be here?
-        remote.seekBackwardCommand.isEnabled = enable
+    func setSeekBackwardsIsEnabled(_ isEnabled: Bool) {
+        remote.previousTrackCommand.isEnabled = isEnabled // TODO: should it be here?
+        remote.seekBackwardCommand.isEnabled = isEnabled
     }
 
-    func enableSeekForwardsRemoteOnly(_ enable: Bool) {
-        remote.nextTrackCommand.isEnabled = enable // TODO: should it be here?
-        remote.seekForwardCommand.isEnabled = enable
+    func setSeekForwardsIsEnabled(_ isEnabled: Bool) {
+        remote.nextTrackCommand.isEnabled = isEnabled // TODO: should it be here?
+        remote.seekForwardCommand.isEnabled = isEnabled
     }
 
-    func enablePlay(_ enable: Bool) {
-        remote.playCommand.isEnabled = enable
+    func setPlayIsEnabled(_ isEnabled: Bool) {
+        remote.playCommand.isEnabled = isEnabled
 
         guard let viewState = viewController.viewState else { return }
-        viewController.viewState = viewState.copy(playButton: viewState.playButton.copy(isEnabled: enable))
+        viewController.viewState = viewState.copy(playButton: viewState.playButton.copy(isEnabled: isEnabled))
     }
 
-    func enableStop(_ enable: Bool) {
-        remote.stopCommand.isEnabled = enable
+    func setStopIsEnabled(_ isEnabled: Bool) {
+        remote.stopCommand.isEnabled = isEnabled
 
         guard let viewState = viewController.viewState else { return }
-        viewController.viewState = viewState.copy(stopButton: viewState.stopButton.copy(isEnabled: enable))
+        viewController.viewState = viewState.copy(stopButton: viewState.stopButton.copy(isEnabled: isEnabled))
     }
 
-    func enableShare(_ enable: Bool) {
+    func setShareIsEnabled(_ isEnabled: Bool) {
         guard let viewState = viewController.viewState else { return }
-        viewController.viewState = viewState.copy(shareButton: viewState.shareButton.copy(isEnabled: enable))
+        viewController.viewState = viewState.copy(shareButton: viewState.shareButton.copy(isEnabled: isEnabled))
     }
 
-    func enableShuffle(_ enable: Bool) {
+    func setShuffleIsEnabled(_ isEnabled: Bool) {
         guard let viewState = viewController.viewState else { return }
-        viewController.viewState = viewState.copy(shuffleButton: viewState.shuffleButton.copy(isEnabled: enable))
+        viewController.viewState = viewState.copy(shuffleButton: viewState.shuffleButton.copy(isEnabled: isEnabled))
     }
 
-    func enableRepeat(_ enable: Bool) {
+    func setRepeatIsEnabled(_ isEnabled: Bool) {
         guard let viewState = viewController.viewState else { return }
-        viewController.viewState = viewState.copy(repeatButton: viewState.repeatButton.copy(isEnabled: enable))
+        viewController.viewState = viewState.copy(repeatButton: viewState.repeatButton.copy(isEnabled: isEnabled))
     }
 
     // MARK: - private

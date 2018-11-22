@@ -60,19 +60,19 @@ final class PlayerController: PlayerControlling {
 
     private func updateSeekingControls() {
         if musicPlayer.repeatState == .all {
-            controlsController.enablePrevious(true)
-            controlsController.enableNext(true)
+            controlsController.setPreviousIsEnabled(true)
+            controlsController.setNextIsEnabled(true)
             return
         }
 
         let trackNumber = musicPlayer.currentTrackNumber
         if trackNumber == 0 {
-            controlsController.enablePrevious(false)
-            controlsController.enableSeekBackwardsRemoteOnly(true)
+            controlsController.setPreviousIsEnabled(false)
+            controlsController.setSeekBackwardsIsEnabled(true)
         }
         if trackNumber == (musicPlayer.numOfTracks - 1) {
-            controlsController.enableNext(false)
-            controlsController.enableSeekForwardsRemoteOnly(true)
+            controlsController.setNextIsEnabled(false)
+            controlsController.setSeekForwardsIsEnabled(true)
         }
     }
 
@@ -82,9 +82,8 @@ final class PlayerController: PlayerControlling {
     private func applicationDidBecomeActive() {
         // if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong...
         // so stop (reset) the player
-        // TODO: refactor: if !controlsController.isPlayShowing()
-        guard let controlsState = controlsController.viewState else { return }
-        if controlsState.playButton.state == .pause && !musicPlayer.isPlaying {
+        guard let playState = controlsController.playButtonState else { return }
+        if playState == .pause && !musicPlayer.isPlaying {
             musicPlayer.stop()
         }
     }
@@ -167,7 +166,8 @@ extension PlayerController: ScrubberControllerDelegate {
 // MARK: - ControlsViewDelegate
 
 extension PlayerController: ControlsViewDelegate {
-    func controlsPressedPlay(_ viewController: ControlsViewControlling) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay play: UIButton) {
+        play.pulse()
         if musicPlayer.isPlaying {
             musicPlayer.pause()
         } else {
@@ -175,25 +175,31 @@ extension PlayerController: ControlsViewDelegate {
         }
     }
 
-    func controlsPressedStop(_ viewController: ControlsViewControlling) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop stop: UIButton) {
+        stop.pulse()
         musicPlayer.stop()
     }
 
-    func controlsPressedPrev(_ viewController: ControlsViewControlling) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev prev: UIButton) {
+        prev.pulse()
         musicPlayer.previous()
     }
 
-    func controlsPressedNext(_ viewController: ControlsViewControlling) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext next: UIButton) {
+        next.pulse()
         musicPlayer.next()
     }
 
-    func controlsPressedShuffle(_ viewController: ControlsViewControlling) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle shuffle: UIButton) {
+        shuffle.pulse()
+        shuffle.spin()
+
         musicPlayer.stop()
         musicPlayer.shuffle()
         musicPlayer.play()
     }
 
-    func controlsPressedShare(_ viewController: ControlsViewControlling) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedShare share: UIButton) {
         shareManager.shareTrack(
             musicPlayer.currentTrack.resolved,
             presenter: self.viewController.casted,
@@ -208,7 +214,7 @@ extension PlayerController: ControlsViewDelegate {
             })
     }
 
-    func controlsPressedRepeat(_ viewController: ControlsViewControlling) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat repeat: UIButton) {
         guard let viewState = viewController.viewState else { return }
         let currentRepeatState = viewState.repeatButton.state
         let nextRepeatState = currentRepeatState.next()

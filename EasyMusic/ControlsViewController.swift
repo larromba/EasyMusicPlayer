@@ -1,13 +1,13 @@
 import UIKit
 
 protocol ControlsViewDelegate: AnyObject {
-    func controlsPressedPlay(_ viewController: ControlsViewControlling)
-    func controlsPressedStop(_ viewController: ControlsViewControlling)
-    func controlsPressedPrev(_ viewController: ControlsViewControlling)
-    func controlsPressedNext(_ viewController: ControlsViewControlling)
-    func controlsPressedShuffle(_ viewController: ControlsViewControlling)
-    func controlsPressedShare(_ viewController: ControlsViewControlling)
-    func controlsPressedRepeat(_ viewController: ControlsViewControlling)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay play: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop stop: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev prev: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext next: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle shuffle: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedShare share: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat repeat: UIButton)
 }
 
 protocol ControlsViewControlling: AnyObject {
@@ -44,39 +44,31 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
     // MARK: - IBAction
 
     @IBAction private func playButtonPressed(_ sender: UIButton) {
-        sender.pulse() // TODO: move these up?
-        delegate?.controlsPressedPlay(self)
+        delegate?.controlsViewController(self, pressedPlay: sender)
     }
 
     @IBAction private func stopButtonPressed(_ sender: UIButton) {
-        sender.pulse()
-        delegate?.controlsPressedStop(self)
+        delegate?.controlsViewController(self, pressedStop: sender)
     }
 
     @IBAction private func prevButtonPressed(_ sender: UIButton) {
-        sender.pulse()
-        delegate?.controlsPressedPrev(self)
+        delegate?.controlsViewController(self, pressedPrev: sender)
     }
 
     @IBAction private func nextButtonPressed(_ sender: UIButton) {
-        sender.pulse()
-        delegate?.controlsPressedNext(self)
+        delegate?.controlsViewController(self, pressedNext: sender)
     }
 
     @IBAction private func shuffleButtonPressed(_ sender: UIButton) {
-        sender.pulse()
-        sender.spin()
-        delegate?.controlsPressedShuffle(self)
+        delegate?.controlsViewController(self, pressedShuffle: sender)
     }
 
     @IBAction private func shareButtonPressed(_ sender: UIButton) {
-        sender.pulse()
-        delegate?.controlsPressedShare(self)
+        delegate?.controlsViewController(self, pressedShare: sender)
     }
 
     @IBAction private func repeatButtonPressed(_ sender: UIButton) {
-        sender.pulse()
-        delegate?.controlsPressedRepeat(self)
+        delegate?.controlsViewController(self, pressedRepeat: sender)
     }
 
     // MARK: - private

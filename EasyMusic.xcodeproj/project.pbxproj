@@ -62,9 +62,7 @@
 		7F92B6F31C19ADFF00A5273A /* RepeatButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F21C19ADFF00A5273A /* RepeatButtonTests.swift */; };
 		7F92B6F51C1A09F100A5273A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F41C1A09F100A5273A /* UserService.swift */; };
 		7F92B6F71C1A0F7E00A5273A /* UserDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F61C1A0F7E00A5273A /* UserDataTests.swift */; };
-		7FA25FC21C088A0B009FB59D /* UIAlertActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */; };
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
-		7FCFE9161BF4A40600981545 /* UIAlertControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FCFE93D1BF4BDDA00981545 /* ScrobbleViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE93C1BF4BDDA00981545 /* ScrobbleViewTests.swift */; };
 		7FCFE9401BF4D2D700981545 /* InfoViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */; };
@@ -154,9 +152,7 @@
 		7F92B6F21C19ADFF00A5273A /* RepeatButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatButtonTests.swift; sourceTree = "<group>"; };
 		7F92B6F41C1A09F100A5273A /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		7F92B6F61C1A0F7E00A5273A /* UserDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataTests.swift; sourceTree = "<group>"; };
-		7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertActionExtensions.swift; sourceTree = "<group>"; };
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertControllerExtensions.swift; sourceTree = "<group>"; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FCFE93C1BF4BDDA00981545 /* ScrobbleViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrobbleViewTests.swift; sourceTree = "<group>"; };
 		7FCFE93F1BF4D2D700981545 /* InfoViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InfoViewTests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -351,8 +347,6 @@
 		7F8187B91BF2011F00BAF398 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7FCFE9151BF4A40600981545 /* UIAlertControllerExtensions.swift */,
-				7FA25FC11C088A0B009FB59D /* UIAlertActionExtensions.swift */,
 				7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */,
 				7F4090671BFA096600F449FD /* UIStoryboardExtensions.swift */,
 				7F71B85621A606EE00135925 /* UIButtonAnimationExtensions.swift */,
@@ -663,10 +657,8 @@
 				7F71B85321A5E82E00135925 /* PlayerViewState.swift in Sources */,
 				7F71B80D21A4872300135925 /* ScrubberViewController.swift in Sources */,
 				7F71B83421A5926B00135925 /* Mockable.swift in Sources */,
-				7FA25FC21C088A0B009FB59D /* UIAlertActionExtensions.swift in Sources */,
 				7F71B82921A5898500135925 /* Error.swift in Sources */,
 				7F71B85921A60B4800135925 /* MusicPlayerState.swift in Sources */,
-				7FCFE9161BF4A40600981545 /* UIAlertControllerExtensions.swift in Sources */,
 				7FF5B31D1BE654220044FCE5 /* MusicPlayer.swift in Sources */,
 				7F71B83821A59FAD00135925 /* AlertController.swift in Sources */,
 				7F71B81621A4A32100135925 /* InfoViewState.swift in Sources */,
@@ -917,7 +909,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -944,7 +936,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

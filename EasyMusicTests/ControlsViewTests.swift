@@ -56,7 +56,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.setControlsEnabled(enabled)
+        controlsView!.setControlsIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.playButton.isEnabled, enabled)
@@ -180,7 +180,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enablePlay(enabled)
+        controlsView!.setPlayIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.playButton.isEnabled, enabled)
@@ -196,7 +196,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enablePlay(enabled)
+        controlsView!.setPlayIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.shared().playCommand.isEnabled, enabled)
@@ -212,7 +212,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableStop(enabled)
+        controlsView!.setStopIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.stopButton.isEnabled, enabled)
@@ -228,7 +228,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableStop(enabled)
+        controlsView!.setStopIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.shared().stopCommand.isEnabled, enabled)
@@ -244,7 +244,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enablePrevious(enabled)
+        controlsView!.setPreviousIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.prevButton.isEnabled, enabled)
@@ -261,7 +261,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enablePrevious(enabled)
+        controlsView!.setPreviousIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled, enabled)
@@ -278,7 +278,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableNext(enabled)
+        controlsView!.setNextIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.nextButton.isEnabled, enabled)
@@ -295,7 +295,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableNext(enabled)
+        controlsView!.setNextIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled, enabled)
@@ -312,7 +312,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableSeekBackwardsRemoteOnly(enabled)
+        controlsView!.setSeekBackwardsIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.shared().previousTrackCommand.isEnabled, enabled)
@@ -329,7 +329,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableSeekForwardsRemoteOnly(enabled)
+        controlsView!.setSeekForwardsIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(MPRemoteCommandCenter.shared().nextTrackCommand.isEnabled, enabled)
@@ -346,7 +346,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableShuffle(enabled)
+        controlsView!.setShuffleIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.shuffleButton.isEnabled, enabled)
@@ -362,7 +362,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableShare(enabled)
+        controlsView!.setShareIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.shareButton.isEnabled, enabled)
@@ -378,7 +378,7 @@ class ControlsViewTests: XCTestCase {
         let enabled = true
 
         // runnable
-        controlsView!.enableRepeat(enabled)
+        controlsView!.setRepeatIsEnabled(enabled)
 
         // tests
         XCTAssertEqual(controlsView!.repeatButton.isEnabled, enabled)

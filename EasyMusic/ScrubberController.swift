@@ -61,12 +61,14 @@ final class ScrubberController: ScrubberControlling {
 // MARK: - ScrubberViewDelegate
 
 extension ScrubberController: ScrubberViewDelegate {
-    func scrubber(_ scrubber: ScrubberViewControlling, touchesBegan touches: Set<UITouch>, with event: UIEvent?) {
+    func scrubberViewController(_ viewController: ScrubberViewControlling,
+                                touchesBegan touches: Set<UITouch>, with event: UIEvent?) {
         guard touches.first != nil, let viewState = viewController.viewState else { return }
         viewController.viewState = viewState.copy(barAlpha: lowAlpha)
     }
 
-    func scrubber(_ scrubber: ScrubberViewControlling, touchesMoved touches: Set<UITouch>, with event: UIEvent?) {
+    func scrubberViewController(_ viewController: ScrubberViewControlling,
+                                touchesMoved touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
 
         let x = touch.location(in: viewController.view).x
@@ -76,7 +78,8 @@ extension ScrubberController: ScrubberViewDelegate {
         delegate?.scrubberController(self, touchMovedToPercentage: percentage)
     }
 
-    func scrubber(_ scrubber: ScrubberViewControlling, touchesEnded touches: Set<UITouch>, with event: UIEvent?) {
+    func scrubberViewController(_ viewController: ScrubberViewControlling,
+                                touchesEnded touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
 
         let percentage = Float(touch.location(in: viewController.view).x / viewController.view.bounds.width)
