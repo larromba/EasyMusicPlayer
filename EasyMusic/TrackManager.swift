@@ -6,10 +6,8 @@ protocol TrackManaging {
     var currentTrack: MPMediaItem { get }
     var currentTrackNumber: Int { get }
     var numOfTracks: Int { get }
-    var authorized: Bool { get }
 
     func createPlaylist() -> [MPMediaItem]
-    func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) //TODO: separate class
     func loadTracks()
     func shuffleTracks()
     func cuePrevious() -> Bool
@@ -31,9 +29,11 @@ final class TrackManager: TrackManaging {
         }
     }
     private let userService: UserServicing
+    private let authorization: Authorizable
 
-    init(userService: UserServicing) {
+    init(userService: UserServicing, authorization: Authorizable) {
         self.userService = userService
+        self.authorization = authorization
     }
 
     var allTracks: [MPMediaItem] {
@@ -55,12 +55,9 @@ final class TrackManager: TrackManaging {
     var numOfTracks: Int {
         return tracks.count
     }
-    var authorized: Bool {
-        return MPMediaLibrary.authorizationStatus() == .authorized
-    }
 
     func createPlaylist() -> [MPMediaItem] {
-        guard authorized else {
+        guard authorization.isAuthorized else {
             return []
         }
 
@@ -83,6 +80,7 @@ final class TrackManager: TrackManaging {
             let tracks = [MockMediaItem(), MockMediaItem(), MockMediaItem()]
             return tracks
         #else
+        // TODO: refactor
             if let songs = MPMediaQuery.songs().items {
                 return songs
             } else {
@@ -91,17 +89,8 @@ final class TrackManager: TrackManaging {
         #endif
     }
 
-    // TODO: remove out
-    func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
-        MPMediaLibrary.requestAuthorization({ (status: MPMediaLibraryAuthorizationStatus) in
-            DispatchQueue.main.async(execute: {
-                completion(status == .authorized)
-            })
-        })
-    }
-
     func loadTracks() {
-        guard authorized else {
+        guard authorization.isAuthorized else {
             tracks = []
             trackIndex = 0
                 return
@@ -123,7 +112,7 @@ final class TrackManager: TrackManaging {
     }
 
     func shuffleTracks() {
-        guard authorized else {
+        guard authorization.isAuthorized else {
             tracks = []
             trackIndex = 0
             return

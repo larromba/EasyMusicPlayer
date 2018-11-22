@@ -27,6 +27,7 @@ protocol MusicPlaying: AnyObject {
     func skip()
 }
 
+// TODO: remove NSObject?
 final class MusicPlayer: NSObject, MusicPlaying {
     private var player: AVAudioPlayer?
     private var playbackCheckTimer: Timer?
@@ -38,6 +39,8 @@ final class MusicPlayer: NSObject, MusicPlaying {
     private weak var delegate: MusicPlayerDelegate?
     private let trackManager: TrackManaging
     private let remote: RemoteControlling
+    private let audioSession: AudioSessioning
+    private let authoriztion: Authorizable
 
     var repeatState: RepeatState = .none
     var isPlaying: Bool {
@@ -56,8 +59,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
         }
     }
     var volume: Float {
-        // TODO: refactor
-        return AVAudioSession.sharedInstance().outputVolume
+        return audioSession.outputVolume
     }
     var currentTrackNumber: Int {
         return trackManager.currentTrackNumber
@@ -69,9 +71,11 @@ final class MusicPlayer: NSObject, MusicPlaying {
         return trackManager.currentTrack
     }
 
-    init(trackManager: TrackManaging, remote: RemoteControlling) {
+    init(trackManager: TrackManaging, remote: RemoteControlling, audioSession: AudioSessioning, authoriztion: Authorizable) {
         self.trackManager = trackManager
         self.remote = remote
+        self.audioSession = audioSession
+        self.authoriztion = authoriztion
 
         super.init()
 
@@ -256,15 +260,14 @@ final class MusicPlayer: NSObject, MusicPlaying {
     private func enableAudioSession(_ enable: Bool) -> Bool {
         if enable {
             do {
-                // TODO: inject
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
+                try audioSession.setCategory_objc(AVAudioSessionCategoryPlayback, with: [])
             } catch {
                 log_error(error.localizedDescription)
                 return false
             }
         }
         do {
-            try AVAudioSession.sharedInstance().setActive(enable)
+            try audioSession.setActive_objc(enable)
         } catch {
             log_error(error.localizedDescription)
             return false
@@ -369,8 +372,8 @@ final class MusicPlayer: NSObject, MusicPlaying {
     }
 
     private func authorizeThenPerform(_ block: @escaping (() -> Void)) {
-        guard trackManager.authorized else {
-            trackManager.authorize({ (_ success: Bool) in
+        guard authoriztion.isAuthorized else {
+            authoriztion.authorize({ (_ success: Bool) in
                 guard success else {
                     self.throwError(.authorization)
                     return

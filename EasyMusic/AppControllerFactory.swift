@@ -15,8 +15,10 @@ enum AppControllerFactory {
 
         let dataManager = DataManger(database: UserDefaults.standard)
         let userService = UserService(dataManager: dataManager)
-        let trackManager = TrackManager(userService: userService)
-        let musicPlayer = MusicPlayer(trackManager: trackManager, remote: remoteCommandCenter)
+        let authorization = MusicAuthorization(authorizer: MPMediaLibrary.self)
+        let trackManager = TrackManager(userService: userService, authorization: authorization)
+        let musicPlayer = MusicPlayer(trackManager: trackManager, remote: remoteCommandCenter,
+                                      audioSession: AVAudioSession.sharedInstance())
         let shareManager = ShareManager(appStoreLink: URL(string: "https://itunes.apple.com/app/id1067558718")!)
 
         let playerController = PlayerController(
