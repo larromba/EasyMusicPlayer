@@ -65,6 +65,8 @@
 		7F71B86B21A7302F00135925 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86A21A7302F00135925 /* Clock.swift */; };
 		7F71B86D21A7327F00135925 /* MusicPlayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86C21A7327F00135925 /* MusicPlayerState.swift */; };
 		7F71B87221A756BA00135925 /* ShareResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B87121A756BA00135925 /* ShareResult.swift */; };
+		7F71B87621A7FED900135925 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B87521A7FED900135925 /* Playlist.swift */; };
+		7F71B87821A8001F00135925 /* MediaQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B87721A8001F00135925 /* MediaQueryable.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
 		7F92B6EF1C19979200A5273A /* PlayerButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */; };
@@ -165,6 +167,8 @@
 		7F71B86A21A7302F00135925 /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
 		7F71B86C21A7327F00135925 /* MusicPlayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerState.swift; sourceTree = "<group>"; };
 		7F71B87121A756BA00135925 /* ShareResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareResult.swift; sourceTree = "<group>"; };
+		7F71B87521A7FED900135925 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
+		7F71B87721A8001F00135925 /* MediaQueryable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaQueryable.swift; sourceTree = "<group>"; };
 		7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7F92B6EE1C19979200A5273A /* PlayerButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerButtonTests.swift; sourceTree = "<group>"; };
@@ -297,6 +301,7 @@
 				7F71B85C21A6C79300135925 /* AudioSessioning.swift */,
 				7F71B86021A70BB700135925 /* Authorizable.swift */,
 				7F71B86221A70BDA00135925 /* MusicAuthorizable.swift */,
+				7F71B87721A8001F00135925 /* MediaQueryable.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 				7F71B86621A72ABE00135925 /* MusicInterruptionHandler.swift */,
 				7F71B85E21A70B3700135925 /* MusicAuthorization.swift */,
 				7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */,
+				7F71B87521A7FED900135925 /* Playlist.swift */,
 				7F71B86A21A7302F00135925 /* Clock.swift */,
 				7F71B86421A70F9500135925 /* Seeker.swift */,
 			);
@@ -723,6 +729,7 @@
 				7F71B80F21A489C300135925 /* ScrubberViewState.swift in Sources */,
 				7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */,
 				7F71B86B21A7302F00135925 /* Clock.swift in Sources */,
+				7F71B87621A7FED900135925 /* Playlist.swift in Sources */,
 				7F92B6F11C19AD0A00A5273A /* RepeatButton.swift in Sources */,
 				7F4090571BF91BD000F449FD /* Log.swift in Sources */,
 				7F71B83221A5922100135925 /* Keyable.swift in Sources */,
@@ -735,6 +742,7 @@
 				7F71B85021A5DF1000135925 /* NowPlayingInfoCenter.swift in Sources */,
 				7F71B80921A486DC00135925 /* PlayerController.swift in Sources */,
 				7F71B81221A4979E00135925 /* InfoController.swift in Sources */,
+				7F71B87821A8001F00135925 /* MediaQueryable.swift in Sources */,
 				7F71B80521A4852F00135925 /* AppControllerFactory.swift in Sources */,
 				7F71B87221A756BA00135925 /* ShareResult.swift in Sources */,
 				7F71B81821A4A75900135925 /* ControlsController.swift in Sources */,

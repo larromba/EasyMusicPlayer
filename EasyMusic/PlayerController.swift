@@ -77,8 +77,8 @@ extension PlayerController: MusicPlayerDelegate {
         case .playing:
             controlsController.setControlsPlaying()
             infoController.setInfoFromTrack(sender.state.currentTrack.resolved)
-            infoController.setTrackPosition((sender.state.currentTrackNumber + 1),
-                                            totalTracks: sender.state.numOfTracks)
+            infoController.setTrackPosition((sender.state.currentTrackIndex + 1),
+                                            totalTracks: sender.state.totalTracks)
             scrubberController.setIsUserInteractionEnabled(true)
         case .paused:
             controlsController.setControlsPaused()

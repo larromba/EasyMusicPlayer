@@ -2,14 +2,13 @@ import Foundation
 import MediaPlayer
 
 protocol TrackManaging {
-    var allTracks: [MPMediaItem] { get }
+    var tracks: [MPMediaItem] { get }
     var currentTrack: MPMediaItem { get }
-    var currentTrackNumber: Int { get }
-    var numOfTracks: Int { get }
+    var currentTrackIndex: Int { get }
+    var totalTracks: Int { get }
 
-    func createPlaylist() -> [MPMediaItem]
-    func loadTracks()
-    func shuffleTracks()
+    func loadSavedPlaylist()
+    func loadNewPlaylist(shuffled: Bool)
     func cuePrevious() -> Bool
     func cueNext() -> Bool
     func cueStart()
@@ -17,80 +16,39 @@ protocol TrackManaging {
     func removeTrack(atIndex index: Int)
 }
 
-// TODO: MPMediaQuery
 final class TrackManager: TrackManaging {
-    private var tracks: [MPMediaItem] = []
-    private var trackIndex: Int = 0 {
-        didSet {
-            guard trackIndex >= 0, trackIndex < tracks.count else { return }
-            userService.currentTrackID = currentTrack.persistentID
-        }
-    }
     private let userService: UserServicing
     private let authorization: Authorizable
+    private let playlist: Playlistable
 
-    init(userService: UserServicing, authorization: Authorizable) {
+    init(userService: UserServicing, authorization: Authorizable, playlist: Playlistable) {
         self.userService = userService
         self.authorization = authorization
+        self.playlist = playlist
     }
 
-    var allTracks: [MPMediaItem] {
-        return tracks
-    }
-    var currentResolvedTrack: Track {
-        return Track(mediaItem: currentTrack, artworkSize: CGSize(width: 512, height: 512))
-    }
+    private(set) var tracks: [MPMediaItem] = []
     var currentTrack: MPMediaItem {
-        guard currentTrackNumber >= 0, currentTrackNumber < tracks.count else {
+        guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else {
             assertionFailure("unexpected state")
             return MPMediaItem()
         }
-        return tracks[currentTrackNumber]
+        return tracks[currentTrackIndex]
     }
-    var currentTrackNumber: Int {
-        return trackIndex
+    private(set) var currentTrackIndex: Int = 0 {
+        didSet {
+            guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else { return }
+            userService.currentTrackID = currentTrack.persistentID
+        }
     }
-    var numOfTracks: Int {
+    var totalTracks: Int {
         return tracks.count
     }
 
-    func createPlaylist() -> [MPMediaItem] {
-        guard authorization.isAuthorized else {
-            return []
-        }
-
-        // TODO: refactor
-        #if targetEnvironment(simulator)
-            class MockMediaItem: MPMediaItem {
-                let image = UIImage(named: "arkist-rendezvous-fill_your_coffee")!
-                lazy var mediaItemArtwork = MPMediaItemArtwork(boundsSize: image.size) { _ -> UIImage in
-                    return self.image
-                }
-                let assetUrl = URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
-
-                override var artist: String { return "Arkist" }
-                override var title: String { return "Fill Your Coffee" }
-                override var playbackDuration: TimeInterval { return 219 }
-                override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
-                override var assetURL: URL { return assetUrl }
-            }
-
-            let tracks = [MockMediaItem(), MockMediaItem(), MockMediaItem()]
-            return tracks
-        #else
-        // TODO: refactor
-            if let songs = MPMediaQuery.songs().items {
-                return songs
-            } else {
-                return []
-            }
-        #endif
-    }
-
-    func loadTracks() {
+    func loadSavedPlaylist() {
         guard authorization.isAuthorized else {
             tracks = []
-            trackIndex = 0
+            currentTrackIndex = 0
                 return
         }
         guard
@@ -98,69 +56,53 @@ final class TrackManager: TrackManaging {
             let trackIDs = userService.trackIDs, !trackIDs.isEmpty else {
                 return
         }
-        let query = MPMediaQuery.songs()
-        tracks = trackIDs.compactMap { (id: UInt64) -> [MPMediaItem]? in
-            let predicate = MPMediaPropertyPredicate(value: id, forProperty: MPMediaItemPropertyPersistentID)
-            query.addFilterPredicate(predicate)
-            let items = query.items
-            query.removeFilterPredicate(predicate)
-            return items
-        }.reduce([], +)
-        trackIndex = trackIDs.index(of: currentTrackID) ?? 0
+        tracks = playlist.find(ids: trackIDs)
+        currentTrackIndex = trackIDs.index(of: currentTrackID) ?? 0
     }
 
-    func shuffleTracks() {
+    func loadNewPlaylist(shuffled: Bool) {
         guard authorization.isAuthorized else {
             tracks = []
-            trackIndex = 0
+            currentTrackIndex = 0
             return
         }
 
-        // NSNotification.Name.MPMediaLibraryDidChange indicates when the music library changes,
-        // but an automatic refresh isn't required as we create a new playlist each time
-        var playlist = createPlaylist()
-        (0..<(playlist.count - 1)).forEach {
-            let remainingCount = playlist.count - $0
-            let exchangeIndex = $0 + Int(arc4random_uniform(UInt32(remainingCount)))
-            playlist.swapAt($0, exchangeIndex)
-        }
-
-        tracks = playlist
-        trackIndex = 0
+        tracks = playlist.create(shuffled: shuffled)
+        currentTrackIndex = 0
         saveTracks(tracks)
     }
 
     func cuePrevious() -> Bool {
-        let newIndex = currentTrackNumber - 1
+        let newIndex = currentTrackIndex - 1
         if newIndex < 0 {
             return false
         }
 
-        trackIndex = newIndex
+        currentTrackIndex = newIndex
         return true
     }
 
     func cueNext() -> Bool {
-        let newIndex = currentTrackNumber + 1
+        let newIndex = currentTrackIndex + 1
         if newIndex >= tracks.count {
             return false
         }
 
-        trackIndex = newIndex
+        currentTrackIndex = newIndex
         return true
     }
 
     func cueStart() {
-        trackIndex = 0
+        currentTrackIndex = 0
     }
 
     func cueEnd() {
-        trackIndex = numOfTracks - 1
+        currentTrackIndex = totalTracks - 1
     }
 
     func removeTrack(atIndex index: Int) {
         tracks.remove(at: index)
-        trackIndex -= 1
+        currentTrackIndex -= 1
     }
 
     // MARK: - Private

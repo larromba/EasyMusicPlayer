@@ -49,7 +49,10 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
     func setIsPlaying(_ isPlaying: Bool) {
         self.isPlaying = isPlaying
         if isPlaying {
-            reset()
+            state = state.copy(
+                isHeadphonesRemovedByMistake: false,
+                isAudioSessionInterrupted: false
+            )
         }
     }
 
@@ -58,14 +61,6 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
     }
 
     // MARK: - private
-
-    private func reset() {
-        state = MusicInterupptionState(
-            isHeadphonesRemovedByMistake: false,
-            isPlayingInBackground: false,
-            isAudioSessionInterrupted: false
-        )
-    }
 
     @objc
     private func applicationWillResignActive(_ notifcation: Notification) {
@@ -90,12 +85,12 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
         case .oldDeviceUnavailable:
             if isPlaying {
                 state = state.copy(isHeadphonesRemovedByMistake: true)
-                delegate?.interupptionHandler(self, updtedState: state)
+                notifyStateChange()
             }
         case .newDeviceAvailable:
             if !isPlaying && state.isHeadphonesRemovedByMistake {
                 state = state.copy(isHeadphonesRemovedByMistake: false)
-                delegate?.interupptionHandler(self, updtedState: state)
+               notifyStateChange()
             }
         default:
             break
@@ -111,15 +106,19 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
         }
         switch reason {
         case .began:
-            if state.isPlayingInBackground || isPlaying {
+            if isPlaying {
                 state = state.copy(isAudioSessionInterrupted: true)
-                delegate?.interupptionHandler(self, updtedState: state)
+                notifyStateChange()
             }
         case .ended:
             if !isPlaying && state.isAudioSessionInterrupted {
                 state = state.copy(isAudioSessionInterrupted: false)
-                delegate?.interupptionHandler(self, updtedState: state)
+                notifyStateChange()
             }
         }
+    }
+
+    private func notifyStateChange() {
+        delegate?.interupptionHandler(self, updtedState: state)
     }
 }

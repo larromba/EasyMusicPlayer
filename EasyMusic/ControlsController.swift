@@ -166,9 +166,9 @@ final class ControlsController: ControlsControlling {
         guard let musicPlayerState = musicPlayerState, let repeatButtonState = repeatButtonState else { return }
         switch repeatButtonState {
         case .none:
-            let trackNumber = musicPlayerState.currentTrackNumber
+            let trackNumber = musicPlayerState.currentTrackIndex
             let isFirstTrack = trackNumber == 0
-            let isLastTrack = trackNumber == (musicPlayerState.numOfTracks - 1)
+            let isLastTrack = trackNumber == (musicPlayerState.totalTracks - 1)
             setPreviousIsEnabled(!isFirstTrack)
             setSeekBackwardsIsEnabled(isFirstTrack)
             setNextIsEnabled(!isLastTrack)

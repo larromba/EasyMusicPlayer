@@ -41,8 +41,8 @@ final class MusicPlayer: NSObject, MusicPlaying {
         return MusicPlayerState(
             isPlaying: player?.isPlaying ?? false,
             volume: audioSession.outputVolume,
-            currentTrackNumber: trackManager.currentTrackNumber,
-            numOfTracks: trackManager.numOfTracks,
+            currentTrackIndex: trackManager.currentTrackIndex,
+            totalTracks: trackManager.totalTracks,
             currentTrack: trackManager.currentTrack,
             time: player?.currentTime ?? 0.0,
             playState: playState,
@@ -84,9 +84,9 @@ final class MusicPlayer: NSObject, MusicPlaying {
         remote.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPosition(_:)))
 
         authorizeThenPerform({
-            self.trackManager.loadTracks()
-            if self.trackManager.numOfTracks == 0 {
-                self.trackManager.shuffleTracks()
+            self.trackManager.loadSavedPlaylist()
+            if self.trackManager.totalTracks == 0 {
+                self.trackManager.loadNewPlaylist(shuffled: true)
             }
         })
     }
@@ -112,7 +112,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
     @objc
     func play() {
         authorizeThenPerform({
-            guard self.trackManager.numOfTracks > 0 else {
+            guard self.trackManager.totalTracks > 0 else {
                 self.throwError(.noMusic)
                 return
             }
@@ -215,27 +215,22 @@ final class MusicPlayer: NSObject, MusicPlaying {
 
     func shuffle() {
         authorizeThenPerform({
-            self.trackManager.shuffleTracks()
+            self.trackManager.loadNewPlaylist(shuffled: true)
         })
     }
 
     func skip() {
-        trackManager.removeTrack(atIndex: trackManager.currentTrackNumber)
+        trackManager.removeTrack(atIndex: trackManager.currentTrackIndex)
         next()
     }
 
     // MARK: - private
 
     private func setAudioSessionIsEnabled(_ isEnabled: Bool) -> Bool {
-        if isEnabled {
-            do {
-                try audioSession.setCategory_objc(AVAudioSessionCategoryPlayback, with: [])
-            } catch {
-                log_error(error.localizedDescription)
-                return false
-            }
-        }
         do {
+            if isEnabled {
+                try audioSession.setCategory_objc(AVAudioSessionCategoryPlayback, with: [])
+            }
             try audioSession.setActive_objc(isEnabled)
         } catch {
             log_error(error.localizedDescription)

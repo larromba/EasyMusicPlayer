@@ -30,4 +30,12 @@ extension MusicInterupptionState {
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
     }
+
+    func copy(isHeadphonesRemovedByMistake: Bool, isAudioSessionInterrupted: Bool) -> MusicInterupptionState {
+        return MusicInterupptionState(
+            isHeadphonesRemovedByMistake: isHeadphonesRemovedByMistake,
+            isPlayingInBackground: isPlayingInBackground,
+            isAudioSessionInterrupted: isAudioSessionInterrupted
+        )
+    }
 }
