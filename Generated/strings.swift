@@ -47,6 +47,8 @@ internal enum L10n {
   }
   /// Cancel
   internal static let shareOptionCancel = L10n.tr("Localizable", "share option cancel")
+  /// Email
+  internal static let shareOptionEmail = L10n.tr("Localizable", "share option email")
   /// Facebook
   internal static let shareOptionFacebook = L10n.tr("Localizable", "share option facebook")
   /// Twitter

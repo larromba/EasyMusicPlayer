@@ -1,11 +1,3 @@
-/* 
-  Localizable.strings
-  EasyMusic
-
-  Created by Lee Arromba on 21/11/2018.
-  Copyright © 2018 Lee Arromba. All rights reserved.
-*/
-
 "unknown artist" = "未知艺术家";
 "unknown track" = "未知标题";
 
@@ -37,4 +29,5 @@
 "share sheet desc" = "当你想分享这首歌？";
 "share option facebook" = "Facebook的";
 "share option twitter" = "推特";
+"share option email" = "电子邮件";
 "share option cancel" = "取消";

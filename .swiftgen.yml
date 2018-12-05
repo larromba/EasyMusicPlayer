@@ -1,6 +1,6 @@
 strings:
   inputs: 
-    - EasyMusic/Base.lproj/Localizable.strings
+    - EasyMusic/en.lproj/Localizable.strings
   outputs:
     - templateName: structured-swift4
       output: Generated/strings.swift
@@ -10,4 +10,4 @@ xcassets:
     #- GraffitiBackgrounds/Colors.xcassets
   outputs:
     - templateName: swift4
-      output: Generated/assets-images.swift
+      output: Generated/assets.swift

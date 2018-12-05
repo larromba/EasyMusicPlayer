@@ -19,7 +19,6 @@ protocol ControlsDelegate: AnyObject {
     func controlsControllerPressedPrev(_ controller: ControlsControlling)
     func controlsControllerPressedNext(_ controller: ControlsControlling)
     func controlsControllerPressedShuffle(_ controller: ControlsControlling)
-    func controlsControllerPressedShare(_ controller: ControlsControlling)
     func controlsControllerPressedRepeat(_ controller: ControlsControlling)
 }
 
@@ -156,14 +155,13 @@ final class ControlsController: ControlsControlling {
     private func setRepeatIsEnabled(_ isEnabled: Bool) {
         guard let viewState = viewController.viewState else { return }
         viewController.viewState = viewState.copy(repeatButton: viewState.repeatButton.copy(isEnabled: isEnabled))
-
-        if let musicPlayerState = musicPlayerState, musicPlayerState.isPlaying {
-            updateSeekingControls()
-        }
     }
 
     private func updateSeekingControls() {
-        guard let musicPlayerState = musicPlayerState, let repeatButtonState = repeatButtonState else { return }
+        guard
+			let musicPlayerState = musicPlayerState,
+			let repeatButtonState = repeatButtonState,
+			musicPlayerState.isPlaying else { return }
         switch repeatButtonState {
         case .none:
             let trackNumber = musicPlayerState.currentTrackIndex
@@ -202,39 +200,35 @@ final class ControlsController: ControlsControlling {
 // MARK: - ControlsViewDelegate
 
 extension ControlsController: ControlsViewDelegate {
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay play: UIButton) {
-        play.pulse()
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay button: UIButton) {
+        button.pulse()
         delegate?.controlsControllerPressedPlay(self)
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop stop: UIButton) {
-        stop.pulse()
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop button: UIButton) {
+        button.pulse()
         delegate?.controlsControllerPressedStop(self)
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev prev: UIButton) {
-        prev.pulse()
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev button: UIButton) {
+        button.pulse()
         delegate?.controlsControllerPressedPrev(self)
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext next: UIButton) {
-        next.pulse()
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext button: UIButton) {
+        button.pulse()
         delegate?.controlsControllerPressedNext(self)
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle shuffle: UIButton) {
-        shuffle.pulse()
-        shuffle.spin()
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle button: UIButton) {
+        button.pulse()
+        button.spin()
         delegate?.controlsControllerPressedShuffle(self)
     }
 
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShare share: UIButton) {
-        share.pulse()
-        delegate?.controlsControllerPressedShare(self)
-    }
-
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat repeat: UIButton) {
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat button: UIButton) {
         guard let viewState = viewController.viewState else { return }
+		button.pulse()
         setRepeatState(viewState.repeatButton.state.next())
         delegate?.controlsControllerPressedRepeat(self)
     }

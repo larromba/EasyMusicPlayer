@@ -1,18 +1,16 @@
 import UIKit
 
 protocol ControlsViewDelegate: AnyObject {
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay play: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop stop: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev prev: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext next: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle shuffle: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShare share: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat repeat: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay button: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop button: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev button: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext button: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle button: UIButton)
+    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat button: UIButton)
 }
 
 protocol ControlsViewControlling: AnyObject {
     var viewState: ControlsViewState? { get set }
-    var shareButton: UIButton! { get }
 
     func setDelegate(_ delegate: ControlsViewDelegate)
 }
@@ -24,7 +22,6 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
     @IBOutlet private(set) weak var prevButton: UIButton!
     @IBOutlet private(set) weak var nextButton: UIButton!
     @IBOutlet private(set) weak var shuffleButton: UIButton!
-    @IBOutlet private(set) weak var shareButton: UIButton!
     @IBOutlet private(set) weak var repeatButton: RepeatButton!
 
     private weak var delegate: ControlsViewDelegate?
@@ -63,10 +60,6 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
         delegate?.controlsViewController(self, pressedShuffle: sender)
     }
 
-    @IBAction private func shareButtonPressed(_ sender: UIButton) {
-        delegate?.controlsViewController(self, pressedShare: sender)
-    }
-
     @IBAction private func repeatButtonPressed(_ sender: UIButton) {
         delegate?.controlsViewController(self, pressedRepeat: sender)
     }
@@ -79,7 +72,6 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
         repeatButton.viewState = viewState.repeatButton
         prevButton.bind(viewState.prevButton)
         nextButton.bind(viewState.nextButton)
-        shareButton.bind(viewState.shareButton)
         shuffleButton.bind(viewState.shuffleButton)
         repeatButton.viewState = viewState.repeatButton
     }

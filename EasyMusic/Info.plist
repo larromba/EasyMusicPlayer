@@ -46,22 +46,6 @@
 		<false/>
 		<key>NSAllowsLocalNetworking</key>
 		<false/>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>ssl.google-analytics.com</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionMinimumTLSVersion</key>
-				<string>TLSv1.2</string>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSRequiresCertificateTransparency</key>
-				<true/>
-			</dict>
-		</dict>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>This app plays music from your library</string>

@@ -24,7 +24,6 @@ enum AppControllerFactory {
         let musicPlayer = MusicPlayer(trackManager: trackManager, remote: remoteCommandCenter,
                                       audioSession: AVAudioSession.sharedInstance(), authorization: authorization,
                                       seeker: seeker, interruptionHandler: interruptionHandler, clock: clock)
-        let shareManager = SharingService(appStoreLink: URL(string: "https://itunes.apple.com/app/id1067558718")!)
 
         let playerController = PlayerController(
             viewController: playerViewController,
@@ -33,8 +32,7 @@ enum AppControllerFactory {
             controlsController: controlsController,
             alertController: alertController,
             musicPlayer: musicPlayer,
-            userService: userService,
-            shareManager: shareManager
+            userService: userService
         )
         return AppController(playerController: playerController)
     }

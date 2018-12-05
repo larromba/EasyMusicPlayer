@@ -198,6 +198,10 @@
         <scene sceneID="ThC-Th-4rp">
             <objects>
                 <viewController id="fDR-Gu-C6Z" customClass="ControlsViewController" customModule="EasyMusic" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Bsa-OE-Zcf"/>
+                        <viewControllerLayoutGuide type="bottom" id="1Kk-bc-Vy3"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="V6c-fH-v0U">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -289,25 +293,12 @@
                                                     <action selector="shuffleButtonPressed:" destination="fDR-Gu-C6Z" eventType="touchUpInside" id="ucH-Gw-htB"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cnj-lV-QUD">
-                                                <rect key="frame" x="264" y="50" width="46" height="46"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="46" id="Ls3-in-EuQ">
-                                                        <variation key="heightClass=regular" constant="46"/>
-                                                        <variation key="widthClass=regular" constant="100"/>
-                                                    </constraint>
-                                                    <constraint firstAttribute="width" constant="46" id="dtH-RH-lOo">
-                                                        <variation key="heightClass=regular" constant="46"/>
-                                                        <variation key="widthClass=regular" constant="100"/>
-                                                    </constraint>
-                                                </constraints>
-                                                <state key="normal" backgroundImage="ShareButton"/>
-                                                <connections>
-                                                    <action selector="shareButtonPressed:" destination="fDR-Gu-C6Z" eventType="touchUpInside" id="EEQ-O3-11K"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zcz-7b-lXb" customClass="RepeatButton" customModule="EasyMusic" customModuleProvider="target">
-                                                <rect key="frame" x="10" y="49" width="46" height="47"/>
+                                                <rect key="frame" x="10" y="50" width="46" height="46"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="46" id="BaK-lF-yPQ"/>
+                                                    <constraint firstAttribute="height" constant="46" id="gKW-BY-BQi"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <state key="normal">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -321,20 +312,9 @@
                                         <constraints>
                                             <constraint firstItem="NFt-Mr-eYc" firstAttribute="centerX" secondItem="2n2-J4-MJc" secondAttribute="centerX" id="8OM-2K-s7c"/>
                                             <constraint firstItem="NFt-Mr-eYc" firstAttribute="top" secondItem="2n2-J4-MJc" secondAttribute="top" constant="29" id="99k-PS-S0K"/>
-                                            <constraint firstItem="cnj-lV-QUD" firstAttribute="bottom" secondItem="NFt-Mr-eYc" secondAttribute="bottom" id="Kon-cd-ex7"/>
-                                            <constraint firstItem="zcz-7b-lXb" firstAttribute="width" secondItem="cnj-lV-QUD" secondAttribute="width" id="SOa-gI-dEa"/>
-                                            <constraint firstAttribute="trailing" secondItem="cnj-lV-QUD" secondAttribute="trailing" constant="8" id="ZCk-Wb-LwY"/>
                                             <constraint firstItem="zcz-7b-lXb" firstAttribute="bottom" secondItem="NFt-Mr-eYc" secondAttribute="bottom" id="g5K-1L-yLD"/>
-                                            <constraint firstAttribute="bottom" secondItem="cnj-lV-QUD" secondAttribute="bottom" constant="8" id="ivG-Tf-Uma"/>
-                                            <constraint firstItem="zcz-7b-lXb" firstAttribute="top" secondItem="cnj-lV-QUD" secondAttribute="top" constant="-1" id="lug-ho-xAM"/>
                                             <constraint firstAttribute="bottom" secondItem="NFt-Mr-eYc" secondAttribute="bottom" constant="29" id="qE4-4Y-uTZ"/>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="ZCk-Wb-LwY"/>
-                                                <exclude reference="ivG-Tf-Uma"/>
-                                            </mask>
-                                        </variation>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -342,7 +322,6 @@
                                     <constraint firstItem="2n2-J4-MJc" firstAttribute="leading" secondItem="cUY-OR-ZLN" secondAttribute="leading" id="9GK-c2-k8K"/>
                                     <constraint firstItem="YlH-or-LHK" firstAttribute="top" secondItem="cUY-OR-ZLN" secondAttribute="top" id="9tj-0X-o4B"/>
                                     <constraint firstAttribute="trailing" secondItem="2n2-J4-MJc" secondAttribute="trailing" id="HQQ-9H-xXV"/>
-                                    <constraint firstItem="cnj-lV-QUD" firstAttribute="trailing" secondItem="Bc5-en-2Ra" secondAttribute="trailing" id="MCe-QH-tyj"/>
                                     <constraint firstItem="vPQ-7e-wRB" firstAttribute="top" secondItem="YlH-or-LHK" secondAttribute="bottom" id="QBZ-SK-Z4U"/>
                                     <constraint firstAttribute="trailing" secondItem="YlH-or-LHK" secondAttribute="trailing" id="Qdl-FM-8wH"/>
                                     <constraint firstItem="vPQ-7e-wRB" firstAttribute="height" secondItem="YlH-or-LHK" secondAttribute="height" id="TO0-7E-Y5c"/>
@@ -368,7 +347,6 @@
                         <outlet property="playButton" destination="Vla-bf-l0y" id="Y8d-xw-xvB"/>
                         <outlet property="prevButton" destination="j2t-67-hKy" id="jME-9v-7u9"/>
                         <outlet property="repeatButton" destination="zcz-7b-lXb" id="zJD-i8-AAg"/>
-                        <outlet property="shareButton" destination="cnj-lV-QUD" id="iGq-BF-3WT"/>
                         <outlet property="shuffleButton" destination="NFt-Mr-eYc" id="Aid-EO-CR5"/>
                         <outlet property="stopButton" destination="GxZ-Ye-HBq" id="kG1-Va-TOH"/>
                     </connections>
@@ -381,7 +359,6 @@
     <resources>
         <image name="NextButton" width="128" height="128"/>
         <image name="PreviousButton" width="128" height="128"/>
-        <image name="ShareButton" width="128" height="128"/>
         <image name="ShuffleButton" width="128" height="128"/>
         <image name="StopButton" width="128" height="128"/>
     </resources>

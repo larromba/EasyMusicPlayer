@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import Logging
 import MediaPlayer
 
 protocol MusicPlayerDelegate: AnyObject {
@@ -131,7 +132,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
                     player.delegate = self
                     self.player = player
                 } catch {
-                    log_error(error.localizedDescription)
+                    logError(error.localizedDescription)
                     self.throwError(.playerInit)
                     return
                 }
@@ -142,7 +143,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
             let play = self.player?.play() ?? false
 
             guard enable, prepare, play else {
-                log_error("enable: \(enable), prepare: \(prepare), play: \(play)")
+                logError("enable: \(enable), prepare: \(prepare), play: \(play)")
                 self.throwError(.avError)
                 return
             }
@@ -233,7 +234,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
             }
             try audioSession.setActive_objc(isEnabled)
         } catch {
-            log_error(error.localizedDescription)
+            logError(error.localizedDescription)
             return false
         }
         return true

@@ -11,7 +11,6 @@ final class PlayerController: PlayerControlling {
     private let controlsController: ControlsControlling
     private let alertController: AlertControlling
     private let musicPlayer: MusicPlaying
-    private let shareManager: SharingServicable
     private let userService: UserServicing
     private var isUserScrobbling: Bool = false
 
@@ -21,8 +20,7 @@ final class PlayerController: PlayerControlling {
          controlsController: ControlsController,
          alertController: AlertControlling,
          musicPlayer: MusicPlaying,
-         userService: UserServicing,
-         shareManager: SharingServicable) {
+         userService: UserServicing) {
         self.viewController = viewController
         self.scrubberController = scrubberController
         self.infoController = infoController
@@ -30,7 +28,6 @@ final class PlayerController: PlayerControlling {
         self.alertController = alertController
         self.musicPlayer = musicPlayer
         self.userService = userService
-        self.shareManager = shareManager
         setup()
     }
 
@@ -59,8 +56,9 @@ final class PlayerController: PlayerControlling {
 
     @objc
     private func applicationDidBecomeActive() {
-        // if play button is no longr in sync (by being equal) to play state, stop the player
-        // e.g. if play button is showing pause image, but the player isn't playing, then somthing went horribly wrong
+        // if play button is no longr in sync (by being equal) to play state, stop the player.
+        // e.g. if play button is showing pause image (indicating the player is playing), but the player isn't playing,
+        // then somthing went horribly wrong...
         guard let playButtonState = controlsController.playButtonState else { return }
         if playButtonState == musicPlayer.state.playState {
             musicPlayer.stop()
@@ -170,22 +168,6 @@ extension PlayerController: ControlsDelegate {
         musicPlayer.stop()
         musicPlayer.shuffle()
         musicPlayer.play()
-    }
-
-    func controlsControllerPressedShare(_ controller: ControlsControlling) {
-        // TODO: this
-//        shareManager.shareTrack(
-//            musicPlayer.state.currentTrack.resolved,
-//            presenter: self.viewController.casted,
-//            sender: viewController.shareButton,
-//            completion: { [weak self] (result: ShareResult, _: String?) in
-//                switch result {
-//                case .error:
-//                    self?.alertController.showAlert(.shareError)
-//                default:
-//                    break
-//                }
-//            })
     }
 
     func controlsControllerPressedRepeat(_ controller: ControlsControlling) {
