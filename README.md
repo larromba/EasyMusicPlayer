@@ -5,7 +5,7 @@
 | [![Build Status](https://travis-ci.com/larromba/easymusic.svg?branch=master)](https://travis-ci.com/larromba/easymusic) | [![Build Status](https://travis-ci.com/larromba/easymusic.svg?branch=dev)](https://travis-ci.com/larromba/easymusic) |
 
 ## About
-
+Easy Music Player is a simple app designed only to play and shuffle music. It's a music player without the faff
 
 ## Installation from Source
 

@@ -1,6 +1,6 @@
 included:
 - EasyMusic
-- EasyMusicTests
+- EasyMusicPlayerTests
 
 opt_in_rules:
 - trailing_whitespace

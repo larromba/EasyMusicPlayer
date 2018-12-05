@@ -1,5 +1,5 @@
 sources:
-  - ./EasyMusic
+  - ./EasyMusicPlayer
 templates:
   - ./Templates
 output:

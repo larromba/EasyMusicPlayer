@@ -1,12 +1,12 @@
 strings:
   inputs: 
-    - EasyMusic/en.lproj/Localizable.strings
+    - EasyMusicPlayer/en.lproj/Localizable.strings
   outputs:
     - templateName: structured-swift4
       output: Generated/strings.swift
 xcassets:
   inputs:
-    - EasyMusic/Assets.xcassets
+    - EasyMusicPlayer/Assets.xcassets
     #- GraffitiBackgrounds/Colors.xcassets
   outputs:
     - templateName: swift4
