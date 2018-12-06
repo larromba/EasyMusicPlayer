@@ -5,7 +5,8 @@ protocol MusicInterupptionDelegate: AnyObject {
     func interupptionHandler(_ handler: MusicInterupptionHandler, updtedState state: MusicInterupptionState)
 }
 
-protocol MusicInterupptionHandling {
+// sourcery: name = MusicInterupptionHandler
+protocol MusicInterupptionHandling: Mockable {
     func setIsPlaying(_ isPlaying: Bool)
     func setDelegate(_ delegate: MusicInterupptionDelegate)
 }

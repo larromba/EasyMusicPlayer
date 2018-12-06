@@ -1,6 +1,7 @@
 import Foundation
 
-protocol Clocking {
+// sourcery: name = Clock
+protocol Clocking: Mockable {
     func start()
     func stop()
     func setDelegate(_ delegate: ClockDelegate)

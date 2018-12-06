@@ -4,7 +4,8 @@ protocol SeekerDelegate: AnyObject {
     func seeker(_ seeker: Seekable, updateDelta: TimeInterval)
 }
 
-protocol Seekable {
+// sourcery: name = Seeker
+protocol Seekable: Mockable {
     func startSeekingWithAction(_ action: SeekAction)
     func stopSeeking()
     func setDelegate(_ delegate: SeekerDelegate)

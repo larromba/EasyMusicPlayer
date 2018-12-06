@@ -1,12 +1,13 @@
 import Foundation
 import MediaPlayer
 
-protocol ControlsControlling: AnyObject {
+// sourcery: name = ControlsController
+protocol ControlsControlling: AnyObject, Mockable {
     var repeatButtonState: RepeatState? { get }
     var playButtonState: PlayState? { get }
 
     func setDelegate(_ delegate: ControlsDelegate)
-    func setMusicPlayerState(_ musicPlayerState: MusicPlayerState)
+    func setMusicServiceState(_ musicServiceState: MusicServiceState)
     func setRepeatState(_ repeatState: RepeatState)
     func setControlsPlaying()
     func setControlsPaused()
@@ -26,7 +27,7 @@ final class ControlsController: ControlsControlling {
     private let viewController: ControlsViewControlling
     private let remote: RemoteControlling
     private weak var delegate: ControlsDelegate?
-    private var musicPlayerState: MusicPlayerState?
+    private var musicServiceState: MusicServiceState?
 
     var repeatButtonState: RepeatState? {
         return viewController.viewState?.repeatButton.state
@@ -45,8 +46,8 @@ final class ControlsController: ControlsControlling {
         self.delegate = delegate
     }
 
-    func setMusicPlayerState(_ musicPlayerState: MusicPlayerState) {
-        self.musicPlayerState = musicPlayerState
+    func setMusicServiceState(_ musicServiceState: MusicServiceState) {
+        self.musicServiceState = musicServiceState
     }
 
     func setRepeatState(_ repeatState: RepeatState) {
@@ -159,21 +160,18 @@ final class ControlsController: ControlsControlling {
 
     private func updateSeekingControls() {
         guard
-			let musicPlayerState = musicPlayerState,
+			let musicServiceState = musicServiceState,
 			let repeatButtonState = repeatButtonState,
-			musicPlayerState.isPlaying else { return }
+			musicServiceState.isPlaying else { return }
         switch repeatButtonState {
-        case .none:
-            let trackNumber = musicPlayerState.currentTrackIndex
+        case .none, .one:
+            let trackNumber = musicServiceState.currentTrackIndex
             let isFirstTrack = trackNumber == 0
-            let isLastTrack = trackNumber == (musicPlayerState.totalTracks - 1)
+            let isLastTrack = trackNumber == (musicServiceState.totalTracks - 1)
             setPreviousIsEnabled(!isFirstTrack)
             setSeekBackwardsIsEnabled(isFirstTrack)
             setNextIsEnabled(!isLastTrack)
             setSeekForwardsIsEnabled(isLastTrack)
-        case .one:
-            setPreviousIsEnabled(true)
-            setNextIsEnabled(false)
         case .all:
             setPreviousIsEnabled(true)
             setNextIsEnabled(true)

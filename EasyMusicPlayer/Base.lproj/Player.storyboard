@@ -162,7 +162,7 @@
         <!--Scrubber View Controller-->
         <scene sceneID="IEe-cg-k7L">
             <objects>
-                <viewController id="OUe-no-HZZ" customClass="ScrubberViewController" customModule="EasyMusic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScrubberViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OUe-no-HZZ" customClass="ScrubberViewController" customModule="EasyMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bfo-YR-6c9"/>
                         <viewControllerLayoutGuide type="bottom" id="bGe-kV-Q1p"/>
@@ -197,7 +197,7 @@
         <!--Controls View Controller-->
         <scene sceneID="ThC-Th-4rp">
             <objects>
-                <viewController id="fDR-Gu-C6Z" customClass="ControlsViewController" customModule="EasyMusic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ControlsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fDR-Gu-C6Z" customClass="ControlsViewController" customModule="EasyMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Bsa-OE-Zcf"/>
                         <viewControllerLayoutGuide type="bottom" id="1Kk-bc-Vy3"/>

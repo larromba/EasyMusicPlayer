@@ -1,7 +1,8 @@
 import Foundation
 import MediaPlayer
 
-protocol Playlistable {
+// sourcery: name = Playlist
+protocol Playlistable: Mockable {
     func create(shuffled: Bool) -> [MPMediaItem]
     func find(ids: [UInt64]) -> [MPMediaItem]
 }

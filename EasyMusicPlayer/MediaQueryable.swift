@@ -1,7 +1,8 @@
 import Foundation
 import MediaPlayer
 
-protocol MediaQueryable {
+// sourcery: name = MediaQuery
+protocol MediaQueryable: Mockable {
     static func songs() -> MPMediaQuery
 }
 extension MPMediaQuery: MediaQueryable {}

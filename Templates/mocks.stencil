@@ -8,7 +8,8 @@ import UIKit
 import AppKit
 #endif
 
-@testable import Grafitti_Backgrounds
+@testable import EasyMusic
+import MediaPlayer
 
 {% macro helperClassPrefix %}_{% endmacro %}
 {% macro swiftifyMethodName name %}{{ name | replace:"(","_" | replace:")","" | replace:":","_" | replace:"`","" | snakeToCamelCase | lowerFirstWord }}{% endmacro %}
@@ -20,7 +21,7 @@ import AppKit
 {% macro actionsVariableName  %}actions{% endmacro %}
 {% macro uniqueIdentifierForEnumParameter method param %}{{ method.name | replace:" ","" }}.{{ param.name | replace:" ","" }}{% endmacro %}
 {% macro mockMethod method count %}
-    {% if method.isInitializer %}required {{ method.name }}{% else %}func {{ method.name | replace:"  ","" }}{% endif %}{% if method.throws and not method.isInitializer %}{{ ' throws' }}{% endif %}{% if not method.returnTypeName.isVoid and not method.isInitializer %} -> {{ method.returnTypeName }}{% endif %} {
+    {% if method.isInitializer %}required {{ method.name }}{% else %}{% if method.isStatic %}static {% endif %}func {{ method.name | replace:"  ","" }}{% endif %}{% if method.throws and not method.isInitializer %}{{ ' throws' }}{% endif %}{% if not method.returnTypeName.isVoid and not method.isInitializer %} -> {{ method.returnTypeName }}{% endif %} {
         let functionName = {% call functionKeyName method count %}.name
         {% if method.throws and not method.isInitializer %}
         if let error = {% call actionsVariableName %}.error(for: functionName) {
@@ -69,9 +70,9 @@ import AppKit
     {% elif variable.type.based.Mockable and variable.type.annotations.name %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.type.annotations.name }}()
     {% elif variable.type.based.Mockable %}
-    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.typeName | replace:"?","" }}()
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.unwrappedTypeName }}()
     {% elif variable.typeName|hasPrefix:"NS" or variable.typeName|hasPrefix:"UI" %}
-    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.typeName | replace:"?","" }}()
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.typeName.unwrappedTypeName }}()
     {% elif variable.isArray %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = []
     {% elif variable.isDictionary %}
@@ -79,7 +80,7 @@ import AppKit
     {% else %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %}
     {% endif %}
-    var {% call underlyingVariableName variable %}History: [{% call helperClassPrefix %}Variable<{{ variable.typeName }}>] = []
+    var {% call underlyingVariableName variable %}History: [{% call helperClassPrefix %}Variable<{{ variable.unwrappedTypeName }}?>] = []
 {% endmacro %}
 // MARK: - Sourcery Helper
 
@@ -204,9 +205,10 @@ class {% if type.annotations.name %}{% call mockedClassName type.annotations.nam
     {% if not type.allMethods.count == 0 %}
     let {% call invocationsVariableName %} = {% call helperClassPrefix %}Invocations()
     let {% call actionsVariableName %} = {% call helperClassPrefix %}Actions()
-    
-    {% for method in type.allMethods|!definedInExtension %}
+    static let {% call invocationsVariableName %} = {% call helperClassPrefix %}Invocations()
+    static let {% call actionsVariableName %} = {% call helperClassPrefix %}Actions()
 
+    {% for method in type.allMethods|!definedInExtension %}
     // MARK: - {{ method.shortName }}
 
     {% call mockMethod method forloop.counter %}

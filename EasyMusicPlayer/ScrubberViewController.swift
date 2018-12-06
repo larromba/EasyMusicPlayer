@@ -9,7 +9,8 @@ protocol ScrubberViewDelegate: AnyObject {
                                 touchesEnded touches: Set<UITouch>, with event: UIEvent?)
 }
 
-protocol ScrubberViewControlling: AnyObject {
+// sourcery: name = ScrubberViewController
+protocol ScrubberViewControlling: AnyObject, Mockable {
     var viewState: ScrubberViewState? { get set }
     var view: UIView! { get }
     var barView: UIView! { get }

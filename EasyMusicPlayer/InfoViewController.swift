@@ -1,6 +1,7 @@
 import UIKit
 
-protocol InfoViewControlling: AnyObject {
+// sourcery: name = InfoViewController
+protocol InfoViewControlling: AnyObject, Mockable {
     var viewState: InfoViewState? { get set }
 }
 

@@ -1,7 +1,7 @@
 import Foundation
 import MediaPlayer
 
-struct MusicPlayerState {
+struct MusicServiceState {
     let isPlaying: Bool
     let volume: Float
     let currentTrackIndex: Int

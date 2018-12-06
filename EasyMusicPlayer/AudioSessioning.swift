@@ -2,7 +2,9 @@ import AVFoundation
 import Foundation
 import UIKit
 
-protocol AudioSessioning {
+// sourcery: name = AudioSession
+protocol AudioSessioning: Mockable {
+    // sourcery: value = 1.0
     var outputVolume: Float { get }
 
     func setCategory_objc(_ category: String, with options: AVAudioSession.CategoryOptions) throws

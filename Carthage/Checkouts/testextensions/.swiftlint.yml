@@ -1,0 +1,84 @@
+included:
+  - TestExtensions
+  - TestExtensionsTests
+excluded:
+  - Pods
+  - Carthage
+analyzer_rules:
+  - unused_import
+  - unused_private_declaration
+opt_in_rules:
+  - anyobject_protocol
+  - array_init
+  - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - contains_over_first_not_nil
+  - empty_count
+  - empty_string
+  - empty_xctest_method
+  - explicit_init
+  - extension_access_modifier
+  - fallthrough
+  - fatal_error_message
+  - file_header
+  #- file_name
+  - first_where
+  - identical_operands
+  - joined_default_parameter
+  - let_var_whitespace
+  - literal_expression_end_indentation
+  - lower_acl_than_parent
+  - nimble_operator
+  - number_separator
+  - object_literal
+  - operator_usage_whitespace
+  - overridden_super_call
+  - override_in_extension
+  - pattern_matching_keywords
+  - private_action
+  #- private_outlet
+  - prohibited_interface_builder
+  - prohibited_super_call
+  - quick_discouraged_call
+  - quick_discouraged_focused_test
+  - quick_discouraged_pending_test
+  - redundant_nil_coalescing
+  - redundant_type_annotation
+  - single_test_class
+  - sorted_first_last
+  - sorted_imports
+  - static_operator
+  - unavailable_function
+  - unneeded_parentheses_in_closure_argument
+  - untyped_error_in_catch
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+
+disabled_rules:
+  - force_cast
+  - nesting
+
+identifier_name:
+  excluded:
+    - id
+    - i
+    - j
+    - k
+number_separator:
+  minimum_length: 5
+# file_name:
+#   excluded:
+#     - main.swift
+#     - LinuxMain.swift
+#     - TestHelpers.swift
+#     - shim.swift
+#     - AutomaticRuleTests.generated.swift
+
+# custom_rules:
+#   multi_clause_guard:
+#     name: Multi Clause Guard
+#     message: Multiple guard clauses must be on new lines
+#     regex: 'guard\s+(let|var)\s+\w+\s+=[\w .:()<>]+, +(let|var)'
+#     severity: error

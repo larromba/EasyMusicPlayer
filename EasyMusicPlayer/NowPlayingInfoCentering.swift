@@ -1,7 +1,8 @@
 import Foundation
 import MediaPlayer
 
-protocol NowPlayingInfoCentering: AnyObject {
+// sourcery: name = NowPlayingInfoCenter
+protocol NowPlayingInfoCentering: AnyObject, Mockable {
     var nowPlayingInfo: [String: Any]? { get set }
 }
 extension MPNowPlayingInfoCenter: NowPlayingInfoCentering {}

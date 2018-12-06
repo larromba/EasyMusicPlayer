@@ -9,7 +9,8 @@ protocol ControlsViewDelegate: AnyObject {
     func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat button: UIButton)
 }
 
-protocol ControlsViewControlling: AnyObject {
+// sourcery: name = ControlsViewController
+protocol ControlsViewControlling: AnyObject, Mockable {
     var viewState: ControlsViewState? { get set }
 
     func setDelegate(_ delegate: ControlsViewDelegate)

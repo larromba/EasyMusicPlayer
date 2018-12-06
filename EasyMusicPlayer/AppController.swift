@@ -1,13 +1,14 @@
 import Foundation
 
-protocol AppControlling {
+// sourcery: name = AppController
+protocol AppControlling: Mockable {
     // 🦄
 }
 
 final class AppController: AppControlling {
-    private let playerController: PlayerController
+    private let playerController: PlayerControlling
 
-    init(playerController: PlayerController) {
+    init(playerController: PlayerControlling) {
         self.playerController = playerController
     }
 }

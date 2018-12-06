@@ -21,9 +21,11 @@ enum AppControllerFactory {
         let seeker = Seeker(seekInterval: 0.2)
         let interruptionHandler = MusicInterupptionHandler()
         let clock = Clock(timeInterval: 1.0)
-        let musicPlayer = MusicPlayer(trackManager: trackManager, remote: remoteCommandCenter,
-                                      audioSession: AVAudioSession.sharedInstance(), authorization: authorization,
-                                      seeker: seeker, interruptionHandler: interruptionHandler, clock: clock)
+        let playerFactory = AudioPlayerFactory()
+        let musicService = MusicService(trackManager: trackManager, remote: remoteCommandCenter,
+                                       audioSession: AVAudioSession.sharedInstance(), authorization: authorization,
+                                       seeker: seeker, interruptionHandler: interruptionHandler, clock: clock,
+                                       playerFactory: playerFactory)
 
         let playerController = PlayerController(
             viewController: playerViewController,
@@ -31,7 +33,7 @@ enum AppControllerFactory {
             infoController: infoController,
             controlsController: controlsController,
             alertController: alertController,
-            musicPlayer: musicPlayer,
+            musicService: musicService,
             userService: userService
         )
         return AppController(playerController: playerController)

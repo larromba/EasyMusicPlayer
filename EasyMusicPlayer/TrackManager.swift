@@ -1,10 +1,15 @@
 import Foundation
 import MediaPlayer
 
-protocol TrackManaging {
+// sourcery: name = TrackManager
+protocol TrackManaging: Mockable {
+    // sourcery: value = []
     var tracks: [MPMediaItem] { get }
+    // sourcery: value = .mock
     var currentTrack: MPMediaItem { get }
+    // sourcery: value = 0
     var currentTrackIndex: Int { get }
+    // sourcery: value = 0
     var totalTracks: Int { get }
 
     func loadSavedPlaylist()

@@ -1,6 +1,7 @@
 import UIKit
 
-protocol AlertControlling {
+// sourcery: name = AlertController
+protocol AlertControlling: Mockable {
     func showAlert(_ alert: Alert)
 }
 

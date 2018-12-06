@@ -1,7 +1,8 @@
 import Foundation
 import MediaPlayer
 
-protocol InfoControlling {
+// sourcery: name = InfoController
+protocol InfoControlling: Mockable {
     func setInfoFromTrack(_ track: Track)
     func clearInfo()
     func setTime(_ time: TimeInterval, duration: TimeInterval)

@@ -1,6 +1,6 @@
 included:
   - EasyMusicPlayer
-  - EasyMusicPlayer
+  - EasyMusicPlayerTests
 excluded:
   - Pods
   - Carthage

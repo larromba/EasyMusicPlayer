@@ -1,6 +1,7 @@
 import UIKit
 
-protocol PlayButtonable {
+// sourcery: name = PlayButton
+protocol PlayButtonable: Mockable {
     var viewState: PlayButtonViewState? { get set }
 }
 

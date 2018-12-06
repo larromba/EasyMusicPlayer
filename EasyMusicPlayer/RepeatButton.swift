@@ -1,6 +1,7 @@
 import UIKit
 
-protocol RepeatButtonable {
+// sourcery: name = RepeatButton
+protocol RepeatButtonable: Mockable {
     var viewState: RepeatButtonViewState? { get set }
 }
 

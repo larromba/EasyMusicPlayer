@@ -1,6 +1,7 @@
 import UIKit
 
-protocol PlayerControlling {
+// sourcery: name = PlayerController
+protocol PlayerControlling: Mockable {
     // 🦄
 }
 
@@ -10,23 +11,23 @@ final class PlayerController: PlayerControlling {
     private let infoController: InfoControlling
     private let controlsController: ControlsControlling
     private let alertController: AlertControlling
-    private let musicPlayer: MusicPlaying
+    private let musicService: MusicServicing
     private let userService: UserServicing
-    private var isUserScrobbling: Bool = false
+    private var isUserScrubbing: Bool = false
 
     init(viewController: PlayerViewControlling,
          scrubberController: ScrubberControlling,
          infoController: InfoControlling,
-         controlsController: ControlsController,
+         controlsController: ControlsControlling,
          alertController: AlertControlling,
-         musicPlayer: MusicPlaying,
+         musicService: MusicServicing,
          userService: UserServicing) {
         self.viewController = viewController
         self.scrubberController = scrubberController
         self.infoController = infoController
         self.controlsController = controlsController
         self.alertController = alertController
-        self.musicPlayer = musicPlayer
+        self.musicService = musicService
         self.userService = userService
         setup()
     }
@@ -36,10 +37,10 @@ final class PlayerController: PlayerControlling {
     private func setup() {
         scrubberController.setDelegate(self)
         controlsController.setDelegate(self)
-        musicPlayer.setDelegate(delegate: self)
+        musicService.setDelegate(delegate: self)
 
         if let repeatMode = userService.repeatState {
-            musicPlayer.setRepeatState(repeatMode)
+            musicService.setRepeatState(repeatMode)
             controlsController.setRepeatState(repeatMode)
         }
         viewController.viewState = PlayerViewState(appVersion: Bundle.appVersion)
@@ -60,17 +61,17 @@ final class PlayerController: PlayerControlling {
         // e.g. if play button is showing pause image (indicating the player is playing), but the player isn't playing,
         // then somthing went horribly wrong...
         guard let playButtonState = controlsController.playButtonState else { return }
-        if playButtonState == musicPlayer.state.playState {
-            musicPlayer.stop()
+        if playButtonState == musicService.state.playState {
+            musicService.stop()
         }
     }
 }
 
-// MARK: - MusicPlayerDelegate
+// MARK: - MusicServiceDelegate
 
-extension PlayerController: MusicPlayerDelegate {
-    func musicPlayer(_ sender: MusicPlayer, changedState state: PlayState) {
-        controlsController.setMusicPlayerState(sender.state)
+extension PlayerController: MusicServiceDelegate {
+    func musicService(_ sender: MusicService, changedState state: PlayState) {
+        controlsController.setMusicServiceState(sender.state)
         switch state {
         case .playing:
             controlsController.setControlsPlaying()
@@ -95,17 +96,17 @@ extension PlayerController: MusicPlayerDelegate {
         }
     }
 
-    func musicPlayer(_ sender: MusicPlayer, changedPlaybackTime playbackTime: TimeInterval) {
-        guard !isUserScrobbling else { return }
+    func musicService(_ sender: MusicService, changedPlaybackTime playbackTime: TimeInterval) {
+        guard !isUserScrubbing else { return }
 
-        let duration = musicPlayer.state.currentTrack.playbackDuration
+        let duration = musicService.state.currentTrack.playbackDuration
         let percentage = duration > 0 ? playbackTime / duration : 0
 
         scrubberController.moveScrubber(percentage: Float(percentage))
         infoController.setTime(playbackTime, duration: duration)
     }
 
-    func musicPlayer(_ player: MusicPlayer, threwError error: MusicError) {
+    func musicService(_ service: MusicService, threwError error: MusicError) {
         switch error {
         case .noMusic:
             infoController.clearInfo()
@@ -113,9 +114,9 @@ extension PlayerController: MusicPlayerDelegate {
         case .noVolume:
             alertController.showAlert(.noVolume)
         case .avError:
-            alertController.showAlert(.trackError(title: player.state.currentTrack.resolved.title))
+            alertController.showAlert(.trackError(title: service.state.currentTrack.resolved.title))
         case .decode, .playerInit:
-            player.skip()
+            service.skip()
         case .authorization:
             alertController.showAlert(.authError)
         }
@@ -126,18 +127,18 @@ extension PlayerController: MusicPlayerDelegate {
 
 extension PlayerController: ScrubberControllerDelegate {
     func scrubberController(_ controller: ScrubberControlling, touchMovedToPercentage percentage: Float) {
-        isUserScrobbling = true
-        let duration = musicPlayer.state.currentTrack.playbackDuration
+        isUserScrubbing = true
+        let duration = musicService.state.currentTrack.playbackDuration
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
     }
 
     func scrubberController(_ controller: ScrubberControlling, touchEndedAtPercentage percentage: Float) {
-        let duration = musicPlayer.state.currentTrack.playbackDuration
+        let duration = musicService.state.currentTrack.playbackDuration
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
-        musicPlayer.setTime(time)
-        isUserScrobbling = false
+        musicService.setTime(time)
+        isUserScrubbing = false
     }
 }
 
@@ -145,34 +146,34 @@ extension PlayerController: ScrubberControllerDelegate {
 
 extension PlayerController: ControlsDelegate {
     func controlsControllerPressedPlay(_ controller: ControlsControlling) {
-        if musicPlayer.state.isPlaying {
-            musicPlayer.pause()
+        if musicService.state.isPlaying {
+            musicService.pause()
         } else {
-            musicPlayer.play()
+            musicService.play()
         }
     }
 
     func controlsControllerPressedStop(_ controller: ControlsControlling) {
-        musicPlayer.stop()
+        musicService.stop()
     }
 
     func controlsControllerPressedPrev(_ controller: ControlsControlling) {
-        musicPlayer.previous()
+        musicService.previous()
     }
 
     func controlsControllerPressedNext(_ controller: ControlsControlling) {
-        musicPlayer.next()
+        musicService.next()
     }
 
     func controlsControllerPressedShuffle(_ controller: ControlsControlling) {
-        musicPlayer.stop()
-        musicPlayer.shuffle()
-        musicPlayer.play()
+        musicService.stop()
+        musicService.shuffle()
+        musicService.play()
     }
 
     func controlsControllerPressedRepeat(_ controller: ControlsControlling) {
         guard let repeatState = controller.repeatButtonState else { return }
-        musicPlayer.setRepeatState(repeatState)
+        musicService.setRepeatState(repeatState)
         userService.repeatState = repeatState
     }
 }

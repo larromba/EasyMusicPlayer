@@ -3,16 +3,17 @@ import Foundation
 import Logging
 import MediaPlayer
 
-protocol MusicPlayerDelegate: AnyObject {
-    func musicPlayer(_ player: MusicPlayer, threwError error: MusicError)
-    func musicPlayer(_ sender: MusicPlayer, changedState state: PlayState)
-    func musicPlayer(_ sender: MusicPlayer, changedPlaybackTime playbackTime: TimeInterval)
+protocol MusicServiceDelegate: AnyObject {
+    func musicService(_ service: MusicService, threwError error: MusicError)
+    func musicService(_ service: MusicService, changedState state: PlayState)
+    func musicService(_ service: MusicService, changedPlaybackTime playbackTime: TimeInterval)
 }
 
-protocol MusicPlaying: AnyObject {
-    var state: MusicPlayerState { get }
+// sourcery: name = MusicService
+protocol MusicServicing: AnyObject, Mockable {
+    var state: MusicServiceState { get }
 
-    func setDelegate(delegate: MusicPlayerDelegate)
+    func setDelegate(delegate: MusicServiceDelegate)
     func setRepeatState(_ repeatState: RepeatState)
     func setTime(_ time: TimeInterval)
     func play()
@@ -25,21 +26,22 @@ protocol MusicPlaying: AnyObject {
 }
 
 // swiftlint:disable type_body_length
-final class MusicPlayer: NSObject, MusicPlaying {
-    private var player: AVAudioPlayer?
-    private weak var delegate: MusicPlayerDelegate?
+final class MusicService: NSObject, MusicServicing {
+    private var player: AudioPlayer?
+    private weak var delegate: MusicServiceDelegate?
     private let trackManager: TrackManaging
     private let remote: RemoteControlling
     private let audioSession: AudioSessioning
     private let authorization: Authorizable
     private let seeker: Seekable
     private let interruptionHandler: MusicInterupptionHandling
-    private let clock: Clock
+    private let clock: Clocking
     private var playState: PlayState = .stopped
     private var repeatState: RepeatState = .none
+    private let playerFactory: AudioPlayerFactoring
 
-    var state: MusicPlayerState {
-        return MusicPlayerState(
+    var state: MusicServiceState {
+        return MusicServiceState(
             isPlaying: player?.isPlaying ?? false,
             volume: audioSession.outputVolume,
             currentTrackIndex: trackManager.currentTrackIndex,
@@ -53,7 +55,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
 
     init(trackManager: TrackManaging, remote: RemoteControlling, audioSession: AudioSessioning,
          authorization: Authorizable, seeker: Seekable, interruptionHandler: MusicInterupptionHandling,
-         clock: Clock) {
+         clock: Clocking, playerFactory: AudioPlayerFactoring) {
         self.trackManager = trackManager
         self.remote = remote
         self.audioSession = audioSession
@@ -61,6 +63,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
         self.seeker = seeker
         self.interruptionHandler = interruptionHandler
         self.clock = clock
+        self.playerFactory = playerFactory
 
         super.init()
 
@@ -78,6 +81,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
         remote.togglePlayPauseCommand.addTarget(self, action: #selector(togglePlayPause))
         remote.pauseCommand.addTarget(self, action: #selector(pause))
         remote.playCommand.addTarget(self, action: #selector(play))
+        remote.stopCommand.addTarget(self, action: #selector(stop))
         remote.previousTrackCommand.addTarget(self, action: #selector(previous))
         remote.nextTrackCommand.addTarget(self, action: #selector(next))
         remote.seekForwardCommand.addTarget(self, action: #selector(seekForward(_:)))
@@ -96,7 +100,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
         cleanUp()
     }
 
-    func setDelegate(delegate: MusicPlayerDelegate) {
+    func setDelegate(delegate: MusicServiceDelegate) {
         self.delegate = delegate
     }
 
@@ -107,7 +111,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
     func setTime(_ time: TimeInterval) {
         guard let player = player else { return }
         player.currentTime = time
-        delegate?.musicPlayer(self, changedPlaybackTime: time)
+        delegate?.musicService(self, changedPlaybackTime: time)
     }
 
     @objc
@@ -128,7 +132,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
 
             if self.player?.url?.absoluteString != assetUrl.absoluteString {
                 do {
-                    let player = try AVAudioPlayer(contentsOf: assetUrl)
+                    let player = try self.playerFactory.makeAudioPlayer(withContentsOf: assetUrl)
                     player.delegate = self
                     self.player = player
                 } catch {
@@ -154,6 +158,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
         })
     }
 
+    @objc
     func stop() {
         guard let player = player else { return }
         player.stop()
@@ -195,20 +200,9 @@ final class MusicPlayer: NSObject, MusicPlaying {
     func next() {
         stop()
 
-        switch repeatState {
-        case .none:
-            guard trackManager.cueNext() else {
-                trackManager.cueStart()
-                changePlayState(.finished)
-                return
-            }
-        case .one:
-            break
-        case .all:
-            let result = trackManager.cueNext()
-            if !result {
-                trackManager.cueStart()
-            }
+        let result = trackManager.cueNext()
+        if repeatState == .all && !result {
+            trackManager.cueStart()
         }
 
         play()
@@ -250,12 +244,12 @@ final class MusicPlayer: NSObject, MusicPlaying {
     }
 
     @objc
-    private func changePlaybackPosition(_ event: MPChangePlaybackPositionCommandEvent) {
+    private func changePlaybackPosition(_ event: ChangePlaybackPositionCommandEvent) {
         player?.currentTime = event.positionTime
     }
 
     @objc
-    private func seekForward(_ event: MPSeekCommandEvent) {
+    private func seekForward(_ event: SeekCommandEvent) {
         guard player != nil else { return }
         switch event.type {
         case .beginSeeking:
@@ -266,7 +260,7 @@ final class MusicPlayer: NSObject, MusicPlaying {
     }
 
     @objc
-    private func seekBackward(_ event: MPSeekCommandEvent) {
+    private func seekBackward(_ event: SeekCommandEvent) {
         guard player != nil else { return }
         switch event.type {
         case .beginSeeking:
@@ -283,12 +277,12 @@ final class MusicPlayer: NSObject, MusicPlaying {
 
     private func throwError(_ error: MusicError) {
         stop()
-        delegate?.musicPlayer(self, threwError: error)
+        delegate?.musicService(self, threwError: error)
     }
 
     private func changePlayState(_ state: PlayState) {
         playState = state
-        delegate?.musicPlayer(self, changedState: state)
+        delegate?.musicService(self, changedState: state)
     }
 
     private func authorizeThenPerform(_ block: @escaping (() -> Void)) {
@@ -321,31 +315,48 @@ final class MusicPlayer: NSObject, MusicPlaying {
 
 // MARK: - AVAudioPlayerDelegate
 
-extension MusicPlayer: AVAudioPlayerDelegate {
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+extension MusicService: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ service: AVAudioPlayer, successfully flag: Bool) {
         guard flag else {
             throwError(.avError)
             return
         }
-        next()
+        switch repeatState {
+        case .one:
+            play()
+        case .none:
+            guard trackManager.currentTrack != trackManager.tracks.last else {
+                changePlayState(.finished)
+                return
+            }
+            next()
+        case .all:
+            next()
+        }
     }
 
-    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+    func audioPlayerDecodeErrorDidOccur(_ service: AVAudioPlayer, error: Error?) {
         throwError(.decode)
     }
 }
 
 // MARK: - SeekerDelegate
 
-extension MusicPlayer: SeekerDelegate {
+extension MusicService: SeekerDelegate {
     func seeker(_ seeker: Seekable, updateDelta: TimeInterval) {
-        player?.currentTime += updateDelta
+        guard
+            let player = player,
+            player.currentTime + updateDelta >= 0,
+            player.currentTime + updateDelta < player.duration else {
+                return
+        }
+        player.currentTime += updateDelta
     }
 }
 
 // MARK: - MusicInterupptionHandler
 
-extension MusicPlayer: MusicInterupptionDelegate {
+extension MusicService: MusicInterupptionDelegate {
     func interupptionHandler(_ handler: MusicInterupptionHandler, updtedState state: MusicInterupptionState) {
         if state.isHeadphonesRemovedByMistake || state.isAudioSessionInterrupted {
             pause()
@@ -357,9 +368,9 @@ extension MusicPlayer: MusicInterupptionDelegate {
 
 // MARK: - ClockDelegate
 
-extension MusicPlayer: ClockDelegate {
+extension MusicService: ClockDelegate {
     func clockTicked(_ clock: Clock) {
         guard let player = player else { return }
-        delegate?.musicPlayer(self, changedPlaybackTime: player.currentTime)
+        delegate?.musicService(self, changedPlaybackTime: player.currentTime)
     }
 }
