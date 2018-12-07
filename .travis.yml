@@ -8,4 +8,4 @@ addons:
     packages:
     - carthage
 before_install:
-  - carthage bootstrap --no-use-binaries
+  - carthage bootstrap --platform ios --no-use-binaries
