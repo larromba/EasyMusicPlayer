@@ -80,6 +80,7 @@
 		7FA59D6221B9768500538013 /* TestExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA59D6121B9768500538013 /* TestExtensions.framework */; };
 		7FA59D6421B9769500538013 /* TestExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7FA59D6121B9768500538013 /* TestExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7FA59D6621B97DB000538013 /* ViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D6521B97DB000538013 /* ViewControllerExtensions.swift */; };
+		7FA59D6821BAA44500538013 /* DataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D6721BAA44500538013 /* DataTests.swift */; };
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
@@ -198,6 +199,7 @@
 		7FA59D5E21B96CB300538013 /* Runtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runtime.swift; sourceTree = "<group>"; };
 		7FA59D6121B9768500538013 /* TestExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TestExtensions.framework; path = Carthage/Build/iOS/TestExtensions.framework; sourceTree = "<group>"; };
 		7FA59D6521B97DB000538013 /* ViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtensions.swift; sourceTree = "<group>"; };
+		7FA59D6721BAA44500538013 /* DataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTests.swift; sourceTree = "<group>"; };
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -504,6 +506,7 @@
 				7F44F9E321B830F70041E4DE /* RemoteControlStateTests.swift */,
 				7F44F9D521B828F10041E4DE /* MusicPlayerErrorTests.swift */,
 				7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */,
+				7FA59D6721BAA44500538013 /* DataTests.swift */,
 				7FF5B2FF1BE64E220044FCE5 /* TrackTests.swift */,
 				7F44F9DB21B82B000041E4DE /* Utility */,
 				7FA59D5521B9467A00538013 /* Protocols */,
@@ -816,6 +819,7 @@
 				7F44F9F021B849F10041E4DE /* TestAudioPlayerFactory.swift in Sources */,
 				7F44F9DA21B82AFE0041E4DE /* Testable.swift in Sources */,
 				7FA59D5F21B96CB300538013 /* Runtime.swift in Sources */,
+				7FA59D6821BAA44500538013 /* DataTests.swift in Sources */,
 				7F44F9EA21B83DBD0041E4DE /* MockMediaItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1056,7 +1060,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicPlayerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyMusic.app/EasyMusic";
 			};
@@ -1075,7 +1079,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.EasyMusicPlayerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyMusic.app/EasyMusic";
 			};

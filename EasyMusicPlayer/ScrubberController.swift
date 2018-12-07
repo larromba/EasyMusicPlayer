@@ -16,9 +16,11 @@ final class ScrubberController: ScrubberControlling {
     private let viewController: ScrubberViewControlling
     private weak var delegate: ScrubberControllerDelegate?
     private let lowAlpha: CGFloat = 0.65
+    private let remote: RemoteControlling
 
-    init(viewController: ScrubberViewControlling) {
+    init(viewController: ScrubberViewControlling, remote: RemoteControlling) {
         self.viewController = viewController
+        self.remote = remote
         setup()
     }
 
@@ -32,6 +34,7 @@ final class ScrubberController: ScrubberControlling {
 
     func setIsUserInteractionEnabled(_ isEnabled: Bool) {
         viewController.viewState = viewController.viewState?.copy(isUserInteractionEnabled: isEnabled)
+        remote.changePlaybackPositionCommand.isEnabled = isEnabled
     }
 
     // MARK: - Private

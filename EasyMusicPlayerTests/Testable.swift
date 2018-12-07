@@ -41,21 +41,3 @@ extension MusicService {
                             playerFactory: playerFactory)
     }
 }
-
-extension MusicServiceState {
-    static func testable(isPlaying: Bool = false,
-                         currentTrackIndex: Int = 0,
-                         totalTracks: Int = 0,
-                         repeatState: RepeatState = .none) -> MusicServiceState {
-        return MusicServiceState(
-            isPlaying: isPlaying,
-            volume: 0,
-            currentTrackIndex: currentTrackIndex,
-            totalTracks: totalTracks,
-            currentTrack: .mock,
-            time: 0,
-            playState: .stopped,
-            repeatState: repeatState
-        )
-    }
-}

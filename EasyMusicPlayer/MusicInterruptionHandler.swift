@@ -91,7 +91,7 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
         case .newDeviceAvailable:
             if !isPlaying && state.isHeadphonesRemovedByMistake {
                 state = state.copy(isHeadphonesRemovedByMistake: false)
-               notifyStateChange()
+                notifyStateChange()
             }
         default:
             break

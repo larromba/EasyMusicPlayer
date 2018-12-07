@@ -19,3 +19,12 @@ extension ScrubberViewController {
         return viewController
     }
 }
+
+extension InfoViewController {
+    static var fromStoryboard: InfoViewController {
+        let viewController = UIStoryboard.main()
+            .instantiateViewController(withIdentifier: "InfoViewController") as! InfoViewController
+        _ = viewController.view
+        return viewController
+    }
+}

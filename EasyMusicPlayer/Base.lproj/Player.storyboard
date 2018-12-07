@@ -76,7 +76,7 @@
         <!--Info View Controller-->
         <scene sceneID="K84-PW-7un">
             <objects>
-                <viewController id="UJZ-7C-Dli" customClass="InfoViewController" customModule="EasyMusic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InfoViewController" id="UJZ-7C-Dli" customClass="InfoViewController" customModule="EasyMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="by0-c6-2h6"/>
                         <viewControllerLayoutGuide type="bottom" id="LK5-fw-ZaL"/>

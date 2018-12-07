@@ -6,7 +6,6 @@ struct ControlsViewState {
     let prevButton: GenericButtonViewState
     let nextButton: GenericButtonViewState
     let shuffleButton: GenericButtonViewState
-    let shareButton: GenericButtonViewState
     let repeatButton: RepeatButtonViewState
 }
 
@@ -18,7 +17,6 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            shareButton: shareButton,
             repeatButton: repeatButton
         )
     }
@@ -30,7 +28,6 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            shareButton: shareButton,
             repeatButton: repeatButton
         )
     }
@@ -42,7 +39,6 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            shareButton: shareButton,
             repeatButton: repeatButton
         )
     }
@@ -54,7 +50,6 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            shareButton: shareButton,
             repeatButton: repeatButton
         )
     }
@@ -66,19 +61,6 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            shareButton: shareButton,
-            repeatButton: repeatButton
-        )
-    }
-
-    func copy(shareButton: GenericButtonViewState) -> ControlsViewState {
-        return ControlsViewState(
-            playButton: playButton,
-            stopButton: stopButton,
-            prevButton: prevButton,
-            nextButton: nextButton,
-            shuffleButton: shuffleButton,
-            shareButton: shareButton,
             repeatButton: repeatButton
         )
     }
@@ -90,7 +72,6 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            shareButton: shareButton,
             repeatButton: repeatButton
         )
     }

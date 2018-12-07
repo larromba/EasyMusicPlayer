@@ -18,7 +18,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingPlayPlaysMusic() {
         // mocks
-        let env = MusicControlEnvironment(isPlaying: false, remote: remote)
+        let env = PlayerEnvironment(isPlaying: false, remote: remote)
         env.inject()
 
         // sut
@@ -30,7 +30,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingPausePausesMusic() {
         // mocks
-        let env = MusicControlEnvironment(remote: remote)
+        let env = PlayerEnvironment(remote: remote)
         env.inject()
 
         // sut
@@ -43,7 +43,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testTogglePlayPausePlaysMusic() {
         // mocks
-        let env = MusicControlEnvironment(isPlaying: false, remote: remote)
+        let env = PlayerEnvironment(isPlaying: false, remote: remote)
         env.inject()
 
         // sut
@@ -55,7 +55,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testTogglePlayPausePausesMusic() {
         // mocks
-        let env = MusicControlEnvironment(remote: remote)
+        let env = PlayerEnvironment(remote: remote)
         env.inject()
 
         // sut
@@ -68,7 +68,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingStopStopsMusic() {
         // mocks
-        let env = MusicControlEnvironment(remote: remote)
+        let env = PlayerEnvironment(remote: remote)
         env.inject()
 
         // sut
@@ -81,7 +81,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingPrevPlaysPreviousTrack() {
         // mocks
-        let env = MusicControlEnvironment(trackID: 1, trackIDs: [0, 1, 2], remote: remote)
+        let env = PlayerEnvironment(trackID: 1, remote: remote)
         env.inject()
 
         // sut
@@ -95,7 +95,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingNextPlaysNextTrack() {
         // mocks
-        let env = MusicControlEnvironment(trackID: 1, trackIDs: [0, 1, 2], remote: remote)
+        let env = PlayerEnvironment(trackID: 1, remote: remote)
         env.inject()
 
         // sut
@@ -109,7 +109,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testScrobblingChangesPlayLocationInTrack() {
         // mocks
-        let env = MusicControlEnvironment(remote: remote)
+        let env = PlayerEnvironment(remote: remote)
         env.inject()
 
         // sut
@@ -122,7 +122,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testSeeksPreviousChangesPlayLocationInTrack() {
         // mocks
-        let env = MusicControlEnvironment(currentTime: 4, remote: remote)
+        let env = PlayerEnvironment(currentTime: 4, remote: remote)
         env.inject()
 
         // sut
@@ -137,7 +137,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testSeekNextChangesPlayLocationInTrack() {
         // mocks
-        let env = MusicControlEnvironment(remote: remote)
+        let env = PlayerEnvironment(remote: remote)
         env.inject()
 
         // sut

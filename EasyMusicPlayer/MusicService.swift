@@ -25,7 +25,6 @@ protocol MusicServicing: AnyObject, Mockable {
     func skip()
 }
 
-// swiftlint:disable type_body_length
 final class MusicService: NSObject, MusicServicing {
     private var player: AudioPlayer?
     private weak var delegate: MusicServiceDelegate?

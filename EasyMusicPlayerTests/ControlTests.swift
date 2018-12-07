@@ -5,7 +5,7 @@ import XCTest
 final class ControlTests: XCTestCase {
 	func testPressingPlayPlaysMusic() {
 		// mocks
-        let env = MusicControlEnvironment(isPlaying: false)
+        let env = PlayerEnvironment(isPlaying: false)
         env.inject()
 
         // sut
@@ -17,7 +17,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingPausePausesMusic() {
         // mocks
-        let env = MusicControlEnvironment()
+        let env = PlayerEnvironment()
         env.inject()
 
         // sut
@@ -30,7 +30,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingStopStopsMusic() {
         // mocks
-        let env = MusicControlEnvironment()
+        let env = PlayerEnvironment()
         env.inject()
 
         // sut
@@ -43,7 +43,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingShuffleCreatesAndPlaysTracks() {
         // mocks
-        let env = MusicControlEnvironment()
+        let env = PlayerEnvironment()
         env.inject()
 
         // sut
@@ -56,7 +56,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingPrevPlaysPreviousTrack() {
         // mocks
-        let env = MusicControlEnvironment(trackID: 1, trackIDs: [0, 1, 2])
+        let env = PlayerEnvironment(trackID: 1)
         env.inject()
 
         // sut
@@ -70,7 +70,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingNextPlaysNextTrack() {
         // mocks
-        let env = MusicControlEnvironment(trackID: 1, trackIDs: [0, 1, 2])
+        let env = PlayerEnvironment(trackID: 1)
         env.inject()
 
         // sut
@@ -84,7 +84,7 @@ final class ControlTests: XCTestCase {
 
     func testScrubbingChangesPlayLocationInTrack() {
         // mocks
-        let env = MusicControlEnvironment()
+        let env = PlayerEnvironment()
         env.inject()
 
         // sut
@@ -100,7 +100,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingRepeatButtonAllChangesRepeatStateToNone() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .all)
+        let env = PlayerEnvironment(repeatState: .all)
         env.inject()
 
         // sut
@@ -112,7 +112,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingRepeatButtonNoneChangesRepeatStateToOne() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .none)
+        let env = PlayerEnvironment(repeatState: .none)
         env.inject()
 
         // sut
@@ -124,7 +124,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingRepeatButtonOneChangesRepeatStateToAll() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .one)
+        let env = PlayerEnvironment(repeatState: .one)
         env.inject()
 
         // sut

@@ -7,12 +7,11 @@ final class ControlStateTests: XCTestCase {
 
     func testRepeatOne() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .one)
+        let env = PlayerEnvironment(repeatState: .one)
         env.inject()
 
         // sut
         env.musicService.play()
-        env.musicService.stop()
 
         // test
         XCTAssertEqual(env.controlsViewController.repeatButton.backgroundImage(for: .normal),
@@ -21,7 +20,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneStart() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .one)
+        let env = PlayerEnvironment(repeatState: .one)
         env.inject()
 
         // sut
@@ -34,7 +33,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneMid() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .one, trackID: 1)
+        let env = PlayerEnvironment(repeatState: .one, trackID: 1)
         env.inject()
 
         // sut
@@ -47,7 +46,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneEnd() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .one, trackID: 2)
+        let env = PlayerEnvironment(repeatState: .one, trackID: 2)
         env.inject()
 
         // sut
@@ -62,12 +61,11 @@ final class ControlStateTests: XCTestCase {
 
     func testRepeatNone() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .none)
+        let env = PlayerEnvironment(repeatState: .none)
         env.inject()
 
         // sut
         env.musicService.play()
-        env.musicService.stop()
 
         // test
         XCTAssertEqual(env.controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatButton.image)
@@ -75,7 +73,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneStart() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .none)
+        let env = PlayerEnvironment(repeatState: .none)
         env.inject()
 
         // sut
@@ -88,7 +86,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneMid() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .one, trackID: 1)
+        let env = PlayerEnvironment(repeatState: .one, trackID: 1)
         env.inject()
 
         // sut
@@ -101,7 +99,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneEnd() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .one, trackID: 2)
+        let env = PlayerEnvironment(repeatState: .one, trackID: 2)
         env.inject()
 
         // sut
@@ -116,12 +114,11 @@ final class ControlStateTests: XCTestCase {
 
     func testRepeatAll() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .all)
+        let env = PlayerEnvironment(repeatState: .all)
         env.inject()
 
         // sut
         env.musicService.play()
-        env.musicService.stop()
 
         // test
         XCTAssertEqual(env.controlsViewController.repeatButton.backgroundImage(for: .normal),
@@ -130,7 +127,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllStart() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .all)
+        let env = PlayerEnvironment(repeatState: .all)
         env.inject()
 
         // sut
@@ -143,7 +140,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllMid() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .all, trackID: 1)
+        let env = PlayerEnvironment(repeatState: .all, trackID: 1)
         env.inject()
 
         // sut
@@ -156,7 +153,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllEnd() {
         // mocks
-        let env = MusicControlEnvironment(repeatState: .all, trackID: 2)
+        let env = PlayerEnvironment(repeatState: .all, trackID: 2)
         env.inject()
 
         // sut
@@ -171,7 +168,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayState() {
         // mocks
-        let env = MusicControlEnvironment()
+        let env = PlayerEnvironment()
         env.inject()
 
         // sut
@@ -188,7 +185,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPauseState() {
         // mocks
-        let env = MusicControlEnvironment()
+        let env = PlayerEnvironment(isPlaying: false)
         env.inject()
 
         // sut
@@ -206,7 +203,7 @@ final class ControlStateTests: XCTestCase {
 
     func testStopState() {
         // mocks
-        let env = MusicControlEnvironment()
+        let env = PlayerEnvironment(isPlaying: false)
         env.inject()
 
         // sut
@@ -224,7 +221,7 @@ final class ControlStateTests: XCTestCase {
 
     func testErrorState() {
         // mocks
-        let env = MusicControlEnvironment(didPlay: false)
+        let env = PlayerEnvironment(isPlaying: false, didPlay: false)
         env.inject()
 
         // sut
@@ -240,6 +237,20 @@ final class ControlStateTests: XCTestCase {
     }
 
     func testTrackRendersInfo() {
-        XCTFail("todo")
+        // mocks
+        let image = UIImage()
+        let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
+        let env = PlayerEnvironment(mediaItems: [item])
+        env.inject()
+
+        // sut
+        env.musicService.play()
+
+        // test
+        XCTAssertEqual(env.infoViewController.artistLabel.text, "arkist")
+        XCTAssertEqual(env.infoViewController.trackLabel.text, "fill your coffee")
+        XCTAssertEqual(env.infoViewController.trackPositionLabel.text, "1 of 1")
+        XCTAssertEqual(env.infoViewController.timeLabel.text, "00:00:00")
+        XCTAssertEqual(env.infoViewController.artworkImageView.image, image)
     }
 }

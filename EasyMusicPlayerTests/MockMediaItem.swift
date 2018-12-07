@@ -4,18 +4,23 @@ import MediaPlayer
 final class MockMediaItem: MPMediaItem {
     static var playbackDuration: TimeInterval = 60 * 3.5 // 3.5mins
 
-    private var _artist: String?
-    private var _title: String?
+    private let _artist: String?
+    private let _title: String?
+    private let _image: UIImage
+    private let _id: MPMediaEntityPersistentID
 
     override var artist: String? { return _artist }
     override var title: String? { return _title }
     override var playbackDuration: TimeInterval { return type(of: self).playbackDuration }
-    override var artwork: MPMediaItemArtwork { return MPMediaItemArtwork(boundsSize: .zero) { _ in return UIImage() } }
+    override var artwork: MPMediaItemArtwork { return MPMediaItemArtwork(boundsSize: .zero) { _ in self._image } }
     override var assetURL: URL { return .mock }
+    override var persistentID: MPMediaEntityPersistentID { return _id }
 
-    init(artist: String? = nil, title: String? = nil) {
+    init(artist: String? = nil, title: String? = nil, image: UIImage = UIImage(), id: MPMediaEntityPersistentID = 0) {
         _artist = artist
         _title = title
+        _image = image
+        _id = id
         super.init()
     }
 
@@ -26,5 +31,11 @@ final class MockMediaItem: MPMediaItem {
 }
 
 extension MPMediaItem {
-    static var mock: MPMediaItem = MockMediaItem()
+    static var mock: MPMediaItem {
+        return MockMediaItem()
+    }
+
+    static func mock(id: MPMediaEntityPersistentID) -> MPMediaItem {
+        return MockMediaItem(id: id)
+    }
 }
