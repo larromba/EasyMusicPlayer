@@ -120,6 +120,8 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
     }
 
     private func notifyStateChange() {
-        delegate?.interupptionHandler(self, updtedState: state)
+        DispatchQueue.main.async {
+            self.delegate?.interupptionHandler(self, updtedState: self.state)
+        }
     }
 }
