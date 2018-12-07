@@ -199,6 +199,8 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(env.controlsViewController.shuffleButton.isEnabled)
         XCTAssertTrue(env.controlsViewController.repeatButton.isEnabled)
         XCTAssertFalse(env.scrubberViewController.view.isUserInteractionEnabled)
+        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
     }
 
     func testStopState() {
@@ -217,6 +219,8 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(env.controlsViewController.shuffleButton.isEnabled)
         XCTAssertTrue(env.controlsViewController.repeatButton.isEnabled)
         XCTAssertFalse(env.scrubberViewController.view.isUserInteractionEnabled)
+        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
     }
 
     func testErrorState() {
@@ -234,6 +238,8 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(env.controlsViewController.shuffleButton.isEnabled)
         XCTAssertTrue(env.controlsViewController.repeatButton.isEnabled)
         XCTAssertFalse(env.scrubberViewController.view.isUserInteractionEnabled)
+        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
     }
 
     func testTrackRendersInfo() {

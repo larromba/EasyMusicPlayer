@@ -175,6 +175,8 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertFalse(remote.changePlaybackPositionCommand.isEnabled)
         XCTAssertFalse(remote.seekForwardCommand.isEnabled)
         XCTAssertFalse(remote.seekBackwardCommand.isEnabled)
+        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
     }
 
     func testStopState() {
@@ -194,6 +196,8 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertFalse(remote.changePlaybackPositionCommand.isEnabled)
         XCTAssertFalse(remote.seekForwardCommand.isEnabled)
         XCTAssertFalse(remote.seekBackwardCommand.isEnabled)
+        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
     }
 
     func testErrorState() {
@@ -212,6 +216,8 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertFalse(remote.changePlaybackPositionCommand.isEnabled)
         XCTAssertFalse(remote.seekForwardCommand.isEnabled)
         XCTAssertFalse(remote.seekBackwardCommand.isEnabled)
+        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
     }
 
     func testTrackRendersInfo() {

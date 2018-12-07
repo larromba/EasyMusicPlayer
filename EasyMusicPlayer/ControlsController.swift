@@ -148,11 +148,11 @@ final class ControlsController: ControlsControlling {
             let trackNumber = musicServiceState.currentTrackIndex
             let isFirstTrack = trackNumber == 0
             let isLastTrack = trackNumber == (musicServiceState.totalTracks - 1)
-            setPreviousIsEnabled(!isFirstTrack)
-            setNextIsEnabled(!isLastTrack)
+            setPreviousIsEnabled(!isFirstTrack && musicServiceState.isPlaying)
+            setNextIsEnabled(!isLastTrack && musicServiceState.isPlaying)
         case .all:
-            setPreviousIsEnabled(true)
-            setNextIsEnabled(true)
+            setPreviousIsEnabled(musicServiceState.isPlaying)
+            setNextIsEnabled(musicServiceState.isPlaying)
         }
         setSeekBackwardsIsEnabled(musicServiceState.isPlaying)
         setSeekForwardsIsEnabled(musicServiceState.isPlaying)

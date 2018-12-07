@@ -36,7 +36,7 @@ extension Track: Equatable {
 private extension MPMediaItem {
     var resolvedArtist: String {
         guard let artist = artist, !artist.isEmpty else {
-			if isDashTrackFormat {
+			if isDashTrackFormat, dashTrackComponents.count == 2 {
 				return dashTrackComponents[0]
 			}
             return L10n.unknownArtist
@@ -48,7 +48,7 @@ private extension MPMediaItem {
         guard let title = title, !title.isEmpty else {
             return L10n.unknownTrack
         }
-		if isDashTrackFormat {
+		if isDashTrackFormat, dashTrackComponents.count == 2 {
 			return dashTrackComponents[1]
 		}
         return title
