@@ -2,10 +2,10 @@
 
 | master  | dev |
 | ------------- | ------------- |
-| [![Build Status](https://travis-ci.com/larromba/easymusic.svg?branch=master)](https://travis-ci.com/larromba/easymusic) | [![Build Status](https://travis-ci.com/larromba/easymusic.svg?branch=dev)](https://travis-ci.com/larromba/easymusic) |
+| [![Build Status](https://travis-ci.com/larromba/easymusicplayer.svg?branch=master)](https://travis-ci.com/larromba/easymusicplayer) | [![Build Status](https://travis-ci.com/larromba/easymusic.svg?branch=dev)](https://travis-ci.com/larromba/easymusicplayer) |
 
 ## About
-Easy Music Player is a simple app designed only to play and shuffle music. It's a music player without the faff
+Easy Music Player [(app store)](https://itunes.apple.com/app/id1067558718?mt=8) is a simple app designed only to play and shuffle music. It's a music player without the faff. It also works with an external bluetooth headset.
 
 ## Installation from Source
 
@@ -22,20 +22,26 @@ Easy Music Player is a simple app designed only to play and shuffle music. It's 
 
 `brew install sourcery`
 
+**Carthage** *(testing only)*
+
+`brew install carthage`
+
 ### Build Instructions
-This assumes you're farmiliar with Xcode and building macOS apps.
+This assumes you're farmiliar with Xcode and building iOS apps.
 
 *Please note that you might need to change your app's bundle identifier and certificates to match your own.*
 
-1. open `EasyMusic.xcodeproj`
-2. click the top menu `Project -> Archive`
-...
+1. `carthage update`
+2. open `EasyMusicPlayer.xcodeproj`
+3. select `EasyMusicPlayer-Release` target
+4. select your device from the device list
+5. run the app on your phone
 
 ### Setting Up
-
+On the simulator, 1 mock audio file is added 3 times. See `Playlist.swift` for more information
 
 ## How it works
-
+It's essentially a wrapper around Apple's `MediaPlayer` framework.
 
 ## Licence
 [![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0) 

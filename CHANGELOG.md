@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0 (07/12/2018)
+    removed sharing option
+    large code refactor
+    open sourced code
+
 ## 1.2.1 (06/11/2017)
     fixed headphone unplugged bug
     ios11 fixes
