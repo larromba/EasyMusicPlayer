@@ -1,9 +1,0 @@
-/* 
-  InfoPlist.strings
-  EasyMusic
-
-  Created by Lee Arromba on 08/12/2016.
-  Copyright © 2016 Lee Arromba. All rights reserved.
-*/
-
-"NSAppleMusicUsageDescription" = "此应用程序播放您的图书馆的音乐";

@@ -1,0 +1,33 @@
+"unknown artist" = "Unknown Artist";
+"unknown track" = "Unknown Title";
+
+"time format" = "%@";
+"time interval format" = "%02d:%02d:%02d";
+"track position format" = "%i of %i";
+
+"no music error title" = "Error";
+"no music error msg" = "You have no music";
+"no music error button" = "OK";
+"no volume error title" = "Error";
+"no volume error msg" = "Your volume is too low";
+"no volume error button" = "OK";
+"track error title" = "Error";
+"track error msg" = "Couldn't play '%@'";
+"track error button" = "OK";
+"accounts error title" = "Accounts";
+"accounts error msg" = "Please check your social accounts are correctly setup and try again";
+"accounts error button" = "OK";
+"finished alert title" = "End";
+"finished alert msg" = "Your playlist finished";
+"finished alert button" = "OK";
+"authorization error title" = "Authorization";
+"authorization error message" = "In the Settings, please allow us access to your music!";
+"authorization error button" = "OK";
+
+"share format" = "%@ - %@ (via %@)";
+"share sheet title" = "Share";
+"share sheet desc" = "Where do you want to share this tune?";
+"share option facebook" = "Facebook";
+"share option twitter" = "Twitter";
+"share option email" = "Email";
+"share option cancel" = "Cancel";
