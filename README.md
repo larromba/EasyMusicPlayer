@@ -2,7 +2,7 @@
 
 | master  | dev |
 | ------------- | ------------- |
-| [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=master)](https://travis-ci.com/larromba/easymusicplayer) | [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=dev)](https://travis-ci.com/larromba/easymusicplayer) |
+| [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=master)](https://travis-ci.com/larromba/EasyMusicPlayer) | [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=dev)](https://travis-ci.com/larromba/EasyMusicPlayer) |
 
 ## About
 Easy Music Player [(app store)](https://itunes.apple.com/app/id1067558718?mt=8) is a simple app designed only to play and shuffle music. It's a music player without the faff. It also works with an external bluetooth headset.
