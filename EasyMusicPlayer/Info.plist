@@ -21,7 +21,7 @@
 	<key>CFBundleVersion</key>
 	<string>20</string>
 	<key>DummyAudioPath</key>
-	<string>$(PROJECT_DIR)/[audio]/arkist - fill your coffee.m4a</string>
+	<string>$(PROJECT_DIR)/audio/arkist - fill your coffee.m4a</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
