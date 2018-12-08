@@ -1,8 +1,8 @@
 devices([
-    "iPhone 6",
-    "iPhone X",
-    "iPad Pro (12.9-inch)",
-    "iPad Pro (9.7-inch)",
+    #"iPhone XS Max", # 6.5 inch
+    "iPhone 7 Plus", # 5.5 inch
+    #"iPad Pro (12.9-inch) (3rd generation)",
+    "iPad Pro (12.9-inch) (2nd generation)",
 ])
 languages([
     "en-UK",
