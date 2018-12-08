@@ -24,10 +24,10 @@ protocol TrackManaging: Mockable {
 
 final class TrackManager: TrackManaging {
     private let userService: UserServicing
-    private let authorization: Authorizable
+    private let authorization: Authorization
     private let playlist: Playlistable
 
-    init(userService: UserServicing, authorization: Authorizable, playlist: Playlistable) {
+    init(userService: UserServicing, authorization: Authorization, playlist: Playlistable) {
         self.userService = userService
         self.authorization = authorization
         self.playlist = playlist

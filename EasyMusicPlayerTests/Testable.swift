@@ -26,7 +26,7 @@ extension MusicService {
     static func testable(trackManager: TrackManaging = MockTrackManager(),
                          remote: RemoteControlling = MockRemoteCommandCenter(),
                          audioSession: AudioSessioning = MockAudioSession(),
-                         authorization: Authorizable = MockAuthorizer(),
+                         authorization: Authorization = MockAuthorization(),
                          seeker: Seekable = MockSeeker(),
                          interruptionHandler: MusicInterupptionHandling = MockMusicInterupptionHandler(),
                          clock: Clocking = MockClock(),

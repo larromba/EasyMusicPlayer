@@ -329,7 +329,7 @@ class MockAudioSession: NSObject, AudioSessioning {
     }
 }
 
-class MockAuthorizer: NSObject, Authorizable {
+class MockAuthorization: NSObject, Authorization {
     var isAuthorized: Bool {
         get { return _isAuthorized }
         set(value) { _isAuthorized = value; _isAuthorizedHistory.append(_Variable(value)) }
@@ -650,27 +650,7 @@ class MockInfoViewController: NSObject, InfoViewControlling {
     var _viewStateHistory: [_Variable<InfoViewState?>] = []
 }
 
-class MockMediaQuery: NSObject, MediaQueryable {
-    let invocations = _Invocations()
-    let actions = _Actions()
-    static let invocations = _Invocations()
-    static let actions = _Actions()
-
-    // MARK: - songs
-
-    static func songs() -> MPMediaQuery {
-        let functionName = songs1.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! MPMediaQuery
-    }
-
-    enum songs1: String, _StringRawRepresentable {
-      case name = "songs1"
-    }
-}
-
-class MockMusicAuthorizer: NSObject, MusicAuthorizable {
+class MockMediaLibrary: NSObject, MediaLibraryAuthorizable {
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -703,6 +683,26 @@ class MockMusicAuthorizer: NSObject, MusicAuthorizable {
       enum params: String, _StringRawRepresentable {
         case handler = "requestAuthorization(_handler:@escaping(MPMediaLibraryAuthorizationStatus)->Void).handler"
       }
+    }
+}
+
+class MockMediaQuery: NSObject, MediaQueryable {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - songs
+
+    static func songs() -> MPMediaQuery {
+        let functionName = songs1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocations.record(invocation)
+        return actions.returnValue(for: functionName) as! MPMediaQuery
+    }
+
+    enum songs1: String, _StringRawRepresentable {
+      case name = "songs1"
     }
 }
 

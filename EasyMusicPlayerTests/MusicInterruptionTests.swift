@@ -1,5 +1,6 @@
 import AVFoundation
 @testable import EasyMusic
+import TestExtensions
 import XCTest
 
 final class MusicInterruptionTests: XCTestCase {
@@ -13,7 +14,9 @@ final class MusicInterruptionTests: XCTestCase {
         interrupt()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+        wait(for: 0.5) {
+            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+        }
 	}
 
     func testInterruptionEndedPlaysMusic() {
@@ -27,7 +30,9 @@ final class MusicInterruptionTests: XCTestCase {
         uninterrupt()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        wait(for: 0.5) {
+            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        }
     }
 
 	func testHeadphonesRemovedPausesMusic() {
@@ -40,7 +45,9 @@ final class MusicInterruptionTests: XCTestCase {
         removeHeadphones()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+        wait(for: 0.5) {
+            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+        }
 	}
 
 	func testHeadphonesReattachedPlaysMusic() {
@@ -54,7 +61,9 @@ final class MusicInterruptionTests: XCTestCase {
         attachHeadphones()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        wait(for: 0.5) {
+            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        }
 	}
 
     // MARK: - private

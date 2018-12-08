@@ -54,7 +54,6 @@
 		7F71B85D21A6C79300135925 /* AudioSessioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85C21A6C79300135925 /* AudioSessioning.swift */; };
 		7F71B85F21A70B3700135925 /* MusicAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85E21A70B3700135925 /* MusicAuthorization.swift */; };
 		7F71B86121A70BB700135925 /* Authorizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86021A70BB700135925 /* Authorizable.swift */; };
-		7F71B86321A70BDA00135925 /* MusicAuthorizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86221A70BDA00135925 /* MusicAuthorizable.swift */; };
 		7F71B86521A70F9500135925 /* Seeker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86421A70F9500135925 /* Seeker.swift */; };
 		7F71B86721A72ABE00135925 /* MusicInterruptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86621A72ABE00135925 /* MusicInterruptionHandler.swift */; };
 		7F71B86921A72DFF00135925 /* MusicInterupptionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86821A72DFF00135925 /* MusicInterupptionState.swift */; };
@@ -84,6 +83,7 @@
 		7FA59D7021BAF2F900538013 /* Snapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D6F21BAF2F900538013 /* Snapshots.swift */; };
 		7FA59D7821BAF34D00538013 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D7721BAF34D00538013 /* SnapshotHelper.swift */; };
 		7FA59D7A21BBD01000538013 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D7921BBD01000538013 /* Utility.swift */; };
+		7FA59D8221BBFD8400538013 /* MediaLibraryAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */; };
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
@@ -184,7 +184,6 @@
 		7F71B85C21A6C79300135925 /* AudioSessioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessioning.swift; sourceTree = "<group>"; };
 		7F71B85E21A70B3700135925 /* MusicAuthorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthorization.swift; sourceTree = "<group>"; };
 		7F71B86021A70BB700135925 /* Authorizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorizable.swift; sourceTree = "<group>"; };
-		7F71B86221A70BDA00135925 /* MusicAuthorizable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthorizable.swift; sourceTree = "<group>"; };
 		7F71B86421A70F9500135925 /* Seeker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seeker.swift; sourceTree = "<group>"; };
 		7F71B86621A72ABE00135925 /* MusicInterruptionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInterruptionHandler.swift; sourceTree = "<group>"; };
 		7F71B86821A72DFF00135925 /* MusicInterupptionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInterupptionState.swift; sourceTree = "<group>"; };
@@ -215,6 +214,7 @@
 		7FA59D7121BAF2F900538013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7FA59D7721BAF34D00538013 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		7FA59D7921BBD01000538013 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryAuthorization.swift; sourceTree = "<group>"; };
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -347,7 +347,7 @@
 				7F71B84F21A5DF1000135925 /* NowPlayingInfoCentering.swift */,
 				7F71B85C21A6C79300135925 /* AudioSessioning.swift */,
 				7F71B86021A70BB700135925 /* Authorizable.swift */,
-				7F71B86221A70BDA00135925 /* MusicAuthorizable.swift */,
+				7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */,
 				7F71B87721A8001F00135925 /* MediaQueryable.swift */,
 				7F71B8BC21A833DB00135925 /* URLSessioning.swift */,
 				7F44F9EB21B845870041E4DE /* AudioPlayer.swift */,
@@ -831,7 +831,6 @@
 				7F71B83821A59FAD00135925 /* AlertController.swift in Sources */,
 				7F71B81621A4A32100135925 /* InfoViewState.swift in Sources */,
 				7F4090681BFA096600F449FD /* UIStoryboardExtensions.swift in Sources */,
-				7F71B86321A70BDA00135925 /* MusicAuthorizable.swift in Sources */,
 				7F71B83021A5915800135925 /* RepeatState.swift in Sources */,
 				7F71B8AE21A82B7600135925 /* strings.swift in Sources */,
 				7F71B80F21A489C300135925 /* ScrubberViewState.swift in Sources */,
@@ -844,6 +843,7 @@
 				7F71B80321A484BC00135925 /* AppController.swift in Sources */,
 				7F71B83621A5927C00135925 /* UserDefaultable.swift in Sources */,
 				7FA59D7A21BBD01000538013 /* Utility.swift in Sources */,
+				7FA59D8221BBFD8400538013 /* MediaLibraryAuthorization.swift in Sources */,
 				7F71B84E21A5DCBB00135925 /* Alert.swift in Sources */,
 				7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */,
 				7F44F9EC21B845870041E4DE /* AudioPlayer.swift in Sources */,

@@ -26,9 +26,8 @@ final class MusicPlayerErrorTests: XCTestCase {
         // sut
         env.musicService.play()
         guard
-            let invocation = MockMusicAuthorizer.invocations
-                .find(MockMusicAuthorizer.requestAuthorization2.name).first,
-            let handler = invocation.parameter(for: MockMusicAuthorizer.requestAuthorization2.params.handler)
+            let invocation = MockMediaLibrary.invocations.find(MockMediaLibrary.requestAuthorization2.name).first,
+            let handler = invocation.parameter(for: MockMediaLibrary.requestAuthorization2.params.handler)
                 as? ((MPMediaLibraryAuthorizationStatus) -> Void) else {
                     XCTFail("expected handler")
                     return

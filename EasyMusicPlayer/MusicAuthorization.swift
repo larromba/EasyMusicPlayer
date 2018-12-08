@@ -1,10 +1,10 @@
 import Foundation
 import MediaPlayer
 
-final class MusicAuthorization: Authorizable {
-    private let authorizer: MusicAuthorizable.Type
+final class MusicAuthorization: Authorization {
+    private let authorizer: MediaLibraryAuthorizable.Type
 
-    init(authorizer: MusicAuthorizable.Type) {
+    init(authorizer: MediaLibraryAuthorizable.Type) {
         self.authorizer = authorizer
     }
 

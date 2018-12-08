@@ -5,7 +5,7 @@ import MediaPlayer
 final class PlayerEnvironment: TestEnvironment {
     let playlist = MockPlaylist()
     let playerFactory: TestAudioPlayerFactory
-    let authorization = MusicAuthorization(authorizer: MockMusicAuthorizer.self)
+    let authorization = MusicAuthorization(authorizer: MockMediaLibrary.self)
     let trackManager: TrackManaging
     let remote: RemoteControlling
     let remoteInfo: NowPlayingInfoCentering
@@ -46,8 +46,7 @@ final class PlayerEnvironment: TestEnvironment {
         userService.repeatState = repeatState
         playlist.actions.set(returnValue: mediaItems, for: MockPlaylist.find2.name)
         playlist.actions.set(returnValue: mediaItems, for: MockPlaylist.create1.name)
-        MockMusicAuthorizer.actions.set(returnValue: authorizationStatus,
-                                        for: MockMusicAuthorizer.authorizationStatus1.name)
+        MockMediaLibrary.actions.set(returnValue: authorizationStatus, for: MockMediaLibrary.authorizationStatus1.name)
         audioSession.outputVolume = outputVolume
         trackManager = TrackManager(userService: userService, authorization: authorization, playlist: playlist)
         alertController = AlertController(viewController: alertViewController)

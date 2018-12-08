@@ -31,7 +31,7 @@ final class MusicService: NSObject, MusicServicing {
     private let trackManager: TrackManaging
     private let remote: RemoteControlling
     private let audioSession: AudioSessioning
-    private let authorization: Authorizable
+    private let authorization: Authorization
     private let seeker: Seekable
     private let interruptionHandler: MusicInterupptionHandling
     private let clock: Clocking
@@ -53,7 +53,7 @@ final class MusicService: NSObject, MusicServicing {
     }
 
     init(trackManager: TrackManaging, remote: RemoteControlling, audioSession: AudioSessioning,
-         authorization: Authorizable, seeker: Seekable, interruptionHandler: MusicInterupptionHandling,
+         authorization: Authorization, seeker: Seekable, interruptionHandler: MusicInterupptionHandling,
          clock: Clocking, playerFactory: AudioPlayerFactoring) {
         self.trackManager = trackManager
         self.remote = remote
