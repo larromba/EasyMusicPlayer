@@ -9,7 +9,7 @@ languages([
 ])
 
 scheme("EasyMusicPlayerSnapshot")
-output_directory("./[iTunesConnect]/screenshots")
+output_directory("./screenshots")
 clear_previous_screenshots(true)
 
 stop_after_first_error true
