@@ -44,9 +44,13 @@ This assumes you're farmiliar with Xcode and building iOS apps.
 ### Setting Up
 On the simulator, the app sues 1 mock audio file that's added 3 times. See `Playlist.swift` for more information
 
-### Generting snapshots
-
-`fastlane snapshot`
+### Generating snapshots
+```
+cd <project root>
+fastlane snapshot
+cd screenshots
+fastlane frameit silver
+```
 
 ## How it works
 It's essentially a wrapper around Apple's `MediaPlayer` framework.
