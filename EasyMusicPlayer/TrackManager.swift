@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import MediaPlayer
 
 // sourcery: name = TrackManager
@@ -35,7 +36,7 @@ final class TrackManager: TrackManaging {
     private(set) var tracks: [MPMediaItem] = []
     var currentTrack: MPMediaItem {
         guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else {
-            assertionFailure("unexpected state")
+            logError("no current track, returning empty MPMediaItem")
             return MPMediaItem()
         }
         return tracks[currentTrackIndex]

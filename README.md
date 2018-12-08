@@ -22,9 +22,13 @@ Easy Music Player [(app store)](https://itunes.apple.com/app/id1067558718?mt=8) 
 
 `brew install sourcery`
 
-**Carthage** *(testing only)*
+**Carthage** 
 
 `brew install carthage`
+
+**Fastlane** *(app store snapshots only)*
+
+`brew install fastlane`
 
 ### Build Instructions
 This assumes you're farmiliar with Xcode and building iOS apps.
@@ -38,7 +42,11 @@ This assumes you're farmiliar with Xcode and building iOS apps.
 5. run the app on your phone
 
 ### Setting Up
-On the simulator, 1 mock audio file is added 3 times. See `Playlist.swift` for more information
+On the simulator, the app sues 1 mock audio file that's added 3 times. See `Playlist.swift` for more information
+
+### Generting snapshots
+
+`fastlane snapshot`
 
 ## How it works
 It's essentially a wrapper around Apple's `MediaPlayer` framework.
