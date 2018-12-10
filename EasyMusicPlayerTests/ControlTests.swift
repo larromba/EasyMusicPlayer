@@ -3,8 +3,8 @@ import MediaPlayer
 import XCTest
 
 final class ControlTests: XCTestCase {
-	func testPressingPlayPlaysMusic() {
-		// mocks
+    func testPressingPlayPlaysMusic() {
+        // mocks
         let env = PlayerEnvironment(isPlaying: false)
         env.inject()
 
@@ -13,7 +13,7 @@ final class ControlTests: XCTestCase {
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
-	}
+    }
 
     func testPressingPausePausesMusic() {
         // mocks

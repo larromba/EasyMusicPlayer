@@ -31,7 +31,7 @@
     Adding scribble design found in photos
     Bump version
     Fix: minor music player crashes / issues
-	Fix: missing icons ios10
+    Fix: missing icons ios10
     bump build number
 
 ## 1.1 (10/12/2016)

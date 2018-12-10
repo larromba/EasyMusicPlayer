@@ -4,7 +4,7 @@ import TestExtensions
 import XCTest
 
 final class MusicInterruptionTests: XCTestCase {
-	func testInterruptionStartedPausesMusic() {
+    func testInterruptionStartedPausesMusic() {
         // mocks
         let env = PlayerEnvironment()
         env.inject()
@@ -17,7 +17,7 @@ final class MusicInterruptionTests: XCTestCase {
         wait(for: 0.5) {
             XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
         }
-	}
+    }
 
     func testInterruptionEndedPlaysMusic() {
         // mocks
@@ -35,7 +35,7 @@ final class MusicInterruptionTests: XCTestCase {
         }
     }
 
-	func testHeadphonesRemovedPausesMusic() {
+    func testHeadphonesRemovedPausesMusic() {
         // mocks
         let env = PlayerEnvironment()
         env.inject()
@@ -48,9 +48,9 @@ final class MusicInterruptionTests: XCTestCase {
         wait(for: 0.5) {
             XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
         }
-	}
+    }
 
-	func testHeadphonesReattachedPlaysMusic() {
+    func testHeadphonesReattachedPlaysMusic() {
         // mocks
         let env = PlayerEnvironment()
         env.inject()
@@ -64,7 +64,7 @@ final class MusicInterruptionTests: XCTestCase {
         wait(for: 0.5) {
             XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
         }
-	}
+    }
 
     // MARK: - private
 

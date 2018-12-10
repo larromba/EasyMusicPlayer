@@ -4,9 +4,9 @@ import UIKit
 // sourcery: name = PlayerViewController
 protocol PlayerViewControlling: AnyObject, Mockable {
     var viewState: PlayerViewState? { get set }
-	var scrubberViewController: ScrubberViewControlling { get }
-	var infoViewController: InfoViewControlling { get }
-	var controlsViewController: ControlsViewControlling { get }
+    var scrubberViewController: ScrubberViewControlling { get }
+    var infoViewController: InfoViewControlling { get }
+    var controlsViewController: ControlsViewControlling { get }
 }
 
 final class PlayerViewController: UIViewController, PlayerViewControlling {

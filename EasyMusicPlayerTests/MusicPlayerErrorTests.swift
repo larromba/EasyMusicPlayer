@@ -18,7 +18,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         super.tearDown()
     }
 
-	func testNoAuthShowsError() {
+    func testNoAuthShowsError() {
         // mocks
         let env = PlayerEnvironment(authorizationStatus: .denied, alertViewController: viewController)
         env.inject()
@@ -45,9 +45,9 @@ final class MusicPlayerErrorTests: XCTestCase {
             XCTAssertEqual(alert.actions.count, 1)
             XCTAssertEqual(alert.actions.first?.title, "OK")
         }
-	}
+    }
 
-	func testNoTracksShowsError() {
+    func testNoTracksShowsError() {
         // mocks
         let env = PlayerEnvironment(mediaItems: [], alertViewController: viewController)
         env.inject()
@@ -66,9 +66,9 @@ final class MusicPlayerErrorTests: XCTestCase {
             XCTAssertEqual(alert.actions.count, 1)
             XCTAssertEqual(alert.actions.first?.title, "OK")
         }
-	}
+    }
 
-	func testNoVolumeShowsError() {
+    func testNoVolumeShowsError() {
         // mocks
         let env = PlayerEnvironment(outputVolume: 0.0, alertViewController: viewController)
         env.inject()
@@ -87,7 +87,7 @@ final class MusicPlayerErrorTests: XCTestCase {
             XCTAssertEqual(alert.actions.count, 1)
             XCTAssertEqual(alert.actions.first?.title, "OK")
         }
-	}
+    }
 
     func testMusicFinishedShowsAlert() {
         // mocks
@@ -111,7 +111,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         }
     }
 
-	func testDecodeErrorRemovesTrack() {
+    func testDecodeErrorRemovesTrack() {
         // mocks
         let env = PlayerEnvironment(outputVolume: 0.0, alertViewController: viewController)
         env.inject()
@@ -123,5 +123,5 @@ final class MusicPlayerErrorTests: XCTestCase {
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 0)
         XCTAssertEqual(env.musicService.state.totalTracks, 2)
-	}
+    }
 }

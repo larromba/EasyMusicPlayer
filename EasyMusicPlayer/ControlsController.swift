@@ -197,7 +197,7 @@ extension ControlsController: ControlsViewDelegate {
     }
 
     func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat button: UIButton) {
-		button.pulse()
+        button.pulse()
         setRepeatState(viewState.repeatButton.state.next())
         delegate?.controlsControllerPressedRepeat(self)
     }

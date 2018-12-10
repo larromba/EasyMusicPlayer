@@ -11,7 +11,7 @@ enum MusicError: Error {
 
 enum NetworkError: Error {
     case noData
-	case badJSON
+    case badJSON
     case systemError(Error)
     case httpErrorCode(Int)
     case badResponse(Error)
