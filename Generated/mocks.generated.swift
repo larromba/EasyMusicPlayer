@@ -502,12 +502,12 @@ class MockControlsController: NSObject, ControlsControlling {
 }
 
 class MockControlsViewController: NSObject, ControlsViewControlling {
-    var viewState: ControlsViewState? {
+    var viewState: ControlsViewStating? {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: ControlsViewState?
-    var _viewStateHistory: [_Variable<ControlsViewState?>] = []
+    var _viewState: ControlsViewStating?
+    var _viewStateHistory: [_Variable<ControlsViewStating?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -642,12 +642,12 @@ class MockInfoController: NSObject, InfoControlling {
 }
 
 class MockInfoViewController: NSObject, InfoViewControlling {
-    var viewState: InfoViewState? {
+    var viewState: InfoViewStating? {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: InfoViewState?
-    var _viewStateHistory: [_Variable<InfoViewState?>] = []
+    var _viewState: InfoViewStating?
+    var _viewStateHistory: [_Variable<InfoViewStating?>] = []
 }
 
 class MockMediaLibrary: NSObject, MediaLibraryAuthorizable {
@@ -890,24 +890,24 @@ class MockNowPlayingInfoCenter: NSObject, NowPlayingInfoCentering {
 }
 
 class MockPlayButton: NSObject, PlayButtonable {
-    var viewState: PlayButtonViewState? {
+    var viewState: PlayButtonViewStating? {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: PlayButtonViewState?
-    var _viewStateHistory: [_Variable<PlayButtonViewState?>] = []
+    var _viewState: PlayButtonViewStating?
+    var _viewStateHistory: [_Variable<PlayButtonViewStating?>] = []
 }
 
 class MockPlayerController: NSObject, PlayerControlling {
 }
 
 class MockPlayerViewController: NSObject, PlayerViewControlling {
-    var viewState: PlayerViewState? {
+    var viewState: PlayerViewStating? {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: PlayerViewState?
-    var _viewStateHistory: [_Variable<PlayerViewState?>] = []
+    var _viewState: PlayerViewStating?
+    var _viewStateHistory: [_Variable<PlayerViewStating?>] = []
     var scrubberViewController: ScrubberViewControlling {
         get { return _scrubberViewController }
         set(value) { _scrubberViewController = value; _scrubberViewControllerHistory.append(_Variable(value)) }
@@ -1026,12 +1026,12 @@ class MockRemoteCommandCenter: NSObject, RemoteControlling {
 }
 
 class MockRepeatButton: NSObject, RepeatButtonable {
-    var viewState: RepeatButtonViewState? {
+    var viewState: RepeatButtonViewStating? {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: RepeatButtonViewState?
-    var _viewStateHistory: [_Variable<RepeatButtonViewState?>] = []
+    var _viewState: RepeatButtonViewStating?
+    var _viewStateHistory: [_Variable<RepeatButtonViewStating?>] = []
 }
 
 class MockScrubberController: NSObject, ScrubberControlling {
@@ -1088,12 +1088,12 @@ class MockScrubberController: NSObject, ScrubberControlling {
 }
 
 class MockScrubberViewController: NSObject, ScrubberViewControlling {
-    var viewState: ScrubberViewState? {
+    var viewState: ScrubberViewStating? {
         get { return _viewState }
         set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
     }
-    var _viewState: ScrubberViewState?
-    var _viewStateHistory: [_Variable<ScrubberViewState?>] = []
+    var _viewState: ScrubberViewStating?
+    var _viewStateHistory: [_Variable<ScrubberViewStating?>] = []
     var view: UIView! {
         get { return _view }
         set(value) { _view = value; _viewHistory.append(_Variable(value)) }

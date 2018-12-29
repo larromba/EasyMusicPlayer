@@ -9,11 +9,11 @@ final class MusicAuthorization: Authorization {
     }
 
     var isAuthorized: Bool {
-        if __isSnapshot {
-            return true
-        } else {
-            return authorizer.authorizationStatus() == .authorized
-        }
+        #if DEBUG
+        return __isSnapshot ? true : authorizer.authorizationStatus() == .authorized
+        #else
+        return authorizer.authorizationStatus() == .authorized
+        #endif
     }
 
     func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {

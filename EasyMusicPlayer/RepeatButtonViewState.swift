@@ -1,6 +1,15 @@
 import UIKit
 
-struct RepeatButtonViewState {
+protocol RepeatButtonViewStating {
+    var state: RepeatState { get }
+    var isEnabled: Bool { get }
+    var image: UIImage { get }
+
+    func copy(state: RepeatState) -> RepeatButtonViewStating
+    func copy(isEnabled: Bool) -> RepeatButtonViewStating
+}
+
+struct RepeatButtonViewState: RepeatButtonViewStating {
     let state: RepeatState
     let isEnabled: Bool
     var image: UIImage {
@@ -16,14 +25,14 @@ struct RepeatButtonViewState {
 }
 
 extension RepeatButtonViewState {
-    func copy(state: RepeatState) -> RepeatButtonViewState {
+    func copy(state: RepeatState) -> RepeatButtonViewStating {
         return RepeatButtonViewState(
             state: state,
             isEnabled: isEnabled
         )
     }
 
-    func copy(isEnabled: Bool) -> RepeatButtonViewState {
+    func copy(isEnabled: Bool) -> RepeatButtonViewStating {
         return RepeatButtonViewState(
             state: state,
             isEnabled: isEnabled

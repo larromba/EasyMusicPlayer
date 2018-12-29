@@ -1,6 +1,15 @@
 import UIKit
 
-struct PlayButtonViewState {
+protocol PlayButtonViewStating {
+    var state: PlayState { get }
+    var isEnabled: Bool { get }
+    var image: UIImage { get }
+
+    func copy(state: PlayState) -> PlayButtonViewStating
+    func copy(isEnabled: Bool) -> PlayButtonViewStating
+}
+
+struct PlayButtonViewState: PlayButtonViewStating {
     let state: PlayState
     let isEnabled: Bool
     var image: UIImage {
@@ -14,14 +23,14 @@ struct PlayButtonViewState {
 }
 
 extension PlayButtonViewState {
-    func copy(state: PlayState) -> PlayButtonViewState {
+    func copy(state: PlayState) -> PlayButtonViewStating {
         return PlayButtonViewState(
             state: state,
             isEnabled: isEnabled
         )
     }
 
-    func copy(isEnabled: Bool) -> PlayButtonViewState {
+    func copy(isEnabled: Bool) -> PlayButtonViewStating {
         return PlayButtonViewState(
             state: state,
             isEnabled: isEnabled

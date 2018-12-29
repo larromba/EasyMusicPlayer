@@ -2,12 +2,12 @@ import UIKit
 
 // sourcery: name = PlayButton
 protocol PlayButtonable: Mockable {
-    var viewState: PlayButtonViewState? { get set }
+    var viewState: PlayButtonViewStating? { get set }
 }
 
 @IBDesignable
 final class PlayButton: UIButton, PlayButtonable {
-    var viewState: PlayButtonViewState? {
+    var viewState: PlayButtonViewStating? {
         didSet { _ = viewState.map(bind) }
     }
 
@@ -18,7 +18,7 @@ final class PlayButton: UIButton, PlayButtonable {
 
     // MARK: - private
 
-    private func bind(_ viewState: PlayButtonViewState) {
+    private func bind(_ viewState: PlayButtonViewStating) {
         setBackgroundImage(viewState.image, for: .normal)
     }
 }

@@ -2,7 +2,7 @@ import UIKit
 
 // sourcery: name = InfoViewController
 protocol InfoViewControlling: AnyObject, Mockable {
-    var viewState: InfoViewState? { get set }
+    var viewState: InfoViewStating? { get set }
 }
 
 @IBDesignable
@@ -13,7 +13,7 @@ final class InfoViewController: UIViewController, InfoViewControlling {
     @IBOutlet private(set) weak var timeLabel: UILabel!
     @IBOutlet private(set) weak var artworkImageView: UIImageView!
 
-    var viewState: InfoViewState? {
+    var viewState: InfoViewStating? {
         didSet { _ = viewState.map(bind) }
     }
 
@@ -24,7 +24,7 @@ final class InfoViewController: UIViewController, InfoViewControlling {
 
     // MARK: - private
 
-    private func bind(_ viewState: InfoViewState) {
+    private func bind(_ viewState: InfoViewStating) {
         guard isViewLoaded else { return }
         artistLabel.text = viewState.artist
         trackLabel.text = viewState.track

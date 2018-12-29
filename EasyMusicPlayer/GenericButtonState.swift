@@ -1,11 +1,17 @@
 import UIKit
 
-struct GenericButtonViewState {
+protocol GenericButtonViewStating {
+    var isEnabled: Bool { get }
+
+    func copy(isEnabled: Bool) -> GenericButtonViewStating
+}
+
+struct GenericButtonViewState: GenericButtonViewStating {
     var isEnabled: Bool
 }
 
 extension GenericButtonViewState {
-    func copy(isEnabled: Bool) -> GenericButtonViewState {
+    func copy(isEnabled: Bool) -> GenericButtonViewStating {
         return GenericButtonViewState(
             isEnabled: isEnabled
         )
@@ -15,7 +21,7 @@ extension GenericButtonViewState {
 // MARK: - UIButton
 
 extension UIButton {
-    func bind(_ state: GenericButtonViewState) {
+    func bind(_ state: GenericButtonViewStating) {
         isEnabled = state.isEnabled
     }
 }

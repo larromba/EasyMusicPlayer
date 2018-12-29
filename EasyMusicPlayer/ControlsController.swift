@@ -35,11 +35,11 @@ final class ControlsController: ControlsControlling {
     var playButtonState: PlayState? {
         return viewController.viewState?.playButton.state
     }
-    private var viewState: ControlsViewState {
+    private var viewState: ControlsViewStating {
         get {
             guard let viewState = viewController.viewState else {
                 assertionFailure("expected ControlsViewState")
-                return .default
+                return ControlsViewState.default
             }
             return viewState
         }
@@ -162,7 +162,7 @@ final class ControlsController: ControlsControlling {
 
     private func setup() {
         viewController.setDelegate(self)
-        viewState = .default
+        viewState = ControlsViewState.default
         setControlsStopped()
     }
 }

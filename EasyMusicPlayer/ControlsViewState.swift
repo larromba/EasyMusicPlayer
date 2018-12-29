@@ -1,16 +1,32 @@
 import Foundation
 
-struct ControlsViewState {
-    let playButton: PlayButtonViewState
-    let stopButton: GenericButtonViewState
-    let prevButton: GenericButtonViewState
-    let nextButton: GenericButtonViewState
-    let shuffleButton: GenericButtonViewState
-    let repeatButton: RepeatButtonViewState
+protocol ControlsViewStating {
+    var playButton: PlayButtonViewStating { get }
+    var stopButton: GenericButtonViewStating { get }
+    var prevButton: GenericButtonViewStating { get }
+    var nextButton: GenericButtonViewStating { get }
+    var shuffleButton: GenericButtonViewStating { get }
+    var repeatButton: RepeatButtonViewStating { get }
+
+    func copy(playButton: PlayButtonViewStating) -> ControlsViewStating
+    func copy(stopButton: GenericButtonViewStating) -> ControlsViewStating
+    func copy(prevButton: GenericButtonViewStating) -> ControlsViewStating
+    func copy(nextButton: GenericButtonViewStating) -> ControlsViewStating
+    func copy(shuffleButton: GenericButtonViewStating) -> ControlsViewStating
+    func copy(repeatButton: RepeatButtonViewStating) -> ControlsViewStating
+}
+
+struct ControlsViewState: ControlsViewStating {
+    let playButton: PlayButtonViewStating
+    let stopButton: GenericButtonViewStating
+    let prevButton: GenericButtonViewStating
+    let nextButton: GenericButtonViewStating
+    let shuffleButton: GenericButtonViewStating
+    let repeatButton: RepeatButtonViewStating
 }
 
 extension ControlsViewState {
-    func copy(playButton: PlayButtonViewState) -> ControlsViewState {
+    func copy(playButton: PlayButtonViewStating) -> ControlsViewStating {
         return ControlsViewState(
             playButton: playButton,
             stopButton: stopButton,
@@ -21,7 +37,7 @@ extension ControlsViewState {
         )
     }
 
-    func copy(stopButton: GenericButtonViewState) -> ControlsViewState {
+    func copy(stopButton: GenericButtonViewStating) -> ControlsViewStating {
         return ControlsViewState(
             playButton: playButton,
             stopButton: stopButton,
@@ -32,7 +48,7 @@ extension ControlsViewState {
         )
     }
 
-    func copy(prevButton: GenericButtonViewState) -> ControlsViewState {
+    func copy(prevButton: GenericButtonViewStating) -> ControlsViewStating {
         return ControlsViewState(
             playButton: playButton,
             stopButton: stopButton,
@@ -43,7 +59,7 @@ extension ControlsViewState {
         )
     }
 
-    func copy(nextButton: GenericButtonViewState) -> ControlsViewState {
+    func copy(nextButton: GenericButtonViewStating) -> ControlsViewStating {
         return ControlsViewState(
             playButton: playButton,
             stopButton: stopButton,
@@ -54,7 +70,7 @@ extension ControlsViewState {
         )
     }
 
-    func copy(shuffleButton: GenericButtonViewState) -> ControlsViewState {
+    func copy(shuffleButton: GenericButtonViewStating) -> ControlsViewStating {
         return ControlsViewState(
             playButton: playButton,
             stopButton: stopButton,
@@ -65,7 +81,7 @@ extension ControlsViewState {
         )
     }
 
-    func copy(repeatButton: RepeatButtonViewState) -> ControlsViewState {
+    func copy(repeatButton: RepeatButtonViewStating) -> ControlsViewStating {
         return ControlsViewState(
             playButton: playButton,
             stopButton: stopButton,

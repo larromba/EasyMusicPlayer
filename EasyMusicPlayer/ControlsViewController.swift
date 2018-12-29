@@ -11,7 +11,7 @@ protocol ControlsViewDelegate: AnyObject {
 
 // sourcery: name = ControlsViewController
 protocol ControlsViewControlling: AnyObject, Mockable {
-    var viewState: ControlsViewState? { get set }
+    var viewState: ControlsViewStating? { get set }
 
     func setDelegate(_ delegate: ControlsViewDelegate)
 }
@@ -26,7 +26,7 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
     @IBOutlet private(set) weak var repeatButton: RepeatButton!
 
     private weak var delegate: ControlsViewDelegate?
-    var viewState: ControlsViewState? {
+    var viewState: ControlsViewStating? {
         didSet { _ = viewState.map(bind) }
     }
 
@@ -67,7 +67,7 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
 
     // MARK: - private
 
-    private func bind(_ viewState: ControlsViewState) {
+    private func bind(_ viewState: ControlsViewStating) {
         playButton.viewState = viewState.playButton
         stopButton.bind(viewState.stopButton)
         repeatButton.viewState = viewState.repeatButton

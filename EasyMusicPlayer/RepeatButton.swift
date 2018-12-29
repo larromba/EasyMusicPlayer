@@ -2,12 +2,12 @@ import UIKit
 
 // sourcery: name = RepeatButton
 protocol RepeatButtonable: Mockable {
-    var viewState: RepeatButtonViewState? { get set }
+    var viewState: RepeatButtonViewStating? { get set }
 }
 
 @IBDesignable
 final class RepeatButton: UIButton, RepeatButtonable {
-    var viewState: RepeatButtonViewState? {
+    var viewState: RepeatButtonViewStating? {
         didSet { _ = viewState.map(bind) }
     }
 
@@ -18,7 +18,7 @@ final class RepeatButton: UIButton, RepeatButtonable {
 
     // MARK: - private
 
-    private func bind(_ viewState: RepeatButtonViewState) {
+    private func bind(_ viewState: RepeatButtonViewStating) {
         setBackgroundImage(viewState.image, for: .normal)
     }
 }

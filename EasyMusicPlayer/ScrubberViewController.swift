@@ -11,7 +11,7 @@ protocol ScrubberViewDelegate: AnyObject {
 
 // sourcery: name = ScrubberViewController
 protocol ScrubberViewControlling: AnyObject, Mockable {
-    var viewState: ScrubberViewState? { get set }
+    var viewState: ScrubberViewStating? { get set }
     var view: UIView! { get }
     var barView: UIView! { get }
 
@@ -24,7 +24,7 @@ final class ScrubberViewController: UIViewController, ScrubberViewControlling {
     @IBOutlet private(set) weak var barView: UIView!
 
     private weak var delegate: ScrubberViewDelegate?
-    var viewState: ScrubberViewState? {
+    var viewState: ScrubberViewStating? {
         didSet { _ = viewState.map(bind) }
     }
 
@@ -51,7 +51,7 @@ final class ScrubberViewController: UIViewController, ScrubberViewControlling {
 
     // MARK: - private
 
-    private func bind(_ viewState: ScrubberViewState) {
+    private func bind(_ viewState: ScrubberViewStating) {
         guard isViewLoaded else { return }
         view.isUserInteractionEnabled = viewState.isUserInteractionEnabled
         barView.alpha = viewState.barAlpha

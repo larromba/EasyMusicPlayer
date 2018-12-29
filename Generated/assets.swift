@@ -31,6 +31,7 @@ internal enum Asset {
   internal static let shuffleButton = ImageAsset(name: "ShuffleButton")
   internal static let stopButton = ImageAsset(name: "StopButton")
   internal static let arkistRendezvousFillYourCoffee = ImageAsset(name: "arkist-rendezvous-fill_your_coffee")
+  internal static let openSource = ImageAsset(name: "open-source")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

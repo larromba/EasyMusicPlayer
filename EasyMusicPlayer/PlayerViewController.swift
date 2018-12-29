@@ -3,7 +3,7 @@ import UIKit
 
 // sourcery: name = PlayerViewController
 protocol PlayerViewControlling: AnyObject, Mockable {
-    var viewState: PlayerViewState? { get set }
+    var viewState: PlayerViewStating? { get set }
     var scrubberViewController: ScrubberViewControlling { get }
     var infoViewController: InfoViewControlling { get }
     var controlsViewController: ControlsViewControlling { get }
@@ -12,7 +12,7 @@ protocol PlayerViewControlling: AnyObject, Mockable {
 final class PlayerViewController: UIViewController, PlayerViewControlling {
     @IBOutlet private(set) weak var appVersionLabel: UILabel!
 
-    var viewState: PlayerViewState? {
+    var viewState: PlayerViewStating? {
         didSet { _ = viewState.map(bind) }
     }
     var scrubberViewController: ScrubberViewControlling {
@@ -32,7 +32,7 @@ final class PlayerViewController: UIViewController, PlayerViewControlling {
 
     // MARK: - private
 
-    private func bind(_ viewState: PlayerViewState) {
+    private func bind(_ viewState: PlayerViewStating) {
         guard isViewLoaded else { return }
         appVersionLabel.text = viewState.appVersion
     }
