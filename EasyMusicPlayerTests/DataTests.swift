@@ -3,19 +3,19 @@ import MediaPlayer
 import XCTest
 
 final class DataTests: XCTestCase {
-    private var database: UserDefaults!
+    private var userDefaults: UserDefaults!
     private var dataManager: DataManaging!
     private var userService: UserServicing!
 
     override func setUp() {
-        database = UserDefaults(suiteName: "DataTests")
-        dataManager = DataManger(database: database)
+        userDefaults = UserDefaults(suiteName: "DataTests")
+        dataManager = DataManger(userDefaults: userDefaults)
         userService = UserService(dataManager: dataManager)
         super.setUp()
     }
 
     override func tearDown() {
-        database = nil
+        userDefaults = nil
         dataManager = nil
         userService = nil
         super.tearDown()
@@ -30,7 +30,7 @@ final class DataTests: XCTestCase {
         env.controlsViewController.repeatButton.tap()
 
         // test
-        XCTAssertEqual(database.value(forKey: "repeatState") as? String, "one")
+        XCTAssertEqual(userDefaults.value(forKey: "repeatState") as? String, "one")
     }
 
     func testRepeatStateLoadedOnStart() {
@@ -51,7 +51,7 @@ final class DataTests: XCTestCase {
         env.musicService.play()
 
         // test
-        XCTAssertEqual(database.value(forKey: "currentTrackID") as? MPMediaEntityPersistentID, 1)
+        XCTAssertEqual(userDefaults.value(forKey: "currentTrackID") as? MPMediaEntityPersistentID, 1)
     }
 
     func testCurrentTrackIDLoadedOnStart() {
@@ -72,7 +72,7 @@ final class DataTests: XCTestCase {
         env.musicService.shuffle()
 
         // test
-        guard let data = database.value(forKey: "tracks") as? Data else {
+        guard let data = userDefaults.value(forKey: "tracks") as? Data else {
             XCTFail("expected Data")
             return
         }

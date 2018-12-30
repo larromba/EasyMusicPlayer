@@ -15,7 +15,7 @@ final class PlayerEnvironment: TestEnvironment {
     lazy var musicService = MusicService.testable(trackManager: trackManager, remote: remote,
                                                   audioSession: audioSession, authorization: authorization,
                                                   seeker: Seeker(seekInterval: 1.0),
-                                                  interruptionHandler: MusicInterupptionHandler(),
+                                                  interruptionHandler: MusicInterruptionHandler(),
                                                   playerFactory: playerFactory)
     let controlsViewController = ControlsViewController.fromStoryboard
     lazy var controlsController = ControlsController(viewController: controlsViewController, remote: remote)
@@ -49,7 +49,7 @@ final class PlayerEnvironment: TestEnvironment {
         MockMediaLibrary.actions.set(returnValue: authorizationStatus, for: MockMediaLibrary.authorizationStatus1.name)
         audioSession.outputVolume = outputVolume
         trackManager = TrackManager(userService: userService, authorization: authorization, playlist: playlist)
-        alertController = AlertController(viewController: alertViewController)
+        alertController = AlertController(presenter: alertViewController)
     }
 
     func inject() {

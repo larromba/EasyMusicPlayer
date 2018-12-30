@@ -33,7 +33,7 @@ final class MusicService: NSObject, MusicServicing {
     private let audioSession: AudioSessioning
     private let authorization: Authorization
     private let seeker: Seekable
-    private let interruptionHandler: MusicInterupptionHandling
+    private let interruptionHandler: MusicInterruptionHandling
     private let clock: Clocking
     private var playState: PlayState = .stopped
     private var repeatState: RepeatState = .none
@@ -53,7 +53,7 @@ final class MusicService: NSObject, MusicServicing {
     }
 
     init(trackManager: TrackManaging, remote: RemoteControlling, audioSession: AudioSessioning,
-         authorization: Authorization, seeker: Seekable, interruptionHandler: MusicInterupptionHandling,
+         authorization: Authorization, seeker: Seekable, interruptionHandler: MusicInterruptionHandling,
          clock: Clocking, playerFactory: AudioPlayerFactoring) {
         self.trackManager = trackManager
         self.remote = remote
@@ -355,8 +355,8 @@ extension MusicService: SeekerDelegate {
 
 // MARK: - MusicInterupptionHandler
 
-extension MusicService: MusicInterupptionDelegate {
-    func interupptionHandler(_ handler: MusicInterupptionHandler, updtedState state: MusicInterupptionState) {
+extension MusicService: MusicInterruptionDelegate {
+    func interruptionHandler(_ handler: MusicInterruptionHandler, updtedState state: MusicInterruptionState) {
         if state.isHeadphonesRemovedByMistake || state.isAudioSessionInterrupted {
             pause()
         } else {

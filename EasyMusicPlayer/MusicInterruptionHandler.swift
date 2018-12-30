@@ -1,20 +1,20 @@
 import AVFoundation
 import Foundation
 
-protocol MusicInterupptionDelegate: AnyObject {
-    func interupptionHandler(_ handler: MusicInterupptionHandler, updtedState state: MusicInterupptionState)
+protocol MusicInterruptionDelegate: AnyObject {
+    func interruptionHandler(_ handler: MusicInterruptionHandler, updtedState state: MusicInterruptionState)
 }
 
-// sourcery: name = MusicInterupptionHandler
-protocol MusicInterupptionHandling: Mockable {
+// sourcery: name = MusicInterruptionHandler
+protocol MusicInterruptionHandling: Mockable {
     func setIsPlaying(_ isPlaying: Bool)
-    func setDelegate(_ delegate: MusicInterupptionDelegate)
+    func setDelegate(_ delegate: MusicInterruptionDelegate)
 }
 
-final class MusicInterupptionHandler: MusicInterupptionHandling {
+final class MusicInterruptionHandler: MusicInterruptionHandling {
     private var isPlaying: Bool = false
-    private weak var delegate: MusicInterupptionDelegate?
-    private var state = MusicInterupptionState(
+    private weak var delegate: MusicInterruptionDelegate?
+    private var state = MusicInterruptionState(
         isHeadphonesRemovedByMistake: false,
         isPlayingInBackground: false,
         isAudioSessionInterrupted: false
@@ -57,7 +57,7 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
         }
     }
 
-    func setDelegate(_ delegate: MusicInterupptionDelegate) {
+    func setDelegate(_ delegate: MusicInterruptionDelegate) {
         self.delegate = delegate
     }
 
@@ -121,7 +121,7 @@ final class MusicInterupptionHandler: MusicInterupptionHandling {
 
     private func notifyStateChange() {
         DispatchQueue.main.async {
-            self.delegate?.interupptionHandler(self, updtedState: self.state)
+            self.delegate?.interruptionHandler(self, updtedState: self.state)
         }
     }
 }

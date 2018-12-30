@@ -6,15 +6,15 @@ protocol AlertControlling: Mockable {
 }
 
 final class AlertController: AlertControlling {
-    private let viewController: UIViewController
+    private let presenter: Presentable
 
-    init(viewController: UIViewController) {
-        self.viewController = viewController
+    init(presenter: Presentable) {
+        self.presenter = presenter
     }
 
     func showAlert(_ alert: Alert) {
         let alertController = UIAlertController(title: alert.title, message: alert.text, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: alert.buttonTitle, style: .default))
-        viewController.present(alertController, animated: true, completion: nil)
+        presenter.present(alertController, animated: true, completion: nil)
     }
 }

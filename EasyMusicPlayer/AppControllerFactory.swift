@@ -13,15 +13,15 @@ enum AppControllerFactory {
                                             remoteInfo: remoteInfo)
         let controlsController = ControlsController(viewController: playerViewController.controlsViewController,
                                                     remote: remote)
-        let alertController = AlertController(viewController: playerViewController)
+        let alertController = AlertController(presenter: playerViewController)
 
-        let dataManager = DataManger(database: UserDefaults.standard)
+        let dataManager = DataManger(userDefaults: UserDefaults.standard)
         let userService = UserService(dataManager: dataManager)
         let authorization = MusicAuthorization(authorizer: MPMediaLibrary.self)
         let playlist = Playlist(authorization: authorization, mediaQuery: MPMediaQuery.self)
         let trackManager = TrackManager(userService: userService, authorization: authorization, playlist: playlist)
         let seeker = Seeker(seekInterval: 0.2)
-        let interruptionHandler = MusicInterupptionHandler()
+        let interruptionHandler = MusicInterruptionHandler()
         let clock = Clock(timeInterval: 1.0)
         let playerFactory = AudioPlayerFactory()
         let musicService = MusicService(trackManager: trackManager, remote: remote,

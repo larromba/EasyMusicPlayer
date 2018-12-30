@@ -28,7 +28,7 @@ extension MusicService {
                          audioSession: AudioSessioning = MockAudioSession(),
                          authorization: Authorization = MockAuthorization(),
                          seeker: Seekable = MockSeeker(),
-                         interruptionHandler: MusicInterupptionHandling = MockMusicInterupptionHandler(),
+                         interruptionHandler: MusicInterruptionHandling = MockMusicInterruptionHandler(),
                          clock: Clocking = MockClock(),
                          playerFactory: AudioPlayerFactoring = MockAudioPlayerFactory()) -> MusicServicing {
         return MusicService(trackManager: trackManager,

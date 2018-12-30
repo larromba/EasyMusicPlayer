@@ -1,38 +1,38 @@
 import Foundation
 
-struct MusicInterupptionState {
+struct MusicInterruptionState {
     let isHeadphonesRemovedByMistake: Bool
     let isPlayingInBackground: Bool
     let isAudioSessionInterrupted: Bool
 }
 
-extension MusicInterupptionState {
-    func copy(isHeadphonesRemovedByMistake: Bool) -> MusicInterupptionState {
-        return MusicInterupptionState(
+extension MusicInterruptionState {
+    func copy(isHeadphonesRemovedByMistake: Bool) -> MusicInterruptionState {
+        return MusicInterruptionState(
             isHeadphonesRemovedByMistake: isHeadphonesRemovedByMistake,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
     }
 
-    func copy(isPlayingInBackground: Bool) -> MusicInterupptionState {
-        return MusicInterupptionState(
+    func copy(isPlayingInBackground: Bool) -> MusicInterruptionState {
+        return MusicInterruptionState(
             isHeadphonesRemovedByMistake: isHeadphonesRemovedByMistake,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
     }
 
-    func copy(isAudioSessionInterrupted: Bool) -> MusicInterupptionState {
-        return MusicInterupptionState(
+    func copy(isAudioSessionInterrupted: Bool) -> MusicInterruptionState {
+        return MusicInterruptionState(
             isHeadphonesRemovedByMistake: isHeadphonesRemovedByMistake,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
     }
 
-    func copy(isHeadphonesRemovedByMistake: Bool, isAudioSessionInterrupted: Bool) -> MusicInterupptionState {
-        return MusicInterupptionState(
+    func copy(isHeadphonesRemovedByMistake: Bool, isAudioSessionInterrupted: Bool) -> MusicInterruptionState {
+        return MusicInterruptionState(
             isHeadphonesRemovedByMistake: isHeadphonesRemovedByMistake,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted

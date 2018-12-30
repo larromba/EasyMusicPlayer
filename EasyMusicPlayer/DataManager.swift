@@ -7,17 +7,17 @@ protocol DataManaging: Mockable {
 }
 
 final class DataManger: DataManaging {
-    private let database: UserDefaultable
+    private let userDefaults: UserDefaultable
 
-    init(database: UserDefaultable) {
-        self.database = database
+    init(userDefaults: UserDefaultable) {
+        self.userDefaults = userDefaults
     }
 
     func save<T: Keyable, U>(_ data: U?, key: T) {
-        database.set(data, forKey: key.rawValue)
+        userDefaults.set(data, forKey: key.rawValue)
     }
 
     func load<T: Keyable, U>(key: T) -> U? {
-        return database.object(forKey: key.rawValue) as? U
+        return userDefaults.object(forKey: key.rawValue) as? U
     }
 }

@@ -706,7 +706,7 @@ class MockMediaQuery: NSObject, MediaQueryable {
     }
 }
 
-class MockMusicInterupptionHandler: NSObject, MusicInterupptionHandling {
+class MockMusicInterruptionHandler: NSObject, MusicInterruptionHandling {
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -729,7 +729,7 @@ class MockMusicInterupptionHandler: NSObject, MusicInterupptionHandling {
     }
     // MARK: - setDelegate
 
-    func setDelegate(_ delegate: MusicInterupptionDelegate) {
+    func setDelegate(_ delegate: MusicInterruptionDelegate) {
         let functionName = setDelegate2.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: delegate, forKey: setDelegate2.params.delegate)
@@ -739,7 +739,7 @@ class MockMusicInterupptionHandler: NSObject, MusicInterupptionHandling {
     enum setDelegate2: String, _StringRawRepresentable {
       case name = "setDelegate2"
       enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:MusicInterupptionDelegate).delegate"
+        case delegate = "setDelegate(_delegate:MusicInterruptionDelegate).delegate"
       }
     }
 }
