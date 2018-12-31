@@ -22,7 +22,6 @@
 		7F44F9F021B849F10041E4DE /* TestAudioPlayerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9EF21B849F10041E4DE /* TestAudioPlayerFactory.swift */; };
 		7F5A83A421D932AD008F30BE /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A321D932AD008F30BE /* Presentable.swift */; };
 		7F5A83A621D940F4008F30BE /* TestMediaQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A521D940F4008F30BE /* TestMediaQuery.swift */; };
-		7F5A83AD21DA70BB008F30BE /* TestUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83AC21DA70BB008F30BE /* TestUserDefaults.swift */; };
 		7F71B80321A484BC00135925 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80221A484BC00135925 /* AppController.swift */; };
 		7F71B80521A4852F00135925 /* AppControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80421A4852F00135925 /* AppControllerFactory.swift */; };
 		7F71B80921A486DC00135925 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80821A486DC00135925 /* PlayerController.swift */; };
@@ -147,7 +146,6 @@
 		7F44F9EF21B849F10041E4DE /* TestAudioPlayerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAudioPlayerFactory.swift; sourceTree = "<group>"; };
 		7F5A83A321D932AD008F30BE /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		7F5A83A521D940F4008F30BE /* TestMediaQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMediaQuery.swift; sourceTree = "<group>"; };
-		7F5A83AC21DA70BB008F30BE /* TestUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUserDefaults.swift; sourceTree = "<group>"; };
 		7F71B80221A484BC00135925 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		7F71B80421A4852F00135925 /* AppControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppControllerFactory.swift; sourceTree = "<group>"; };
 		7F71B80821A486DC00135925 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
@@ -288,7 +286,6 @@
 				7FA59D5A21B95C0C00538013 /* PlayerEnvironment.swift */,
 				7F44F9EF21B849F10041E4DE /* TestAudioPlayerFactory.swift */,
 				7F5A83A521D940F4008F30BE /* TestMediaQuery.swift */,
-				7F5A83AC21DA70BB008F30BE /* TestUserDefaults.swift */,
 				7F44F9E921B83DBD0041E4DE /* MockMediaItem.swift */,
 				7FA59D5821B957AC00538013 /* MockTouch.swift */,
 				7FA59D5C21B960AC00538013 /* MockRemote.swift */,
@@ -902,7 +899,6 @@
 				7F44F9D121B826D00041E4DE /* ControlTests.swift in Sources */,
 				7F44F9F021B849F10041E4DE /* TestAudioPlayerFactory.swift in Sources */,
 				7FA59D5F21B96CB300538013 /* Runtime.swift in Sources */,
-				7F5A83AD21DA70BB008F30BE /* TestUserDefaults.swift in Sources */,
 				7FA59D6821BAA44500538013 /* DataTests.swift in Sources */,
 				7F5A83A621D940F4008F30BE /* TestMediaQuery.swift in Sources */,
 				7F44F9EA21B83DBD0041E4DE /* MockMediaItem.swift in Sources */,

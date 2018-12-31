@@ -54,7 +54,7 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testNoTracksShowsError() {
         // mocks
-        env.setTracks([], currentTrack: nil)
+        env.setLibraryTracks([])
         env.inject()
         env.setPlaying()
 
@@ -92,7 +92,7 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testMusicFinishedShowsAlert() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -116,7 +116,7 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testDecodeErrorRemovesTrack() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 

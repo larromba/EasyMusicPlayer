@@ -698,7 +698,6 @@ class MockMediaQuery: NSObject, MediaQueryable {
         let functionName = songs1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
-        actions.set(defaultReturnValue: TestMediaQuery(items: [MockMediaItem()]), for: functionName)
         return actions.returnValue(for: functionName) as! MPMediaQuery
     }
 

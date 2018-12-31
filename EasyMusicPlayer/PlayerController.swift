@@ -39,18 +39,14 @@ final class PlayerController: PlayerControlling {
         controlsController.setDelegate(self)
         musicService.setDelegate(delegate: self)
 
-        #if DEBUG
-        if __isSnapshot {
-            musicService.setRepeatState(.all)
-            controlsController.setRepeatState(.all)
-        } else if let repeatMode = userService.repeatState {
-            musicService.setRepeatState(repeatMode)
-            controlsController.setRepeatState(repeatMode)
-        }
-        #else
         if let repeatMode = userService.repeatState {
             musicService.setRepeatState(repeatMode)
             controlsController.setRepeatState(repeatMode)
+        }
+        #if DEBUG // override repeatMode if snapshotting
+        if __isSnapshot {
+            musicService.setRepeatState(.all)
+            controlsController.setRepeatState(.all)
         }
         #endif
 

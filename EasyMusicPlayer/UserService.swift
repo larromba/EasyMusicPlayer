@@ -23,9 +23,7 @@ final class UserService: UserServicing {
 
     var repeatState: RepeatState? {
         get {
-            guard let rawValue: String = dataManager.load(key: Key.repeatState) else {
-                return nil
-            }
+            guard let rawValue: String = dataManager.load(key: Key.repeatState) else { return nil }
             return RepeatState(rawValue: rawValue)
         }
         set {
@@ -44,9 +42,7 @@ final class UserService: UserServicing {
 
     var trackIDs: [MPMediaEntityPersistentID]? {
         get {
-            guard let data: Data = dataManager.load(key: Key.tracks) else {
-                return nil
-            }
+            guard let data: Data = dataManager.load(key: Key.tracks) else { return nil }
             return NSKeyedUnarchiver.unarchiveObject(with: data) as? [MPMediaEntityPersistentID]
         }
         set {

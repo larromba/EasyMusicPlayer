@@ -32,7 +32,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneStart() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -44,7 +44,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneMid() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -56,7 +56,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneEnd() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -80,7 +80,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneStart() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -92,7 +92,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneMid() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -104,7 +104,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneEnd() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -139,7 +139,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllMid() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -151,7 +151,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllEnd() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -240,7 +240,7 @@ final class ControlStateTests: XCTestCase {
         env.infoViewController = infoViewController
         let image = UIImage()
         let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
-        env.setTracks([item], currentTrack: item)
+        env.setSavedTracks([item], currentTrack: item)
         env.inject()
         env.setPlaying()
 

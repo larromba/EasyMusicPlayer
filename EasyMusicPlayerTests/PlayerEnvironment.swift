@@ -70,6 +70,10 @@ final class PlayerEnvironment {
         musicService.play()
     }
 
+    func next() {
+        musicService.next()
+    }
+
     func setPaused() {
         musicService.play()
         playerFactory.audioPlayer?.isPlaying = false
@@ -100,16 +104,21 @@ final class PlayerEnvironment {
         self.authorizerType = authorizerType
     }
 
-    func setTracks(_ tracks: [MPMediaItem], currentTrack: MPMediaItem?) {
+    func setLibraryTracks(_ tracks: [MPMediaItem]) {
         let mediaQueryType = MockMediaQuery.self
         mediaQueryType.actions.set(returnValue: TestMediaQuery(items: tracks), for: MockMediaQuery.songs1.name)
         self.mediaQueryType = mediaQueryType
+    }
 
-        let userDefaults = TestUserDefaults()
-        userDefaults.trackIDs = tracks.map { $0.persistentID }
-        if let currentTrack = currentTrack {
-            userDefaults.currentTrackID = currentTrack.persistentID
+    func setSavedTracks(_ tracks: [MPMediaItem], currentTrack: MPMediaItem?, isAvailableInLibrary: Bool = true) {
+        if isAvailableInLibrary {
+            setLibraryTracks(tracks)
         }
+        let userDefaults = UserDefaults(suiteName: UUID().uuidString)!
+        let dataManager = DataManger(userDefaults: userDefaults)
+        let userService = UserService(dataManager: dataManager)
+        userService.trackIDs = tracks.map { $0.persistentID }
+        userService.currentTrackID = currentTrack?.persistentID
         self.userDefaults = userDefaults
     }
 

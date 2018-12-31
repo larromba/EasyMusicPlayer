@@ -79,7 +79,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingPrevPlaysPreviousTrack() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
@@ -94,7 +94,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingNextPlaysNextTrack() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 

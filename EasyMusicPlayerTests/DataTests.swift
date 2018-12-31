@@ -3,13 +3,11 @@ import MediaPlayer
 import XCTest
 
 final class DataTests: XCTestCase {
-    private var userDefaults: TestUserDefaults!
+    private var userDefaults: UserDefaults!
     private var env: PlayerEnvironment!
 
     override func setUp() {
-        userDefaults = TestUserDefaults()
-        userDefaults.trackIDs = defaultTracks.map { $0.persistentID }
-        userDefaults.currentTrackID = defaultTracks[1].persistentID
+        userDefaults = UserDefaults(suiteName: UUID().uuidString)
         env = PlayerEnvironment(userDefaults: userDefaults)
         super.setUp()
     }
@@ -31,31 +29,33 @@ final class DataTests: XCTestCase {
         XCTAssertTrue(controlsViewController.repeatButton.tap())
 
         // test
-        XCTAssertEqual(userDefaults.repeatState, .one)
+        XCTAssertEqual(env.userService.repeatState, .one)
     }
 
     func testRepeatStateLoadedOnStart() {
         // mocks
-        userDefaults.repeatState = .all
+        let dataManager = DataManger(userDefaults: userDefaults)
+        let userService = UserService(dataManager: dataManager)
+        userService.repeatState = .all
         env.inject()
 
         // test
         XCTAssertEqual(env.musicService.state.repeatState, .all)
     }
 
-    func testCurrentTrackIDPersistedOnPlay() {
+    func testCurrentTrackIDPersistedOnTrackChange() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: nil)
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
-        env.setPlaying()
+        env.next()
 
         // test
-        XCTAssertEqual(userDefaults.currentTrackID, 1)
+        XCTAssertEqual(env.userService.currentTrackID, 1)
     }
 
     func testCurrentTrackIDLoadedOnStart() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: nil)
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
 
         // test
@@ -64,21 +64,19 @@ final class DataTests: XCTestCase {
 
     func testShuffleTracksPersisted() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: nil)
+        env.setLibraryTracks(defaultTracks)
         env.inject()
-
-        // sut
-        env.musicService.shuffle()
+        env.shuffle()
 
         // test
-        let trackIDs = userDefaults.trackIDs
+        let trackIDs = env.userService.trackIDs
         XCTAssertEqual(trackIDs?.count, defaultTracks.count)
         XCTAssertNotEqual(trackIDs, defaultTracks.map { $0.persistentID })
     }
 
     func testTrackIDsLoadedOnStart() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: nil)
+        env.setLibraryTracks(defaultTracks)
         env.inject()
 
         // test

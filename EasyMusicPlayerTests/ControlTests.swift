@@ -55,7 +55,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingShuffleCreatesShufflesAndPlaysTracks() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
 
         // sut
@@ -70,7 +70,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingPrevPlaysPreviousTrack() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
@@ -85,7 +85,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingNextPlaysNextTrack() {
         // mocks
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
@@ -102,7 +102,7 @@ final class ControlTests: XCTestCase {
         // mocks
         let scrubberViewController = ScrubberViewController.fromStoryboard
         env.scrubberViewController = scrubberViewController
-        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
