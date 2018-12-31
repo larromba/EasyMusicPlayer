@@ -1,7 +1,7 @@
 # Changelog
 
-## 2.0.1 (...)
-    added open source logo
+## 2.0.1 (31/12/2018)
+    added open source logo to splash screen
 
 ## 2.0.0 (07/12/2018)
     removed sharing option

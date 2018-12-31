@@ -67,6 +67,10 @@ final class PlayerEnvironment {
         self.mediaQueryType = mediaQueryType
     }
 
+    func preparePlayError() {
+        playerFactory.didPlay = false
+    }
+
     func setPlaying() {
         musicService.play()
     }

@@ -189,7 +189,7 @@ final class RemoteControlStateTests: XCTestCase {
     func testErrorState() {
         // mocks
         env.inject()
-        env.playerFactory.didPlay = false
+        env.preparePlayError()
         env.setPlaying()
 
         // test

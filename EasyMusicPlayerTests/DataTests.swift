@@ -64,14 +64,15 @@ final class DataTests: XCTestCase {
 
     func testShuffleTracksPersisted() {
         // mocks
-        env.setLibraryTracks(defaultTracks)
+        let library = (0..<100).map { MockMediaItem(id: $0) }
+        env.setLibraryTracks(library)
         env.inject()
         env.shuffle()
 
         // test
         let trackIDs = env.userService.trackIDs
-        XCTAssertEqual(trackIDs?.count, defaultTracks.count)
-        XCTAssertNotEqual(trackIDs, defaultTracks.map { $0.persistentID })
+        XCTAssertEqual(trackIDs?.count, library.count)
+        XCTAssertNotEqual(trackIDs, library.map { $0.persistentID })
     }
 
     func testTrackIDsLoadedOnStart() {

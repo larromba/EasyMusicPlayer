@@ -220,7 +220,7 @@ final class ControlStateTests: XCTestCase {
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.inject()
-        env.playerFactory.didPlay = false
+        env.preparePlayError()
         env.setPlaying()
 
         // test
