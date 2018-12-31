@@ -25,8 +25,7 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testNoAuthShowsError() {
         // mocks
-        let helper = PlayerEnvironmentHelper(authorizationStatus: .denied)
-        env.authorizerType = helper.authorizerType
+        env.setAuthorizationStatus(.denied)
         env.inject()
         env.setPlaying()
 
@@ -38,7 +37,7 @@ final class MusicPlayerErrorTests: XCTestCase {
                     XCTFail("expected handler")
                     return
         }
-        handler(helper.authorizationStatus)
+        handler(.denied)
 
         // test
         wait(for: 0.5) {
@@ -55,8 +54,7 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testNoTracksShowsError() {
         // mocks
-        let helper = PlayerEnvironmentHelper(tracks: [])
-        env.mediaQueryType = helper.mediaQueryType
+        env.setTracks([], currentTrack: nil)
         env.inject()
         env.setPlaying()
 
@@ -75,12 +73,9 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testNoVolumeShowsError() {
         // mocks
-        let helper = PlayerEnvironmentHelper(volume: 0)
-        env.audioSession = helper.audioSession
+        env.setOutputVolume(0)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setPlaying()
 
         // test
         wait(for: 0.5) {
@@ -97,9 +92,7 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testMusicFinishedShowsAlert() {
         // mocks
-        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -123,9 +116,7 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testDecodeErrorRemovesTrack() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 

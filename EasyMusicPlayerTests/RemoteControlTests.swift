@@ -79,9 +79,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingPrevPlaysPreviousTrack() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
@@ -96,9 +94,7 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingNextPlaysNextTrack() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
@@ -127,8 +123,8 @@ final class RemoteControlTests: XCTestCase {
         // mocks
         env.seeker = Seeker(seekInterval: 1)
         env.inject()
-        env.setPlaying()
         env.setCurrentTime(4)
+        env.setPlaying()
 
         // sut
         (remote.seekBackwardCommand as! MockSeekRemoteCommand).fire()
@@ -143,8 +139,8 @@ final class RemoteControlTests: XCTestCase {
         // mocks
         env.seeker = Seeker(seekInterval: 1)
         env.inject()
-        env.setPlaying()
         env.setCurrentTime(4)
+        env.setPlaying()
 
         // sut
         (remote.seekForwardCommand as! MockSeekRemoteCommand).fire()

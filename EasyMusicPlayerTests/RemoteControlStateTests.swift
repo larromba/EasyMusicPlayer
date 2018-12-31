@@ -22,6 +22,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneStart() {
         // mocks
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -33,9 +34,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneMid() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -47,9 +46,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneEnd() {
         // mocks
-        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -66,6 +63,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneStart() {
         // mocks
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -77,9 +75,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneMid() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -91,9 +87,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneEnd() {
         // mocks
-        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -107,6 +101,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllStart() {
         // mocks
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -118,9 +113,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllMid() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -132,9 +125,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllEnd() {
         // mocks
-        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -219,9 +210,7 @@ final class RemoteControlStateTests: XCTestCase {
         env.remoteInfo = remoteInfo
         let image = UIImage()
         let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
-        let helper = PlayerEnvironmentHelper(tracks: [item], currentTrackID: 0)
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks([item], currentTrack: item)
         env.inject()
         env.setPlaying()
 
@@ -248,10 +237,8 @@ final class RemoteControlStateTests: XCTestCase {
         let remoteInfo = MockNowPlayingInfoCenter()
         env.remoteInfo = remoteInfo
         let scrubberViewController = ScrubberViewController.fromStoryboard
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
         env.scrubberViewController = scrubberViewController
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 

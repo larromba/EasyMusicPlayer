@@ -13,7 +13,6 @@
 		7F44F9D421B827EE0041E4DE /* ControlStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9D321B827EE0041E4DE /* ControlStateTests.swift */; };
 		7F44F9D621B828F10041E4DE /* MusicPlayerErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9D521B828F10041E4DE /* MusicPlayerErrorTests.swift */; };
 		7F44F9D821B829330041E4DE /* MusicInterruptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */; };
-		7F44F9DA21B82AFE0041E4DE /* Testable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9D921B82AFE0041E4DE /* Testable.swift */; };
 		7F44F9E021B82CC70041E4DE /* mocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9DF21B82CC70041E4DE /* mocks.generated.swift */; };
 		7F44F9E221B8307C0041E4DE /* RemoteControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E121B8307C0041E4DE /* RemoteControlTests.swift */; };
 		7F44F9E421B830F70041E4DE /* RemoteControlStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E321B830F70041E4DE /* RemoteControlStateTests.swift */; };
@@ -139,7 +138,6 @@
 		7F44F9D321B827EE0041E4DE /* ControlStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlStateTests.swift; sourceTree = "<group>"; };
 		7F44F9D521B828F10041E4DE /* MusicPlayerErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerErrorTests.swift; sourceTree = "<group>"; };
 		7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInterruptionTests.swift; sourceTree = "<group>"; };
-		7F44F9D921B82AFE0041E4DE /* Testable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testable.swift; sourceTree = "<group>"; };
 		7F44F9DF21B82CC70041E4DE /* mocks.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = mocks.generated.swift; path = Generated/mocks.generated.swift; sourceTree = SOURCE_ROOT; };
 		7F44F9E121B8307C0041E4DE /* RemoteControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlTests.swift; sourceTree = "<group>"; };
 		7F44F9E321B830F70041E4DE /* RemoteControlStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlStateTests.swift; sourceTree = "<group>"; };
@@ -288,7 +286,6 @@
 			isa = PBXGroup;
 			children = (
 				7FA59D5A21B95C0C00538013 /* PlayerEnvironment.swift */,
-				7F44F9D921B82AFE0041E4DE /* Testable.swift */,
 				7F44F9EF21B849F10041E4DE /* TestAudioPlayerFactory.swift */,
 				7F5A83A521D940F4008F30BE /* TestMediaQuery.swift */,
 				7F5A83AC21DA70BB008F30BE /* TestUserDefaults.swift */,
@@ -904,7 +901,6 @@
 				7F44F9E421B830F70041E4DE /* RemoteControlStateTests.swift in Sources */,
 				7F44F9D121B826D00041E4DE /* ControlTests.swift in Sources */,
 				7F44F9F021B849F10041E4DE /* TestAudioPlayerFactory.swift in Sources */,
-				7F44F9DA21B82AFE0041E4DE /* Testable.swift in Sources */,
 				7FA59D5F21B96CB300538013 /* Runtime.swift in Sources */,
 				7F5A83AD21DA70BB008F30BE /* TestUserDefaults.swift in Sources */,
 				7FA59D6821BAA44500538013 /* DataTests.swift in Sources */,

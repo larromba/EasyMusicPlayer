@@ -2,7 +2,9 @@
 import Foundation
 import MediaPlayer
 
-final class PlayerEnvironment: TestEnvironment {
+let defaultTracks: [MPMediaItem] = [.mock(id: 0), .mock(id: 1), .mock(id: 2)]
+
+final class PlayerEnvironment {
     var playerViewController: PlayerViewControlling
     var scrubberViewController: ScrubberViewControlling
     var remote: RemoteControlling
@@ -46,6 +48,7 @@ final class PlayerEnvironment: TestEnvironment {
          playerFactory: TestAudioPlayerFactory = TestAudioPlayerFactory(), // TODO: change to protocol?
          userDefaults: UserDefaultable = MockUserDefaults(),
          mediaQueryType: MediaQueryable.Type = MockMediaQuery.self) {
+        PlayerEnvironment.resetAllStaticMocks()
         self.playerViewController = playerViewController
         self.scrubberViewController = scrubberViewController
         self.remote = remote
@@ -63,6 +66,70 @@ final class PlayerEnvironment: TestEnvironment {
         self.mediaQueryType = mediaQueryType
     }
 
+    func setPlaying() {
+        musicService.play()
+    }
+
+    func setPaused() {
+        musicService.play()
+        playerFactory.audioPlayer?.isPlaying = false
+        musicService.pause()
+    }
+
+    func setStopped() {
+        musicService.play()
+        playerFactory.audioPlayer?.isPlaying = false
+        musicService.stop()
+    }
+
+    func shuffle() {
+        musicService.shuffle()
+    }
+
+    func setRepeatState(_ repeatState: RepeatState) {
+        controlsController.setRepeatState(repeatState)
+    }
+
+    func setCurrentTime(_ time: TimeInterval) {
+        playerFactory.currentTime = time
+    }
+
+    func setAuthorizationStatus(_ authorizationStatus: MPMediaLibraryAuthorizationStatus) {
+        let authorizerType = MockMediaLibrary.self
+        authorizerType.actions.set(returnValue: authorizationStatus, for: MockMediaLibrary.authorizationStatus1.name)
+        self.authorizerType = authorizerType
+    }
+
+    func setTracks(_ tracks: [MPMediaItem], currentTrack: MPMediaItem?) {
+        let mediaQueryType = MockMediaQuery.self
+        mediaQueryType.actions.set(returnValue: TestMediaQuery(items: tracks), for: MockMediaQuery.songs1.name)
+        self.mediaQueryType = mediaQueryType
+
+        let userDefaults = TestUserDefaults()
+        userDefaults.trackIDs = tracks.map { $0.persistentID }
+        if let currentTrack = currentTrack {
+            userDefaults.currentTrackID = currentTrack.persistentID
+        }
+        self.userDefaults = userDefaults
+    }
+
+    func setOutputVolume(_ volume: Float) {
+        let audioSession = MockAudioSession()
+        audioSession.outputVolume = volume
+        self.audioSession = audioSession
+    }
+
+    // MARK: - private
+
+    private static func resetAllStaticMocks() {
+        MockMediaLibrary.actions.set(returnValue: MPMediaLibraryAuthorizationStatus.authorized,
+                                     for: MockMediaLibrary.authorizationStatus1.name)
+        MockMediaQuery.actions.set(returnValue: TestMediaQuery(items: [MockMediaItem()]),
+                                   for: MockMediaQuery.songs1.name)
+    }
+}
+
+extension PlayerEnvironment: TestEnvironment {
     func inject() {
         authorization = MusicAuthorization(authorizer: authorizerType)
         playlist = Playlist(authorization: authorization, mediaQuery: mediaQueryType)
@@ -84,66 +151,5 @@ final class PlayerEnvironment: TestEnvironment {
                                             alertController: alertController,
                                             musicService: musicService,
                                             userService: userService)
-    }
-
-    func setPlaying() {
-        musicService.play()
-    }
-
-    func setPaused() {
-        musicService.play()
-        playerFactory.audioPlayer?.isPlaying = false
-        musicService.pause()
-    }
-
-    func setStopped() {
-        musicService.play()
-        playerFactory.audioPlayer?.isPlaying = false
-        musicService.stop()
-    }
-
-    func setRepeatState(_ repeatState: RepeatState) {
-        controlsController.setRepeatState(repeatState)
-    }
-
-    func setCurrentTime(_ time: TimeInterval) {
-        playerFactory.currentTime = time
-    }
-}
-
-// TODO: split?
-final class PlayerEnvironmentHelper {
-    let tracks: [MPMediaItem]
-    let currentTrackID: MPMediaEntityPersistentID
-    let authorizationStatus: MPMediaLibraryAuthorizationStatus
-    let volume: Float
-    let mediaQueryType: MediaQueryable.Type
-    let userDefaults: UserDefaultable
-    let authorizerType: MediaLibraryAuthorizable.Type
-    let audioSession: AudioSessioning
-
-    init(tracks: [MPMediaItem] = [.mock(id: 0), .mock(id: 1), .mock(id: 2)],
-         currentTrackID: MPMediaEntityPersistentID = 1,
-         authorizationStatus: MPMediaLibraryAuthorizationStatus = .authorized, volume: Float = 1) {
-        self.tracks = tracks
-        self.currentTrackID = currentTrackID
-        self.authorizationStatus = authorizationStatus
-        self.volume = volume
-
-        mediaQueryType = MockMediaQuery.self
-        MockMediaQuery.actions.set(returnValue: TestMediaQuery(items: tracks), for: MockMediaQuery.songs1.name)
-
-        let userDefaults = TestUserDefaults()
-        userDefaults.trackIDs = tracks.map { $0.persistentID }
-        userDefaults.currentTrackID = currentTrackID
-        self.userDefaults = userDefaults
-
-        let authorizerType = MockMediaLibrary.self
-        authorizerType.actions.set(returnValue: authorizationStatus, for: MockMediaLibrary.authorizationStatus1.name)
-        self.authorizerType = authorizerType
-
-        let audioSession = MockAudioSession()
-        audioSession.outputVolume = volume
-        self.audioSession = audioSession
     }
 }

@@ -55,26 +55,22 @@ final class ControlTests: XCTestCase {
 
     func testPressingShuffleCreatesShufflesAndPlaysTracks() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
 
         // sut
-        XCTAssertEqual(env.trackManager.tracks, helper.tracks)
+        XCTAssertEqual(env.trackManager.tracks, defaultTracks)
         XCTAssertTrue(controlsViewController.shuffleButton.tap())
 
         // test
-        XCTAssertNotEqual(env.trackManager.tracks, helper.tracks)
-        XCTAssertEqual(env.trackManager.tracks.count, helper.tracks.count)
+        XCTAssertNotEqual(env.trackManager.tracks, defaultTracks)
+        XCTAssertEqual(env.trackManager.tracks.count, defaultTracks.count)
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func testPressingPrevPlaysPreviousTrack() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
@@ -89,9 +85,7 @@ final class ControlTests: XCTestCase {
 
     func testPressingNextPlaysNextTrack() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 
@@ -107,10 +101,8 @@ final class ControlTests: XCTestCase {
     func testScrubbingChangesPlayLocationInTrack() {
         // mocks
         let scrubberViewController = ScrubberViewController.fromStoryboard
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
-        env.userDefaults = helper.userDefaults
         env.scrubberViewController = scrubberViewController
+        env.setTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
         env.setPlaying()
 

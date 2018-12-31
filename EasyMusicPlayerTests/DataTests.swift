@@ -8,8 +8,8 @@ final class DataTests: XCTestCase {
 
     override func setUp() {
         userDefaults = TestUserDefaults()
-        userDefaults.trackIDs = PlayerEnvironmentHelper().tracks.map { $0.persistentID }
-        userDefaults.currentTrackID = PlayerEnvironmentHelper().currentTrackID
+        userDefaults.trackIDs = defaultTracks.map { $0.persistentID }
+        userDefaults.currentTrackID = defaultTracks[1].persistentID
         env = PlayerEnvironment(userDefaults: userDefaults)
         super.setUp()
     }
@@ -45,8 +45,7 @@ final class DataTests: XCTestCase {
 
     func testCurrentTrackIDPersistedOnPlay() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
+        env.setTracks(defaultTracks, currentTrack: nil)
         env.inject()
         env.setPlaying()
 
@@ -56,8 +55,7 @@ final class DataTests: XCTestCase {
 
     func testCurrentTrackIDLoadedOnStart() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
+        env.setTracks(defaultTracks, currentTrack: nil)
         env.inject()
 
         // test
@@ -66,8 +64,7 @@ final class DataTests: XCTestCase {
 
     func testShuffleTracksPersisted() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
+        env.setTracks(defaultTracks, currentTrack: nil)
         env.inject()
 
         // sut
@@ -75,17 +72,16 @@ final class DataTests: XCTestCase {
 
         // test
         let trackIDs = userDefaults.trackIDs
-        XCTAssertEqual(trackIDs?.count, helper.tracks.count)
-        XCTAssertNotEqual(trackIDs, helper.tracks.map { $0.persistentID })
+        XCTAssertEqual(trackIDs?.count, defaultTracks.count)
+        XCTAssertNotEqual(trackIDs, defaultTracks.map { $0.persistentID })
     }
 
     func testTrackIDsLoadedOnStart() {
         // mocks
-        let helper = PlayerEnvironmentHelper()
-        env.mediaQueryType = helper.mediaQueryType
+        env.setTracks(defaultTracks, currentTrack: nil)
         env.inject()
 
         // test
-        XCTAssertEqual(env.musicService.state.totalTracks, 3)
+        XCTAssertEqual(env.musicService.state.totalTracks, defaultTracks.count)
     }
 }
