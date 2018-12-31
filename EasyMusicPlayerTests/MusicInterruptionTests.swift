@@ -4,65 +4,80 @@ import TestExtensions
 import XCTest
 
 final class MusicInterruptionTests: XCTestCase {
+    private var interruptionHandler: MusicInterruptionHandler!
+    private var env: PlayerEnvironment!
+
+    override func setUp() {
+        super.setUp()
+        interruptionHandler = MusicInterruptionHandler()
+        env = PlayerEnvironment(interruptionHandler: interruptionHandler)
+    }
+
+    override func tearDown() {
+        interruptionHandler = nil
+        env = nil
+        super.tearDown()
+    }
+
     func testInterruptionStartedPausesMusic() {
         // mocks
-        let env = PlayerEnvironment()
         env.inject()
+        env.setPlaying()
 
         // sut
-        env.musicService.play()
         interrupt()
 
         // test
         wait(for: 0.5) {
-            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+            XCTAssertTrue(self.env.playerFactory.audioPlayer?.invocations
+                .isInvoked(MockAudioPlayer.pause3.name) ?? false)
         }
     }
 
     func testInterruptionEndedPlaysMusic() {
         // mocks
-        let env = PlayerEnvironment()
         env.inject()
+        env.setPlaying()
 
         // sut
-        env.musicService.play()
         interrupt()
         uninterrupt()
 
         // test
         wait(for: 0.5) {
-            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+            XCTAssertTrue(self.env.playerFactory.audioPlayer?.invocations
+                .isInvoked(MockAudioPlayer.play2.name) ?? false)
         }
     }
 
     func testHeadphonesRemovedPausesMusic() {
         // mocks
-        let env = PlayerEnvironment()
         env.inject()
+        env.setPlaying()
 
         // sut
-        env.musicService.play()
         removeHeadphones()
 
         // test
         wait(for: 0.5) {
-            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+            XCTAssertTrue(self.env.playerFactory.audioPlayer?.invocations
+                .isInvoked(MockAudioPlayer.pause3.name) ?? false)
         }
     }
 
     func testHeadphonesReattachedPlaysMusic() {
         // mocks
-        let env = PlayerEnvironment()
         env.inject()
+        env.setPlaying()
 
         // sut
-        env.musicService.play()
         removeHeadphones()
         attachHeadphones()
 
         // test
         wait(for: 0.5) {
-            XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+            XCTAssertTrue(self.env.playerFactory.audioPlayer?.invocations
+                .isInvoked(MockAudioPlayer.play2.name) ?? false)
         }
     }
 

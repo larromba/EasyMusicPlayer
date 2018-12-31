@@ -25,42 +25,45 @@ final class Playlist: Playlistable {
             return []
         }
 
-        #if targetEnvironment(simulator)
-        final class DummyMediaItem: MPMediaItem {
-            private let image = Asset.arkistRendezvousFillYourCoffee.image
-            private lazy var mediaItemArtwork = MPMediaItemArtwork(boundsSize: image.size) { _ -> UIImage in
-                return self.image
-            }
-            private let assetUrl = URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
+        #if DEBUG && targetEnvironment(simulator)
+        // returns mock items on simulator and in debug mode. this is skipped if in test mode
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            final class DummyMediaItem: MPMediaItem {
+                private let image = Asset.arkistRendezvousFillYourCoffee.image
+                private lazy var mediaItemArtwork = MPMediaItemArtwork(boundsSize: image.size) { _ -> UIImage in
+                    return self.image
+                }
+                private let assetUrl = URL(fileURLWithPath: Bundle.safeMain
+                    .infoDictionary!["DummyAudioPath"] as! String)
 
-            override var artist: String { return "Arkist" }
-            override var title: String { return "Fill Your Coffee" }
-            override var playbackDuration: TimeInterval { return 219 }
-            override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
-            override var assetURL: URL { return assetUrl }
+                override var artist: String { return "Arkist" }
+                override var title: String { return "Fill Your Coffee" }
+                override var playbackDuration: TimeInterval { return 219 }
+                override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
+                override var assetURL: URL { return assetUrl }
+            }
+            var tracks = [DummyMediaItem(), DummyMediaItem(), DummyMediaItem()]
+            if shuffled { tracks.shuffle() }
+            return tracks
         }
-        var tracks = [DummyMediaItem(), DummyMediaItem(), DummyMediaItem()]
-        if shuffled { tracks.shuffle() }
-        return tracks
-        #else
+        #endif
         if var tracks = mediaQuery.songs().items {
             if shuffled { tracks.shuffle() }
             return tracks
         } else {
             return []
         }
-        #endif
     }
 
-    func find(ids: [UInt64]) -> [MPMediaItem] {
-        let query = MPMediaQuery.songs()
-        return ids.compactMap { (id: UInt64) -> [MPMediaItem]? in
+    func find(ids: [MPMediaEntityPersistentID]) -> [MPMediaItem] {
+        let query = mediaQuery.songs()
+        return ids.compactMap { (id: MPMediaEntityPersistentID) -> MPMediaItem? in
             let predicate = MPMediaPropertyPredicate(value: id, forProperty: MPMediaItemPropertyPersistentID)
             query.addFilterPredicate(predicate)
             let items = query.items
             query.removeFilterPredicate(predicate)
-            return items
-        }.reduce([], +)
+            return items?.first // one id media item, so take first
+        }
     }
 }
 
@@ -68,6 +71,7 @@ final class Playlist: Playlistable {
 
 private extension Array where Element == MPMediaItem {
     mutating func shuffle() {
+        guard !isEmpty else { return }
         (0..<(count - 1)).forEach {
             let remainingCount = count - $0
             let exchangeIndex = $0 + Int(arc4random_uniform(UInt32(remainingCount)))

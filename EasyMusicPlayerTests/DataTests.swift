@@ -3,60 +3,61 @@ import MediaPlayer
 import XCTest
 
 final class DataTests: XCTestCase {
-    private var userDefaults: UserDefaults!
-    private var dataManager: DataManaging!
-    private var userService: UserServicing!
+    private var userDefaults: TestUserDefaults!
+    private var env: PlayerEnvironment!
 
     override func setUp() {
-        userDefaults = UserDefaults(suiteName: "DataTests")
-        dataManager = DataManger(userDefaults: userDefaults)
-        userService = UserService(dataManager: dataManager)
+        userDefaults = TestUserDefaults()
+        userDefaults.trackIDs = PlayerEnvironmentHelper().tracks.map { $0.persistentID }
+        userDefaults.currentTrackID = PlayerEnvironmentHelper().currentTrackID
+        env = PlayerEnvironment(userDefaults: userDefaults)
         super.setUp()
     }
 
     override func tearDown() {
         userDefaults = nil
-        dataManager = nil
-        userService = nil
+        env = nil
         super.tearDown()
     }
 
     func testRepeatStatePersisted() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, repeatState: .none, userService: userService)
+        let controlsViewController = ControlsViewController.fromStoryboard
+        env.controlsViewController = controlsViewController
         env.inject()
+        env.setRepeatState(.none)
 
         // sut
-        env.controlsViewController.repeatButton.tap()
+        XCTAssertTrue(controlsViewController.repeatButton.tap())
 
         // test
-        XCTAssertEqual(userDefaults.value(forKey: "repeatState") as? String, "one")
+        XCTAssertEqual(userDefaults.repeatState, .one)
     }
 
     func testRepeatStateLoadedOnStart() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, repeatState: .all, userService: userService)
+        userDefaults.repeatState = .all
         env.inject()
 
         // test
         XCTAssertEqual(env.musicService.state.repeatState, .all)
     }
 
-    func testCurrentTrackIDPersisted() {
+    func testCurrentTrackIDPersistedOnPlay() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, trackID: 1, userService: userService)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(userDefaults.value(forKey: "currentTrackID") as? MPMediaEntityPersistentID, 1)
+        XCTAssertEqual(userDefaults.currentTrackID, 1)
     }
 
     func testCurrentTrackIDLoadedOnStart() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, trackID: 1, userService: userService)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
         env.inject()
 
         // test
@@ -65,24 +66,23 @@ final class DataTests: XCTestCase {
 
     func testShuffleTracksPersisted() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, trackID: 1, userService: userService)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
         env.inject()
 
         // sut
         env.musicService.shuffle()
 
         // test
-        guard let data = userDefaults.value(forKey: "tracks") as? Data else {
-            XCTFail("expected Data")
-            return
-        }
-        let trackIDs = NSKeyedUnarchiver.unarchiveObject(with: data) as? [MPMediaEntityPersistentID]
-        XCTAssertEqual(trackIDs, [0, 1, 2])
+        let trackIDs = userDefaults.trackIDs
+        XCTAssertEqual(trackIDs?.count, helper.tracks.count)
+        XCTAssertNotEqual(trackIDs, helper.tracks.map { $0.persistentID })
     }
 
     func testTrackIDsLoadedOnStart() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, userService: userService)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
         env.inject()
 
         // test

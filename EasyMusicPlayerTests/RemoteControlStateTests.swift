@@ -4,14 +4,17 @@ import XCTest
 
 final class RemoteControlStateTests: XCTestCase {
     private var remote: RemoteControlling!
+    private var env: PlayerEnvironment!
 
     override func setUp() {
         super.setUp()
         remote = MockRemoteCommandCenter()
+        env = PlayerEnvironment(remote: remote)
     }
 
     override func tearDown() {
         remote = nil
+        env = nil
         super.tearDown()
     }
 
@@ -19,11 +22,9 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneStart() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, remote: remote)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // test
         XCTAssertFalse(remote.previousTrackCommand.isEnabled)
@@ -32,11 +33,12 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneMid() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 1, remote: remote)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // test
         XCTAssertTrue(remote.previousTrackCommand.isEnabled)
@@ -45,8 +47,12 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatOneEnd() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 2, remote: remote)
+        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // sut
         env.musicService.play()
@@ -60,11 +66,9 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneStart() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .none, remote: remote)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.none)
+        env.setPlaying()
 
         // test
         XCTAssertFalse(remote.previousTrackCommand.isEnabled)
@@ -73,11 +77,12 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneMid() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 1, remote: remote)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.none)
+        env.setPlaying()
 
         // test
         XCTAssertTrue(remote.previousTrackCommand.isEnabled)
@@ -86,11 +91,12 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatNoneEnd() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 2, remote: remote)
+        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.none)
+        env.setPlaying()
 
         // test
         XCTAssertTrue(remote.previousTrackCommand.isEnabled)
@@ -101,11 +107,9 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllStart() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .all, remote: remote)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.all)
+        env.setPlaying()
 
         // test
         XCTAssertTrue(remote.previousTrackCommand.isEnabled)
@@ -114,11 +118,12 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllMid() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .all, trackID: 1, remote: remote)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.all)
+        env.setPlaying()
 
         // test
         XCTAssertTrue(remote.previousTrackCommand.isEnabled)
@@ -127,11 +132,12 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayStateRepeatAllEnd() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .all, trackID: 2, remote: remote)
+        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.all)
+        env.setPlaying()
 
         // test
         XCTAssertTrue(remote.previousTrackCommand.isEnabled)
@@ -142,11 +148,8 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPlayState() {
         // mocks
-        let env = PlayerEnvironment(remote: remote)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setPlaying()
 
         // test
         XCTAssertFalse(remote.playCommand.isEnabled)
@@ -160,12 +163,8 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testPauseState() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, remote: remote)
         env.inject()
-
-        // sut
-        env.musicService.play()
-        env.musicService.pause()
+        env.setPaused()
 
         // test
         XCTAssertTrue(remote.playCommand.isEnabled)
@@ -181,12 +180,8 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testStopState() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, remote: remote)
         env.inject()
-
-        // sut
-        env.musicService.play()
-        env.musicService.stop()
+        env.setStopped()
 
         // test
         XCTAssertTrue(remote.playCommand.isEnabled)
@@ -202,11 +197,9 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testErrorState() {
         // mocks
-        let env = PlayerEnvironment(didPlay: false, remote: remote)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.playerFactory.didPlay = false
+        env.setPlaying()
 
         // test
         XCTAssertTrue(remote.playCommand.isEnabled)
@@ -222,23 +215,55 @@ final class RemoteControlStateTests: XCTestCase {
 
     func testTrackRendersInfo() {
         // mocks
+        let remoteInfo = MockNowPlayingInfoCenter()
+        env.remoteInfo = remoteInfo
         let image = UIImage()
         let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
-        let remoteInfo = MockNowPlayingInfoCenter()
-        let env = PlayerEnvironment(mediaItems: [item], remote: remote, remoteInfo: remoteInfo)
+        let helper = PlayerEnvironmentHelper(tracks: [item], currentTrackID: 0)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(remoteInfo.nowPlayingInfo?.count, 6)
-        XCTAssertEqual(remoteInfo.nowPlayingInfo?["artist"] as? String, "arkist")
-        XCTAssertEqual(remoteInfo.nowPlayingInfo?["title"] as? String, "fill your coffee")
-        XCTAssertEqual(remoteInfo.nowPlayingInfo?["MPNowPlayingInfoPropertyElapsedPlaybackTime"] as? TimeInterval, 0.0)
-        XCTAssertEqual(remoteInfo.nowPlayingInfo?["MPNowPlayingInfoPropertyMediaType"] as? NSNumber, 1)
-        let artwork = remoteInfo.nowPlayingInfo?["artwork"] as? MPMediaItemArtwork
+        let info = remoteInfo.nowPlayingInfo
+        XCTAssertEqual(info?.count, 6)
+        XCTAssertEqual(info?[MPMediaItemPropertyArtist] as? String, "arkist")
+        XCTAssertEqual(info?[MPMediaItemPropertyTitle] as? String, "fill your coffee")
+        XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
+        XCTAssertEqual(info?[MPNowPlayingInfoPropertyMediaType] as? NSNumber, 1)
+        let artwork = remoteInfo.nowPlayingInfo?[MPMediaItemPropertyArtwork] as? MPMediaItemArtwork
         XCTAssertEqual(artwork?.image(at: image.size), image)
-        XCTAssertEqual(remoteInfo.nowPlayingInfo?["playbackDuration"] as? TimeInterval, 210.0)
+        XCTAssertEqual(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval, 210.0)
+        XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
+        var mediaType: MPNowPlayingInfoMediaType?
+        if let rawValue = info?[MPNowPlayingInfoPropertyMediaType] as? UInt {
+            mediaType = MPNowPlayingInfoMediaType(rawValue: rawValue)
+        }
+        XCTAssertEqual(mediaType, .audio)
+    }
+
+    func testScrubbingChangesRemoteInfo() {
+        // mocks
+        let remoteInfo = MockNowPlayingInfoCenter()
+        env.remoteInfo = remoteInfo
+        let scrubberViewController = ScrubberViewController.fromStoryboard
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
+        env.scrubberViewController = scrubberViewController
+        env.inject()
+        env.setPlaying()
+
+        // sut
+        let touches = Set<UITouch>(arrayLiteral: MockTouch(x: env.scrubberViewController.view.bounds.width / 2))
+        scrubberViewController.touchesBegan(touches, with: nil)
+        scrubberViewController.touchesMoved(touches, with: nil)
+        scrubberViewController.touchesEnded(touches, with: nil)
+
+        // test
+        let info = remoteInfo.nowPlayingInfo
+        XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval,
+                       MockMediaItem.playbackDuration / 2)
     }
 }

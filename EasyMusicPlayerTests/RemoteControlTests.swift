@@ -5,24 +5,26 @@ import XCTest
 
 final class RemoteControlTests: XCTestCase {
     private var remote: RemoteControlling!
+    private var env: PlayerEnvironment!
 
     override func setUp() {
         super.setUp()
         remote = MockRemoteCommandCenter()
+        env = PlayerEnvironment(remote: remote)
     }
 
     override func tearDown() {
         remote = nil
+        env = nil
         super.tearDown()
     }
 
     func testPressingPlayPlaysMusic() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, remote: remote)
         env.inject()
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
+        XCTAssertTrue((remote.playCommand as! MockRemoteCommand).fire())
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
@@ -30,12 +32,11 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingPausePausesMusic() {
         // mocks
-        let env = PlayerEnvironment(remote: remote)
         env.inject()
+        env.setPlaying()
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
-        (remote.pauseCommand as! MockRemoteCommand).fire()
+        XCTAssertTrue((remote.pauseCommand as! MockRemoteCommand).fire())
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
@@ -43,11 +44,10 @@ final class RemoteControlTests: XCTestCase {
 
     func testTogglePlayPausePlaysMusic() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, remote: remote)
         env.inject()
 
         // sut
-        (remote.togglePlayPauseCommand as! MockRemoteCommand).fire()
+        XCTAssertTrue((remote.togglePlayPauseCommand as! MockRemoteCommand).fire())
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
@@ -55,12 +55,11 @@ final class RemoteControlTests: XCTestCase {
 
     func testTogglePlayPausePausesMusic() {
         // mocks
-        let env = PlayerEnvironment(remote: remote)
         env.inject()
+        env.setPlaying()
 
         // sut
-        (remote.togglePlayPauseCommand as! MockRemoteCommand).fire()
-        (remote.togglePlayPauseCommand as! MockRemoteCommand).fire()
+        XCTAssertTrue((remote.togglePlayPauseCommand as! MockRemoteCommand).fire())
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
@@ -68,12 +67,11 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingStopStopsMusic() {
         // mocks
-        let env = PlayerEnvironment(remote: remote)
         env.inject()
+        env.setPlaying()
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
-        (remote.stopCommand as! MockRemoteCommand).fire()
+        XCTAssertTrue((remote.stopCommand as! MockRemoteCommand).fire())
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
@@ -81,12 +79,15 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingPrevPlaysPreviousTrack() {
         // mocks
-        let env = PlayerEnvironment(trackID: 1, remote: remote)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
+        env.setPlaying()
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
-        (remote.previousTrackCommand as! MockRemoteCommand).fire()
+        XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
+        XCTAssertTrue((remote.previousTrackCommand as! MockRemoteCommand).fire())
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 0)
@@ -95,12 +96,15 @@ final class RemoteControlTests: XCTestCase {
 
     func testPressingNextPlaysNextTrack() {
         // mocks
-        let env = PlayerEnvironment(trackID: 1, remote: remote)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
+        env.setPlaying()
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
-        (remote.nextTrackCommand as! MockRemoteCommand).fire()
+        XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
+        XCTAssertTrue((remote.nextTrackCommand as! MockRemoteCommand).fire())
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 2)
@@ -109,11 +113,10 @@ final class RemoteControlTests: XCTestCase {
 
     func testScrobblingChangesPlayLocationInTrack() {
         // mocks
-        let env = PlayerEnvironment(remote: remote)
         env.inject()
+        env.setPlaying()
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
         (remote.changePlaybackPositionCommand as! MockChangePlaybackPositionCommand).fire()
 
         // test
@@ -122,31 +125,33 @@ final class RemoteControlTests: XCTestCase {
 
     func testSeeksPreviousChangesPlayLocationInTrack() {
         // mocks
-        let env = PlayerEnvironment(currentTime: 4, remote: remote)
+        env.seeker = Seeker(seekInterval: 1)
         env.inject()
+        env.setPlaying()
+        env.setCurrentTime(4)
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
         (remote.seekBackwardCommand as! MockSeekRemoteCommand).fire()
 
         // test
         wait(for: 3.0) {
-            XCTAssertEqual(env.playerFactory.audioPlayer?.currentTime ?? 0, 2)
+            XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 2)
         }
     }
 
     func testSeekNextChangesPlayLocationInTrack() {
         // mocks
-        let env = PlayerEnvironment(remote: remote)
+        env.seeker = Seeker(seekInterval: 1)
         env.inject()
+        env.setPlaying()
+        env.setCurrentTime(4)
 
         // sut
-        (remote.playCommand as! MockRemoteCommand).fire()
         (remote.seekForwardCommand as! MockSeekRemoteCommand).fire()
 
         // test
         wait(for: 3.0) {
-            XCTAssertEqual(env.playerFactory.audioPlayer?.currentTime ?? 0, 2)
+            XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 6)
         }
     }
 }

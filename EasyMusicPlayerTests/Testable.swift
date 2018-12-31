@@ -2,6 +2,7 @@
 import Foundation
 import MediaPlayer
 
+// TODO: remove both
 extension PlayerController {
     static func testable(viewController: PlayerViewControlling = MockPlayerViewController(),
                          scrubberController: ScrubberControlling = MockScrubberController(),

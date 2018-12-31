@@ -3,260 +3,264 @@ import MediaPlayer
 import XCTest
 
 final class ControlStateTests: XCTestCase {
+    private var controlsViewController: ControlsViewController!
+    private var env: PlayerEnvironment!
+
+    override func setUp() {
+        super.setUp()
+        controlsViewController = .fromStoryboard
+        env = PlayerEnvironment(controlsViewController: controlsViewController)
+    }
+
+    override func tearDown() {
+        controlsViewController = nil
+        env = nil
+        super.tearDown()
+    }
+
     // MARK: - repeat one
 
     func testRepeatOne() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(env.controlsViewController.repeatButton.backgroundImage(for: .normal),
-                       Asset.repeatOneButton.image)
+        XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatOneButton.image)
     }
 
     func testPlayStateRepeatOneStart() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // test
-        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertFalse(controlsViewController.prevButton.isEnabled)
+        XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
     func testPlayStateRepeatOneMid() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 1)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // test
-        XCTAssertTrue(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertTrue(controlsViewController.prevButton.isEnabled)
+        XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
     func testPlayStateRepeatOneEnd() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 2)
+        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // test
-        XCTAssertTrue(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertTrue(controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
     // MARK: - repeat none
 
     func testRepeatNone() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .none)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.none)
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(env.controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatButton.image)
+        XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatButton.image)
     }
 
     func testPlayStateRepeatNoneStart() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .none)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.one)
+        env.setPlaying()
 
         // test
-        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertFalse(controlsViewController.prevButton.isEnabled)
+        XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
     func testPlayStateRepeatNoneMid() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 1)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.none)
+        env.setPlaying()
 
         // test
-        XCTAssertTrue(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertTrue(controlsViewController.prevButton.isEnabled)
+        XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
     func testPlayStateRepeatNoneEnd() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .one, trackID: 2)
+        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.none)
+        env.setPlaying()
 
         // test
-        XCTAssertTrue(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertTrue(controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
     // MARK: - repeat all
 
     func testRepeatAll() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .all)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.all)
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(env.controlsViewController.repeatButton.backgroundImage(for: .normal),
-                       Asset.repeatAllButton.image)
+        XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatAllButton.image)
     }
 
     func testPlayStateRepeatAllStart() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .all)
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.all)
+        env.setPlaying()
 
         // test
-        XCTAssertTrue(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertTrue(controlsViewController.prevButton.isEnabled)
+        XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
     func testPlayStateRepeatAllMid() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .all, trackID: 1)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.all)
+        env.setPlaying()
 
         // test
-        XCTAssertTrue(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertTrue(controlsViewController.prevButton.isEnabled)
+        XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
     func testPlayStateRepeatAllEnd() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .all, trackID: 2)
+        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setRepeatState(.all)
+        env.setPlaying()
 
         // test
-        XCTAssertTrue(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertTrue(controlsViewController.prevButton.isEnabled)
+        XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
     // MARK: - other
 
     func testPlayState() {
         // mocks
-        let env = PlayerEnvironment()
+        let scrubberViewController = ScrubberViewController.fromStoryboard
+        env.scrubberViewController = scrubberViewController
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(env.controlsViewController.playButton.backgroundImage(for: .normal), Asset.pauseButton.image)
-        XCTAssertTrue(env.controlsViewController.playButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.stopButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.shuffleButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.repeatButton.isEnabled)
-        XCTAssertTrue(env.scrubberViewController.view.isUserInteractionEnabled)
+        XCTAssertEqual(controlsViewController.playButton.backgroundImage(for: .normal), Asset.pauseButton.image)
+        XCTAssertTrue(controlsViewController.playButton.isEnabled)
+        XCTAssertTrue(controlsViewController.stopButton.isEnabled)
+        XCTAssertTrue(controlsViewController.shuffleButton.isEnabled)
+        XCTAssertTrue(controlsViewController.repeatButton.isEnabled)
+        XCTAssertTrue(scrubberViewController.view.isUserInteractionEnabled)
     }
 
     func testPauseState() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false)
+        let scrubberViewController = ScrubberViewController.fromStoryboard
+        env.scrubberViewController = scrubberViewController
         env.inject()
-
-        // sut
-        env.musicService.play()
-        env.musicService.pause()
+        env.setPaused()
 
         // test
-        XCTAssertEqual(env.controlsViewController.playButton.backgroundImage(for: .normal), Asset.playButton.image)
-        XCTAssertTrue(env.controlsViewController.playButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.stopButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.shuffleButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.repeatButton.isEnabled)
-        XCTAssertFalse(env.scrubberViewController.view.isUserInteractionEnabled)
-        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertEqual(controlsViewController.playButton.backgroundImage(for: .normal), Asset.playButton.image)
+        XCTAssertTrue(controlsViewController.playButton.isEnabled)
+        XCTAssertTrue(controlsViewController.stopButton.isEnabled)
+        XCTAssertTrue(controlsViewController.shuffleButton.isEnabled)
+        XCTAssertTrue(controlsViewController.repeatButton.isEnabled)
+        XCTAssertFalse(scrubberViewController.view.isUserInteractionEnabled)
+        XCTAssertFalse(controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
     func testStopState() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false)
+        let scrubberViewController = ScrubberViewController.fromStoryboard
+        env.scrubberViewController = scrubberViewController
         env.inject()
-
-        // sut
-        env.musicService.play()
-        env.musicService.stop()
+        env.setStopped()
 
         // test
-        XCTAssertEqual(env.controlsViewController.playButton.backgroundImage(for: .normal), Asset.playButton.image)
-        XCTAssertTrue(env.controlsViewController.playButton.isEnabled)
-        XCTAssertFalse(env.controlsViewController.stopButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.shuffleButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.repeatButton.isEnabled)
-        XCTAssertFalse(env.scrubberViewController.view.isUserInteractionEnabled)
-        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertEqual(controlsViewController.playButton.backgroundImage(for: .normal), Asset.playButton.image)
+        XCTAssertTrue(controlsViewController.playButton.isEnabled)
+        XCTAssertFalse(controlsViewController.stopButton.isEnabled)
+        XCTAssertTrue(controlsViewController.shuffleButton.isEnabled)
+        XCTAssertTrue(controlsViewController.repeatButton.isEnabled)
+        XCTAssertFalse(scrubberViewController.view.isUserInteractionEnabled)
+        XCTAssertFalse(controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
     func testErrorState() {
         // mocks
-        let env = PlayerEnvironment(isPlaying: false, didPlay: false)
+        let scrubberViewController = ScrubberViewController.fromStoryboard
+        env.scrubberViewController = scrubberViewController
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.playerFactory.didPlay = false
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(env.controlsViewController.playButton.backgroundImage(for: .normal), Asset.playButton.image)
-        XCTAssertTrue(env.controlsViewController.playButton.isEnabled)
-        XCTAssertFalse(env.controlsViewController.stopButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.shuffleButton.isEnabled)
-        XCTAssertTrue(env.controlsViewController.repeatButton.isEnabled)
-        XCTAssertFalse(env.scrubberViewController.view.isUserInteractionEnabled)
-        XCTAssertFalse(env.controlsViewController.prevButton.isEnabled)
-        XCTAssertFalse(env.controlsViewController.nextButton.isEnabled)
+        XCTAssertEqual(controlsViewController.playButton.backgroundImage(for: .normal), Asset.playButton.image)
+        XCTAssertTrue(controlsViewController.playButton.isEnabled)
+        XCTAssertFalse(controlsViewController.stopButton.isEnabled)
+        XCTAssertTrue(controlsViewController.shuffleButton.isEnabled)
+        XCTAssertTrue(controlsViewController.repeatButton.isEnabled)
+        XCTAssertFalse(scrubberViewController.view.isUserInteractionEnabled)
+        XCTAssertFalse(controlsViewController.prevButton.isEnabled)
+        XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
     func testTrackRendersInfo() {
         // mocks
+        let infoViewController = InfoViewController.fromStoryboard
+        env.infoViewController = infoViewController
         let image = UIImage()
         let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
-        let env = PlayerEnvironment(mediaItems: [item])
+        let helper = PlayerEnvironmentHelper(tracks: [item], currentTrackID: 0)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setPlaying()
 
         // test
-        XCTAssertEqual(env.infoViewController.artistLabel.text, "arkist")
-        XCTAssertEqual(env.infoViewController.trackLabel.text, "fill your coffee")
-        XCTAssertEqual(env.infoViewController.trackPositionLabel.text, "1 of 1")
-        XCTAssertEqual(env.infoViewController.timeLabel.text, "00:00:00")
-        XCTAssertEqual(env.infoViewController.artworkImageView.image, image)
+        XCTAssertEqual(infoViewController.artistLabel.text, "arkist")
+        XCTAssertEqual(infoViewController.trackLabel.text, "fill your coffee")
+        XCTAssertEqual(infoViewController.trackPositionLabel.text, "1 of 1")
+        XCTAssertEqual(infoViewController.timeLabel.text, "00:00:00")
+        XCTAssertEqual(infoViewController.artworkImageView.image, image)
     }
 }

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1 (...)
+    added open source logo
+
 ## 2.0.0 (07/12/2018)
     removed sharing option
     large code refactor
@@ -61,3 +64,8 @@
 
 SKU: 112122015
 Apple ID: 1067558718
+
+# Future work
+
+* silence detection
+* simple queue / search

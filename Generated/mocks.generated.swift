@@ -334,7 +334,7 @@ class MockAuthorization: NSObject, Authorization {
         get { return _isAuthorized }
         set(value) { _isAuthorized = value; _isAuthorizedHistory.append(_Variable(value)) }
     }
-    var _isAuthorized: Bool!
+    var _isAuthorized: Bool! = true
     var _isAuthorizedHistory: [_Variable<Bool?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
@@ -698,6 +698,7 @@ class MockMediaQuery: NSObject, MediaQueryable {
         let functionName = songs1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
+        actions.set(defaultReturnValue: TestMediaQuery(items: [MockMediaItem()]), for: functionName)
         return actions.returnValue(for: functionName) as! MPMediaQuery
     }
 

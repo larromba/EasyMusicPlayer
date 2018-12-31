@@ -5,26 +5,32 @@ import XCTest
 
 final class MusicPlayerErrorTests: XCTestCase {
     private var viewController: UIViewController!
+    private var env: PlayerEnvironment!
 
     override func setUp() {
         super.setUp()
         viewController = UIViewController()
+        env = PlayerEnvironment(alertPresenter: viewController)
         UIApplication.shared.keyWindow!.rootViewController = viewController
         UIView.setAnimationsEnabled(false)
     }
 
     override func tearDown() {
+        viewController = nil
+        env = nil
+        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
 
     func testNoAuthShowsError() {
         // mocks
-        let env = PlayerEnvironment(authorizationStatus: .denied, alertViewController: viewController)
+        let helper = PlayerEnvironmentHelper(authorizationStatus: .denied)
+        env.authorizerType = helper.authorizerType
         env.inject()
+        env.setPlaying()
 
         // sut
-        env.musicService.play()
         guard
             let invocation = MockMediaLibrary.invocations.find(MockMediaLibrary.requestAuthorization2.name).first,
             let handler = invocation.parameter(for: MockMediaLibrary.requestAuthorization2.params.handler)
@@ -32,7 +38,7 @@ final class MusicPlayerErrorTests: XCTestCase {
                     XCTFail("expected handler")
                     return
         }
-        handler(.denied)
+        handler(helper.authorizationStatus)
 
         // test
         wait(for: 0.5) {
@@ -49,11 +55,10 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testNoTracksShowsError() {
         // mocks
-        let env = PlayerEnvironment(mediaItems: [], alertViewController: viewController)
+        let helper = PlayerEnvironmentHelper(tracks: [])
+        env.mediaQueryType = helper.mediaQueryType
         env.inject()
-
-        // sut
-        env.musicService.play()
+        env.setPlaying()
 
         // test
         wait(for: 0.5) {
@@ -70,7 +75,8 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testNoVolumeShowsError() {
         // mocks
-        let env = PlayerEnvironment(outputVolume: 0.0, alertViewController: viewController)
+        let helper = PlayerEnvironmentHelper(volume: 0)
+        env.audioSession = helper.audioSession
         env.inject()
 
         // sut
@@ -91,12 +97,16 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testMusicFinishedShowsAlert() {
         // mocks
-        let env = PlayerEnvironment(repeatState: .none, trackID: 2, alertViewController: viewController)
+        let helper = PlayerEnvironmentHelper(currentTrackID: 2)
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
+        env.setRepeatState(.none)
+        env.setPlaying()
 
         // sut
         let audioPlayer = AVAudioPlayer()
-        (env.musicService as! MusicService).audioPlayerDidFinishPlaying(audioPlayer, successfully: true)
+        (env.musicService as! MusicService).audioPlayerDidFinishPlaying(audioPlayer, successfully: true) // TODO: ?
 
         // test
         wait(for: 0.5) {
@@ -113,15 +123,18 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func testDecodeErrorRemovesTrack() {
         // mocks
-        let env = PlayerEnvironment(outputVolume: 0.0, alertViewController: viewController)
+        let helper = PlayerEnvironmentHelper()
+        env.mediaQueryType = helper.mediaQueryType
+        env.userDefaults = helper.userDefaults
         env.inject()
+        env.setPlaying()
 
         // sut
         let audioPlayer = AVAudioPlayer()
-        (env.musicService as! MusicService).audioPlayerDecodeErrorDidOccur(audioPlayer, error: nil)
+        (env.musicService as! MusicService).audioPlayerDecodeErrorDidOccur(audioPlayer, error: nil) // TODO: ?
 
         // test
-        XCTAssertEqual(env.musicService.state.currentTrackIndex, 0)
+        XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
         XCTAssertEqual(env.musicService.state.totalTracks, 2)
     }
 }

@@ -2,14 +2,15 @@
 import Foundation
 
 final class TestAudioPlayerFactory: AudioPlayerFactoring {
-    let isPlaying: Bool
-    let didPrepare: Bool
-    let didPlay: Bool
-    let currentTime: TimeInterval
-    let duration: TimeInterval
-    var audioPlayer: MockAudioPlayer?
+    var isPlaying: Bool
+    var didPrepare: Bool
+    var didPlay: Bool
+    var currentTime: TimeInterval
+    var duration: TimeInterval
+    private(set) var audioPlayer: MockAudioPlayer?
 
-    init(isPlaying: Bool, didPrepare: Bool, didPlay: Bool, currentTime: TimeInterval, duration: TimeInterval) {
+    init(isPlaying: Bool = true, didPrepare: Bool = true, didPlay: Bool = true, currentTime: TimeInterval = 0,
+         duration: TimeInterval = 60 * 60 * 3) {
         self.isPlaying = isPlaying
         self.didPrepare = didPrepare
         self.didPlay = didPlay
