@@ -45,7 +45,8 @@ final class PlayerEnvironment {
          seeker: Seekable = MockSeeker(),
          interruptionHandler: MusicInterruptionHandling = MockMusicInterruptionHandler(),
          clock: Clocking = MockClock(),
-         playerFactory: TestAudioPlayerFactory = TestAudioPlayerFactory(), // TODO: change to protocol?
+         // TestAudioPlayerFactory is not defined via protocol for ease. There's no need to send in another factory
+         playerFactory: TestAudioPlayerFactory = TestAudioPlayerFactory(),
          userDefaults: UserDefaultable = MockUserDefaults(),
          mediaQueryType: MediaQueryable.Type = MockMediaQuery.self) {
         PlayerEnvironment.resetAllStaticMocks()

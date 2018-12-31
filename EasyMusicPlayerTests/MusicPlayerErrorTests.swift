@@ -98,8 +98,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        let audioPlayer = AVAudioPlayer()
-        (env.musicService as! MusicService).audioPlayerDidFinishPlaying(audioPlayer, successfully: true) // TODO: ?
+        (env.musicService as? MusicService)?.audioPlayerDidFinishPlaying(AVAudioPlayer(), successfully: true)
 
         // test
         wait(for: 0.5) {
@@ -121,8 +120,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        let audioPlayer = AVAudioPlayer()
-        (env.musicService as! MusicService).audioPlayerDecodeErrorDidOccur(audioPlayer, error: nil) // TODO: ?
+        (env.musicService as? MusicService)?.audioPlayerDecodeErrorDidOccur(AVAudioPlayer(), error: nil)
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)

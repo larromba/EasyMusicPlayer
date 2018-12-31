@@ -8,7 +8,7 @@ final class ControlStateTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        controlsViewController = .fromStoryboard
+        controlsViewController = .fromStoryboard()
         env = PlayerEnvironment(controlsViewController: controlsViewController)
     }
 
@@ -165,7 +165,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPlayState() {
         // mocks
-        let scrubberViewController = ScrubberViewController.fromStoryboard
+        let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.inject()
         env.setPlaying()
@@ -181,7 +181,7 @@ final class ControlStateTests: XCTestCase {
 
     func testPauseState() {
         // mocks
-        let scrubberViewController = ScrubberViewController.fromStoryboard
+        let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.inject()
         env.setPaused()
@@ -199,7 +199,7 @@ final class ControlStateTests: XCTestCase {
 
     func testStopState() {
         // mocks
-        let scrubberViewController = ScrubberViewController.fromStoryboard
+        let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.inject()
         env.setStopped()
@@ -217,7 +217,7 @@ final class ControlStateTests: XCTestCase {
 
     func testErrorState() {
         // mocks
-        let scrubberViewController = ScrubberViewController.fromStoryboard
+        let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.inject()
         env.playerFactory.didPlay = false
@@ -236,7 +236,7 @@ final class ControlStateTests: XCTestCase {
 
     func testTrackRendersInfo() {
         // mocks
-        let infoViewController = InfoViewController.fromStoryboard
+        let infoViewController: InfoViewController = .fromStoryboard()
         env.infoViewController = infoViewController
         let image = UIImage()
         let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)

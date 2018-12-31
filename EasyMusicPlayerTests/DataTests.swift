@@ -20,7 +20,7 @@ final class DataTests: XCTestCase {
 
     func testRepeatStatePersisted() {
         // mocks
-        let controlsViewController = ControlsViewController.fromStoryboard
+        let controlsViewController: ControlsViewController = .fromStoryboard()
         env.controlsViewController = controlsViewController
         env.inject()
         env.setRepeatState(.none)

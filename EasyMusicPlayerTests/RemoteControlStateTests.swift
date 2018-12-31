@@ -236,7 +236,7 @@ final class RemoteControlStateTests: XCTestCase {
         // mocks
         let remoteInfo = MockNowPlayingInfoCenter()
         env.remoteInfo = remoteInfo
-        let scrubberViewController = ScrubberViewController.fromStoryboard
+        let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()

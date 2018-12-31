@@ -8,7 +8,7 @@ final class ControlTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        controlsViewController = .fromStoryboard
+        controlsViewController = .fromStoryboard()
         env = PlayerEnvironment(controlsViewController: controlsViewController)
     }
 
@@ -100,7 +100,7 @@ final class ControlTests: XCTestCase {
 
     func testScrubbingChangesPlayLocationInTrack() {
         // mocks
-        let scrubberViewController = ScrubberViewController.fromStoryboard
+        let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
