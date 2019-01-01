@@ -17,7 +17,7 @@ import MediaPlayer
 // MARK: - Sourcery Helper
 
 protocol _StringRawRepresentable: RawRepresentable {
-  var rawValue: String { get }
+    var rawValue: String { get }
 }
 
 struct _Variable<T> {
@@ -25,7 +25,7 @@ struct _Variable<T> {
   var variable: T
 
   init(_ variable: T) {
-    self.variable = variable
+      self.variable = variable
   }
 }
 
@@ -35,67 +35,67 @@ final class _Invocation {
   private var parameters: [String: Any] = [:]
 
   init(name: String) {
-    self.name = name
+      self.name = name
   }
 
   fileprivate func set<T: _StringRawRepresentable>(parameter: Any, forKey key: T) {
-    parameters[key.rawValue] = parameter
+      parameters[key.rawValue] = parameter
   }
   func parameter<T: _StringRawRepresentable>(for key: T) -> Any? {
-    return parameters[key.rawValue]
+      return parameters[key.rawValue]
   }
 }
 
 final class _Actions {
   enum Keys: String, _StringRawRepresentable {
-    case returnValue
-    case defaultReturnValue
-    case error
+      case returnValue
+      case defaultReturnValue
+      case error
   }
   private var invocations: [_Invocation] = []
 
   // MARK: - returnValue
 
   func set<T: _StringRawRepresentable>(returnValue value: Any, for functionName: T) {
-    let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.returnValue)
+      let invocation = self.invocation(for: functionName)
+      invocation.set(parameter: value, forKey: Keys.returnValue)
   }
   func returnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-    let invocation = self.invocation(for: functionName)
-    return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
+      let invocation = self.invocation(for: functionName)
+      return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
   }
 
   // MARK: - defaultReturnValue
 
   fileprivate func set<T: _StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
-    let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
+      let invocation = self.invocation(for: functionName)
+      invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
   }
   fileprivate func defaultReturnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-    let invocation = self.invocation(for: functionName)
-    return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
+      let invocation = self.invocation(for: functionName)
+      return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
   }
 
   // MARK: - error
 
   func set<T: _StringRawRepresentable>(error: Error, for functionName: T) {
-    let invocation = self.invocation(for: functionName)
-    invocation.set(parameter: error, forKey: Keys.error)
+      let invocation = self.invocation(for: functionName)
+      invocation.set(parameter: error, forKey: Keys.error)
   }
   func error<T: _StringRawRepresentable>(for functionName: T) -> Error? {
-    let invocation = self.invocation(for: functionName)
-    return invocation.parameter(for: Keys.error) as? Error
+      let invocation = self.invocation(for: functionName)
+      return invocation.parameter(for: Keys.error) as? Error
   }
 
   // MARK: - private
 
   private func invocation<T: _StringRawRepresentable>(for name: T) -> _Invocation {
-    if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+      if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+          return invocation
+      }
+      let invocation = _Invocation(name: name.rawValue)
+      invocations += [invocation]
       return invocation
-    }
-    let invocation = _Invocation(name: name.rawValue)
-    invocations += [invocation]
-    return invocation
   }
 }
 
@@ -103,23 +103,23 @@ final class _Invocations {
   private var history = [_Invocation]()
 
   fileprivate func record(_ invocation: _Invocation) {
-    history += [invocation]
+      history += [invocation]
   }
 
   func isInvoked<T: _StringRawRepresentable>(_ name: T) -> Bool {
-    return history.contains(where: { $0.name == name.rawValue })
+      return history.contains(where: { $0.name == name.rawValue })
   }
 
   func count<T: _StringRawRepresentable>(_ name: T) -> Int {
-    return history.filter {  $0.name == name.rawValue }.count
+      return history.filter {  $0.name == name.rawValue }.count
   }
 
   func all() -> [_Invocation] {
-    return history.sorted { $0.date < $1.date }
+      return history.sorted { $0.date < $1.date }
   }
 
   func find<T: _StringRawRepresentable>(_ name: T) -> [_Invocation] {
-    return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
+      return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
   }
 }
 
@@ -141,10 +141,10 @@ class MockAlertController: NSObject, AlertControlling {
     }
 
     enum showAlert1: String, _StringRawRepresentable {
-      case name = "showAlert1"
-      enum params: String, _StringRawRepresentable {
-        case alert = "showAlert(_alert:Alert).alert"
-      }
+        case name = "showAlert1"
+        enum params: String, _StringRawRepresentable {
+            case alert = "showAlert(_alert:Alert).alert"
+        }
     }
 }
 
@@ -197,8 +197,9 @@ class MockAudioPlayer: NSObject, AudioPlayer {
     }
 
     enum prepareToPlay1: String, _StringRawRepresentable {
-      case name = "prepareToPlay1"
+        case name = "prepareToPlay1"
     }
+
     // MARK: - play
 
     func play() -> Bool {
@@ -209,8 +210,9 @@ class MockAudioPlayer: NSObject, AudioPlayer {
     }
 
     enum play2: String, _StringRawRepresentable {
-      case name = "play2"
+        case name = "play2"
     }
+
     // MARK: - pause
 
     func pause() {
@@ -220,8 +222,9 @@ class MockAudioPlayer: NSObject, AudioPlayer {
     }
 
     enum pause3: String, _StringRawRepresentable {
-      case name = "pause3"
+        case name = "pause3"
     }
+
     // MARK: - stop
 
     func stop() {
@@ -231,8 +234,9 @@ class MockAudioPlayer: NSObject, AudioPlayer {
     }
 
     enum stop4: String, _StringRawRepresentable {
-      case name = "stop4"
+        case name = "stop4"
     }
+
     // MARK: - init
 
     required init(contentsOf url: URL) {
@@ -243,10 +247,10 @@ class MockAudioPlayer: NSObject, AudioPlayer {
     }
 
     enum init5: String, _StringRawRepresentable {
-      case name = "init5"
-      enum params: String, _StringRawRepresentable {
-        case url = "init(contentsOfurl:URL).url"
-      }
+        case name = "init5"
+        enum params: String, _StringRawRepresentable {
+            case url = "init(contentsOfurl:URL).url"
+        }
     }
 }
 
@@ -270,10 +274,10 @@ class MockAudioPlayerFactory: NSObject, AudioPlayerFactoring {
     }
 
     enum makeAudioPlayer1: String, _StringRawRepresentable {
-      case name = "makeAudioPlayer1"
-      enum params: String, _StringRawRepresentable {
-        case url = "makeAudioPlayer(withContentsOfurl:URL).url"
-      }
+        case name = "makeAudioPlayer1"
+        enum params: String, _StringRawRepresentable {
+            case url = "makeAudioPlayer(withContentsOfurl:URL).url"
+        }
     }
 }
 
@@ -303,12 +307,13 @@ class MockAudioSession: NSObject, AudioSessioning {
     }
 
     enum setCategory_objc1: String, _StringRawRepresentable {
-      case name = "setCategory_objc1"
-      enum params: String, _StringRawRepresentable {
-        case category = "setCategory_objc(_category:String,withoptions:AVAudioSession.CategoryOptions).category"
-        case options = "setCategory_objc(_category:String,withoptions:AVAudioSession.CategoryOptions).options"
-      }
+        case name = "setCategory_objc1"
+        enum params: String, _StringRawRepresentable {
+            case category = "setCategory_objc(_category:String,withoptions:AVAudioSession.CategoryOptions).category"
+            case options = "setCategory_objc(_category:String,withoptions:AVAudioSession.CategoryOptions).options"
+        }
     }
+
     // MARK: - setActive_objc
 
     func setActive_objc(_ active: Bool) throws {
@@ -322,10 +327,10 @@ class MockAudioSession: NSObject, AudioSessioning {
     }
 
     enum setActive_objc2: String, _StringRawRepresentable {
-      case name = "setActive_objc2"
-      enum params: String, _StringRawRepresentable {
-        case active = "setActive_objc(_active:Bool).active"
-      }
+        case name = "setActive_objc2"
+        enum params: String, _StringRawRepresentable {
+            case active = "setActive_objc(_active:Bool).active"
+        }
     }
 }
 
@@ -351,10 +356,10 @@ class MockAuthorization: NSObject, Authorization {
     }
 
     enum authorize1: String, _StringRawRepresentable {
-      case name = "authorize1"
-      enum params: String, _StringRawRepresentable {
-        case completion = "authorize(_completion:@escaping((_success:Bool)->Void)).completion"
-      }
+        case name = "authorize1"
+        enum params: String, _StringRawRepresentable {
+            case completion = "authorize(_completion:@escaping((_success:Bool)->Void)).completion"
+        }
     }
 }
 
@@ -373,8 +378,9 @@ class MockClock: NSObject, Clocking {
     }
 
     enum start1: String, _StringRawRepresentable {
-      case name = "start1"
+        case name = "start1"
     }
+
     // MARK: - stop
 
     func stop() {
@@ -384,8 +390,9 @@ class MockClock: NSObject, Clocking {
     }
 
     enum stop2: String, _StringRawRepresentable {
-      case name = "stop2"
+        case name = "stop2"
     }
+
     // MARK: - setDelegate
 
     func setDelegate(_ delegate: ClockDelegate) {
@@ -396,10 +403,10 @@ class MockClock: NSObject, Clocking {
     }
 
     enum setDelegate3: String, _StringRawRepresentable {
-      case name = "setDelegate3"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:ClockDelegate).delegate"
-      }
+        case name = "setDelegate3"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:ClockDelegate).delegate"
+        }
     }
 }
 
@@ -431,11 +438,12 @@ class MockControlsController: NSObject, ControlsControlling {
     }
 
     enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:ControlsDelegate).delegate"
-      }
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:ControlsDelegate).delegate"
+        }
     }
+
     // MARK: - setMusicServiceState
 
     func setMusicServiceState(_ musicServiceState: MusicServiceState) {
@@ -446,11 +454,12 @@ class MockControlsController: NSObject, ControlsControlling {
     }
 
     enum setMusicServiceState2: String, _StringRawRepresentable {
-      case name = "setMusicServiceState2"
-      enum params: String, _StringRawRepresentable {
-        case musicServiceState = "setMusicServiceState(_musicServiceState:MusicServiceState).musicServiceState"
-      }
+        case name = "setMusicServiceState2"
+        enum params: String, _StringRawRepresentable {
+            case musicServiceState = "setMusicServiceState(_musicServiceState:MusicServiceState).musicServiceState"
+        }
     }
+
     // MARK: - setRepeatState
 
     func setRepeatState(_ repeatState: RepeatState) {
@@ -461,11 +470,12 @@ class MockControlsController: NSObject, ControlsControlling {
     }
 
     enum setRepeatState3: String, _StringRawRepresentable {
-      case name = "setRepeatState3"
-      enum params: String, _StringRawRepresentable {
-        case repeatState = "setRepeatState(_repeatState:RepeatState).repeatState"
-      }
+        case name = "setRepeatState3"
+        enum params: String, _StringRawRepresentable {
+            case repeatState = "setRepeatState(_repeatState:RepeatState).repeatState"
+        }
     }
+
     // MARK: - setControlsPlaying
 
     func setControlsPlaying() {
@@ -475,8 +485,9 @@ class MockControlsController: NSObject, ControlsControlling {
     }
 
     enum setControlsPlaying4: String, _StringRawRepresentable {
-      case name = "setControlsPlaying4"
+        case name = "setControlsPlaying4"
     }
+
     // MARK: - setControlsPaused
 
     func setControlsPaused() {
@@ -486,8 +497,9 @@ class MockControlsController: NSObject, ControlsControlling {
     }
 
     enum setControlsPaused5: String, _StringRawRepresentable {
-      case name = "setControlsPaused5"
+        case name = "setControlsPaused5"
     }
+
     // MARK: - setControlsStopped
 
     func setControlsStopped() {
@@ -497,7 +509,7 @@ class MockControlsController: NSObject, ControlsControlling {
     }
 
     enum setControlsStopped6: String, _StringRawRepresentable {
-      case name = "setControlsStopped6"
+        case name = "setControlsStopped6"
     }
 }
 
@@ -523,10 +535,10 @@ class MockControlsViewController: NSObject, ControlsViewControlling {
     }
 
     enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:ControlsViewDelegate).delegate"
-      }
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:ControlsViewDelegate).delegate"
+        }
     }
 }
 
@@ -549,12 +561,13 @@ class MockDataManger: NSObject, DataManaging {
     }
 
     enum save1: String, _StringRawRepresentable {
-      case name = "save1"
-      enum params: String, _StringRawRepresentable {
-        case data = "save<T:Keyable,U>(_data:U?,key:T).data"
-        case key = "save<T:Keyable,U>(_data:U?,key:T).key"
-      }
+        case name = "save1"
+        enum params: String, _StringRawRepresentable {
+            case data = "save<T:Keyable,U>(_data:U?,key:T).data"
+            case key = "save<T:Keyable,U>(_data:U?,key:T).key"
+        }
     }
+
     // MARK: - load<T: Keyable, U>
 
     func load<T: Keyable, U>(key: T) -> U? {
@@ -566,10 +579,10 @@ class MockDataManger: NSObject, DataManaging {
     }
 
     enum load2: String, _StringRawRepresentable {
-      case name = "load2"
-      enum params: String, _StringRawRepresentable {
-        case key = "load<T:Keyable,U>(key:T).key"
-      }
+        case name = "load2"
+        enum params: String, _StringRawRepresentable {
+            case key = "load<T:Keyable,U>(key:T).key"
+        }
     }
 }
 
@@ -589,11 +602,12 @@ class MockInfoController: NSObject, InfoControlling {
     }
 
     enum setInfoFromTrack1: String, _StringRawRepresentable {
-      case name = "setInfoFromTrack1"
-      enum params: String, _StringRawRepresentable {
-        case track = "setInfoFromTrack(_track:Track).track"
-      }
+        case name = "setInfoFromTrack1"
+        enum params: String, _StringRawRepresentable {
+            case track = "setInfoFromTrack(_track:Track).track"
+        }
     }
+
     // MARK: - clearInfo
 
     func clearInfo() {
@@ -603,8 +617,9 @@ class MockInfoController: NSObject, InfoControlling {
     }
 
     enum clearInfo2: String, _StringRawRepresentable {
-      case name = "clearInfo2"
+        case name = "clearInfo2"
     }
+
     // MARK: - setTime
 
     func setTime(_ time: TimeInterval, duration: TimeInterval) {
@@ -616,12 +631,13 @@ class MockInfoController: NSObject, InfoControlling {
     }
 
     enum setTime3: String, _StringRawRepresentable {
-      case name = "setTime3"
-      enum params: String, _StringRawRepresentable {
-        case time = "setTime(_time:TimeInterval,duration:TimeInterval).time"
-        case duration = "setTime(_time:TimeInterval,duration:TimeInterval).duration"
-      }
+        case name = "setTime3"
+        enum params: String, _StringRawRepresentable {
+            case time = "setTime(_time:TimeInterval,duration:TimeInterval).time"
+            case duration = "setTime(_time:TimeInterval,duration:TimeInterval).duration"
+        }
     }
+
     // MARK: - setTrackPosition
 
     func setTrackPosition(_ trackPosition: Int, totalTracks: Int) {
@@ -633,11 +649,11 @@ class MockInfoController: NSObject, InfoControlling {
     }
 
     enum setTrackPosition4: String, _StringRawRepresentable {
-      case name = "setTrackPosition4"
-      enum params: String, _StringRawRepresentable {
-        case trackPosition = "setTrackPosition(_trackPosition:Int,totalTracks:Int).trackPosition"
-        case totalTracks = "setTrackPosition(_trackPosition:Int,totalTracks:Int).totalTracks"
-      }
+        case name = "setTrackPosition4"
+        enum params: String, _StringRawRepresentable {
+            case trackPosition = "setTrackPosition(_trackPosition:Int,totalTracks:Int).trackPosition"
+            case totalTracks = "setTrackPosition(_trackPosition:Int,totalTracks:Int).totalTracks"
+        }
     }
 }
 
@@ -667,8 +683,9 @@ class MockMediaLibrary: NSObject, MediaLibraryAuthorizable {
     }
 
     enum authorizationStatus1: String, _StringRawRepresentable {
-      case name = "authorizationStatus1"
+        case name = "authorizationStatus1"
     }
+
     // MARK: - requestAuthorization
 
     static func requestAuthorization(_ handler: @escaping (MPMediaLibraryAuthorizationStatus) -> Void) {
@@ -679,10 +696,10 @@ class MockMediaLibrary: NSObject, MediaLibraryAuthorizable {
     }
 
     enum requestAuthorization2: String, _StringRawRepresentable {
-      case name = "requestAuthorization2"
-      enum params: String, _StringRawRepresentable {
-        case handler = "requestAuthorization(_handler:@escaping(MPMediaLibraryAuthorizationStatus)->Void).handler"
-      }
+        case name = "requestAuthorization2"
+        enum params: String, _StringRawRepresentable {
+            case handler = "requestAuthorization(_handler:@escaping(MPMediaLibraryAuthorizationStatus)->Void).handler"
+        }
     }
 }
 
@@ -702,7 +719,7 @@ class MockMediaQuery: NSObject, MediaQueryable {
     }
 
     enum songs1: String, _StringRawRepresentable {
-      case name = "songs1"
+        case name = "songs1"
     }
 }
 
@@ -722,11 +739,12 @@ class MockMusicInterruptionHandler: NSObject, MusicInterruptionHandling {
     }
 
     enum setIsPlaying1: String, _StringRawRepresentable {
-      case name = "setIsPlaying1"
-      enum params: String, _StringRawRepresentable {
-        case isPlaying = "setIsPlaying(_isPlaying:Bool).isPlaying"
-      }
+        case name = "setIsPlaying1"
+        enum params: String, _StringRawRepresentable {
+            case isPlaying = "setIsPlaying(_isPlaying:Bool).isPlaying"
+        }
     }
+
     // MARK: - setDelegate
 
     func setDelegate(_ delegate: MusicInterruptionDelegate) {
@@ -737,10 +755,10 @@ class MockMusicInterruptionHandler: NSObject, MusicInterruptionHandling {
     }
 
     enum setDelegate2: String, _StringRawRepresentable {
-      case name = "setDelegate2"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:MusicInterruptionDelegate).delegate"
-      }
+        case name = "setDelegate2"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:MusicInterruptionDelegate).delegate"
+        }
     }
 }
 
@@ -766,11 +784,12 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(delegate:MusicServiceDelegate).delegate"
-      }
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(delegate:MusicServiceDelegate).delegate"
+        }
     }
+
     // MARK: - setRepeatState
 
     func setRepeatState(_ repeatState: RepeatState) {
@@ -781,11 +800,12 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum setRepeatState2: String, _StringRawRepresentable {
-      case name = "setRepeatState2"
-      enum params: String, _StringRawRepresentable {
-        case repeatState = "setRepeatState(_repeatState:RepeatState).repeatState"
-      }
+        case name = "setRepeatState2"
+        enum params: String, _StringRawRepresentable {
+            case repeatState = "setRepeatState(_repeatState:RepeatState).repeatState"
+        }
     }
+
     // MARK: - setTime
 
     func setTime(_ time: TimeInterval) {
@@ -796,11 +816,12 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum setTime3: String, _StringRawRepresentable {
-      case name = "setTime3"
-      enum params: String, _StringRawRepresentable {
-        case time = "setTime(_time:TimeInterval).time"
-      }
+        case name = "setTime3"
+        enum params: String, _StringRawRepresentable {
+            case time = "setTime(_time:TimeInterval).time"
+        }
     }
+
     // MARK: - play
 
     func play() {
@@ -810,8 +831,9 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum play4: String, _StringRawRepresentable {
-      case name = "play4"
+        case name = "play4"
     }
+
     // MARK: - stop
 
     func stop() {
@@ -821,8 +843,9 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum stop5: String, _StringRawRepresentable {
-      case name = "stop5"
+        case name = "stop5"
     }
+
     // MARK: - pause
 
     func pause() {
@@ -832,8 +855,9 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum pause6: String, _StringRawRepresentable {
-      case name = "pause6"
+        case name = "pause6"
     }
+
     // MARK: - previous
 
     func previous() {
@@ -843,8 +867,9 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum previous7: String, _StringRawRepresentable {
-      case name = "previous7"
+        case name = "previous7"
     }
+
     // MARK: - next
 
     func next() {
@@ -854,8 +879,9 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum next8: String, _StringRawRepresentable {
-      case name = "next8"
+        case name = "next8"
     }
+
     // MARK: - shuffle
 
     func shuffle() {
@@ -865,8 +891,9 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum shuffle9: String, _StringRawRepresentable {
-      case name = "shuffle9"
+        case name = "shuffle9"
     }
+
     // MARK: - skip
 
     func skip() {
@@ -876,7 +903,7 @@ class MockMusicService: NSObject, MusicServicing {
     }
 
     enum skip10: String, _StringRawRepresentable {
-      case name = "skip10"
+        case name = "skip10"
     }
 }
 
@@ -945,11 +972,12 @@ class MockPlaylist: NSObject, Playlistable {
     }
 
     enum create1: String, _StringRawRepresentable {
-      case name = "create1"
-      enum params: String, _StringRawRepresentable {
-        case shuffled = "create(shuffled:Bool).shuffled"
-      }
+        case name = "create1"
+        enum params: String, _StringRawRepresentable {
+            case shuffled = "create(shuffled:Bool).shuffled"
+        }
     }
+
     // MARK: - find
 
     func find(ids: [UInt64]) -> [MPMediaItem] {
@@ -961,10 +989,10 @@ class MockPlaylist: NSObject, Playlistable {
     }
 
     enum find2: String, _StringRawRepresentable {
-      case name = "find2"
-      enum params: String, _StringRawRepresentable {
-        case ids = "find(ids:[UInt64]).ids"
-      }
+        case name = "find2"
+        enum params: String, _StringRawRepresentable {
+            case ids = "find(ids:[UInt64]).ids"
+        }
     }
 }
 
@@ -1050,11 +1078,12 @@ class MockScrubberController: NSObject, ScrubberControlling {
     }
 
     enum moveScrubber1: String, _StringRawRepresentable {
-      case name = "moveScrubber1"
-      enum params: String, _StringRawRepresentable {
-        case percentage = "moveScrubber(percentage:Float).percentage"
-      }
+        case name = "moveScrubber1"
+        enum params: String, _StringRawRepresentable {
+            case percentage = "moveScrubber(percentage:Float).percentage"
+        }
     }
+
     // MARK: - setIsUserInteractionEnabled
 
     func setIsUserInteractionEnabled(_ isEnabled: Bool) {
@@ -1065,11 +1094,12 @@ class MockScrubberController: NSObject, ScrubberControlling {
     }
 
     enum setIsUserInteractionEnabled2: String, _StringRawRepresentable {
-      case name = "setIsUserInteractionEnabled2"
-      enum params: String, _StringRawRepresentable {
-        case isEnabled = "setIsUserInteractionEnabled(_isEnabled:Bool).isEnabled"
-      }
+        case name = "setIsUserInteractionEnabled2"
+        enum params: String, _StringRawRepresentable {
+            case isEnabled = "setIsUserInteractionEnabled(_isEnabled:Bool).isEnabled"
+        }
     }
+
     // MARK: - setDelegate
 
     func setDelegate(_ delegate: ScrubberControllerDelegate) {
@@ -1080,10 +1110,10 @@ class MockScrubberController: NSObject, ScrubberControlling {
     }
 
     enum setDelegate3: String, _StringRawRepresentable {
-      case name = "setDelegate3"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:ScrubberControllerDelegate).delegate"
-      }
+        case name = "setDelegate3"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:ScrubberControllerDelegate).delegate"
+        }
     }
 }
 
@@ -1121,10 +1151,10 @@ class MockScrubberViewController: NSObject, ScrubberViewControlling {
     }
 
     enum setDelegate1: String, _StringRawRepresentable {
-      case name = "setDelegate1"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:ScrubberViewDelegate).delegate"
-      }
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:ScrubberViewDelegate).delegate"
+        }
     }
 }
 
@@ -1144,11 +1174,12 @@ class MockSeeker: NSObject, Seekable {
     }
 
     enum startSeekingWithAction1: String, _StringRawRepresentable {
-      case name = "startSeekingWithAction1"
-      enum params: String, _StringRawRepresentable {
-        case action = "startSeekingWithAction(_action:SeekAction).action"
-      }
+        case name = "startSeekingWithAction1"
+        enum params: String, _StringRawRepresentable {
+            case action = "startSeekingWithAction(_action:SeekAction).action"
+        }
     }
+
     // MARK: - stopSeeking
 
     func stopSeeking() {
@@ -1158,8 +1189,9 @@ class MockSeeker: NSObject, Seekable {
     }
 
     enum stopSeeking2: String, _StringRawRepresentable {
-      case name = "stopSeeking2"
+        case name = "stopSeeking2"
     }
+
     // MARK: - setDelegate
 
     func setDelegate(_ delegate: SeekerDelegate) {
@@ -1170,10 +1202,10 @@ class MockSeeker: NSObject, Seekable {
     }
 
     enum setDelegate3: String, _StringRawRepresentable {
-      case name = "setDelegate3"
-      enum params: String, _StringRawRepresentable {
-        case delegate = "setDelegate(_delegate:SeekerDelegate).delegate"
-      }
+        case name = "setDelegate3"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:SeekerDelegate).delegate"
+        }
     }
 }
 
@@ -1216,8 +1248,9 @@ class MockTrackManager: NSObject, TrackManaging {
     }
 
     enum loadSavedPlaylist1: String, _StringRawRepresentable {
-      case name = "loadSavedPlaylist1"
+        case name = "loadSavedPlaylist1"
     }
+
     // MARK: - loadNewPlaylist
 
     func loadNewPlaylist(shuffled: Bool) {
@@ -1228,11 +1261,12 @@ class MockTrackManager: NSObject, TrackManaging {
     }
 
     enum loadNewPlaylist2: String, _StringRawRepresentable {
-      case name = "loadNewPlaylist2"
-      enum params: String, _StringRawRepresentable {
-        case shuffled = "loadNewPlaylist(shuffled:Bool).shuffled"
-      }
+        case name = "loadNewPlaylist2"
+        enum params: String, _StringRawRepresentable {
+            case shuffled = "loadNewPlaylist(shuffled:Bool).shuffled"
+        }
     }
+
     // MARK: - cuePrevious
 
     func cuePrevious() -> Bool {
@@ -1243,8 +1277,9 @@ class MockTrackManager: NSObject, TrackManaging {
     }
 
     enum cuePrevious3: String, _StringRawRepresentable {
-      case name = "cuePrevious3"
+        case name = "cuePrevious3"
     }
+
     // MARK: - cueNext
 
     func cueNext() -> Bool {
@@ -1255,8 +1290,9 @@ class MockTrackManager: NSObject, TrackManaging {
     }
 
     enum cueNext4: String, _StringRawRepresentable {
-      case name = "cueNext4"
+        case name = "cueNext4"
     }
+
     // MARK: - cueStart
 
     func cueStart() {
@@ -1266,8 +1302,9 @@ class MockTrackManager: NSObject, TrackManaging {
     }
 
     enum cueStart5: String, _StringRawRepresentable {
-      case name = "cueStart5"
+        case name = "cueStart5"
     }
+
     // MARK: - cueEnd
 
     func cueEnd() {
@@ -1277,8 +1314,9 @@ class MockTrackManager: NSObject, TrackManaging {
     }
 
     enum cueEnd6: String, _StringRawRepresentable {
-      case name = "cueEnd6"
+        case name = "cueEnd6"
     }
+
     // MARK: - removeTrack
 
     func removeTrack(atIndex index: Int) {
@@ -1289,10 +1327,10 @@ class MockTrackManager: NSObject, TrackManaging {
     }
 
     enum removeTrack7: String, _StringRawRepresentable {
-      case name = "removeTrack7"
-      enum params: String, _StringRawRepresentable {
-        case index = "removeTrack(atIndexindex:Int).index"
-      }
+        case name = "removeTrack7"
+        enum params: String, _StringRawRepresentable {
+            case index = "removeTrack(atIndexindex:Int).index"
+        }
     }
 }
 
@@ -1314,11 +1352,11 @@ class MockURLSession: NSObject, URLSessioning {
     }
 
     enum dataTask1: String, _StringRawRepresentable {
-      case name = "dataTask1"
-      enum params: String, _StringRawRepresentable {
-        case request = "dataTask(withrequest:URLRequest,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).request"
-        case completionHandler = "dataTask(withrequest:URLRequest,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).completionHandler"
-      }
+        case name = "dataTask1"
+        enum params: String, _StringRawRepresentable {
+            case request = "dataTask(withrequest:URLRequest,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).request"
+            case completionHandler = "dataTask(withrequest:URLRequest,completionHandler:@escaping(Data?,URLResponse?,Error?)->Void).completionHandler"
+        }
     }
 }
 
@@ -1339,11 +1377,12 @@ class MockUserDefaults: NSObject, UserDefaultable {
     }
 
     enum object1: String, _StringRawRepresentable {
-      case name = "object1"
-      enum params: String, _StringRawRepresentable {
-        case defaultName = "object(forKeydefaultName:String).defaultName"
-      }
+        case name = "object1"
+        enum params: String, _StringRawRepresentable {
+            case defaultName = "object(forKeydefaultName:String).defaultName"
+        }
     }
+
     // MARK: - set
 
     func set(_ value: Any?, forKey defaultName: String) {
@@ -1357,11 +1396,11 @@ class MockUserDefaults: NSObject, UserDefaultable {
     }
 
     enum set2: String, _StringRawRepresentable {
-      case name = "set2"
-      enum params: String, _StringRawRepresentable {
-        case value = "set(_value:Any?,forKeydefaultName:String).value"
-        case defaultName = "set(_value:Any?,forKeydefaultName:String).defaultName"
-      }
+        case name = "set2"
+        enum params: String, _StringRawRepresentable {
+            case value = "set(_value:Any?,forKeydefaultName:String).value"
+            case defaultName = "set(_value:Any?,forKeydefaultName:String).defaultName"
+        }
     }
 }
 

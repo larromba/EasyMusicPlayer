@@ -55,16 +55,17 @@ final class ControlTests: XCTestCase {
 
     func testPressingShuffleCreatesShufflesAndPlaysTracks() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        let library = (0..<100).map { MockMediaItem(id: $0) }
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
 
         // sut
-        XCTAssertEqual(env.trackManager.tracks, defaultTracks)
+        XCTAssertEqual(env.trackManager.tracks, library)
         XCTAssertTrue(controlsViewController.shuffleButton.tap())
 
         // test
-        XCTAssertNotEqual(env.trackManager.tracks, defaultTracks)
-        XCTAssertEqual(env.trackManager.tracks.count, defaultTracks.count)
+        XCTAssertNotEqual(env.trackManager.tracks, library)
+        XCTAssertEqual(env.trackManager.tracks.count, library.count)
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
