@@ -10,10 +10,11 @@ final class MusicAuthorization: Authorization {
 
     var isAuthorized: Bool {
         #if DEBUG
-        return __isSnapshot ? true : authorizer.authorizationStatus() == .authorized
-        #else
-        return authorizer.authorizationStatus() == .authorized
+        if __isSnapshot {
+            return true
+        }
         #endif
+        return authorizer.authorizationStatus() == .authorized
     }
 
     func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
