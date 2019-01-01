@@ -21,29 +21,29 @@ protocol _StringRawRepresentable: RawRepresentable {
 }
 
 struct _Variable<T> {
-  let date = Date()
-  var variable: T
+    let date = Date()
+    var variable: T
 
-  init(_ variable: T) {
-      self.variable = variable
-  }
+    init(_ variable: T) {
+        self.variable = variable
+    }
 }
 
 final class _Invocation {
-  let name: String
-  let date = Date()
-  private var parameters: [String: Any] = [:]
+    let name: String
+    let date = Date()
+    private var parameters: [String: Any] = [:]
 
-  init(name: String) {
-      self.name = name
-  }
+    init(name: String) {
+        self.name = name
+    }
 
-  fileprivate func set<T: _StringRawRepresentable>(parameter: Any, forKey key: T) {
-      parameters[key.rawValue] = parameter
-  }
-  func parameter<T: _StringRawRepresentable>(for key: T) -> Any? {
-      return parameters[key.rawValue]
-  }
+    fileprivate func set<T: _StringRawRepresentable>(parameter: Any, forKey key: T) {
+        parameters[key.rawValue] = parameter
+    }
+    func parameter<T: _StringRawRepresentable>(for key: T) -> Any? {
+        return parameters[key.rawValue]
+    }
 }
 
 final class _Actions {
