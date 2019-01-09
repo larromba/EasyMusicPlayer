@@ -40,16 +40,15 @@ final class MusicPlayerErrorTests: XCTestCase {
         handler(.denied)
 
         // test
-        wait(for: 0.5) {
-            guard let alert = self.viewController.presentedViewController as? UIAlertController else {
-                XCTFail("expected UIAlertController")
-                return
-            }
-            XCTAssertEqual(alert.title, "Authorization")
-            XCTAssertEqual(alert.message, "In the Settings, please allow us access to your music!")
-            XCTAssertEqual(alert.actions.count, 1)
-            XCTAssertEqual(alert.actions.first?.title, "OK")
+        waitSync()
+        guard let alert = self.viewController.presentedViewController as? UIAlertController else {
+            XCTFail("expected UIAlertController")
+            return
         }
+        XCTAssertEqual(alert.title, "Authorization")
+        XCTAssertEqual(alert.message, "In the Settings, please allow us access to your music!")
+        XCTAssertEqual(alert.actions.count, 1)
+        XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
     func testNoTracksShowsError() {
@@ -59,16 +58,15 @@ final class MusicPlayerErrorTests: XCTestCase {
         env.setPlaying()
 
         // test
-        wait(for: 0.5) {
-            guard let alert = self.viewController.presentedViewController as? UIAlertController else {
-                XCTFail("expected UIAlertController")
-                return
-            }
-            XCTAssertEqual(alert.title, "Error")
-            XCTAssertEqual(alert.message, "You have no music")
-            XCTAssertEqual(alert.actions.count, 1)
-            XCTAssertEqual(alert.actions.first?.title, "OK")
+        waitSync()
+        guard let alert = self.viewController.presentedViewController as? UIAlertController else {
+            XCTFail("expected UIAlertController")
+            return
         }
+        XCTAssertEqual(alert.title, "Error")
+        XCTAssertEqual(alert.message, "You have no music")
+        XCTAssertEqual(alert.actions.count, 1)
+        XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
     func testNoVolumeShowsError() {
@@ -78,16 +76,15 @@ final class MusicPlayerErrorTests: XCTestCase {
         env.setPlaying()
 
         // test
-        wait(for: 0.5) {
-            guard let alert = self.viewController.presentedViewController as? UIAlertController else {
-                XCTFail("expected UIAlertController")
-                return
-            }
-            XCTAssertEqual(alert.title, "Error")
-            XCTAssertEqual(alert.message, "Your volume is too low")
-            XCTAssertEqual(alert.actions.count, 1)
-            XCTAssertEqual(alert.actions.first?.title, "OK")
+        waitSync()
+        guard let alert = self.viewController.presentedViewController as? UIAlertController else {
+            XCTFail("expected UIAlertController")
+            return
         }
+        XCTAssertEqual(alert.title, "Error")
+        XCTAssertEqual(alert.message, "Your volume is too low")
+        XCTAssertEqual(alert.actions.count, 1)
+        XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
     func testMusicFinishedShowsAlert() {
@@ -101,16 +98,15 @@ final class MusicPlayerErrorTests: XCTestCase {
         (env.musicService as? MusicService)?.audioPlayerDidFinishPlaying(AVAudioPlayer(), successfully: true)
 
         // test
-        wait(for: 0.5) {
-            guard let alert = self.viewController.presentedViewController as? UIAlertController else {
-                XCTFail("expected UIAlertController")
-                return
-            }
-            XCTAssertEqual(alert.title, "End")
-            XCTAssertEqual(alert.message, "Your playlist finished")
-            XCTAssertEqual(alert.actions.count, 1)
-            XCTAssertEqual(alert.actions.first?.title, "OK")
+        waitSync()
+        guard let alert = self.viewController.presentedViewController as? UIAlertController else {
+            XCTFail("expected UIAlertController")
+            return
         }
+        XCTAssertEqual(alert.title, "End")
+        XCTAssertEqual(alert.message, "Your playlist finished")
+        XCTAssertEqual(alert.actions.count, 1)
+        XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
     func testDecodeErrorRemovesTrack() {

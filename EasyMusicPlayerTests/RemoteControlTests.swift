@@ -130,9 +130,8 @@ final class RemoteControlTests: XCTestCase {
         (remote.seekBackwardCommand as! MockSeekRemoteCommand).fire()
 
         // test
-        wait(for: 3.0) {
-            XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 2)
-        }
+        waitSync(for: 3.0)
+        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 2)
     }
 
     func testSeekNextChangesPlayLocationInTrack() {
@@ -146,8 +145,7 @@ final class RemoteControlTests: XCTestCase {
         (remote.seekForwardCommand as! MockSeekRemoteCommand).fire()
 
         // test
-        wait(for: 3.0) {
-            XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 6)
-        }
+        waitSync(for: 3.0)
+        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 6)
     }
 }
