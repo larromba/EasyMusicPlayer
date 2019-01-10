@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import Logging
 
 protocol MusicInterruptionDelegate: AnyObject {
     func interruptionHandler(_ handler: MusicInterruptionHandler, updtedState state: MusicInterruptionState)
@@ -18,7 +19,7 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         isHeadphonesRemovedByMistake: false,
         isPlayingInBackground: false,
         isAudioSessionInterrupted: false
-    )
+    ) { didSet { log(state) } }
 
     init() {
         NotificationCenter.default.addObserver(
@@ -76,9 +77,10 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
     }
 
     @objc
-    private func audioSessionRouteChange(_ notifcation: Notification) {
+    private func audioSessionRouteChange(_ notification: Notification) {
+        logWarning("**** audioSessionRouteChange ****", String(describing: notification.userInfo))
         guard
-            let rawValue = (notifcation.userInfo?[AVAudioSessionRouteChangeReasonKey] as? NSNumber)?.uintValue,
+            let rawValue = (notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? NSNumber)?.uintValue,
             let reason = AVAudioSessionRouteChangeReason(rawValue: rawValue) else {
                 return
         }
@@ -98,10 +100,14 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         }
     }
 
+    // for the confusing nature of AVAudioSessionInterruptionWasSuspendedKey, see:
+    // see https://developer.apple.com/documentation/avfoundation/avaudiosession/1616596-interruptionnotification
     @objc
     private func audioSessionInterruption(_ notification: Notification) {
+        logWarning("**** audioSessionInterruption ****", String(describing: notification.userInfo))
         guard
             let rawValue = (notification.userInfo?[AVAudioSessionInterruptionTypeKey] as? NSNumber)?.uintValue,
+            let key = (notification.userInfo?[AVAudioSessionInterruptionWasSuspendedKey] as? Bool), !key,
             let reason = AVAudioSessionInterruptionType(rawValue: rawValue) else {
                 return
         }
@@ -121,6 +127,7 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
 
     private func notifyStateChange() {
         DispatchQueue.main.async {
+            log("**** notifyStateChange ****")
             self.delegate?.interruptionHandler(self, updtedState: self.state)
         }
     }

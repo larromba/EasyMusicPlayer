@@ -168,27 +168,31 @@ final class {% call helperClassPrefix %}Actions {
 }
 
 final class {% call helperClassPrefix %}Invocations {
-  private var history = [{% call helperClassPrefix %}Invocation]()
+    private var history = [{% call helperClassPrefix %}Invocation]()
 
-  fileprivate func record(_ invocation: {% call helperClassPrefix %}Invocation) {
-      history += [invocation]
-  }
+    fileprivate func record(_ invocation: {% call helperClassPrefix %}Invocation) {
+        history += [invocation]
+    }
 
-  func isInvoked<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> Bool {
-      return history.contains(where: { $0.name == name.rawValue })
-  }
+    func isInvoked<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> Bool {
+        return history.contains(where: { $0.name == name.rawValue })
+    }
 
-  func count<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> Int {
-      return history.filter {  $0.name == name.rawValue }.count
-  }
+    func count<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> Int {
+        return history.filter {  $0.name == name.rawValue }.count
+    }
 
-  func all() -> [{% call helperClassPrefix %}Invocation] {
-      return history.sorted { $0.date < $1.date }
-  }
+    func all() -> [{% call helperClassPrefix %}Invocation] {
+        return history.sorted { $0.date < $1.date }
+    }
 
-  func find<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> [{% call helperClassPrefix %}Invocation] {
-      return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
-  }
+    func find<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> [{% call helperClassPrefix %}Invocation] {
+        return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
+    }
+
+    func reset() {
+        history.removeAll()
+    }
 }
 
 // MARK: - Sourcery Mocks

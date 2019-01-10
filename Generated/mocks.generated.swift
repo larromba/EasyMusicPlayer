@@ -100,27 +100,31 @@ final class _Actions {
 }
 
 final class _Invocations {
-  private var history = [_Invocation]()
+    private var history = [_Invocation]()
 
-  fileprivate func record(_ invocation: _Invocation) {
-      history += [invocation]
-  }
+    fileprivate func record(_ invocation: _Invocation) {
+        history += [invocation]
+    }
 
-  func isInvoked<T: _StringRawRepresentable>(_ name: T) -> Bool {
-      return history.contains(where: { $0.name == name.rawValue })
-  }
+    func isInvoked<T: _StringRawRepresentable>(_ name: T) -> Bool {
+        return history.contains(where: { $0.name == name.rawValue })
+    }
 
-  func count<T: _StringRawRepresentable>(_ name: T) -> Int {
-      return history.filter {  $0.name == name.rawValue }.count
-  }
+    func count<T: _StringRawRepresentable>(_ name: T) -> Int {
+        return history.filter {  $0.name == name.rawValue }.count
+    }
 
-  func all() -> [_Invocation] {
-      return history.sorted { $0.date < $1.date }
-  }
+    func all() -> [_Invocation] {
+        return history.sorted { $0.date < $1.date }
+    }
 
-  func find<T: _StringRawRepresentable>(_ name: T) -> [_Invocation] {
-      return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
-  }
+    func find<T: _StringRawRepresentable>(_ name: T) -> [_Invocation] {
+        return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
+    }
+
+    func reset() {
+        history.removeAll()
+    }
 }
 
 // MARK: - Sourcery Mocks

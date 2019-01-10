@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2 (10/01/2019)
+    fixed minor bug when removing and reattaching bluetooth headphones
+
 ## 2.0.1 (31/12/2018)
     added open source logo to splash screen
 
