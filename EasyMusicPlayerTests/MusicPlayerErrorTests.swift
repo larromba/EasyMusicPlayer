@@ -5,12 +5,12 @@ import XCTest
 
 final class MusicPlayerErrorTests: XCTestCase {
     private var viewController: UIViewController!
-    private var env: PlayerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         viewController = UIViewController()
-        env = PlayerEnvironment(alertPresenter: viewController)
+        env = AppTestEnvironment(alertPresenter: viewController)
         UIApplication.shared.keyWindow!.rootViewController = viewController
         UIView.setAnimationsEnabled(false)
     }

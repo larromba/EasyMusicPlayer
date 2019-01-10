@@ -4,11 +4,11 @@ import XCTest
 
 final class DataTests: XCTestCase {
     private var userDefaults: UserDefaults!
-    private var env: PlayerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         userDefaults = UserDefaults(suiteName: UUID().uuidString)
-        env = PlayerEnvironment(userDefaults: userDefaults)
+        env = AppTestEnvironment(userDefaults: userDefaults)
         super.setUp()
     }
 

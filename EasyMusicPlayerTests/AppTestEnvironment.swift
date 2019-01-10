@@ -4,7 +4,7 @@ import MediaPlayer
 
 let defaultTracks: [MPMediaItem] = [.mock(id: 0), .mock(id: 1), .mock(id: 2)]
 
-final class PlayerEnvironment {
+final class AppTestEnvironment {
     var playerViewController: PlayerViewControlling
     var scrubberViewController: ScrubberViewControlling
     var remote: RemoteControlling
@@ -49,7 +49,7 @@ final class PlayerEnvironment {
          playerFactory: TestAudioPlayerFactory = TestAudioPlayerFactory(),
          userDefaults: UserDefaultable = MockUserDefaults(),
          mediaQueryType: MediaQueryable.Type = MockMediaQuery.self) {
-        PlayerEnvironment.resetAllStaticMocks()
+        AppTestEnvironment.resetAllStaticMocks()
         self.playerViewController = playerViewController
         self.scrubberViewController = scrubberViewController
         self.remote = remote
@@ -143,7 +143,7 @@ final class PlayerEnvironment {
     }
 }
 
-extension PlayerEnvironment: TestEnvironment {
+extension AppTestEnvironment: TestEnvironment {
     func inject() {
         authorization = MusicAuthorization(authorizer: authorizerType)
         playlist = Playlist(authorization: authorization, mediaQuery: mediaQueryType)

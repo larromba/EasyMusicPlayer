@@ -5,12 +5,12 @@ import XCTest
 
 final class MusicInterruptionTests: XCTestCase {
     private var interruptionHandler: MusicInterruptionHandler!
-    private var env: PlayerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         interruptionHandler = MusicInterruptionHandler()
-        env = PlayerEnvironment(interruptionHandler: interruptionHandler)
+        env = AppTestEnvironment(interruptionHandler: interruptionHandler)
     }
 
     override func tearDown() {

@@ -5,12 +5,12 @@ import XCTest
 
 final class RemoteControlTests: XCTestCase {
     private var remote: RemoteControlling!
-    private var env: PlayerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         remote = MockRemoteCommandCenter()
-        env = PlayerEnvironment(remote: remote)
+        env = AppTestEnvironment(remote: remote)
     }
 
     override func tearDown() {

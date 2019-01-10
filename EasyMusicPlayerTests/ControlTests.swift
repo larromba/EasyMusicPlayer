@@ -4,12 +4,12 @@ import XCTest
 
 final class ControlTests: XCTestCase {
     private var controlsViewController: ControlsViewController!
-    private var env: PlayerEnvironment!
+    private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         controlsViewController = .fromStoryboard()
-        env = PlayerEnvironment(controlsViewController: controlsViewController)
+        env = AppTestEnvironment(controlsViewController: controlsViewController)
     }
 
     override func tearDown() {
