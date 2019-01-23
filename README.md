@@ -35,7 +35,7 @@ This assumes you're farmiliar with Xcode and building iOS apps.
 
 *Please note that you might need to change your app's bundle identifier and certificates to match your own.*
 
-1. `carthage update`
+1. `carthage update --platform iOS`
 2. open `EasyMusicPlayer.xcodeproj`
 3. select `EasyMusicPlayer-Release` target
 4. select your device from the device list
