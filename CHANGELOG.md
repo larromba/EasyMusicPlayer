@@ -72,3 +72,4 @@ Apple ID: 1067558718
 
 * silence detection
 * simple queue / search
+* fix disambigous state (e.g. is paying but remote shows paused state)
