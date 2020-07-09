@@ -43,10 +43,12 @@ final class UserService: UserServicing {
     var trackIDs: [MPMediaEntityPersistentID]? {
         get {
             guard let data: Data = dataManager.load(key: Key.tracks) else { return nil }
-            return NSKeyedUnarchiver.unarchiveObject(with: data) as? [MPMediaEntityPersistentID]
+            guard let trackIDs = try? NSKeyedUnarchiver
+                .unarchiveTopLevelObjectWithData(data) as? [MPMediaEntityPersistentID] else { return nil }
+            return trackIDs
         }
         set {
-            let data = NSKeyedArchiver.archivedData(withRootObject: newValue ?? [])
+            let data = try? NSKeyedArchiver.archivedData(withRootObject: newValue ?? [], requiringSecureCoding: false)
             dataManager.save(data, key: Key.tracks)
         }
     }
