@@ -55,7 +55,7 @@ final class PlayerController: PlayerControlling {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationDidBecomeActive),
-            name: NSNotification.Name.UIApplicationDidBecomeActive,
+            name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
     }

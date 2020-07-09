@@ -63,7 +63,7 @@ final class TrackManager: TrackManaging {
                 return
         }
         tracks = playlist.find(ids: trackIDs)
-        currentTrackIndex = trackIDs.index(of: currentTrackID) ?? 0
+        currentTrackIndex = trackIDs.firstIndex(of: currentTrackID) ?? 0
     }
 
     func loadNewPlaylist(shuffled: Bool) {

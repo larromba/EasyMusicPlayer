@@ -1,6 +1,6 @@
 import AVFoundation
-import Foundation
 import Logging
+import UIKit
 
 protocol MusicInterruptionDelegate: AnyObject {
     func interruptionHandler(_ handler: MusicInterruptionHandler, updtedState state: MusicInterruptionState)
@@ -25,25 +25,25 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationWillResignActive(_:)),
-            name: NSNotification.Name.UIApplicationWillResignActive,
+            name: UIApplication.willResignActiveNotification,
             object: nil
         )
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationDidBecomeActive(_:)),
-            name: NSNotification.Name.UIApplicationDidBecomeActive,
+            name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(audioSessionRouteChange(_:)),
-            name: NSNotification.Name.AVAudioSessionRouteChange,
+            name: AVAudioSession.routeChangeNotification,
             object: nil
         )
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(audioSessionInterruption(_:)),
-            name: NSNotification.Name.AVAudioSessionInterruption,
+            name: AVAudioSession.interruptionNotification,
             object: nil
         )
     }
@@ -81,7 +81,7 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         logWarning("**** audioSessionRouteChange ****", String(describing: notification.userInfo))
         guard
             let rawValue = (notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? NSNumber)?.uintValue,
-            let reason = AVAudioSessionRouteChangeReason(rawValue: rawValue) else {
+            let reason = AVAudioSession.RouteChangeReason(rawValue: rawValue) else {
                 return
         }
         switch reason {
@@ -108,7 +108,7 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         guard
             let rawValue = (notification.userInfo?[AVAudioSessionInterruptionTypeKey] as? NSNumber)?.uintValue,
             let key = (notification.userInfo?[AVAudioSessionInterruptionWasSuspendedKey] as? Bool), !key,
-            let reason = AVAudioSessionInterruptionType(rawValue: rawValue) else {
+            let reason = AVAudioSession.InterruptionType(rawValue: rawValue) else {
                 return
         }
         switch reason {
@@ -122,6 +122,8 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
                 state = state.copy(isAudioSessionInterrupted: false)
                 notifyStateChange()
             }
+        default:
+            assertionFailure("unhandled AVAudioSession.InterruptionType")
         }
     }
 

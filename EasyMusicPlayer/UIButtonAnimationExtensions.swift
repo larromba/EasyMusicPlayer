@@ -7,7 +7,7 @@ extension UIButton {
         animation.toValue = 1.2
         animation.fromValue = 1.0
         animation.autoreverses = true
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
         layer.add(animation, forKey: "pulseAnimation")
     }
 
@@ -17,7 +17,7 @@ extension UIButton {
         animation.toValue = 1.2
         animation.fromValue = .pi * 4.0
         animation.autoreverses = false
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         layer.add(animation, forKey: "spinAnimation")
     }
 }

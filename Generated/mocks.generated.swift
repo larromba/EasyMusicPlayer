@@ -299,7 +299,7 @@ class MockAudioSession: NSObject, AudioSessioning {
 
     // MARK: - setCategory_objc
 
-    func setCategory_objc(_ category: String, with options: AVAudioSession.CategoryOptions) throws {
+    func setCategory_objc(_ category: AVAudioSession.Category, with options: AVAudioSession.CategoryOptions) throws {
         let functionName = setCategory_objc1.name
         if let error = actions.error(for: functionName) {
             throw error
@@ -313,8 +313,8 @@ class MockAudioSession: NSObject, AudioSessioning {
     enum setCategory_objc1: String, _StringRawRepresentable {
         case name = "setCategory_objc1"
         enum params: String, _StringRawRepresentable {
-            case category = "setCategory_objc(_category:String,withoptions:AVAudioSession.CategoryOptions).category"
-            case options = "setCategory_objc(_category:String,withoptions:AVAudioSession.CategoryOptions).options"
+            case category = "setCategory_objc(_category:AVAudioSession.Category,withoptions:AVAudioSession.CategoryOptions).category"
+            case options = "setCategory_objc(_category:AVAudioSession.Category,withoptions:AVAudioSession.CategoryOptions).options"
         }
     }
 

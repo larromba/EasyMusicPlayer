@@ -69,7 +69,7 @@ final class MusicService: NSObject, MusicServicing {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationWillTerminate(_:)),
-            name: NSNotification.Name.UIApplicationWillTerminate,
+            name: UIApplication.willTerminateNotification,
             object: nil
         )
 
@@ -223,7 +223,7 @@ final class MusicService: NSObject, MusicServicing {
     private func setAudioSessionIsEnabled(_ isEnabled: Bool) -> Bool {
         do {
             if isEnabled {
-                try audioSession.setCategory_objc(AVAudioSessionCategoryPlayback, with: [])
+                try audioSession.setCategory_objc(.playback, with: [])
             }
             try audioSession.setActive_objc(isEnabled)
         } catch {
@@ -255,6 +255,8 @@ final class MusicService: NSObject, MusicServicing {
             seeker.startSeekingWithAction(.forward)
         case .endSeeking:
             seeker.stopSeeking()
+        default:
+            assertionFailure("unhandled SeekCommandEvent")
         }
     }
 
@@ -266,6 +268,8 @@ final class MusicService: NSObject, MusicServicing {
             seeker.startSeekingWithAction(.backward)
         case .endSeeking:
             seeker.stopSeeking()
+        default:
+            assertionFailure("unhandled SeekCommandEvent")
         }
     }
 

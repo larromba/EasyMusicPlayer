@@ -7,13 +7,13 @@ protocol AudioSessioning: Mockable {
     // sourcery: value = 1.0
     var outputVolume: Float { get }
 
-    func setCategory_objc(_ category: String, with options: AVAudioSession.CategoryOptions) throws
+    func setCategory_objc(_ category: AVAudioSession.Category, with options: AVAudioSession.CategoryOptions) throws
     func setActive_objc(_ active: Bool) throws
 }
 
 extension AVAudioSession: AudioSessioning {
-    func setCategory_objc(_ category: String, with options: AVAudioSession.CategoryOptions) throws {
-        try setCategory(category, with: options)
+    func setCategory_objc(_ category: AVAudioSession.Category, with options: AVAudioSession.CategoryOptions) throws {
+        try setCategory(category, options: options)
     }
 
     func setActive_objc(_ active: Bool) throws {

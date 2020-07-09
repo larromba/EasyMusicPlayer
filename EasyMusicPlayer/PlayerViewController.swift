@@ -16,13 +16,13 @@ final class PlayerViewController: UIViewController, PlayerViewControlling {
         didSet { _ = viewState.map(bind) }
     }
     var scrubberViewController: ScrubberViewControlling {
-        return childViewControllers.first { $0 is ScrubberViewControlling } as! ScrubberViewControlling
+        return children.first { $0 is ScrubberViewControlling } as! ScrubberViewControlling
     }
     var infoViewController: InfoViewControlling {
-        return childViewControllers.first { $0 is InfoViewController } as! InfoViewControlling
+        return children.first { $0 is InfoViewController } as! InfoViewControlling
     }
     var controlsViewController: ControlsViewControlling {
-        return childViewControllers.first { $0 is ControlsViewController } as! ControlsViewControlling
+        return children.first { $0 is ControlsViewController } as! ControlsViewControlling
     }
 
     override func viewDidLoad() {

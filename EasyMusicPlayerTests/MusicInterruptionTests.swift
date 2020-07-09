@@ -141,39 +141,39 @@ final class MusicInterruptionTests: XCTestCase {
     // MARK: - private
 
     private func interruptFromSuspend() {
-        let code = AVAudioSessionInterruptionType.began.rawValue
-        let notification = Notification(name: .AVAudioSessionInterruption, object: nil,
+        let code = AVAudioSession.InterruptionType.began.rawValue
+        let notification = Notification(name: AVAudioSession.interruptionNotification, object: nil,
                                         userInfo: [AVAudioSessionInterruptionTypeKey: NSNumber(value: code),
                                                    AVAudioSessionInterruptionWasSuspendedKey: true])
         NotificationCenter.default.post(notification)
     }
 
     private func interrupt() {
-        let code = AVAudioSessionInterruptionType.began.rawValue
-        let notification = Notification(name: .AVAudioSessionInterruption, object: nil,
+        let code = AVAudioSession.InterruptionType.began.rawValue
+        let notification = Notification(name: AVAudioSession.interruptionNotification, object: nil,
                                         userInfo: [AVAudioSessionInterruptionTypeKey: NSNumber(value: code),
                                                    AVAudioSessionInterruptionWasSuspendedKey: false])
         NotificationCenter.default.post(notification)
     }
 
     private func uninterrupt() {
-        let code = AVAudioSessionInterruptionType.ended.rawValue
-        let notification = Notification(name: .AVAudioSessionInterruption, object: nil,
+        let code = AVAudioSession.InterruptionType.ended.rawValue
+        let notification = Notification(name: AVAudioSession.interruptionNotification, object: nil,
                                         userInfo: [AVAudioSessionInterruptionTypeKey: NSNumber(value: code),
                                                    AVAudioSessionInterruptionWasSuspendedKey: false])
         NotificationCenter.default.post(notification)
     }
 
     private func removeHeadphones() {
-        let code = AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue
-        let notification = Notification(name: .AVAudioSessionRouteChange, object: nil,
+        let code = AVAudioSession.RouteChangeReason.oldDeviceUnavailable.rawValue
+        let notification = Notification(name: AVAudioSession.routeChangeNotification, object: nil,
                                         userInfo: [AVAudioSessionRouteChangeReasonKey: NSNumber(value: code)])
         NotificationCenter.default.post(notification)
     }
 
     private func attachHeadphones() {
-        let code = AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue
-        let notification = Notification(name: .AVAudioSessionRouteChange, object: nil,
+        let code = AVAudioSession.RouteChangeReason.newDeviceAvailable.rawValue
+        let notification = Notification(name: AVAudioSession.routeChangeNotification, object: nil,
                                         userInfo: [AVAudioSessionRouteChangeReasonKey: NSNumber(value: code)])
         NotificationCenter.default.post(notification)
     }
