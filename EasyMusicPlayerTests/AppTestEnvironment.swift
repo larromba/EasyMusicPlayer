@@ -136,7 +136,6 @@ final class AppTestEnvironment {
     // MARK: - private
 
     private static func resetAllStaticMocks() {
-        // TODO: update mockable stencil to remove invocation history
         MockMediaLibrary.actions.set(returnValue: MPMediaLibraryAuthorizationStatus.authorized,
                                      for: MockMediaLibrary.authorizationStatus1.name)
         MockMediaQuery.actions.set(returnValue: TestMediaQuery(items: [MockMediaItem()]),
