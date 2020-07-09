@@ -25,7 +25,7 @@ protocol ControlsDelegate: AnyObject {
 
 final class ControlsController: ControlsControlling {
     private let viewController: ControlsViewControlling
-    private let remote: RemoteControlling
+    private let remote: Remoting
     private weak var delegate: ControlsDelegate?
     private var musicServiceState: MusicServiceState?
 
@@ -48,7 +48,7 @@ final class ControlsController: ControlsControlling {
         }
     }
 
-    init(viewController: ControlsViewControlling, remote: RemoteControlling) {
+    init(viewController: ControlsViewControlling, remote: Remoting) {
         self.viewController = viewController
         self.remote = remote
         setup()
@@ -64,13 +64,14 @@ final class ControlsController: ControlsControlling {
 
     func setRepeatState(_ repeatState: RepeatState) {
         viewState = viewState.copy(repeatButton: viewState.repeatButton.copy(state: repeatState))
+        remote.state.repeatState = repeatState
         updateSeekingControls()
     }
 
     func setControlsPlaying() {
         viewState = viewState.copy(playButton: viewState.playButton.copy(state: .paused))
-        remote.pauseCommand.isEnabled = true
-        remote.playCommand.isEnabled = false
+        remote.state.isPauseEnabled = true
+        remote.state.isPlayEnabled = false
 
         setPlayIsEnabled(true)
         setStopIsEnabled(true)
@@ -81,8 +82,8 @@ final class ControlsController: ControlsControlling {
 
     func setControlsPaused() {
         viewState = viewState.copy(playButton: viewState.playButton.copy(state: .playing))
-        remote.pauseCommand.isEnabled = false
-        remote.playCommand.isEnabled = true
+        remote.state.isPauseEnabled = false
+        remote.state.isPlayEnabled = true
 
         setPlayIsEnabled(true)
         setStopIsEnabled(true)
@@ -93,8 +94,8 @@ final class ControlsController: ControlsControlling {
 
     func setControlsStopped() {
         viewState = viewState.copy(playButton: viewState.playButton.copy(state: .playing))
-        remote.pauseCommand.isEnabled = false
-        remote.playCommand.isEnabled = true
+        remote.state.isPauseEnabled = false
+        remote.state.isPlayEnabled = true
 
         setPlayIsEnabled(true)
         setStopIsEnabled(false)
@@ -107,30 +108,29 @@ final class ControlsController: ControlsControlling {
 
     private func setPreviousIsEnabled(_ isEnabled: Bool) {
         viewState = viewState.copy(prevButton: viewState.prevButton.copy(isEnabled: isEnabled))
-        remote.previousTrackCommand.isEnabled = isEnabled
+        remote.state.isPreviousEnabled = isEnabled
     }
 
     private func setNextIsEnabled(_ isEnabled: Bool) {
         viewState = viewState.copy(nextButton: viewState.nextButton.copy(isEnabled: isEnabled))
-        remote.nextTrackCommand.isEnabled = isEnabled
+        remote.state.isNextEnabled = isEnabled
     }
 
     private func setSeekBackwardsIsEnabled(_ isEnabled: Bool) {
-        remote.seekBackwardCommand.isEnabled = isEnabled
+        remote.state.isSeekBackwardEnabled = isEnabled
     }
 
     private func setSeekForwardsIsEnabled(_ isEnabled: Bool) {
-        remote.seekForwardCommand.isEnabled = isEnabled
+        remote.state.isSeekForwardEnabled = isEnabled
     }
 
     private func setPlayIsEnabled(_ isEnabled: Bool) {
         viewState = viewState.copy(playButton: viewState.playButton.copy(isEnabled: isEnabled))
-        remote.togglePlayPauseCommand.isEnabled = isEnabled
     }
 
     private func setStopIsEnabled(_ isEnabled: Bool) {
         viewState = viewState.copy(stopButton: viewState.stopButton.copy(isEnabled: isEnabled))
-        remote.stopCommand.isEnabled = isEnabled
+        remote.state.isStopEnabled = isEnabled
     }
 
     private func setShuffleIsEnabled(_ isEnabled: Bool) {
@@ -139,6 +139,7 @@ final class ControlsController: ControlsControlling {
 
     private func setRepeatIsEnabled(_ isEnabled: Bool) {
         viewState = viewState.copy(repeatButton: viewState.repeatButton.copy(isEnabled: isEnabled))
+        remote.state.isRepeatModeEnabled = isEnabled
     }
 
     private func updateSeekingControls() {

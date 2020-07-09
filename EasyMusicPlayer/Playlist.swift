@@ -38,7 +38,7 @@ final class Playlist: Playlistable {
 
                 override var artist: String { return "Arkist" }
                 override var title: String { return "Fill Your Coffee" }
-                override var playbackDuration: TimeInterval { return 219 }
+                override var playbackDuration: TimeInterval { return 290 }
                 override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
                 override var assetURL: URL { return assetUrl }
             }

@@ -7,7 +7,7 @@ let defaultTracks: [MPMediaItem] = [.mock(id: 0), .mock(id: 1), .mock(id: 2)]
 final class AppTestEnvironment {
     var playerViewController: PlayerViewControlling
     var scrubberViewController: ScrubberViewControlling
-    var remote: RemoteControlling
+    var remote: Remoting
     var remoteInfo: NowPlayingInfoCentering
     var controlsViewController: ControlsViewControlling
     var alertPresenter: Presentable
@@ -35,7 +35,7 @@ final class AppTestEnvironment {
 
     init(playerViewController: PlayerViewControlling = MockPlayerViewController(),
          scrubberViewController: ScrubberViewControlling = MockScrubberViewController(),
-         remote: RemoteControlling = MockRemoteCommandCenter(),
+         remote: Remoting = Remote(),
          infoViewController: InfoViewControlling = MockInfoViewController(),
          remoteInfo: NowPlayingInfoCentering = MockNowPlayingInfoCenter(),
          controlsViewController: ControlsViewControlling = MockControlsViewController(),

@@ -4,9 +4,10 @@ import Logging
 import MediaPlayer
 
 protocol MusicServiceDelegate: AnyObject {
-    func musicService(_ service: MusicService, threwError error: MusicError)
-    func musicService(_ service: MusicService, changedState state: PlayState)
-    func musicService(_ service: MusicService, changedPlaybackTime playbackTime: TimeInterval)
+    func musicService(_ service: MusicServicing, threwError error: MusicError)
+    func musicService(_ service: MusicServicing, changedState state: PlayState)
+    func musicService(_ service: MusicServicing, changedRepeatState state: RepeatState)
+    func musicService(_ service: MusicServicing, changedPlaybackTime playbackTime: TimeInterval)
 }
 
 // sourcery: name = MusicService
@@ -29,7 +30,7 @@ final class MusicService: NSObject, MusicServicing {
     private var player: AudioPlayer?
     private weak var delegate: MusicServiceDelegate?
     private let trackManager: TrackManaging
-    private let remote: RemoteControlling
+    private let remote: Remoting
     private let audioSession: AudioSessioning
     private let authorization: Authorization
     private let seeker: Seekable
@@ -52,7 +53,7 @@ final class MusicService: NSObject, MusicServicing {
         )
     }
 
-    init(trackManager: TrackManaging, remote: RemoteControlling, audioSession: AudioSessioning,
+    init(trackManager: TrackManaging, remote: Remoting, audioSession: AudioSessioning,
          authorization: Authorization, seeker: Seekable, interruptionHandler: MusicInterruptionHandling,
          clock: Clocking, playerFactory: AudioPlayerFactoring) {
         self.trackManager = trackManager
@@ -66,27 +67,12 @@ final class MusicService: NSObject, MusicServicing {
 
         super.init()
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(applicationWillTerminate(_:)),
-            name: UIApplication.willTerminateNotification,
-            object: nil
-        )
-
         seeker.setDelegate(self)
         interruptionHandler.setDelegate(self)
         clock.setDelegate(self)
 
-        remote.togglePlayPauseCommand.addTarget(self, action: #selector(togglePlayPause))
-        remote.pauseCommand.addTarget(self, action: #selector(pause))
-        remote.playCommand.addTarget(self, action: #selector(play))
-        remote.stopCommand.addTarget(self, action: #selector(stop))
-        remote.previousTrackCommand.addTarget(self, action: #selector(previous))
-        remote.nextTrackCommand.addTarget(self, action: #selector(next))
-        remote.seekForwardCommand.addTarget(self, action: #selector(seekForward(_:)))
-        remote.seekBackwardCommand.addTarget(self, action: #selector(seekBackward(_:)))
-        remote.changePlaybackPositionCommand.addTarget(self, action: #selector(changePlaybackPosition(_:)))
-
+        setupNotifications()
+        setupRemote()
         authorizeThenPerform({
             self.trackManager.loadSavedPlaylist()
             if self.trackManager.totalTracks == 0 {
@@ -113,7 +99,6 @@ final class MusicService: NSObject, MusicServicing {
         delegate?.musicService(self, changedPlaybackTime: time)
     }
 
-    @objc
     func play() {
         authorizeThenPerform({
             guard self.trackManager.totalTracks > 0 else {
@@ -157,7 +142,6 @@ final class MusicService: NSObject, MusicServicing {
         })
     }
 
-    @objc
     func stop() {
         guard let player = player else { return }
         player.stop()
@@ -171,7 +155,6 @@ final class MusicService: NSObject, MusicServicing {
         changePlayState(.stopped)
     }
 
-    @objc
     func pause() {
         guard let player = player else { return }
         player.pause()
@@ -183,7 +166,6 @@ final class MusicService: NSObject, MusicServicing {
         changePlayState(.paused)
     }
 
-    @objc
     func previous() {
         stop()
 
@@ -195,7 +177,6 @@ final class MusicService: NSObject, MusicServicing {
         play()
     }
 
-    @objc
     func next() {
         stop()
 
@@ -220,12 +201,56 @@ final class MusicService: NSObject, MusicServicing {
 
     // MARK: - private
 
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(applicationWillTerminate(_:)),
+            name: UIApplication.willTerminateNotification,
+            object: nil
+        )
+    }
+
+    private func setupRemote() {
+        remote.togglePlayPause = { [weak self] in
+            self?.togglePlayPause()
+        }
+        remote.pause = { [weak self] in
+            self?.pause()
+        }
+        remote.play = { [weak self] in
+            self?.play()
+        }
+        remote.stop = { [weak self] in
+            self?.stop()
+        }
+        remote.prev = { [weak self] in
+            self?.previous()
+        }
+        remote.next = { [weak self] in
+            self?.next()
+        }
+        remote.seekBackward = { [weak self] event in
+            self?.seekBackward(event)
+        }
+        remote.seekForward = { [weak self] event in
+            self?.seekForward(event)
+        }
+        remote.changePlayback = { [weak self] event in
+            self?.changePlaybackPosition(event)
+        }
+        remote.repeatMode = { [weak self] event in
+            guard let self = self else { return }
+            self.repeatState = event.repeatType.repeatState
+            self.delegate?.musicService(self, changedRepeatState: event.repeatType.repeatState)
+        }
+    }
+
     private func setAudioSessionIsEnabled(_ isEnabled: Bool) -> Bool {
         do {
             if isEnabled {
                 try audioSession.setCategory_objc(.playback, with: [])
             }
-            try audioSession.setActive_objc(isEnabled)
+            try audioSession.setActive_objc(isEnabled, options: [])
         } catch {
             logError(error.localizedDescription)
             return false
@@ -233,7 +258,32 @@ final class MusicService: NSObject, MusicServicing {
         return true
     }
 
-    @objc
+    private func changePlayState(_ state: PlayState) {
+        playState = state
+        delegate?.musicService(self, changedState: state)
+    }
+
+    private func authorizeThenPerform(_ block: @escaping (() -> Void)) {
+        authorization.authorize({ [weak self] (_ success: Bool) in
+            guard success else {
+                self?.throwError(.authorization)
+                return
+            }
+            block()
+        })
+    }
+
+    private func throwError(_ error: MusicError) {
+        stop()
+        delegate?.musicService(self, threwError: error)
+    }
+
+    private func cleanUp() {
+        _ = setAudioSessionIsEnabled(false)
+    }
+
+    // MARK: - actions
+
     private func togglePlayPause() {
         if state.isPlaying {
             pause()
@@ -242,12 +292,10 @@ final class MusicService: NSObject, MusicServicing {
         }
     }
 
-    @objc
     private func changePlaybackPosition(_ event: ChangePlaybackPositionCommandEvent) {
         player?.currentTime = event.positionTime
     }
 
-    @objc
     private func seekForward(_ event: SeekCommandEvent) {
         guard player != nil else { return }
         switch event.type {
@@ -260,7 +308,6 @@ final class MusicService: NSObject, MusicServicing {
         }
     }
 
-    @objc
     private func seekBackward(_ event: SeekCommandEvent) {
         guard player != nil else { return }
         switch event.type {
@@ -273,46 +320,11 @@ final class MusicService: NSObject, MusicServicing {
         }
     }
 
+    // MARK: - notifications
+
     @objc
     private func applicationWillTerminate(_ notifcation: Notification) {
         cleanUp()
-    }
-
-    private func throwError(_ error: MusicError) {
-        stop()
-        delegate?.musicService(self, threwError: error)
-    }
-
-    private func changePlayState(_ state: PlayState) {
-        playState = state
-        delegate?.musicService(self, changedState: state)
-    }
-
-    private func authorizeThenPerform(_ block: @escaping (() -> Void)) {
-        guard authorization.isAuthorized else {
-            authorization.authorize({ [weak self] (_ success: Bool) in
-                guard success else {
-                    self?.throwError(.authorization)
-                    return
-                }
-                block()
-            })
-            return
-        }
-        block()
-    }
-
-    private func cleanUp() {
-        _ = setAudioSessionIsEnabled(false)
-
-        remote.togglePlayPauseCommand.removeTarget(self)
-        remote.pauseCommand.removeTarget(self)
-        remote.playCommand.removeTarget(self)
-        remote.previousTrackCommand.removeTarget(self)
-        remote.nextTrackCommand.removeTarget(self)
-        remote.seekForwardCommand.removeTarget(self)
-        remote.seekBackwardCommand.removeTarget(self)
-        remote.changePlaybackPositionCommand.removeTarget(self)
     }
 }
 

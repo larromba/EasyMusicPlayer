@@ -22,9 +22,9 @@ protocol _StringRawRepresentable: RawRepresentable {
 
 struct _Variable<T> {
     let date = Date()
-    var variable: T
+    var variable: T?
 
-    init(_ variable: T) {
+    init(_ variable: T?) {
         self.variable = variable
     }
 }
@@ -320,20 +320,22 @@ class MockAudioSession: NSObject, AudioSessioning {
 
     // MARK: - setActive_objc
 
-    func setActive_objc(_ active: Bool) throws {
+    func setActive_objc(_ active: Bool, options: AVAudioSession.SetActiveOptions) throws {
         let functionName = setActive_objc2.name
         if let error = actions.error(for: functionName) {
             throw error
         }
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: active, forKey: setActive_objc2.params.active)
+        invocation.set(parameter: options, forKey: setActive_objc2.params.options)
         invocations.record(invocation)
     }
 
     enum setActive_objc2: String, _StringRawRepresentable {
         case name = "setActive_objc2"
         enum params: String, _StringRawRepresentable {
-            case active = "setActive_objc(_active:Bool).active"
+            case active = "setActive_objc(_active:Bool,options:AVAudioSession.SetActiveOptions).active"
+            case options = "setActive_objc(_active:Bool,options:AVAudioSession.SetActiveOptions).options"
         }
     }
 }
@@ -365,6 +367,24 @@ class MockAuthorization: NSObject, Authorization {
             case completion = "authorize(_completion:@escaping((_success:Bool)->Void)).completion"
         }
     }
+}
+
+class MockChangePlaybackPositionCommandEvent: NSObject, ChangePlaybackPositionCommandEvent {
+    var positionTime: TimeInterval {
+        get { return _positionTime }
+        set(value) { _positionTime = value; _positionTimeHistory.append(_Variable(value)) }
+    }
+    var _positionTime: TimeInterval!
+    var _positionTimeHistory: [_Variable<TimeInterval?>] = []
+}
+
+class MockChangeRepeatModeCommandEvent: NSObject, ChangeRepeatModeCommandEvent {
+    var repeatType: MPRepeatType {
+        get { return _repeatType }
+        set(value) { _repeatType = value; _repeatTypeHistory.append(_Variable(value)) }
+    }
+    var _repeatType: MPRepeatType!
+    var _repeatTypeHistory: [_Variable<MPRepeatType?>] = []
 }
 
 class MockClock: NSObject, Clocking {
@@ -1000,61 +1020,73 @@ class MockPlaylist: NSObject, Playlistable {
     }
 }
 
-class MockRemoteCommandCenter: NSObject, RemoteControlling {
-    var togglePlayPauseCommand: MPRemoteCommand {
-        get { return _togglePlayPauseCommand }
-        set(value) { _togglePlayPauseCommand = value; _togglePlayPauseCommandHistory.append(_Variable(value)) }
+class MockRemote: NSObject, Remoting {
+    var state: RemoteState {
+        get { return _state }
+        set(value) { _state = value; _stateHistory.append(_Variable(value)) }
     }
-    var _togglePlayPauseCommand: MPRemoteCommand! = .mock
-    var _togglePlayPauseCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var pauseCommand: MPRemoteCommand {
-        get { return _pauseCommand }
-        set(value) { _pauseCommand = value; _pauseCommandHistory.append(_Variable(value)) }
+    var _state: RemoteState!
+    var _stateHistory: [_Variable<RemoteState?>] = []
+    var togglePlayPause: (() -> Void)? {
+        get { return _togglePlayPause }
+        set(value) { _togglePlayPause = value; _togglePlayPauseHistory.append(_Variable(value)) }
     }
-    var _pauseCommand: MPRemoteCommand! = .mock
-    var _pauseCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var playCommand: MPRemoteCommand {
-        get { return _playCommand }
-        set(value) { _playCommand = value; _playCommandHistory.append(_Variable(value)) }
+    var _togglePlayPause: (() -> Void)?
+    var _togglePlayPauseHistory: [_Variable<() -> Void?>] = []
+    var pause: (() -> Void)? {
+        get { return _pause }
+        set(value) { _pause = value; _pauseHistory.append(_Variable(value)) }
     }
-    var _playCommand: MPRemoteCommand! = .mock
-    var _playCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var stopCommand: MPRemoteCommand {
-        get { return _stopCommand }
-        set(value) { _stopCommand = value; _stopCommandHistory.append(_Variable(value)) }
+    var _pause: (() -> Void)?
+    var _pauseHistory: [_Variable<() -> Void?>] = []
+    var play: (() -> Void)? {
+        get { return _play }
+        set(value) { _play = value; _playHistory.append(_Variable(value)) }
     }
-    var _stopCommand: MPRemoteCommand! = .mock
-    var _stopCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var previousTrackCommand: MPRemoteCommand {
-        get { return _previousTrackCommand }
-        set(value) { _previousTrackCommand = value; _previousTrackCommandHistory.append(_Variable(value)) }
+    var _play: (() -> Void)?
+    var _playHistory: [_Variable<() -> Void?>] = []
+    var stop: (() -> Void)? {
+        get { return _stop }
+        set(value) { _stop = value; _stopHistory.append(_Variable(value)) }
     }
-    var _previousTrackCommand: MPRemoteCommand! = .mock
-    var _previousTrackCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var nextTrackCommand: MPRemoteCommand {
-        get { return _nextTrackCommand }
-        set(value) { _nextTrackCommand = value; _nextTrackCommandHistory.append(_Variable(value)) }
+    var _stop: (() -> Void)?
+    var _stopHistory: [_Variable<() -> Void?>] = []
+    var prev: (() -> Void)? {
+        get { return _prev }
+        set(value) { _prev = value; _prevHistory.append(_Variable(value)) }
     }
-    var _nextTrackCommand: MPRemoteCommand! = .mock
-    var _nextTrackCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var seekForwardCommand: MPRemoteCommand {
-        get { return _seekForwardCommand }
-        set(value) { _seekForwardCommand = value; _seekForwardCommandHistory.append(_Variable(value)) }
+    var _prev: (() -> Void)?
+    var _prevHistory: [_Variable<() -> Void?>] = []
+    var next: (() -> Void)? {
+        get { return _next }
+        set(value) { _next = value; _nextHistory.append(_Variable(value)) }
     }
-    var _seekForwardCommand: MPRemoteCommand! = .mockSeek(2)
-    var _seekForwardCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var seekBackwardCommand: MPRemoteCommand {
-        get { return _seekBackwardCommand }
-        set(value) { _seekBackwardCommand = value; _seekBackwardCommandHistory.append(_Variable(value)) }
+    var _next: (() -> Void)?
+    var _nextHistory: [_Variable<() -> Void?>] = []
+    var seekBackward: ((SeekCommandEvent) -> Void)? {
+        get { return _seekBackward }
+        set(value) { _seekBackward = value; _seekBackwardHistory.append(_Variable(value)) }
     }
-    var _seekBackwardCommand: MPRemoteCommand! = .mockSeek(2)
-    var _seekBackwardCommandHistory: [_Variable<MPRemoteCommand?>] = []
-    var changePlaybackPositionCommand: MPChangePlaybackPositionCommand {
-        get { return _changePlaybackPositionCommand }
-        set(value) { _changePlaybackPositionCommand = value; _changePlaybackPositionCommandHistory.append(_Variable(value)) }
+    var _seekBackward: ((SeekCommandEvent) -> Void)?
+    var _seekBackwardHistory: [_Variable<(SeekCommandEvent) -> Void?>] = []
+    var seekForward: ((SeekCommandEvent) -> Void)? {
+        get { return _seekForward }
+        set(value) { _seekForward = value; _seekForwardHistory.append(_Variable(value)) }
     }
-    var _changePlaybackPositionCommand: MPChangePlaybackPositionCommand! = .mockPlayback(MockMediaItem.playbackDuration / 2)
-    var _changePlaybackPositionCommandHistory: [_Variable<MPChangePlaybackPositionCommand?>] = []
+    var _seekForward: ((SeekCommandEvent) -> Void)?
+    var _seekForwardHistory: [_Variable<(SeekCommandEvent) -> Void?>] = []
+    var changePlayback: ((ChangePlaybackPositionCommandEvent) -> Void)? {
+        get { return _changePlayback }
+        set(value) { _changePlayback = value; _changePlaybackHistory.append(_Variable(value)) }
+    }
+    var _changePlayback: ((ChangePlaybackPositionCommandEvent) -> Void)?
+    var _changePlaybackHistory: [_Variable<(ChangePlaybackPositionCommandEvent) -> Void?>] = []
+    var repeatMode: ((ChangeRepeatModeCommandEvent) -> Void)? {
+        get { return _repeatMode }
+        set(value) { _repeatMode = value; _repeatModeHistory.append(_Variable(value)) }
+    }
+    var _repeatMode: ((ChangeRepeatModeCommandEvent) -> Void)?
+    var _repeatModeHistory: [_Variable<(ChangeRepeatModeCommandEvent) -> Void?>] = []
 }
 
 class MockRepeatButton: NSObject, RepeatButtonable {
@@ -1160,6 +1192,15 @@ class MockScrubberViewController: NSObject, ScrubberViewControlling {
             case delegate = "setDelegate(_delegate:ScrubberViewDelegate).delegate"
         }
     }
+}
+
+class MockSeekCommandEvent: NSObject, SeekCommandEvent {
+    var type: MPSeekCommandEventType {
+        get { return _type }
+        set(value) { _type = value; _typeHistory.append(_Variable(value)) }
+    }
+    var _type: MPSeekCommandEventType!
+    var _typeHistory: [_Variable<MPSeekCommandEventType?>] = []
 }
 
 class MockSeeker: NSObject, Seekable {

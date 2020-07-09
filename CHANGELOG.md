@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.0 (TBC)
+    added silence detection
+
 ## 2.0.2 (10/01/2019)
     fixed minor bug when removing and reattaching bluetooth headphones
 
@@ -71,7 +74,6 @@ Apple ID: 1067558718
 # Future work
 
 3.0.0:
-* silence detection
 * simple search
 * fix disambigous state (e.g. is paying but remote shows paused state)
 * fix refresh player state on reentry

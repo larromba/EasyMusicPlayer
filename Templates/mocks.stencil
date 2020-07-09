@@ -90,9 +90,9 @@ protocol {% call helperClassPrefix %}StringRawRepresentable: RawRepresentable {
 
 struct {% call helperClassPrefix %}Variable<T> {
     let date = Date()
-    var variable: T
+    var variable: T?
 
-    init(_ variable: T) {
+    init(_ variable: T?) {
         self.variable = variable
     }
 }

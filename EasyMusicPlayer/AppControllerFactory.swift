@@ -5,7 +5,7 @@ enum AppControllerFactory {
     static func make(playerViewController: PlayerViewController) -> AppControlling {
         _ = playerViewController.view // force load of view
 
-        let remote = MPRemoteCommandCenter.shared()
+        let remote = Remote()
         let remoteInfo = MPNowPlayingInfoCenter.default()
         let scrubberController = ScrubberController(viewController: playerViewController.scrubberViewController,
                                                     remote: remote)

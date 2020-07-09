@@ -2,17 +2,20 @@
 import MediaPlayer
 import XCTest
 
-final class RemoteControlStateTests: XCTestCase {
-    private var remote: RemoteControlling!
+final class RemoteStateTests: XCTestCase {
+    private var remoteCommandCenter: MPRemoteCommandCenter!
+    private var remote: Remote!
     private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
-        remote = MockRemoteCommandCenter()
+        remoteCommandCenter = MPRemoteCommandCenter.shared()
+        remote = Remote(remote: remoteCommandCenter)
         env = AppTestEnvironment(remote: remote)
     }
 
     override func tearDown() {
+        remoteCommandCenter = nil
         remote = nil
         env = nil
         super.tearDown()
@@ -28,8 +31,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
-        XCTAssertTrue(remote.nextTrackCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     func test_repeatOne_whenPressedOnMidTrack_expectState() {
@@ -40,8 +43,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertTrue(remote.previousTrackCommand.isEnabled)
-        XCTAssertTrue(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     func test_repeatOne_whenPressedOnEndTrack_expectState() {
@@ -55,8 +58,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.musicService.play()
 
         // test
-        XCTAssertTrue(remote.previousTrackCommand.isEnabled)
-        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     // MARK: - repeat none
@@ -69,8 +72,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
-        XCTAssertTrue(remote.nextTrackCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     func test_repeatNone_whenPressedOnMidTrack_expectState() {
@@ -81,8 +84,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertTrue(remote.previousTrackCommand.isEnabled)
-        XCTAssertTrue(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     func test_repeatNone_whenPressedOnEndTrack_expectState() {
@@ -93,8 +96,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertTrue(remote.previousTrackCommand.isEnabled)
-        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     // MARK: - repeat all
@@ -107,8 +110,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertTrue(remote.previousTrackCommand.isEnabled)
-        XCTAssertTrue(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     func test_repeatAll_whenPressedOnMidTrack_expectState() {
@@ -119,8 +122,8 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertTrue(remote.previousTrackCommand.isEnabled)
-        XCTAssertTrue(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     func test_repeatAll_whenPressedOnEndTrack_expectState() {
@@ -131,83 +134,83 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        XCTAssertTrue(remote.previousTrackCommand.isEnabled)
-        XCTAssertTrue(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
     // MARK: - other
 
-    func test_remoteControls_whenPlaying_expectState() {
+    func test_remoteCommandCenterControls_whenPlaying_expectState() {
         // mocks
         env.inject()
         env.setPlaying()
 
         // test
-        XCTAssertFalse(remote.playCommand.isEnabled)
-        XCTAssertTrue(remote.pauseCommand.isEnabled)
-        XCTAssertTrue(remote.stopCommand.isEnabled)
-        XCTAssertTrue(remote.togglePlayPauseCommand.isEnabled)
-        XCTAssertTrue(remote.changePlaybackPositionCommand.isEnabled)
-        XCTAssertTrue(remote.seekForwardCommand.isEnabled)
-        XCTAssertTrue(remote.seekBackwardCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.playCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.pauseCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.stopCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.togglePlayPauseCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.changePlaybackPositionCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.seekForwardCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.seekBackwardCommand.isEnabled)
     }
 
-    func test_remoteControls_whenPaused_expectState() {
+    func test_remoteCommandCenterControls_whenPaused_expectState() {
         // mocks
         env.inject()
         env.setPaused()
 
         // test
-        XCTAssertTrue(remote.playCommand.isEnabled)
-        XCTAssertFalse(remote.pauseCommand.isEnabled)
-        XCTAssertTrue(remote.stopCommand.isEnabled)
-        XCTAssertTrue(remote.togglePlayPauseCommand.isEnabled)
-        XCTAssertFalse(remote.changePlaybackPositionCommand.isEnabled)
-        XCTAssertFalse(remote.seekForwardCommand.isEnabled)
-        XCTAssertFalse(remote.seekBackwardCommand.isEnabled)
-        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
-        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.playCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.pauseCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.stopCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.togglePlayPauseCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.changePlaybackPositionCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.seekForwardCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.seekBackwardCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
-    func test_remoteControls_whenStopped_expectState() {
+    func test_remoteCommandCenterControls_whenStopped_expectState() {
         // mocks
         env.inject()
         env.setStopped()
 
         // test
-        XCTAssertTrue(remote.playCommand.isEnabled)
-        XCTAssertFalse(remote.pauseCommand.isEnabled)
-        XCTAssertFalse(remote.stopCommand.isEnabled)
-        XCTAssertTrue(remote.togglePlayPauseCommand.isEnabled)
-        XCTAssertFalse(remote.changePlaybackPositionCommand.isEnabled)
-        XCTAssertFalse(remote.seekForwardCommand.isEnabled)
-        XCTAssertFalse(remote.seekBackwardCommand.isEnabled)
-        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
-        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.playCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.pauseCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.stopCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.togglePlayPauseCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.changePlaybackPositionCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.seekForwardCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.seekBackwardCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
-    func test_remoteControls_whenErrorPlaying_expectState() {
+    func test_remoteCommandCenterControls_whenErrorPlaying_expectState() {
         // mocks
         env.inject()
         env.preparePlayError()
         env.setPlaying()
 
         // test
-        XCTAssertTrue(remote.playCommand.isEnabled)
-        XCTAssertFalse(remote.pauseCommand.isEnabled)
-        XCTAssertFalse(remote.stopCommand.isEnabled)
-        XCTAssertTrue(remote.togglePlayPauseCommand.isEnabled)
-        XCTAssertFalse(remote.changePlaybackPositionCommand.isEnabled)
-        XCTAssertFalse(remote.seekForwardCommand.isEnabled)
-        XCTAssertFalse(remote.seekBackwardCommand.isEnabled)
-        XCTAssertFalse(remote.previousTrackCommand.isEnabled)
-        XCTAssertFalse(remote.nextTrackCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.playCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.pauseCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.stopCommand.isEnabled)
+        XCTAssertTrue(remoteCommandCenter.togglePlayPauseCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.changePlaybackPositionCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.seekForwardCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.seekBackwardCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.previousTrackCommand.isEnabled)
+        XCTAssertFalse(remoteCommandCenter.nextTrackCommand.isEnabled)
     }
 
-    func test_remoteControls_whenTrackLoaded_expectInfoDisplayed() {
+    func test_remoteCommandCenterControls_whenTrackLoaded_expectInfoDisplayed() {
         // mocks
-        let remoteInfo = MockNowPlayingInfoCenter()
-        env.remoteInfo = remoteInfo
+        let remoteCommandCenterInfo = MockNowPlayingInfoCenter()
+        env.remoteInfo = remoteCommandCenterInfo
         let image = UIImage()
         let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
         env.setSavedTracks([item], currentTrack: item)
@@ -215,13 +218,13 @@ final class RemoteControlStateTests: XCTestCase {
         env.setPlaying()
 
         // test
-        let info = remoteInfo.nowPlayingInfo
+        let info = remoteCommandCenterInfo.nowPlayingInfo
         XCTAssertEqual(info?.count, 6)
         XCTAssertEqual(info?[MPMediaItemPropertyArtist] as? String, "arkist")
         XCTAssertEqual(info?[MPMediaItemPropertyTitle] as? String, "fill your coffee")
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyMediaType] as? NSNumber, 1)
-        let artwork = remoteInfo.nowPlayingInfo?[MPMediaItemPropertyArtwork] as? MPMediaItemArtwork
+        let artwork = remoteCommandCenterInfo.nowPlayingInfo?[MPMediaItemPropertyArtwork] as? MPMediaItemArtwork
         XCTAssertEqual(artwork?.image(at: image.size), image)
         XCTAssertEqual(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval, 210.0)
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
@@ -232,10 +235,10 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertEqual(mediaType, .audio)
     }
 
-    func test_remoteControls_whenScrubbingMoved_expectInfoChanged() {
+    func test_remoteCommandCenterControls_whenScrubbingMoved_expectInfoChanged() {
         // mocks
-        let remoteInfo = MockNowPlayingInfoCenter()
-        env.remoteInfo = remoteInfo
+        let remoteCommandCenterInfo = MockNowPlayingInfoCenter()
+        env.remoteInfo = remoteCommandCenterInfo
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
@@ -249,7 +252,7 @@ final class RemoteControlStateTests: XCTestCase {
         scrubberViewController.touchesEnded(touches, with: nil)
 
         // test
-        let info = remoteInfo.nowPlayingInfo
+        let info = remoteCommandCenterInfo.nowPlayingInfo
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval,
                        MockMediaItem.playbackDuration / 2)
     }

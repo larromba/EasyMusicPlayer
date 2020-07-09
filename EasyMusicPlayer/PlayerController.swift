@@ -77,7 +77,7 @@ final class PlayerController: PlayerControlling {
 // MARK: - MusicServiceDelegate
 
 extension PlayerController: MusicServiceDelegate {
-    func musicService(_ sender: MusicService, changedState state: PlayState) {
+    func musicService(_ sender: MusicServicing, changedState state: PlayState) {
         controlsController.setMusicServiceState(sender.state)
         switch state {
         case .playing:
@@ -103,7 +103,12 @@ extension PlayerController: MusicServiceDelegate {
         }
     }
 
-    func musicService(_ sender: MusicService, changedPlaybackTime playbackTime: TimeInterval) {
+    func musicService(_ service: MusicServicing, changedRepeatState state: RepeatState) {
+        userService.repeatState = state
+        controlsController.setRepeatState(state)
+    }
+
+    func musicService(_ sender: MusicServicing, changedPlaybackTime playbackTime: TimeInterval) {
         guard !isUserScrubbing else { return }
 
         let duration = musicService.state.currentTrack.playbackDuration
@@ -113,7 +118,7 @@ extension PlayerController: MusicServiceDelegate {
         infoController.setTime(playbackTime, duration: duration)
     }
 
-    func musicService(_ service: MusicService, threwError error: MusicError) {
+    func musicService(_ service: MusicServicing, threwError error: MusicError) {
         switch error {
         case .noMusic:
             infoController.clearInfo()

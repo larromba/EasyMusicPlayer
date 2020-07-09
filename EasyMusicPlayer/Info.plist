@@ -22,6 +22,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>DummyAudioPath</key>
 	<string>$(PROJECT_DIR)/audio/arkist - fill your coffee.m4a</string>
+	<key>DummyAudioWithSilencePath</key>
+	<string>$(PROJECT_DIR)/audio/audio with silence.mp3</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>

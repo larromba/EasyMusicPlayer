@@ -11,3 +11,18 @@ struct MusicServiceState {
     let playState: PlayState
     let repeatState: RepeatState
 }
+
+extension MusicServiceState {
+    func copy(repeatState: RepeatState) -> MusicServiceState {
+        return MusicServiceState(
+            isPlaying: isPlaying,
+            volume: volume,
+            currentTrackIndex: currentTrackIndex,
+            totalTracks: totalTracks,
+            currentTrack: currentTrack,
+            time: time,
+            playState: playState,
+            repeatState: repeatState
+        )
+    }
+}

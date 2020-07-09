@@ -8,7 +8,7 @@ protocol AudioSessioning: Mockable {
     var outputVolume: Float { get }
 
     func setCategory_objc(_ category: AVAudioSession.Category, with options: AVAudioSession.CategoryOptions) throws
-    func setActive_objc(_ active: Bool) throws
+    func setActive_objc(_ active: Bool, options: AVAudioSession.SetActiveOptions) throws
 }
 
 extension AVAudioSession: AudioSessioning {
@@ -16,7 +16,7 @@ extension AVAudioSession: AudioSessioning {
         try setCategory(category, options: options)
     }
 
-    func setActive_objc(_ active: Bool) throws {
-        try setActive(active)
+    func setActive_objc(_ active: Bool, options: AVAudioSession.SetActiveOptions = []) throws {
+        try setActive(active, options: options)
     }
 }

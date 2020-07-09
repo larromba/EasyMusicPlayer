@@ -18,6 +18,10 @@ final class MusicAuthorization: Authorization {
     }
 
     func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
+        guard !isAuthorized else {
+            completion(true)
+            return
+        }
         authorizer.requestAuthorization { status in
             DispatchQueue.main.async(execute: {
                 completion(status == .authorized)

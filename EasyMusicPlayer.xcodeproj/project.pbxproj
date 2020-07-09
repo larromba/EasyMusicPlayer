@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F05C5EA24B7CB780049E246 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5E924B7CB780049E246 /* Remote.swift */; };
+		7F05C5EC24B7CBEC0049E246 /* RemoteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */; };
+		7F05C5EE24B7DFDB0049E246 /* ExtendedAudioPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5ED24B7DFDB0049E246 /* ExtendedAudioPlayerTests.swift */; };
 		7F4090551BF7E44900F449FD /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090541BF7E44900F449FD /* PlayButton.swift */; };
 		7F4090681BFA096600F449FD /* UIStoryboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090671BFA096600F449FD /* UIStoryboardExtensions.swift */; };
 		7F44F9D121B826D00041E4DE /* ControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9D021B826D00041E4DE /* ControlTests.swift */; };
@@ -14,8 +17,8 @@
 		7F44F9D621B828F10041E4DE /* MusicPlayerErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9D521B828F10041E4DE /* MusicPlayerErrorTests.swift */; };
 		7F44F9D821B829330041E4DE /* MusicInterruptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */; };
 		7F44F9E021B82CC70041E4DE /* mocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9DF21B82CC70041E4DE /* mocks.generated.swift */; };
-		7F44F9E221B8307C0041E4DE /* RemoteControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E121B8307C0041E4DE /* RemoteControlTests.swift */; };
-		7F44F9E421B830F70041E4DE /* RemoteControlStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E321B830F70041E4DE /* RemoteControlStateTests.swift */; };
+		7F44F9E221B8307C0041E4DE /* RemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E121B8307C0041E4DE /* RemoteTests.swift */; };
+		7F44F9E421B830F70041E4DE /* RemoteStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E321B830F70041E4DE /* RemoteStateTests.swift */; };
 		7F44F9E621B83AF40041E4DE /* UIButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E521B83AF40041E4DE /* UIButtonExtensions.swift */; };
 		7F44F9EA21B83DBD0041E4DE /* MockMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E921B83DBD0041E4DE /* MockMediaItem.swift */; };
 		7F44F9EC21B845870041E4DE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9EB21B845870041E4DE /* AudioPlayer.swift */; };
@@ -38,7 +41,6 @@
 		7F71B82021A55D8D00135925 /* PlayButtonViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81F21A55D8D00135925 /* PlayButtonViewState.swift */; };
 		7F71B82721A5638300135925 /* GenericButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82621A5638300135925 /* GenericButtonState.swift */; };
 		7F71B82921A5898500135925 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82821A5898500135925 /* Error.swift */; };
-		7F71B82B21A58E4300135925 /* RemoteControlling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82A21A58E4300135925 /* RemoteControlling.swift */; };
 		7F71B82E21A5903D00135925 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82D21A5903D00135925 /* DataManager.swift */; };
 		7F71B83021A5915800135925 /* RepeatState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82F21A5915800135925 /* RepeatState.swift */; };
 		7F71B83221A5922100135925 /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B83121A5922100135925 /* Keyable.swift */; };
@@ -70,12 +72,14 @@
 		7F854F7721B8022100A93D5B /* Logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F854F7221B8022100A93D5B /* Logging.framework */; };
 		7F92B6F11C19AD0A00A5273A /* RepeatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */; };
 		7F92B6F51C1A09F100A5273A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F41C1A09F100A5273A /* UserService.swift */; };
+		7F9F883B24B72093005DF5D7 /* AudioAnalysisInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */; };
+		7F9F883D24B753B8005DF5D7 /* ExtendedAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F883C24B753B8005DF5D7 /* ExtendedAudioPlayer.swift */; };
+		7F9F884124B77F0A005DF5D7 /* AsyncAwait.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F9F884024B77F0A005DF5D7 /* AsyncAwait.framework */; };
 		7FA59D4F21B9297500538013 /* AudioPlayerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D4E21B9297500538013 /* AudioPlayerFactory.swift */; };
 		7FA59D5121B9441000538013 /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5021B9441000538013 /* TestEnvironment.swift */; };
 		7FA59D5321B9465600538013 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5221B9465600538013 /* URLExtensions.swift */; };
 		7FA59D5921B957AC00538013 /* MockTouch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5821B957AC00538013 /* MockTouch.swift */; };
 		7FA59D5B21B95C0C00538013 /* AppTestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5A21B95C0C00538013 /* AppTestEnvironment.swift */; };
-		7FA59D5D21B960AC00538013 /* MockRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5C21B960AC00538013 /* MockRemote.swift */; };
 		7FA59D5F21B96CB300538013 /* Runtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5E21B96CB300538013 /* Runtime.swift */; };
 		7FA59D6221B9768500538013 /* TestExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA59D6121B9768500538013 /* TestExtensions.framework */; };
 		7FA59D6421B9769500538013 /* TestExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7FA59D6121B9768500538013 /* TestExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -130,6 +134,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7F05C5E924B7CB780049E246 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
+		7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteState.swift; sourceTree = "<group>"; };
+		7F05C5ED24B7DFDB0049E246 /* ExtendedAudioPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedAudioPlayerTests.swift; sourceTree = "<group>"; };
 		7F163D321EDEEDA400DC52B6 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		7F4090541BF7E44900F449FD /* PlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		7F4090671BFA096600F449FD /* UIStoryboardExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtensions.swift; sourceTree = "<group>"; };
@@ -138,8 +145,8 @@
 		7F44F9D521B828F10041E4DE /* MusicPlayerErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerErrorTests.swift; sourceTree = "<group>"; };
 		7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInterruptionTests.swift; sourceTree = "<group>"; };
 		7F44F9DF21B82CC70041E4DE /* mocks.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = mocks.generated.swift; path = Generated/mocks.generated.swift; sourceTree = SOURCE_ROOT; };
-		7F44F9E121B8307C0041E4DE /* RemoteControlTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlTests.swift; sourceTree = "<group>"; };
-		7F44F9E321B830F70041E4DE /* RemoteControlStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlStateTests.swift; sourceTree = "<group>"; };
+		7F44F9E121B8307C0041E4DE /* RemoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTests.swift; sourceTree = "<group>"; };
+		7F44F9E321B830F70041E4DE /* RemoteStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteStateTests.swift; sourceTree = "<group>"; };
 		7F44F9E521B83AF40041E4DE /* UIButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtensions.swift; sourceTree = "<group>"; };
 		7F44F9E921B83DBD0041E4DE /* MockMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMediaItem.swift; sourceTree = "<group>"; };
 		7F44F9EB21B845870041E4DE /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
@@ -162,7 +169,6 @@
 		7F71B81F21A55D8D00135925 /* PlayButtonViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButtonViewState.swift; sourceTree = "<group>"; };
 		7F71B82621A5638300135925 /* GenericButtonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericButtonState.swift; sourceTree = "<group>"; };
 		7F71B82821A5898500135925 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
-		7F71B82A21A58E4300135925 /* RemoteControlling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlling.swift; sourceTree = "<group>"; };
 		7F71B82D21A5903D00135925 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		7F71B82F21A5915800135925 /* RepeatState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatState.swift; sourceTree = "<group>"; };
 		7F71B83121A5922100135925 /* Keyable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyable.swift; sourceTree = "<group>"; };
@@ -201,12 +207,14 @@
 		7F854F7221B8022100A93D5B /* Logging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Logging.framework; path = Carthage/Build/iOS/Logging.framework; sourceTree = "<group>"; };
 		7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatButton.swift; sourceTree = "<group>"; };
 		7F92B6F41C1A09F100A5273A /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalysisInformation.swift; sourceTree = "<group>"; };
+		7F9F883C24B753B8005DF5D7 /* ExtendedAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedAudioPlayer.swift; sourceTree = "<group>"; };
+		7F9F884024B77F0A005DF5D7 /* AsyncAwait.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AsyncAwait.framework; path = Carthage/Build/iOS/AsyncAwait.framework; sourceTree = "<group>"; };
 		7FA59D4E21B9297500538013 /* AudioPlayerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerFactory.swift; sourceTree = "<group>"; };
 		7FA59D5021B9441000538013 /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
 		7FA59D5221B9465600538013 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		7FA59D5821B957AC00538013 /* MockTouch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTouch.swift; sourceTree = "<group>"; };
 		7FA59D5A21B95C0C00538013 /* AppTestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTestEnvironment.swift; sourceTree = "<group>"; };
-		7FA59D5C21B960AC00538013 /* MockRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemote.swift; sourceTree = "<group>"; };
 		7FA59D5E21B96CB300538013 /* Runtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runtime.swift; sourceTree = "<group>"; };
 		7FA59D6121B9768500538013 /* TestExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TestExtensions.framework; path = Carthage/Build/iOS/TestExtensions.framework; sourceTree = "<group>"; };
 		7FA59D6521B97DB000538013 /* ViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtensions.swift; sourceTree = "<group>"; };
@@ -264,6 +272,7 @@
 			files = (
 				7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */,
 				7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */,
+				7F9F884124B77F0A005DF5D7 /* AsyncAwait.framework in Frameworks */,
 				7FF5B31F1BE654470044FCE5 /* MediaPlayer.framework in Frameworks */,
 				7F854F7721B8022100A93D5B /* Logging.framework in Frameworks */,
 			);
@@ -288,7 +297,6 @@
 				7F5A83A521D940F4008F30BE /* TestMediaQuery.swift */,
 				7F44F9E921B83DBD0041E4DE /* MockMediaItem.swift */,
 				7FA59D5821B957AC00538013 /* MockTouch.swift */,
-				7FA59D5C21B960AC00538013 /* MockRemote.swift */,
 				7FA59D5E21B96CB300538013 /* Runtime.swift */,
 			);
 			name = Utility;
@@ -341,7 +349,6 @@
 		7F71B82C21A58E4700135925 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				7F71B82A21A58E4300135925 /* RemoteControlling.swift */,
 				7F71B83121A5922100135925 /* Keyable.swift */,
 				7F71B83321A5926B00135925 /* Mockable.swift */,
 				7F71B83521A5927C00135925 /* UserDefaultable.swift */,
@@ -417,6 +424,8 @@
 				7F71B86A21A7302F00135925 /* Clock.swift */,
 				7F71B86421A70F9500135925 /* Seeker.swift */,
 				7FA59D7921BBD01000538013 /* Utility.swift */,
+				7F9F883C24B753B8005DF5D7 /* ExtendedAudioPlayer.swift */,
+				7F05C5E924B7CB780049E246 /* Remote.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -431,6 +440,8 @@
 				7F71B82821A5898500135925 /* Error.swift */,
 				7F71B86821A72DFF00135925 /* MusicInterupptionState.swift */,
 				7F71B86C21A7327F00135925 /* MusicPlayerState.swift */,
+				7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */,
+				7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -539,13 +550,14 @@
 			isa = PBXGroup;
 			children = (
 				7F44F9D021B826D00041E4DE /* ControlTests.swift */,
-				7F44F9E121B8307C0041E4DE /* RemoteControlTests.swift */,
+				7F44F9E121B8307C0041E4DE /* RemoteTests.swift */,
 				7F44F9D321B827EE0041E4DE /* ControlStateTests.swift */,
-				7F44F9E321B830F70041E4DE /* RemoteControlStateTests.swift */,
+				7F44F9E321B830F70041E4DE /* RemoteStateTests.swift */,
 				7F44F9D521B828F10041E4DE /* MusicPlayerErrorTests.swift */,
 				7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */,
 				7FA59D6721BAA44500538013 /* DataTests.swift */,
 				7FF5B2FF1BE64E220044FCE5 /* TrackTests.swift */,
+				7F05C5ED24B7DFDB0049E246 /* ExtendedAudioPlayerTests.swift */,
 				7F44F9DB21B82B000041E4DE /* Utility */,
 				7FA59D5521B9467A00538013 /* Protocols */,
 				7FA59D5421B9466C00538013 /* Extensions */,
@@ -558,6 +570,7 @@
 		7FF5B3201BE6544B0044FCE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7F9F884024B77F0A005DF5D7 /* AsyncAwait.framework */,
 				7FA59D6121B9768500538013 /* TestExtensions.framework */,
 				7F854F7221B8022100A93D5B /* Logging.framework */,
 				7FCFE90D1BF3AF8F00981545 /* Social.framework */,
@@ -778,11 +791,13 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Logging.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/AsyncAwait.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Logging.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/AsyncAwait.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -818,7 +833,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F71B82B21A58E4300135925 /* RemoteControlling.swift in Sources */,
 				7F71B81A21A4A76500135925 /* ControlsViewController.swift in Sources */,
 				7F71B8AD21A82B7600135925 /* assets.swift in Sources */,
 				7F71B8BD21A833DB00135925 /* URLSessioning.swift in Sources */,
@@ -829,7 +843,9 @@
 				7F71B80D21A4872300135925 /* ScrubberViewController.swift in Sources */,
 				7F71B83421A5926B00135925 /* Mockable.swift in Sources */,
 				7F71B82921A5898500135925 /* Error.swift in Sources */,
+				7F05C5EA24B7CB780049E246 /* Remote.swift in Sources */,
 				7F71B85921A60B4800135925 /* PlayState.swift in Sources */,
+				7F9F883D24B753B8005DF5D7 /* ExtendedAudioPlayer.swift in Sources */,
 				7FF5B31D1BE654220044FCE5 /* MusicService.swift in Sources */,
 				7F71B83821A59FAD00135925 /* AlertController.swift in Sources */,
 				7F71B81621A4A32100135925 /* InfoViewState.swift in Sources */,
@@ -844,9 +860,11 @@
 				7F71B83221A5922100135925 /* Keyable.swift in Sources */,
 				7F71B85F21A70B3700135925 /* MusicAuthorization.swift in Sources */,
 				7F71B80321A484BC00135925 /* AppController.swift in Sources */,
+				7F05C5EC24B7CBEC0049E246 /* RemoteState.swift in Sources */,
 				7F71B83621A5927C00135925 /* UserDefaultable.swift in Sources */,
 				7FA59D7A21BBD01000538013 /* Utility.swift in Sources */,
 				7FA59D8221BBFD8400538013 /* MediaLibraryAuthorization.swift in Sources */,
+				7F9F883B24B72093005DF5D7 /* AudioAnalysisInformation.swift in Sources */,
 				7F71B84E21A5DCBB00135925 /* Alert.swift in Sources */,
 				7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */,
 				7F44F9EC21B845870041E4DE /* AudioPlayer.swift in Sources */,
@@ -882,11 +900,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FA59D5D21B960AC00538013 /* MockRemote.swift in Sources */,
 				7FF5B3001BE64E220044FCE5 /* TrackTests.swift in Sources */,
 				7FA59D5B21B95C0C00538013 /* AppTestEnvironment.swift in Sources */,
 				7FA59D6621B97DB000538013 /* ViewControllerExtensions.swift in Sources */,
-				7F44F9E221B8307C0041E4DE /* RemoteControlTests.swift in Sources */,
+				7F44F9E221B8307C0041E4DE /* RemoteTests.swift in Sources */,
 				7F44F9D821B829330041E4DE /* MusicInterruptionTests.swift in Sources */,
 				7FA59D5121B9441000538013 /* TestEnvironment.swift in Sources */,
 				7F44F9E021B82CC70041E4DE /* mocks.generated.swift in Sources */,
@@ -895,11 +912,12 @@
 				7F44F9E621B83AF40041E4DE /* UIButtonExtensions.swift in Sources */,
 				7FA59D5321B9465600538013 /* URLExtensions.swift in Sources */,
 				7F44F9D421B827EE0041E4DE /* ControlStateTests.swift in Sources */,
-				7F44F9E421B830F70041E4DE /* RemoteControlStateTests.swift in Sources */,
+				7F44F9E421B830F70041E4DE /* RemoteStateTests.swift in Sources */,
 				7F44F9D121B826D00041E4DE /* ControlTests.swift in Sources */,
 				7F44F9F021B849F10041E4DE /* TestAudioPlayerFactory.swift in Sources */,
 				7FA59D5F21B96CB300538013 /* Runtime.swift in Sources */,
 				7FA59D6821BAA44500538013 /* DataTests.swift in Sources */,
+				7F05C5EE24B7DFDB0049E246 /* ExtendedAudioPlayerTests.swift in Sources */,
 				7F5A83A621D940F4008F30BE /* TestMediaQuery.swift in Sources */,
 				7F44F9EA21B83DBD0041E4DE /* MockMediaItem.swift in Sources */,
 			);

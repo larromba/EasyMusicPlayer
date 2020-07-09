@@ -3,14 +3,16 @@ import MediaPlayer
 import TestExtensions
 import XCTest
 
-final class RemoteControlTests: XCTestCase {
-    private var remote: RemoteControlling!
+final class RemoteTests: XCTestCase {
+    private var controlsViewController: ControlsViewController!
+    private var remote: Remoting!
     private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
-        remote = MockRemoteCommandCenter()
-        env = AppTestEnvironment(remote: remote)
+        controlsViewController = .fromStoryboard()
+        remote = Remote()
+        env = AppTestEnvironment(remote: remote, controlsViewController: controlsViewController)
     }
 
     override func tearDown() {
@@ -24,7 +26,7 @@ final class RemoteControlTests: XCTestCase {
         env.inject()
 
         // sut
-        XCTAssertTrue((remote.playCommand as! MockRemoteCommand).fire())
+        remote.play?()
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
@@ -36,7 +38,7 @@ final class RemoteControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        XCTAssertTrue((remote.pauseCommand as! MockRemoteCommand).fire())
+        remote.pause?()
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
@@ -47,7 +49,7 @@ final class RemoteControlTests: XCTestCase {
         env.inject()
 
         // sut
-        XCTAssertTrue((remote.togglePlayPauseCommand as! MockRemoteCommand).fire())
+        remote.togglePlayPause?()
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
@@ -59,7 +61,7 @@ final class RemoteControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        XCTAssertTrue((remote.togglePlayPauseCommand as! MockRemoteCommand).fire())
+        remote.togglePlayPause?()
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
@@ -71,7 +73,7 @@ final class RemoteControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        XCTAssertTrue((remote.stopCommand as! MockRemoteCommand).fire())
+        remote.stop?()
 
         // test
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
@@ -85,7 +87,7 @@ final class RemoteControlTests: XCTestCase {
 
         // sut
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
-        XCTAssertTrue((remote.previousTrackCommand as! MockRemoteCommand).fire())
+        remote.prev?()
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 0)
@@ -100,7 +102,7 @@ final class RemoteControlTests: XCTestCase {
 
         // sut
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
-        XCTAssertTrue((remote.nextTrackCommand as! MockRemoteCommand).fire())
+        remote.next?()
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 2)
@@ -113,7 +115,9 @@ final class RemoteControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        (remote.changePlaybackPositionCommand as! MockChangePlaybackPositionCommand).fire()
+        let event = MockChangePlaybackPositionCommandEvent()
+        event._positionTime = MockMediaItem.playbackDuration / 2
+        remote.changePlayback?(event)
 
         // test
         XCTAssertEqual(env.playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
@@ -127,11 +131,21 @@ final class RemoteControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        (remote.seekBackwardCommand as! MockSeekRemoteCommand).fire()
+        let event = MockSeekCommandEvent()
+        event._type = .beginSeeking
+        remote.seekBackward?(event)
 
-        // test
+        // test (expect starts)
         waitSync(for: 3.0)
-        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 2)
+        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 1)
+
+        // sut
+        event._type = .endSeeking
+        remote.seekBackward?(event)
+
+        // test (expect stops)
+        waitSync(for: 3.0)
+        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 1)
     }
 
     func test_remoteControls_whenNextSeeked_expectChangesPlayLocationInTrack() {
@@ -142,10 +156,65 @@ final class RemoteControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        (remote.seekForwardCommand as! MockSeekRemoteCommand).fire()
+        let event = MockSeekCommandEvent()
+        event._type = .beginSeeking
+        remote.seekForward?(event)
+
+        // test (expect starts)
+        waitSync(for: 3.0)
+        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 7)
+
+        // sut
+        event._type = .endSeeking
+        remote.seekBackward?(event)
+
+        // test (expect stops)
+        waitSync(for: 3.0)
+        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 7)
+    }
+
+    func test_remoteControls_whenRepeatPressed_expectRepeatButtonChanged() {
+        // mocks
+        env.seeker = Seeker(seekInterval: 1)
+        env.inject()
+        env.setPlaying()
+
+        // sut
+        let event = MockChangeRepeatModeCommandEvent()
+        event._repeatType = .off
+        remote.repeatMode?(event)
 
         // test
-        waitSync(for: 3.0)
-        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 6)
+        XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatButton.image)
+    }
+
+    func test_remoteControls_whenRepeatOnePressed_expectRepeatButtonChanged() {
+        // mocks
+        env.seeker = Seeker(seekInterval: 1)
+        env.inject()
+        env.setPlaying()
+
+        // sut
+        let event = MockChangeRepeatModeCommandEvent()
+        event._repeatType = .one
+        remote.repeatMode?(event)
+
+        // test
+        XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatOneButton.image)
+    }
+
+    func test_remoteControls_whenRepeatAllPressed_expectRepeatButtonChanged() {
+        // mocks
+        env.seeker = Seeker(seekInterval: 1)
+        env.inject()
+        env.setPlaying()
+
+        // sut
+        let event = MockChangeRepeatModeCommandEvent()
+        event._repeatType = .all
+        remote.repeatMode?(event)
+
+        // test
+        XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatAllButton.image)
     }
 }

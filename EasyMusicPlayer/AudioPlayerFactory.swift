@@ -8,6 +8,6 @@ protocol AudioPlayerFactoring: Mockable {
 
 final class AudioPlayerFactory: AudioPlayerFactoring {
     func makeAudioPlayer(withContentsOf url: URL) throws -> AudioPlayer {
-        return try AVAudioPlayer(contentsOf: url)
+        return try ExtendedAudioPlayer(contentsOf: url)
     }
 }
