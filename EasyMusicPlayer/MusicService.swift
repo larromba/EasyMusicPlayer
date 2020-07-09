@@ -286,9 +286,9 @@ final class MusicService: NSObject, MusicServicing {
 
     private func authorizeThenPerform(_ block: @escaping (() -> Void)) {
         guard authorization.isAuthorized else {
-            authorization.authorize({ (_ success: Bool) in
+            authorization.authorize({ [weak self] (_ success: Bool) in
                 guard success else {
-                    self.throwError(.authorization)
+                    self?.throwError(.authorization)
                     return
                 }
                 block()
