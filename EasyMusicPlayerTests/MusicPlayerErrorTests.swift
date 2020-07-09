@@ -23,7 +23,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         super.tearDown()
     }
 
-    func testNoAuthShowsError() {
+    func test_playerError_whenNotAuthorized_expectAlertThrown() {
         // mocks
         env.setAuthorizationStatus(.denied)
         env.inject()
@@ -51,7 +51,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
-    func testNoTracksShowsError() {
+    func test_playerError_whenNoTracks_expectAlertThrown() {
         // mocks
         env.setLibraryTracks([])
         env.inject()
@@ -69,7 +69,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
-    func testNoVolumeShowsError() {
+    func test_playerError_whenNoVolume_expectAlertThrown() {
         // mocks
         env.setOutputVolume(0)
         env.inject()
@@ -87,7 +87,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
-    func testMusicFinishedShowsAlert() {
+    func test_playerError_whenMusicFinished_expectAlertThrown() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
@@ -109,7 +109,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         XCTAssertEqual(alert.actions.first?.title, "OK")
     }
 
-    func testDecodeErrorRemovesTrack() {
+    func test_playerError_whenDecodeError_expectRemovesTracks() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()

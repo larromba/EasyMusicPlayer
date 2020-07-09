@@ -20,7 +20,7 @@ final class ControlStateTests: XCTestCase {
 
     // MARK: - repeat one
 
-    func testRepeatOne() {
+    func test_repeatOne_whenPressed_expectIcon() {
         // mocks
         env.inject()
         env.setRepeatState(.one)
@@ -30,7 +30,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatOneButton.image)
     }
 
-    func testPlayStateRepeatOneStart() {
+    func test_repeatOne_whenPressedOnFirstTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
@@ -42,7 +42,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
-    func testPlayStateRepeatOneMid() {
+    func test_repeatOne_whenPressedOnMidTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -54,7 +54,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
-    func testPlayStateRepeatOneEnd() {
+    func test_repeatOne_whenPressedOnEndTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
@@ -68,7 +68,7 @@ final class ControlStateTests: XCTestCase {
 
     // MARK: - repeat none
 
-    func testRepeatNone() {
+    func test_repeatNone_whenPressed_expectIcon() {
         // mocks
         env.inject()
         env.setRepeatState(.none)
@@ -78,7 +78,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatButton.image)
     }
 
-    func testPlayStateRepeatNoneStart() {
+    func test_repeatNone_whenPressedOnFirstTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
@@ -90,7 +90,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
-    func testPlayStateRepeatNoneMid() {
+    func test_repeatNone_whenPressedOnMidTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -102,7 +102,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
-    func testPlayStateRepeatNoneEnd() {
+    func test_repeatNone_whenPressedOnEndTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
@@ -116,7 +116,7 @@ final class ControlStateTests: XCTestCase {
 
     // MARK: - repeat all
 
-    func testRepeatAll() {
+    func test_repeatAll_whenPressed_expectIcon() {
         // mocks
         env.inject()
         env.setRepeatState(.all)
@@ -126,7 +126,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertEqual(controlsViewController.repeatButton.backgroundImage(for: .normal), Asset.repeatAllButton.image)
     }
 
-    func testPlayStateRepeatAllStart() {
+    func test_repeatAll_whenPressedOnFirstTrack_expectState() {
         // mocks
         env.inject()
         env.setRepeatState(.all)
@@ -137,7 +137,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
-    func testPlayStateRepeatAllMid() {
+    func test_repeatAll_whenPressedOnMidTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -149,7 +149,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(controlsViewController.nextButton.isEnabled)
     }
 
-    func testPlayStateRepeatAllEnd() {
+    func test_repeatAll_whenPressedOnEndTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
@@ -163,7 +163,7 @@ final class ControlStateTests: XCTestCase {
 
     // MARK: - other
 
-    func testPlayState() {
+    func test_controls_whenPlaying_expectState() {
         // mocks
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
@@ -179,7 +179,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertTrue(scrubberViewController.view.isUserInteractionEnabled)
     }
 
-    func testPauseState() {
+    func test_controls_whenPaused_expectState() {
         // mocks
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
@@ -197,7 +197,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
-    func testStopState() {
+    func test_controls_whenStopped_expectState() {
         // mocks
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
@@ -215,7 +215,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
-    func testErrorState() {
+    func test_controls_whenErrorPlaying_expectState() {
         // mocks
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
@@ -234,7 +234,7 @@ final class ControlStateTests: XCTestCase {
         XCTAssertFalse(controlsViewController.nextButton.isEnabled)
     }
 
-    func testTrackRendersInfo() {
+    func test_controls_whenTrackLoaded_expectInfoDisplayed() {
         // mocks
         let infoViewController: InfoViewController = .fromStoryboard()
         env.infoViewController = infoViewController

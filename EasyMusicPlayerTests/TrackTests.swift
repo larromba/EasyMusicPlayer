@@ -3,7 +3,7 @@ import MediaPlayer
 import XCTest
 
 final class TrackTests: XCTestCase {
-    func testDashTrackFormat() {
+    func test_track_whenDashFormat_expectArtistAndTitleValues() {
         // mocks
         let mediaItem = MockMediaItem(title: "   arkist   -   fill my coffee  ")
 
@@ -15,7 +15,19 @@ final class TrackTests: XCTestCase {
         XCTAssertEqual(track.title, "fill my coffee")
     }
 
-    func testFallbackText() {
+    func test_track_whenNotDashFormat_expectArtistAndTitleValues() {
+        // mocks
+        let mediaItem = MockMediaItem(title: "   arkist   -   fill my - coffee  ")
+
+        // sut
+        let track = Track(mediaItem: mediaItem, artworkSize: .zero)
+
+        // test
+        XCTAssertEqual(track.artist, "Unknown Artist")
+        XCTAssertEqual(track.title, "   arkist   -   fill my - coffee  ")
+    }
+
+    func test_track_whenEmpty_expectDefaultValues() {
         // mocks
         let mediaItem = MockMediaItem()
 

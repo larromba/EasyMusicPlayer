@@ -20,7 +20,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     // MARK: - repeat one
 
-    func testPlayStateRepeatOneStart() {
+    func test_repeatOne_whenPressedOnFirstTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
@@ -32,7 +32,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertTrue(remote.nextTrackCommand.isEnabled)
     }
 
-    func testPlayStateRepeatOneMid() {
+    func test_repeatOne_whenPressedOnMidTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -44,7 +44,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertTrue(remote.nextTrackCommand.isEnabled)
     }
 
-    func testPlayStateRepeatOneEnd() {
+    func test_repeatOne_whenPressedOnEndTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
@@ -61,7 +61,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     // MARK: - repeat none
 
-    func testPlayStateRepeatNoneStart() {
+    func test_repeatNone_whenPressedOnFirstTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
@@ -73,7 +73,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertTrue(remote.nextTrackCommand.isEnabled)
     }
 
-    func testPlayStateRepeatNoneMid() {
+    func test_repeatNone_whenPressedOnMidTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -85,7 +85,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertTrue(remote.nextTrackCommand.isEnabled)
     }
 
-    func testPlayStateRepeatNoneEnd() {
+    func test_repeatNone_whenPressedOnEndTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
@@ -99,7 +99,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     // MARK: - repeat all
 
-    func testPlayStateRepeatAllStart() {
+    func test_repeatAll_whenPressedOnFirstTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
@@ -111,7 +111,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertTrue(remote.nextTrackCommand.isEnabled)
     }
 
-    func testPlayStateRepeatAllMid() {
+    func test_repeatAll_whenPressedOnMidTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -123,7 +123,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertTrue(remote.nextTrackCommand.isEnabled)
     }
 
-    func testPlayStateRepeatAllEnd() {
+    func test_repeatAll_whenPressedOnEndTrack_expectState() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
         env.inject()
@@ -137,7 +137,7 @@ final class RemoteControlStateTests: XCTestCase {
 
     // MARK: - other
 
-    func testPlayState() {
+    func test_remoteControls_whenPlaying_expectState() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -152,7 +152,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertTrue(remote.seekBackwardCommand.isEnabled)
     }
 
-    func testPauseState() {
+    func test_remoteControls_whenPaused_expectState() {
         // mocks
         env.inject()
         env.setPaused()
@@ -169,7 +169,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertFalse(remote.nextTrackCommand.isEnabled)
     }
 
-    func testStopState() {
+    func test_remoteControls_whenStopped_expectState() {
         // mocks
         env.inject()
         env.setStopped()
@@ -186,7 +186,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertFalse(remote.nextTrackCommand.isEnabled)
     }
 
-    func testErrorState() {
+    func test_remoteControls_whenErrorPlaying_expectState() {
         // mocks
         env.inject()
         env.preparePlayError()
@@ -204,7 +204,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertFalse(remote.nextTrackCommand.isEnabled)
     }
 
-    func testTrackRendersInfo() {
+    func test_remoteControls_whenTrackLoaded_expectInfoDisplayed() {
         // mocks
         let remoteInfo = MockNowPlayingInfoCenter()
         env.remoteInfo = remoteInfo
@@ -232,7 +232,7 @@ final class RemoteControlStateTests: XCTestCase {
         XCTAssertEqual(mediaType, .audio)
     }
 
-    func testScrubbingChangesRemoteInfo() {
+    func test_remoteControls_whenScrubbingMoved_expectInfoChanged() {
         // mocks
         let remoteInfo = MockNowPlayingInfoCenter()
         env.remoteInfo = remoteInfo

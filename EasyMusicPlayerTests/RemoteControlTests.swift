@@ -19,7 +19,7 @@ final class RemoteControlTests: XCTestCase {
         super.tearDown()
     }
 
-    func testPressingPlayPlaysMusic() {
+    func test_remoteControls_whenPlayPressed_expectPlaysMusic() {
         // mocks
         env.inject()
 
@@ -30,7 +30,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
-    func testPressingPausePausesMusic() {
+    func test_remoteControls_whenPausePressed_expectPausesMusic() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -42,7 +42,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
     }
 
-    func testTogglePlayPausePlaysMusic() {
+    func test_remoteControls_whenTogglePlayPausePressed_expectPlaysMusic() {
         // mocks
         env.inject()
 
@@ -53,7 +53,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
-    func testTogglePlayPausePausesMusic() {
+    func test_remoteControls_whenTogglePlayPausePressed_expectPausesMusic() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -65,7 +65,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
     }
 
-    func testPressingStopStopsMusic() {
+    func test_remoteControls_whenStopPressed_expectStopsMusic() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -77,7 +77,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
     }
 
-    func testPressingPrevPlaysPreviousTrack() {
+    func test_remoteControls_whenPrevPressed_expectPlaysPreviousTrack() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -92,7 +92,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
-    func testPressingNextPlaysNextTrack() {
+    func test_remoteControls_whenNextPressed_expectPlaysNextTrack() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -107,7 +107,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
-    func testScrobblingChangesPlayLocationInTrack() {
+    func test_remoteControls_whenScrubbingMoved_expectChangesPlayLocation() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -119,7 +119,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertEqual(env.playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
     }
 
-    func testSeeksPreviousChangesPlayLocationInTrack() {
+    func test_remoteControls_whenPreviousSeeked_expectChangesPlayLocationInTrack() {
         // mocks
         env.seeker = Seeker(seekInterval: 1)
         env.inject()
@@ -134,7 +134,7 @@ final class RemoteControlTests: XCTestCase {
         XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 2)
     }
 
-    func testSeekNextChangesPlayLocationInTrack() {
+    func test_remoteControls_whenNextSeeked_expectChangesPlayLocationInTrack() {
         // mocks
         env.seeker = Seeker(seekInterval: 1)
         env.inject()

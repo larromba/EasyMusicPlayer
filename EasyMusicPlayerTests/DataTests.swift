@@ -18,7 +18,7 @@ final class DataTests: XCTestCase {
         super.tearDown()
     }
 
-    func testRepeatStatePersisted() {
+    func test_repeatButton_whenPressed_expectRepeatStatePersisted() {
         // mocks
         let controlsViewController: ControlsViewController = .fromStoryboard()
         env.controlsViewController = controlsViewController
@@ -32,7 +32,7 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(env.userService.repeatState, .one)
     }
 
-    func testRepeatStateLoadedOnStart() {
+    func test_repeatState_whenAppOpens_expectIsLoadedFromStore() {
         // mocks
         let dataManager = DataManger(userDefaults: userDefaults)
         let userService = UserService(dataManager: dataManager)
@@ -43,7 +43,7 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(env.musicService.state.repeatState, .all)
     }
 
-    func testCurrentTrackIDPersistedOnTrackChange() {
+    func test_currentTrackID_whenTrackChanged_expectIsPersisted() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
         env.inject()
@@ -53,7 +53,7 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(env.userService.currentTrackID, 1)
     }
 
-    func testCurrentTrackIDLoadedOnStart() {
+    func test_currentTrackID_whenAppOpens_expectIsLoadedFromStore() {
         // mocks
         env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
         env.inject()
@@ -62,7 +62,7 @@ final class DataTests: XCTestCase {
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
     }
 
-    func testShuffleTracksPersisted() {
+    func test_shuffle_whenPressed_expectTrackIDsArePersisted() {
         // mocks
         let library = (0..<100).map { MockMediaItem(id: $0) }
         env.setLibraryTracks(library)
@@ -75,7 +75,7 @@ final class DataTests: XCTestCase {
         XCTAssertNotEqual(trackIDs, library.map { $0.persistentID })
     }
 
-    func testTrackIDsLoadedOnStart() {
+    func test_trackIDs_whenAppOpens_expectIsLoadedFromStore() {
         // mocks
         env.setLibraryTracks(defaultTracks)
         env.inject()

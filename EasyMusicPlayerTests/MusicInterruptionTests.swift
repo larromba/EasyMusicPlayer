@@ -19,7 +19,7 @@ final class MusicInterruptionTests: XCTestCase {
         super.tearDown()
     }
 
-    func testInterruptionStartedPausesMusic() {
+    func test_interruption_whenStarted_expectMusicPaused() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -32,7 +32,7 @@ final class MusicInterruptionTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
     }
 
-    func testInterruptionEndedPlaysMusic() {
+    func test_interruption_whenEnded_expectMusicPlayed() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -48,7 +48,7 @@ final class MusicInterruptionTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
-    func testInterruptionFromSuspendIsIgnored() {
+    func test_interruption_whenFromAppSuspension_expectIsIgnored() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -61,7 +61,7 @@ final class MusicInterruptionTests: XCTestCase {
         XCTAssertFalse(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? true)
     }
 
-    func testHeadphonesRemovedPausesMusic() {
+    func test_interruption_whenHeadphonesRemoved_expectPausesMusic() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -74,7 +74,7 @@ final class MusicInterruptionTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
     }
 
-    func testHeadphonesReattachedPlaysMusic() {
+    func test_interruption_whenHeadphonesReattached_expectPlaysMusic() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -90,7 +90,7 @@ final class MusicInterruptionTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
-    func testHeadphonesRemovedAndReattachedBeforeInterruptionFinishesDoesNotTakePriority() {
+    func test_interruption_whenHeadphonesRemovedAndReattachedBeforeInterruptionFinishes_expectDoesNotTakePriority() {
         // mocks
         env.inject()
         env.setPlaying()
@@ -114,7 +114,7 @@ final class MusicInterruptionTests: XCTestCase {
         XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
-    func testInterruptionBeforeHeadphonesRemovedAndReattachedDoesNotTakePriority() {
+    func test_interruption_whenBeforeHeadphonesRemovedAndReattached_expectDoesNotTakePriority() {
         // mocks
         env.inject()
         env.setPlaying()
