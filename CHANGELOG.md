@@ -76,6 +76,5 @@ Apple ID: 1067558718
 3.0.0:
 * simple search
 * fix disambigous state (e.g. is paying but remote shows paused state)
-* fix refresh player state on reentry
 BUG: remove app store share description (fb + twitter)
 BUG: no sound popup keeps reappearing

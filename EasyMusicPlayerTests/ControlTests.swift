@@ -152,4 +152,25 @@ final class ControlTests: XCTestCase {
         // test
         XCTAssertEqual(env.musicService.state.repeatState, .all)
     }
+
+    func test_controls_whenAppBecomesActive_expectRefreshed() {
+        // mocks
+        class Delegate: MusicServiceDelegate {
+            func musicService(_ service: MusicServicing, threwError error: MusicError) {}
+            func musicService(_ service: MusicServicing, changedState state: PlayState) {}
+            func musicService(_ service: MusicServicing, changedRepeatState state: RepeatState) {}
+            func musicService(_ service: MusicServicing, changedPlaybackTime playbackTime: TimeInterval) {}
+        }
+        env.inject()
+        env.setStopped()
+        env.musicService.setDelegate(delegate: Delegate()) // detach delegate
+
+        // sut
+        env.setPlaying()
+        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+
+        // test
+        waitSync()
+        XCTAssertEqual(controlsViewController.playButton.backgroundImage(for: .normal), Asset.pauseButton.image)
+    }
 }

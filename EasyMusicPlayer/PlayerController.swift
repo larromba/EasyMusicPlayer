@@ -64,13 +64,8 @@ final class PlayerController: PlayerControlling {
 
     @objc
     private func applicationDidBecomeActive() {
-        // if play button is no longr in sync (by being equal) to play state, stop the player.
-        // e.g. if play button is showing pause image (indicating the player is playing), but the player isn't playing,
-        // then somthing went horribly wrong...
-        guard let playButtonState = controlsController.playButtonState else { return }
-        if playButtonState == musicService.state.playState {
-            musicService.stop()
-        }
+        // this keeps the ui in sync with any state changes whilst inactive
+        musicService(musicService, changedState: musicService.state.playState)
     }
 }
 
