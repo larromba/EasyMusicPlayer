@@ -256,6 +256,22 @@ class MockAudioPlayer: NSObject, AudioPlayer {
             case url = "init(contentsOfurl:URL).url"
         }
     }
+
+    // MARK: - updateDuration
+
+    func updateDuration(_ duration: TimeInterval) {
+        let functionName = updateDuration6.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: duration, forKey: updateDuration6.params.duration)
+        invocations.record(invocation)
+    }
+
+    enum updateDuration6: String, _StringRawRepresentable {
+        case name = "updateDuration6"
+        enum params: String, _StringRawRepresentable {
+            case duration = "updateDuration(_duration:TimeInterval).duration"
+        }
+    }
 }
 
 class MockAudioPlayerFactory: NSObject, AudioPlayerFactoring {
@@ -1255,18 +1271,18 @@ class MockSeeker: NSObject, Seekable {
 }
 
 class MockTrackManager: NSObject, TrackManaging {
-    var tracks: [MPMediaItem] {
-        get { return _tracks }
-        set(value) { _tracks = value; _tracksHistory.append(_Variable(value)) }
+    var library: [Track] {
+        get { return _library }
+        set(value) { _library = value; _libraryHistory.append(_Variable(value)) }
     }
-    var _tracks: [MPMediaItem]! = []
-    var _tracksHistory: [_Variable<[MPMediaItem]?>] = []
-    var currentTrack: MPMediaItem {
+    var _library: [Track]! = []
+    var _libraryHistory: [_Variable<[Track]?>] = []
+    var currentTrack: Track {
         get { return _currentTrack }
         set(value) { _currentTrack = value; _currentTrackHistory.append(_Variable(value)) }
     }
-    var _currentTrack: MPMediaItem! = .mock
-    var _currentTrackHistory: [_Variable<MPMediaItem?>] = []
+    var _currentTrack: Track! = .empty
+    var _currentTrackHistory: [_Variable<Track?>] = []
     var currentTrackIndex: Int {
         get { return _currentTrackIndex }
         set(value) { _currentTrackIndex = value; _currentTrackIndexHistory.append(_Variable(value)) }
@@ -1279,6 +1295,12 @@ class MockTrackManager: NSObject, TrackManaging {
     }
     var _totalTracks: Int!
     var _totalTracksHistory: [_Variable<Int?>] = []
+    var isLastTrack: Bool {
+        get { return _isLastTrack }
+        set(value) { _isLastTrack = value; _isLastTrackHistory.append(_Variable(value)) }
+    }
+    var _isLastTrack: Bool!
+    var _isLastTrackHistory: [_Variable<Bool?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -1375,6 +1397,22 @@ class MockTrackManager: NSObject, TrackManaging {
         case name = "removeTrack7"
         enum params: String, _StringRawRepresentable {
             case index = "removeTrack(atIndexindex:Int).index"
+        }
+    }
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: TrackManagerDelegate) {
+        let functionName = setDelegate8.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate8.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate8: String, _StringRawRepresentable {
+        case name = "setDelegate8"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:TrackManagerDelegate).delegate"
         }
     }
 }

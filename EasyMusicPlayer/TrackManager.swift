@@ -4,14 +4,14 @@ import MediaPlayer
 
 // sourcery: name = TrackManager
 protocol TrackManaging: Mockable {
-    // sourcery: value = []
-    var tracks: [MPMediaItem] { get }
-    // sourcery: value = .mock
-    var currentTrack: MPMediaItem { get }
+    var library: [Track] { get } // might be slow on large playlists
+    // sourcery: value = .empty
+    var currentTrack: Track { get }
     // sourcery: value = 0
     var currentTrackIndex: Int { get }
     // sourcery: value = 0
     var totalTracks: Int { get }
+    var isLastTrack: Bool { get }
 
     func loadSavedPlaylist()
     func loadNewPlaylist(shuffled: Bool)
@@ -20,35 +20,50 @@ protocol TrackManaging: Mockable {
     func cueStart()
     func cueEnd()
     func removeTrack(atIndex index: Int)
+    func setDelegate(_ delegate: TrackManagerDelegate)
+}
+
+protocol TrackManagerDelegate: AnyObject {
+    func trackManager(_ manager: TrackManaging, updatedTrack track: Track)
 }
 
 final class TrackManager: TrackManaging {
     private let userService: UserServicing
     private let authorization: Authorization
     private let playlist: Playlistable
+    private var lastTrack: Track {
+        guard let track = tracks.last else { return .empty }
+        return Track(mediaItem: track, delegate: nil)
+    }
+    private var tracks: [MPMediaItem] = []
+    private weak var delegate: TrackManagerDelegate?
+    private(set) var currentTrackIndex: Int = 0 {
+        didSet {
+            guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else { return }
+            currentTrack = Track(mediaItem: tracks[currentTrackIndex], delegate: self)
+            userService.currentTrackID = currentTrack.id
+        }
+    }
+    private(set) var currentTrack: Track
+    var library: [Track] {
+        return tracks.map { Track(mediaItem: $0) }
+    }
+    var totalTracks: Int {
+        return tracks.count
+    }
+    var isLastTrack: Bool {
+        return currentTrack == lastTrack
+    }
 
     init(userService: UserServicing, authorization: Authorization, playlist: Playlistable) {
         self.userService = userService
         self.authorization = authorization
         self.playlist = playlist
+        currentTrack = .empty
     }
 
-    private(set) var tracks: [MPMediaItem] = []
-    var currentTrack: MPMediaItem {
-        guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else {
-            logError("no current track, returning empty MPMediaItem")
-            return MPMediaItem()
-        }
-        return tracks[currentTrackIndex]
-    }
-    private(set) var currentTrackIndex: Int = 0 {
-        didSet {
-            guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else { return }
-            userService.currentTrackID = currentTrack.persistentID
-        }
-    }
-    var totalTracks: Int {
-        return tracks.count
+    func setDelegate(_ delegate: TrackManagerDelegate) {
+        self.delegate = delegate
     }
 
     func loadSavedPlaylist() {
@@ -115,5 +130,14 @@ final class TrackManager: TrackManaging {
 
     private func saveTracks(_ tracks: [MPMediaItem]) {
         userService.trackIDs = tracks.map { return $0.persistentID }
+    }
+}
+
+// MARK: - DurationDelegate
+
+extension TrackManager: DurationDelegate {
+    func duration(_ duration: Duration, didUpdateTime time: TimeInterval) {
+        logMagic("silence detected: got new track duration \(time)")
+        delegate?.trackManager(self, updatedTrack: currentTrack)
     }
 }

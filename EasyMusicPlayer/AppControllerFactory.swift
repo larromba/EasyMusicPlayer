@@ -7,14 +7,19 @@ enum AppControllerFactory {
 
         let remote = Remote()
         let remoteInfo = MPNowPlayingInfoCenter.default()
-        let scrubberController = ScrubberController(viewController: playerViewController.scrubberViewController,
-                                                    remote: remote)
-        let infoController = InfoController(viewController: playerViewController.infoViewController,
-                                            remoteInfo: remoteInfo)
-        let controlsController = ControlsController(viewController: playerViewController.controlsViewController,
-                                                    remote: remote)
-        let alertController = AlertController(presenter: playerViewController)
+        let scrubberController = ScrubberController(
+            viewController: playerViewController.scrubberViewController,
+            remote: remote
+        )
+        let infoController = InfoController(
+            viewController: playerViewController.infoViewController,
+            remoteInfo: remoteInfo)
 
+        let controlsController = ControlsController(
+            viewController: playerViewController.controlsViewController,
+            remote: remote
+        )
+        let alertController = AlertController(presenter: playerViewController)
         let dataManager = DataManger(userDefaults: UserDefaults.standard)
         let userService = UserService(dataManager: dataManager)
         let authorization = MusicAuthorization(authorizer: MPMediaLibrary.self)
@@ -24,11 +29,16 @@ enum AppControllerFactory {
         let interruptionHandler = MusicInterruptionHandler()
         let clock = Clock(timeInterval: 1.0)
         let playerFactory = AudioPlayerFactory()
-        let musicService = MusicService(trackManager: trackManager, remote: remote,
-                                        audioSession: AVAudioSession.sharedInstance(), authorization: authorization,
-                                        seeker: seeker, interruptionHandler: interruptionHandler, clock: clock,
-                                        playerFactory: playerFactory)
-
+        let musicService = MusicService(
+            trackManager: trackManager,
+            remote: remote,
+            audioSession: AVAudioSession.sharedInstance(),
+            authorization: authorization,
+            seeker: seeker,
+            interruptionHandler: interruptionHandler,
+            clock: clock,
+            playerFactory: playerFactory
+        )
         let playerController = PlayerController(
             viewController: playerViewController,
             scrubberController: scrubberController,

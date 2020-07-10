@@ -28,21 +28,9 @@ final class Playlist: Playlistable {
         #if DEBUG && targetEnvironment(simulator)
         // returns mock items on simulator and in debug mode. this is skipped if in test mode
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-            final class DummyMediaItem: MPMediaItem {
-                private let image = Asset.arkistRendezvousFillYourCoffee.image
-                private lazy var mediaItemArtwork = MPMediaItemArtwork(boundsSize: image.size) { _ -> UIImage in
-                    return self.image
-                }
-                private let assetUrl = URL(fileURLWithPath: Bundle.safeMain
-                    .infoDictionary!["DummyAudioPath"] as! String)
-
-                override var artist: String { return "Arkist" }
-                override var title: String { return "Fill Your Coffee" }
-                override var playbackDuration: TimeInterval { return 290 }
-                override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
-                override var assetURL: URL { return assetUrl }
-            }
-            var tracks = [DummyMediaItem(), DummyMediaItem(), DummyMediaItem()]
+            var tracks = [DummyMediaItem(.normal, persistentID: 0),
+                          DummyMediaItem(.endSilence, persistentID: 1),
+                          DummyMediaItem(.normal, persistentID: 2)]
             if shuffled { tracks.shuffle() }
             return tracks
         }

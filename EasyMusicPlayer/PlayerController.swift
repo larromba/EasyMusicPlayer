@@ -77,7 +77,7 @@ extension PlayerController: MusicServiceDelegate {
         switch state {
         case .playing:
             controlsController.setControlsPlaying()
-            infoController.setInfoFromTrack(sender.state.currentTrack.resolved)
+            infoController.setInfoFromTrack(sender.state.currentTrack)
             infoController.setTrackPosition((sender.state.currentTrackIndex + 1),
                                             totalTracks: sender.state.totalTracks)
             scrubberController.setIsUserInteractionEnabled(true)
@@ -106,7 +106,7 @@ extension PlayerController: MusicServiceDelegate {
     func musicService(_ sender: MusicServicing, changedPlaybackTime playbackTime: TimeInterval) {
         guard !isUserScrubbing else { return }
 
-        let duration = musicService.state.currentTrack.playbackDuration
+        let duration = musicService.state.currentTrack.duration.value
         let percentage = duration > 0 ? playbackTime / duration : 0
 
         scrubberController.moveScrubber(percentage: Float(percentage))
@@ -121,7 +121,7 @@ extension PlayerController: MusicServiceDelegate {
         case .noVolume:
             alertController.showAlert(.noVolume)
         case .avError:
-            alertController.showAlert(.trackError(title: service.state.currentTrack.resolved.title))
+            alertController.showAlert(.trackError(title: service.state.currentTrack.title))
         case .decode, .playerInit:
             service.skip()
         case .authorization:
@@ -135,13 +135,13 @@ extension PlayerController: MusicServiceDelegate {
 extension PlayerController: ScrubberControllerDelegate {
     func scrubberController(_ controller: ScrubberControlling, touchMovedToPercentage percentage: Float) {
         isUserScrubbing = true
-        let duration = musicService.state.currentTrack.playbackDuration
+        let duration = musicService.state.currentTrack.duration.value
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
     }
 
     func scrubberController(_ controller: ScrubberControlling, touchEndedAtPercentage percentage: Float) {
-        let duration = musicService.state.currentTrack.playbackDuration
+        let duration = musicService.state.currentTrack.duration.value
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
         musicService.setTime(time)

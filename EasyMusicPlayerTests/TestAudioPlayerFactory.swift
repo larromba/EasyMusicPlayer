@@ -9,6 +9,7 @@ final class TestAudioPlayerFactory: AudioPlayerFactoring {
     var duration: TimeInterval
     private(set) var audioPlayer: MockAudioPlayer?
 
+    // default state assumes MockAudioPlayer will play & did play audio
     init(isPlaying: Bool = true, didPrepare: Bool = true, didPlay: Bool = true, currentTime: TimeInterval = 0,
          duration: TimeInterval = 60 * 60 * 3) {
         self.isPlaying = isPlaying

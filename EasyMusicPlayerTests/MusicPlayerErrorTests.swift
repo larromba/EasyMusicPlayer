@@ -4,13 +4,13 @@ import TestExtensions
 import XCTest
 
 final class MusicPlayerErrorTests: XCTestCase {
-    private var viewController: UIViewController!
+    private var viewController: PlayerViewController!
     private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
-        viewController = UIViewController()
-        env = AppTestEnvironment(alertPresenter: viewController)
+        viewController = .fromStoryboard()
+        env = AppTestEnvironment(playerViewController: viewController, alertPresenter: viewController)
         UIApplication.shared.keyWindow!.rootViewController = viewController
         UIView.setAnimationsEnabled(false)
     }

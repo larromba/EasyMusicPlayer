@@ -5,15 +5,18 @@ import XCTest
 final class ControlStateTests: XCTestCase {
     private var controlsViewController: ControlsViewController!
     private var env: AppTestEnvironment!
+    private var playerFactory: TestAudioPlayerFactory!
 
     override func setUp() {
         super.setUp()
         controlsViewController = .fromStoryboard()
-        env = AppTestEnvironment(controlsViewController: controlsViewController)
+        playerFactory = TestAudioPlayerFactory()
+        env = AppTestEnvironment(controlsViewController: controlsViewController, playerFactory: playerFactory)
     }
 
     override func tearDown() {
         controlsViewController = nil
+        playerFactory = nil
         env = nil
         super.tearDown()
     }
@@ -183,6 +186,7 @@ final class ControlStateTests: XCTestCase {
         // mocks
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
+        playerFactory.isPlaying = false
         env.inject()
         env.setPaused()
 
@@ -219,8 +223,8 @@ final class ControlStateTests: XCTestCase {
         // mocks
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
+        playerFactory.didPlay = false
         env.inject()
-        env.preparePlayError()
         env.setPlaying()
 
         // test

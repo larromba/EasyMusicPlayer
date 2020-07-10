@@ -4,22 +4,30 @@ import UIKit
 struct Track {
     let artist: String
     let title: String
-    let duration: TimeInterval
+    let duration: Duration
     let url: URL?
     var artwork: UIImage? {
         return mediaItemArtwork?.image(at: artworkSize)
     }
-
+    let id: MPMediaEntityPersistentID
     private let mediaItemArtwork: MPMediaItemArtwork?
     private let artworkSize: CGSize
 
-    init(mediaItem: MPMediaItem, artworkSize: CGSize) {
+    init(mediaItem: MPMediaItem, artworkSize: CGSize = CGSize(width: 512, height: 512),
+         delegate: DurationDelegate? = nil) {
         self.artworkSize = artworkSize
         artist = mediaItem.resolvedArtist
         title = mediaItem.resolvedTitle
-        duration = mediaItem.playbackDuration
+        duration = Duration(mediaItem.playbackDuration, url: mediaItem.assetURL, delegate: delegate)
         mediaItemArtwork = mediaItem.artwork
         url = mediaItem.assetURL
+        id = mediaItem.persistentID
+    }
+}
+
+extension Track {
+    static var empty: Track {
+        return Track(mediaItem: MPMediaItem(), artworkSize: .zero, delegate: nil)
     }
 }
 
@@ -27,7 +35,12 @@ struct Track {
 
 extension Track: Equatable {
     static func == (lhs: Track, rhs: Track) -> Bool {
-        return (lhs.artist == rhs.artist && lhs.title == rhs.title && lhs.url == rhs.url)
+        return (
+            lhs.artist == rhs.artist &&
+            lhs.title == rhs.title &&
+            lhs.url == rhs.url &&
+            lhs.id == rhs.id
+        )
     }
 }
 

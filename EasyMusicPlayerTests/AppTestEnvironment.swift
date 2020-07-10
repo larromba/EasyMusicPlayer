@@ -15,7 +15,7 @@ final class AppTestEnvironment {
     var seeker: Seekable
     var interruptionHandler: MusicInterruptionHandling
     var clock: Clocking
-    var playerFactory: TestAudioPlayerFactory // using instance name rather than protocol name to make testing easier
+    var playerFactory: AudioPlayerFactoring
     var userDefaults: UserDefaultable
     var mediaQueryType: MediaQueryable.Type
     var infoViewController: InfoViewControlling
@@ -45,8 +45,7 @@ final class AppTestEnvironment {
          seeker: Seekable = MockSeeker(),
          interruptionHandler: MusicInterruptionHandling = MockMusicInterruptionHandler(),
          clock: Clocking = MockClock(),
-         // TestAudioPlayerFactory is not defined via protocol for ease. There's no need to send in another factory
-         playerFactory: TestAudioPlayerFactory = TestAudioPlayerFactory(),
+         playerFactory: AudioPlayerFactoring = TestAudioPlayerFactory(),
          userDefaults: UserDefaultable = MockUserDefaults(),
          mediaQueryType: MediaQueryable.Type = MockMediaQuery.self) {
         AppTestEnvironment.resetAllStaticMocks()
@@ -67,12 +66,12 @@ final class AppTestEnvironment {
         self.mediaQueryType = mediaQueryType
     }
 
-    func preparePlayError() {
-        playerFactory.didPlay = false
-    }
-
     func setPlaying() {
         musicService.play()
+    }
+
+    func prev() {
+        musicService.previous()
     }
 
     func next() {
@@ -81,13 +80,11 @@ final class AppTestEnvironment {
 
     func setPaused() {
         musicService.play()
-        playerFactory.audioPlayer?.isPlaying = false
         musicService.pause()
     }
 
     func setStopped() {
         musicService.play()
-        playerFactory.audioPlayer?.isPlaying = false
         musicService.stop()
     }
 
@@ -97,10 +94,6 @@ final class AppTestEnvironment {
 
     func setRepeatState(_ repeatState: RepeatState) {
         controlsController.setRepeatState(repeatState)
-    }
-
-    func setCurrentTime(_ time: TimeInterval) {
-        playerFactory.currentTime = time
     }
 
     func setAuthorizationStatus(_ authorizationStatus: MPMediaLibraryAuthorizationStatus) {

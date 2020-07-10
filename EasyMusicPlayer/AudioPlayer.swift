@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import Logging
 
 // sourcery: name = AudioPlayer
 protocol AudioPlayer: AnyObject, Mockable {
@@ -15,5 +16,11 @@ protocol AudioPlayer: AnyObject, Mockable {
     func stop()
 
     init(contentsOf url: URL) throws
+
+    func updateDuration(_ duration: TimeInterval)
 }
-extension AVAudioPlayer: AudioPlayer {}
+extension AVAudioPlayer: AudioPlayer {
+    func updateDuration(_ duration: TimeInterval) {
+        logWarning("updateDuration(_:) not overridden")
+    }
+}

@@ -70,6 +70,7 @@ final class MusicService: NSObject, MusicServicing {
         seeker.setDelegate(self)
         interruptionHandler.setDelegate(self)
         clock.setDelegate(self)
+        trackManager.setDelegate(self)
 
         setupNotifications()
         setupRemote()
@@ -109,14 +110,14 @@ final class MusicService: NSObject, MusicServicing {
                 self.throwError(.noVolume)
                 return
             }
-            guard let assetUrl = self.trackManager.currentTrack.assetURL else {
+            guard let url = self.trackManager.currentTrack.url else {
                 self.throwError(.playerInit)
                 return
             }
 
-            if self.player?.url?.absoluteString != assetUrl.absoluteString {
+            if self.player?.url?.absoluteString != url.absoluteString {
                 do {
-                    let player = try self.playerFactory.makeAudioPlayer(withContentsOf: assetUrl)
+                    let player = try self.playerFactory.makeAudioPlayer(withContentsOf: url)
                     player.delegate = self
                     self.player = player
                 } catch {
@@ -129,13 +130,13 @@ final class MusicService: NSObject, MusicServicing {
             let enable = self.setAudioSessionIsEnabled(true)
             let prepare = self.player?.prepareToPlay() ?? false
             let play = self.player?.play() ?? false
-
             guard enable, prepare, play else {
                 logError("enable: \(enable), prepare: \(prepare), play: \(play)")
                 self.throwError(.avError)
                 return
             }
 
+            self.player?.updateDuration(self.trackManager.currentTrack.duration.value)
             self.clock.start()
             self.interruptionHandler.setIsPlaying(true)
             self.changePlayState(.playing)
@@ -340,7 +341,8 @@ extension MusicService: AVAudioPlayerDelegate {
         case .one:
             play()
         case .none:
-            guard trackManager.currentTrack != trackManager.tracks.last else {
+            guard !trackManager.isLastTrack else {
+                stop()
                 changePlayState(.finished)
                 return
             }
@@ -359,12 +361,9 @@ extension MusicService: AVAudioPlayerDelegate {
 
 extension MusicService: SeekerDelegate {
     func seeker(_ seeker: Seekable, updateDelta: TimeInterval) {
-        guard
-            let player = player,
+        guard let player = player,
             player.currentTime + updateDelta >= 0,
-            player.currentTime + updateDelta < player.duration else {
-                return
-        }
+            player.currentTime + updateDelta < player.duration else { return }
         player.currentTime += updateDelta
     }
 }
@@ -387,5 +386,13 @@ extension MusicService: ClockDelegate {
     func clockTicked(_ clock: Clock) {
         guard let player = player else { return }
         delegate?.musicService(self, changedPlaybackTime: player.currentTime)
+    }
+}
+
+// MARK: - TrackManagerDelegate
+
+extension MusicService: TrackManagerDelegate {
+    func trackManager(_ manager: TrackManaging, updatedTrack track: Track) {
+        player?.updateDuration(track.duration.value)
     }
 }

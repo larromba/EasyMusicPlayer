@@ -8,7 +8,7 @@ final class TrackTests: XCTestCase {
         let mediaItem = MockMediaItem(title: "   arkist   -   fill my coffee  ")
 
         // sut
-        let track = Track(mediaItem: mediaItem, artworkSize: .zero)
+        let track = Track(mediaItem: mediaItem)
 
         // test
         XCTAssertEqual(track.artist, "arkist")
@@ -20,7 +20,7 @@ final class TrackTests: XCTestCase {
         let mediaItem = MockMediaItem(title: "   arkist   -   fill my - coffee  ")
 
         // sut
-        let track = Track(mediaItem: mediaItem, artworkSize: .zero)
+        let track = Track(mediaItem: mediaItem)
 
         // test
         XCTAssertEqual(track.artist, "Unknown Artist")
@@ -32,7 +32,7 @@ final class TrackTests: XCTestCase {
         let mediaItem = MockMediaItem()
 
         // sut
-        let track = Track(mediaItem: mediaItem, artworkSize: .zero)
+        let track = Track(mediaItem: mediaItem)
 
         // test
         XCTAssertEqual(track.artist, "Unknown Artist")

@@ -7,13 +7,7 @@ final class ExtendedAudioPlayer: AudioPlayer {
         return audioPlayer.isPlaying
     }
     var duration: TimeInterval {
-        guard let analysisInformation = analysisInformation else { return audioPlayer.duration }
-        // silence is music too, but end silences longer than 5 seconds are painful, so shorten duration
-        if analysisInformation.durationOfEndSilence > 5 {
-            return analysisInformation.durationWithoutEndSilence
-        } else {
-            return analysisInformation.duration
-        }
+        return _duration
     }
     var delegate: AVAudioPlayerDelegate? {
         get { return audioPlayer.delegate }
@@ -29,35 +23,52 @@ final class ExtendedAudioPlayer: AudioPlayer {
 
     private let audioPlayer: AVAudioPlayer
     private var analysisInformation: AudioAnalysisInformation?
+    private var _duration: TimeInterval
+    private var observation: NSKeyValueObservation?
+    private let clock = Clock(timeInterval: 1.0)
 
     init(contentsOf url: URL) throws {
         audioPlayer = try AVAudioPlayer(contentsOf: url)
+        _duration = audioPlayer.duration
+        clock.setDelegate(self)
+    }
 
-        // AudioAnalysisInformation is quite time consuming, so done on background so doesn't block main thread.
-        // [weak self] so audioPlayer is released without waiting.
-        // this is better for memory when quickly skipping big files
-        DispatchQueue.main.async { [weak self] in
-            do {
-                self?.analysisInformation = try AudioAnalysisInformation(contentsOf: url)
-            } catch {
-                logError(error.localizedDescription)
-            }
-        }
+    func updateDuration(_ duration: TimeInterval) {
+        _duration = duration
     }
 
     func prepareToPlay() -> Bool {
-        audioPlayer.prepareToPlay()
+        return audioPlayer.prepareToPlay()
     }
 
     func play() -> Bool {
-        audioPlayer.play()
+        clock.start()
+        return audioPlayer.play()
     }
 
     func pause() {
         audioPlayer.pause()
+        clock.stop()
     }
 
     func stop() {
         audioPlayer.stop()
+        clock.stop()
+    }
+
+    // MARK: - private
+
+    private func checkTime(_ time: TimeInterval) {
+        if time >= duration {
+            delegate?.audioPlayerDidFinishPlaying?(audioPlayer, successfully: true)
+        }
+    }
+}
+
+// MARK: - ClockDelegate
+
+extension ExtendedAudioPlayer: ClockDelegate {
+    func clockTicked(_ clock: Clock) {
+        checkTime(currentTime)
     }
 }

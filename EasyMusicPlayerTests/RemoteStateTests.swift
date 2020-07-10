@@ -6,16 +6,19 @@ final class RemoteStateTests: XCTestCase {
     private var remoteCommandCenter: MPRemoteCommandCenter!
     private var remote: Remote!
     private var env: AppTestEnvironment!
+    private var playerFactory: TestAudioPlayerFactory!
 
     override func setUp() {
         super.setUp()
         remoteCommandCenter = MPRemoteCommandCenter.shared()
+        playerFactory = TestAudioPlayerFactory()
         remote = Remote(remote: remoteCommandCenter)
-        env = AppTestEnvironment(remote: remote)
+        env = AppTestEnvironment(remote: remote, playerFactory: playerFactory)
     }
 
     override func tearDown() {
         remoteCommandCenter = nil
+        playerFactory = nil
         remote = nil
         env = nil
         super.tearDown()
@@ -157,6 +160,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_remoteCommandCenterControls_whenPaused_expectState() {
         // mocks
+        playerFactory.isPlaying = false
         env.inject()
         env.setPaused()
 
@@ -191,8 +195,8 @@ final class RemoteStateTests: XCTestCase {
 
     func test_remoteCommandCenterControls_whenErrorPlaying_expectState() {
         // mocks
+        playerFactory.didPlay = false
         env.inject()
-        env.preparePlayError()
         env.setPlaying()
 
         // test

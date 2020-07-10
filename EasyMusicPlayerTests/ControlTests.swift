@@ -5,15 +5,18 @@ import XCTest
 final class ControlTests: XCTestCase {
     private var controlsViewController: ControlsViewController!
     private var env: AppTestEnvironment!
+    private var playerFactory: TestAudioPlayerFactory!
 
     override func setUp() {
         super.setUp()
         controlsViewController = .fromStoryboard()
-        env = AppTestEnvironment(controlsViewController: controlsViewController)
+        playerFactory = TestAudioPlayerFactory()
+        env = AppTestEnvironment(controlsViewController: controlsViewController, playerFactory: playerFactory)
     }
 
     override func tearDown() {
         controlsViewController = nil
+        playerFactory = nil
         env = nil
         super.tearDown()
     }
@@ -26,7 +29,7 @@ final class ControlTests: XCTestCase {
         XCTAssertTrue(controlsViewController.playButton.tap())
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_controls_whenPausePressed_expectPausesMusic() {
@@ -38,7 +41,7 @@ final class ControlTests: XCTestCase {
         XCTAssertTrue(controlsViewController.playButton.tap())
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
     }
 
     func test_controls_whenStopPressed_expectStopsMusic() {
@@ -50,23 +53,23 @@ final class ControlTests: XCTestCase {
         XCTAssertTrue(controlsViewController.stopButton.tap())
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
     }
 
     func test_controls_whenShufflePressed_expectShufflesMusicAndPlays() {
         // mocks
-        let library = (0..<100).map { MockMediaItem(id: $0) }
-        env.setSavedTracks(library, currentTrack: library[1])
+        let library = (0..<100).map { Track(mediaItem: MockMediaItem(id: $0)) }
+        env.setSavedTracks(library.map { MockMediaItem(track: $0) }, currentTrack: MockMediaItem(track: library[1]))
         env.inject()
 
         // sut
-        XCTAssertEqual(env.trackManager.tracks, library)
+        XCTAssertEqual(env.trackManager.library, library)
         XCTAssertTrue(controlsViewController.shuffleButton.tap())
 
         // test
-        XCTAssertNotEqual(env.trackManager.tracks, library)
-        XCTAssertEqual(env.trackManager.tracks.count, library.count)
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertNotEqual(env.trackManager.library, library)
+        XCTAssertEqual(env.trackManager.library.count, library.count)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_controls_whenPrevPressed_expectPlaysPreviousTrack() {
@@ -81,7 +84,7 @@ final class ControlTests: XCTestCase {
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 0)
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_controls_whenNextPressed_expectPlaysNextTrack() {
@@ -96,7 +99,7 @@ final class ControlTests: XCTestCase {
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 2)
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_controls_whenScrubbingMoved_expectChangesPlayLocation() {
@@ -114,7 +117,7 @@ final class ControlTests: XCTestCase {
         scrubberViewController.touchesEnded(touches, with: nil)
 
         // test
-        XCTAssertEqual(env.playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
     }
 
     func test_controls_whenRepeatAllPressed_expectChangesRepeatState() {

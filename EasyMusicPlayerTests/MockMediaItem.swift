@@ -1,3 +1,4 @@
+@testable import EasyMusic
 import Foundation
 import MediaPlayer
 
@@ -21,6 +22,14 @@ final class MockMediaItem: MPMediaItem {
         _title = title
         _image = image
         _id = id
+        super.init()
+    }
+
+    init(track: Track) {
+        _artist = track.artist
+        _title = track.title
+        _image = track.artwork ?? UIImage()
+        _id = track.id
         super.init()
     }
 

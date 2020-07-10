@@ -6,7 +6,7 @@ struct MusicServiceState {
     let volume: Float
     let currentTrackIndex: Int
     let totalTracks: Int
-    let currentTrack: MPMediaItem
+    let currentTrack: Track
     let time: TimeInterval
     let playState: PlayState
     let repeatState: RepeatState

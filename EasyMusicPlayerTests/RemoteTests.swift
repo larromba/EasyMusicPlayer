@@ -6,13 +6,16 @@ import XCTest
 final class RemoteTests: XCTestCase {
     private var controlsViewController: ControlsViewController!
     private var remote: Remoting!
+    private var playerFactory: TestAudioPlayerFactory!
     private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         controlsViewController = .fromStoryboard()
         remote = Remote()
-        env = AppTestEnvironment(remote: remote, controlsViewController: controlsViewController)
+        playerFactory = TestAudioPlayerFactory()
+        env = AppTestEnvironment(remote: remote, controlsViewController: controlsViewController,
+                                 playerFactory: playerFactory)
     }
 
     override func tearDown() {
@@ -29,7 +32,7 @@ final class RemoteTests: XCTestCase {
         remote.play?()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_remoteControls_whenPausePressed_expectPausesMusic() {
@@ -41,7 +44,7 @@ final class RemoteTests: XCTestCase {
         remote.pause?()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
     }
 
     func test_remoteControls_whenTogglePlayPausePressed_expectPlaysMusic() {
@@ -52,7 +55,7 @@ final class RemoteTests: XCTestCase {
         remote.togglePlayPause?()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_remoteControls_whenTogglePlayPausePressed_expectPausesMusic() {
@@ -64,7 +67,7 @@ final class RemoteTests: XCTestCase {
         remote.togglePlayPause?()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
     }
 
     func test_remoteControls_whenStopPressed_expectStopsMusic() {
@@ -76,7 +79,7 @@ final class RemoteTests: XCTestCase {
         remote.stop?()
 
         // test
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
     }
 
     func test_remoteControls_whenPrevPressed_expectPlaysPreviousTrack() {
@@ -91,7 +94,7 @@ final class RemoteTests: XCTestCase {
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 0)
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_remoteControls_whenNextPressed_expectPlaysNextTrack() {
@@ -106,7 +109,7 @@ final class RemoteTests: XCTestCase {
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 2)
-        XCTAssertTrue(env.playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+        XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
     func test_remoteControls_whenScrubbingMoved_expectChangesPlayLocation() {
@@ -120,14 +123,14 @@ final class RemoteTests: XCTestCase {
         remote.changePlayback?(event)
 
         // test
-        XCTAssertEqual(env.playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
     }
 
     func test_remoteControls_whenPreviousSeeked_expectChangesPlayLocationInTrack() {
         // mocks
+        playerFactory.currentTime = 4
         env.seeker = Seeker(seekInterval: 1)
         env.inject()
-        env.setCurrentTime(4)
         env.setPlaying()
 
         // sut
@@ -137,7 +140,7 @@ final class RemoteTests: XCTestCase {
 
         // test (expect starts)
         waitSync(for: 3.0)
-        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 1)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, 1)
 
         // sut
         event._type = .endSeeking
@@ -145,14 +148,14 @@ final class RemoteTests: XCTestCase {
 
         // test (expect stops)
         waitSync(for: 3.0)
-        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 1)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, 1)
     }
 
     func test_remoteControls_whenNextSeeked_expectChangesPlayLocationInTrack() {
         // mocks
+        playerFactory.currentTime = 4
         env.seeker = Seeker(seekInterval: 1)
         env.inject()
-        env.setCurrentTime(4)
         env.setPlaying()
 
         // sut
@@ -162,7 +165,7 @@ final class RemoteTests: XCTestCase {
 
         // test (expect starts)
         waitSync(for: 3.0)
-        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 7)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, 7)
 
         // sut
         event._type = .endSeeking
@@ -170,7 +173,7 @@ final class RemoteTests: XCTestCase {
 
         // test (expect stops)
         waitSync(for: 3.0)
-        XCTAssertEqual(self.env.playerFactory.audioPlayer?.currentTime ?? 0, 7)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, 7)
     }
 
     func test_remoteControls_whenRepeatPressed_expectRepeatButtonChanged() {
