@@ -7,6 +7,7 @@ protocol ControlsViewStating {
     var nextButton: GenericButtonViewStating { get }
     var shuffleButton: GenericButtonViewStating { get }
     var repeatButton: RepeatButtonViewStating { get }
+    var searchButton: GenericButtonViewStating { get }
 
     func copy(playButton: PlayButtonViewStating) -> ControlsViewStating
     func copy(stopButton: GenericButtonViewStating) -> ControlsViewStating
@@ -14,6 +15,7 @@ protocol ControlsViewStating {
     func copy(nextButton: GenericButtonViewStating) -> ControlsViewStating
     func copy(shuffleButton: GenericButtonViewStating) -> ControlsViewStating
     func copy(repeatButton: RepeatButtonViewStating) -> ControlsViewStating
+    func copy(searchButton: GenericButtonViewStating) -> ControlsViewStating
 }
 
 struct ControlsViewState: ControlsViewStating {
@@ -23,6 +25,7 @@ struct ControlsViewState: ControlsViewStating {
     let nextButton: GenericButtonViewStating
     let shuffleButton: GenericButtonViewStating
     let repeatButton: RepeatButtonViewStating
+    let searchButton: GenericButtonViewStating
 }
 
 extension ControlsViewState {
@@ -33,7 +36,8 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            repeatButton: repeatButton
+            repeatButton: repeatButton,
+            searchButton: searchButton
         )
     }
 
@@ -44,7 +48,8 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            repeatButton: repeatButton
+            repeatButton: repeatButton,
+            searchButton: searchButton
         )
     }
 
@@ -55,7 +60,8 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            repeatButton: repeatButton
+            repeatButton: repeatButton,
+            searchButton: searchButton
         )
     }
 
@@ -66,7 +72,8 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            repeatButton: repeatButton
+            repeatButton: repeatButton,
+            searchButton: searchButton
         )
     }
 
@@ -77,7 +84,8 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            repeatButton: repeatButton
+            repeatButton: repeatButton,
+            searchButton: searchButton
         )
     }
 
@@ -88,7 +96,20 @@ extension ControlsViewState {
             prevButton: prevButton,
             nextButton: nextButton,
             shuffleButton: shuffleButton,
-            repeatButton: repeatButton
+            repeatButton: repeatButton,
+            searchButton: searchButton
+        )
+    }
+
+    func copy(searchButton: GenericButtonViewStating) -> ControlsViewStating {
+        return ControlsViewState(
+            playButton: playButton,
+            stopButton: stopButton,
+            prevButton: prevButton,
+            nextButton: nextButton,
+            shuffleButton: shuffleButton,
+            repeatButton: repeatButton,
+            searchButton: searchButton
         )
     }
 }

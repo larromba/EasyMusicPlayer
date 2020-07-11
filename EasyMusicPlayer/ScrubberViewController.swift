@@ -1,21 +1,21 @@
 import UIKit
 
 protocol ScrubberViewDelegate: AnyObject {
-    func scrubberViewController(_ viewController: ScrubberViewControlling,
-                                touchesBegan touches: Set<UITouch>, with event: UIEvent?)
-    func scrubberViewController(_ viewController: ScrubberViewControlling,
-                                touchesMoved touches: Set<UITouch>, with event: UIEvent?)
-    func scrubberViewController(_ viewController: ScrubberViewControlling,
-                                touchesEnded touches: Set<UITouch>, with event: UIEvent?)
+    func viewController(_ viewController: ScrubberViewControlling, touchesBegan touches: Set<UITouch>,
+                        with event: UIEvent?)
+    func viewController(_ viewController: ScrubberViewControlling, touchesMoved touches: Set<UITouch>,
+                        with event: UIEvent?)
+    func viewController(_ viewController: ScrubberViewControlling, touchesEnded touches: Set<UITouch>,
+                        with event: UIEvent?)
 }
 
 // sourcery: name = ScrubberViewController
 protocol ScrubberViewControlling: AnyObject, Mockable {
     var viewState: ScrubberViewStating? { get set }
-    var view: UIView! { get }
-    var barView: UIView! { get }
+    var viewWidth: CGFloat { get }
 
     func setDelegate(_ delegate: ScrubberViewDelegate)
+    func tapLocation(for touch: UITouch) -> CGPoint
 }
 
 @IBDesignable
@@ -27,6 +27,9 @@ final class ScrubberViewController: UIViewController, ScrubberViewControlling {
     var viewState: ScrubberViewStating? {
         didSet { _ = viewState.map(bind) }
     }
+    var viewWidth: CGFloat {
+        return view.bounds.width
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,16 +40,20 @@ final class ScrubberViewController: UIViewController, ScrubberViewControlling {
         self.delegate = delegate
     }
 
+    func tapLocation(for touch: UITouch) -> CGPoint {
+        return touch.location(in: view)
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.scrubberViewController(self, touchesBegan: touches, with: event)
+        delegate?.viewController(self, touchesBegan: touches, with: event)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.scrubberViewController(self, touchesMoved: touches, with: event)
+        delegate?.viewController(self, touchesMoved: touches, with: event)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        delegate?.scrubberViewController(self, touchesEnded: touches, with: event)
+        delegate?.viewController(self, touchesEnded: touches, with: event)
     }
 
     // MARK: - private

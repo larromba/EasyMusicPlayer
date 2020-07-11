@@ -1,7 +1,7 @@
 import Foundation
 import MediaPlayer
 
-final class TestMediaQuery: MPMediaQuery {
+final class DummyMediaQuery: MPMediaQuery {
     private var _items: [MPMediaItem]
     override var items: [MPMediaItem]? {
         guard

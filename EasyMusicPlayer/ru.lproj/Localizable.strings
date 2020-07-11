@@ -14,20 +14,14 @@
 "track error title" = "ошибка";
 "track error msg" = "не мог играть '%@'";
 "track error button" = "OK";
-"accounts error title" = "Счета";
-"accounts error msg" = "Пожалуйста, проверьте ваши социальные счета правильно настроен и попробуйте еще раз";
-"accounts error button" = "OK";
 "finished alert title" = "Конец";
 "finished alert msg" = "Ваше плейлист закончил";
 "finished alert button" = "OK";
 "authorization error title" = "авторизация";
 "authorization error message" = "В настройках, пожалуйста, позвольте нам получить доступ к вашей музыке!";
 "authorization error button" = "OK";
+"play error title" = "ошибка";
+"play error message" = "Не удалось воспроизвести трек";
+"play error button" = "OK";
 
-"share format" = "%@ - %@ (с помощью %@)";
-"share sheet title" = "Поделиться";
-"share sheet desc" = "Где вы хотите поделиться этой песни?";
-"share option facebook" = "facebook";
-"share option twitter" = "twitter";
-"share option email" = "Эл. адрес";
-"share option cancel" = "Отмена";
+"search view title" = "Поиск";

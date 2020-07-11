@@ -6,14 +6,14 @@ import XCTest
 final class RemoteTests: XCTestCase {
     private var controlsViewController: ControlsViewController!
     private var remote: Remoting!
-    private var playerFactory: TestAudioPlayerFactory!
+    private var playerFactory: DummyAudioPlayerFactory!
     private var env: AppTestEnvironment!
 
     override func setUp() {
         super.setUp()
         controlsViewController = .fromStoryboard()
         remote = Remote()
-        playerFactory = TestAudioPlayerFactory()
+        playerFactory = DummyAudioPlayerFactory()
         env = AppTestEnvironment(remote: remote, controlsViewController: controlsViewController,
                                  playerFactory: playerFactory)
     }

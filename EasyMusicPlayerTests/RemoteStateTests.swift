@@ -6,12 +6,12 @@ final class RemoteStateTests: XCTestCase {
     private var remoteCommandCenter: MPRemoteCommandCenter!
     private var remote: Remote!
     private var env: AppTestEnvironment!
-    private var playerFactory: TestAudioPlayerFactory!
+    private var playerFactory: DummyAudioPlayerFactory!
 
     override func setUp() {
         super.setUp()
         remoteCommandCenter = MPRemoteCommandCenter.shared()
-        playerFactory = TestAudioPlayerFactory()
+        playerFactory = DummyAudioPlayerFactory()
         remote = Remote(remote: remoteCommandCenter)
         env = AppTestEnvironment(remote: remote, playerFactory: playerFactory)
     }

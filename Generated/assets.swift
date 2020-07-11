@@ -27,6 +27,7 @@ internal enum Asset {
   internal static let repeatButton = ImageAsset(name: "RepeatButton")
   internal static let repeatOneButton = ImageAsset(name: "RepeatOneButton")
   internal static let roundedButton = ImageAsset(name: "RoundedButton")
+  internal static let searchButton = ImageAsset(name: "SearchButton")
   internal static let shareButton = ImageAsset(name: "ShareButton")
   internal static let shuffleButton = ImageAsset(name: "ShuffleButton")
   internal static let stopButton = ImageAsset(name: "StopButton")

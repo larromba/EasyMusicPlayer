@@ -6,12 +6,12 @@ import XCTest
 final class MusicInterruptionTests: XCTestCase {
     private var interruptionHandler: MusicInterruptionHandler!
     private var env: AppTestEnvironment!
-    private var playerFactory: TestAudioPlayerFactory!
+    private var playerFactory: DummyAudioPlayerFactory!
 
     override func setUp() {
         super.setUp()
         interruptionHandler = MusicInterruptionHandler()
-        playerFactory = TestAudioPlayerFactory()
+        playerFactory = DummyAudioPlayerFactory()
         env = AppTestEnvironment(interruptionHandler: interruptionHandler, playerFactory: playerFactory)
     }
 

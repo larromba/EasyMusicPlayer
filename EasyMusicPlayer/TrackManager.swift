@@ -15,6 +15,7 @@ protocol TrackManaging: Mockable {
 
     func loadSavedPlaylist()
     func loadNewPlaylist(shuffled: Bool)
+    func prime(_ track: Track) -> Bool
     func cuePrevious() -> Bool
     func cueNext() -> Bool
     func cueStart()
@@ -33,7 +34,7 @@ final class TrackManager: TrackManaging {
     private let playlist: Playlistable
     private var lastTrack: Track {
         guard let track = tracks.last else { return .empty }
-        return Track(mediaItem: track, delegate: nil)
+        return Track(mediaItem: track)
     }
     private var tracks: [MPMediaItem] = []
     private weak var delegate: TrackManagerDelegate?
@@ -75,6 +76,7 @@ final class TrackManager: TrackManaging {
         guard
             let currentTrackID = userService.currentTrackID,
             let trackIDs = userService.trackIDs, !trackIDs.isEmpty else {
+                logError("couldn't load saved playlist")
                 return
         }
         tracks = playlist.find(ids: trackIDs)
@@ -87,10 +89,15 @@ final class TrackManager: TrackManaging {
             currentTrackIndex = 0
             return
         }
-
         tracks = playlist.create(shuffled: shuffled)
         currentTrackIndex = 0
         saveTracks(tracks)
+    }
+
+    func prime(_ track: Track) -> Bool {
+        guard let index = tracks.firstIndex(where: { $0.persistentID == track.id }) else { return false }
+        currentTrackIndex = index
+        return true
     }
 
     func cuePrevious() -> Bool {
@@ -98,7 +105,6 @@ final class TrackManager: TrackManaging {
         if newIndex < 0 {
             return false
         }
-
         currentTrackIndex = newIndex
         return true
     }
@@ -108,7 +114,6 @@ final class TrackManager: TrackManaging {
         if newIndex >= tracks.count {
             return false
         }
-
         currentTrackIndex = newIndex
         return true
     }

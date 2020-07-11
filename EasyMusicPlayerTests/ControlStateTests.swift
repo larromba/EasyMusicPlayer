@@ -5,12 +5,12 @@ import XCTest
 final class ControlStateTests: XCTestCase {
     private var controlsViewController: ControlsViewController!
     private var env: AppTestEnvironment!
-    private var playerFactory: TestAudioPlayerFactory!
+    private var playerFactory: DummyAudioPlayerFactory!
 
     override func setUp() {
         super.setUp()
         controlsViewController = .fromStoryboard()
-        playerFactory = TestAudioPlayerFactory()
+        playerFactory = DummyAudioPlayerFactory()
         env = AppTestEnvironment(controlsViewController: controlsViewController, playerFactory: playerFactory)
     }
 

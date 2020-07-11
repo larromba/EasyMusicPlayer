@@ -27,10 +27,10 @@ extension Alert {
         text: L10n.authorizationErrorMessage,
         buttonTitle: L10n.authorizationErrorButton
     )
-    static var shareError = Alert(
-        title: L10n.accountsErrorTitle,
-        text: L10n.accountsErrorMsg,
-        buttonTitle: L10n.accountsErrorButton
+    static var playError = Alert(
+        title: L10n.playErrorTitle,
+        text: L10n.playErrorMessage,
+        buttonTitle: L10n.playErrorButton
     )
 
     static func trackError(title: String) -> Alert {

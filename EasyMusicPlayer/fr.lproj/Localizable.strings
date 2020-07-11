@@ -14,20 +14,14 @@
 "track error title" = "Erreur";
 "track error msg" = "Ne pouvait pas jouer '%@'";
 "track error button" = "D'accord";
-"accounts error title" = "Comptes";
-"accounts error msg" = "S'il vous plaît vérifier vos comptes sociaux sont correctement configuré et essayez à nouveau";
-"accounts error button" = "D'accord";
 "finished alert title" = "Fin";
 "finished alert msg" = "Votre playlist terminé";
 "finished alert button" = "D'accord";
 "authorization error title" = "Autorisation";
 "authorization error message" = "Dans le menu Paramètres, accédez à votre musique!";
 "authorization error button" = "D'accord";
+"play error title" = "Erreur";
+"play error message" = "Impossible de lire la piste";
+"play error button" = "OK";
 
-"share format" = "%@ - %@ (passant par %@)";
-"share sheet title" = "Partagez";
-"share sheet desc" = "Où voulez-vous partager cette chanson?";
-"share option facebook" = "Facebook";
-"share option twitter" = "Twitter";
-"share option email" = "Email";
-"share option cancel" = "Annuler";
+"search view title" = "Chercher";

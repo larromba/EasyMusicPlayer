@@ -83,6 +83,7 @@ final class Remote: Remoting {
 
     init(remote: MPRemoteCommandCenter = .shared()) {
         self.remote = remote
+        setupRemote()
     }
 
     deinit {
@@ -96,6 +97,8 @@ final class Remote: Remoting {
         remote.changePlaybackPositionCommand.removeTarget(self)
         remote.changeRepeatModeCommand.removeTarget(self)
     }
+
+    // MARK: - private
 
     private func setupRemote() {
         remote.togglePlayPauseCommand.addTarget { _ -> MPRemoteCommandHandlerStatus in

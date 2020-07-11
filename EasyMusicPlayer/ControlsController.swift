@@ -12,15 +12,11 @@ protocol ControlsControlling: AnyObject, Mockable {
     func setControlsPlaying()
     func setControlsPaused()
     func setControlsStopped()
+    func setIsAuthorized(_ isAuthorized: Bool)
 }
 
 protocol ControlsDelegate: AnyObject {
-    func controlsControllerPressedPlay(_ controller: ControlsControlling)
-    func controlsControllerPressedStop(_ controller: ControlsControlling)
-    func controlsControllerPressedPrev(_ controller: ControlsControlling)
-    func controlsControllerPressedNext(_ controller: ControlsControlling)
-    func controlsControllerPressedShuffle(_ controller: ControlsControlling)
-    func controlsControllerPressedRepeat(_ controller: ControlsControlling)
+    func controller(_ controller: ControlsControlling, handleAction action: PlayerAction)
 }
 
 final class ControlsController: ControlsControlling {
@@ -104,7 +100,17 @@ final class ControlsController: ControlsControlling {
         updateSeekingControls()
     }
 
+    func setIsAuthorized(_ isAuthorized: Bool) {
+        viewState = viewState.copy(searchButton: viewState.searchButton.copy(isEnabled: isAuthorized))
+    }
+
     // MARK: - private
+
+    private func setup() {
+        viewController.setDelegate(self)
+        viewState = ControlsViewState.default
+        setControlsStopped()
+    }
 
     private func setPreviousIsEnabled(_ isEnabled: Bool) {
         viewState = viewState.copy(prevButton: viewState.prevButton.copy(isEnabled: isEnabled))
@@ -158,49 +164,21 @@ final class ControlsController: ControlsControlling {
         setSeekBackwardsIsEnabled(musicServiceState.isPlaying)
         setSeekForwardsIsEnabled(musicServiceState.isPlaying)
     }
-
-    // MARK: - private
-
-    private func setup() {
-        viewController.setDelegate(self)
-        viewState = ControlsViewState.default
-        setControlsStopped()
-    }
 }
 
 // MARK: - ControlsViewDelegate
 
 extension ControlsController: ControlsViewDelegate {
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay button: UIButton) {
+    func viewController(_ viewController: ControlsViewControlling, handleAction action: PlayerAction,
+                        forButton button: UIButton) {
         button.pulse()
-        delegate?.controlsControllerPressedPlay(self)
-    }
-
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop button: UIButton) {
-        button.pulse()
-        delegate?.controlsControllerPressedStop(self)
-    }
-
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev button: UIButton) {
-        button.pulse()
-        delegate?.controlsControllerPressedPrev(self)
-    }
-
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext button: UIButton) {
-        button.pulse()
-        delegate?.controlsControllerPressedNext(self)
-    }
-
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle button: UIButton) {
-        button.pulse()
-        button.spin()
-        delegate?.controlsControllerPressedShuffle(self)
-    }
-
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat button: UIButton) {
-        button.pulse()
-        setRepeatState(viewState.repeatButton.state.next())
-        delegate?.controlsControllerPressedRepeat(self)
+        if action == .changeRepeatMode {
+            setRepeatState(viewState.repeatButton.state.next())
+        }
+        if action == .shuffle {
+            button.spin()
+        }
+        delegate?.controller(self, handleAction: action)
     }
 }
 
@@ -213,6 +191,7 @@ private extension ControlsViewState {
         prevButton: GenericButtonViewState(isEnabled: false),
         nextButton: GenericButtonViewState(isEnabled: false),
         shuffleButton: GenericButtonViewState(isEnabled: false),
-        repeatButton: RepeatButtonViewState(state: .all, isEnabled: false)
+        repeatButton: RepeatButtonViewState(state: .all, isEnabled: false),
+        searchButton: GenericButtonViewState(isEnabled: false)
     )
 }

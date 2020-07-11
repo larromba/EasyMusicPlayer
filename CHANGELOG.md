@@ -78,3 +78,4 @@ Apple ID: 1067558718
 * fix disambigous state (e.g. is paying but remote shows paused state)
 BUG: remove app store share description (fb + twitter)
 BUG: no sound popup keeps reappearing
+BUG MPMediaItemArtwork

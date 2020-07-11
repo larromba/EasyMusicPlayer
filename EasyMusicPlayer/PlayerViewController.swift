@@ -7,10 +7,18 @@ protocol PlayerViewControlling: AnyObject, Mockable {
     var scrubberViewController: ScrubberViewControlling { get }
     var infoViewController: InfoViewControlling { get }
     var controlsViewController: ControlsViewControlling { get }
+
+    func setDelegate(_ delegate: PlayerViewControllerDelegate)
+    func showSearch()
+}
+
+protocol PlayerViewControllerDelegate: AnyObject {
+    func viewController(_ viewController: PlayerViewControlling, prepareForSegue segue: UIStoryboardSegue, sender: Any?)
 }
 
 final class PlayerViewController: UIViewController, PlayerViewControlling {
     @IBOutlet private(set) weak var appVersionLabel: UILabel!
+    private weak var delegate: PlayerViewControllerDelegate?
 
     var viewState: PlayerViewStating? {
         didSet { _ = viewState.map(bind) }
@@ -28,6 +36,19 @@ final class PlayerViewController: UIViewController, PlayerViewControlling {
     override func viewDidLoad() {
         super.viewDidLoad()
         _ = viewState.map(bind)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        delegate?.viewController(self, prepareForSegue: segue, sender: sender)
+    }
+
+    func setDelegate(_ delegate: PlayerViewControllerDelegate) {
+        self.delegate = delegate
+    }
+
+    func showSearch() {
+        performSegue(withIdentifier: "showSearchViewController", sender: nil)
     }
 
     // MARK: - private

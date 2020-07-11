@@ -6,9 +6,9 @@ protocol AppControlling: Mockable {
 }
 
 final class AppController: AppControlling {
-    private let playerController: PlayerControlling
+    private let router: AppRouting
 
-    init(playerController: PlayerControlling) {
-        self.playerController = playerController
+    init(router: AppRouting) {
+        self.router = router
     }
 }

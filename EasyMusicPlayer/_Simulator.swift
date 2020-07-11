@@ -1,7 +1,7 @@
+#if DEBUG && targetEnvironment(simulator)
 import Foundation
 import MediaPlayer
 
-#if DEBUG && targetEnvironment(simulator)
 enum DummyAsset {
     case normal
     case endSilence
@@ -36,7 +36,7 @@ final class DummyMediaItem: MPMediaItem {
     override var artist: String { return "Arkist" }
     override var title: String { return "Fill Your Coffee" }
     override var playbackDuration: TimeInterval { return _playbackDuration }
-    override var artwork: MPMediaItemArtwork { return mediaItemArtwork }
+    override var artwork: MPMediaItemArtwork? { return mediaItemArtwork }
     override var assetURL: URL { return _assetUrl }
     override var persistentID: MPMediaEntityPersistentID { return _persistentID }
 
@@ -50,6 +50,18 @@ final class DummyMediaItem: MPMediaItem {
         _persistentID = persistentID
         _playbackDuration = asset.playbackDuration
         super.init()
+    }
+}
+
+final class DummyMediaQuery: MPMediaQuery {
+    override var items: [MPMediaItem]? {
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            return [DummyMediaItem(.normal, persistentID: 0),
+                    DummyMediaItem(.endSilence, persistentID: 1),
+                    DummyMediaItem(.normal, persistentID: 2)]
+        } else {
+            return super.items
+        }
     }
 }
 #endif

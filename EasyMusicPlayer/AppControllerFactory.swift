@@ -2,9 +2,9 @@ import MediaPlayer
 import UIKit
 
 enum AppControllerFactory {
+    // swiftlint:disable function_body_length
     static func make(playerViewController: PlayerViewController) -> AppControlling {
         _ = playerViewController.view // force load of view
-
         let remote = Remote()
         let remoteInfo = MPNowPlayingInfoCenter.default()
         let scrubberController = ScrubberController(
@@ -19,7 +19,6 @@ enum AppControllerFactory {
             viewController: playerViewController.controlsViewController,
             remote: remote
         )
-        let alertController = AlertController(presenter: playerViewController)
         let dataManager = DataManger(userDefaults: UserDefaults.standard)
         let userService = UserService(dataManager: dataManager)
         let authorization = MusicAuthorization(authorizer: MPMediaLibrary.self)
@@ -44,10 +43,18 @@ enum AppControllerFactory {
             scrubberController: scrubberController,
             infoController: infoController,
             controlsController: controlsController,
-            alertController: alertController,
             musicService: musicService,
-            userService: userService
+            userService: userService,
+            authorization: authorization
         )
-        return AppController(playerController: playerController)
+        let playerCoordinator = PlayerCoordinator(
+            playerController: playerController,
+            alertController: AlertController(presenter: playerViewController)
+        )
+        let search = Search(authorization: authorization, mediaQuery: MPMediaQuery.self)
+        let searchController = SearchController(search: search)
+        let searchCoordinator = SearchCoordinator(searchController: searchController)
+        let router = AppRouter(playerCoordinator: playerCoordinator, searchCoordinator: searchCoordinator)
+        return AppController(router: router)
     }
 }

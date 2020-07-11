@@ -17,24 +17,11 @@ final class Playlist: Playlistable {
 
         // note: NSNotification.Name.MPMediaLibraryDidChange indicates when the music library changes.
         // this would be useful for an automatic refresh, but it isn't really required as we create a new playlist
-        // when hitting the shuffle button. perhpas this is needed if we ever bring in track management
+        // when hitting the shuffle button. might be useful at some point
     }
 
     func create(shuffled: Bool) -> [MPMediaItem] {
-        guard authorization.isAuthorized else {
-            return []
-        }
-
-        #if DEBUG && targetEnvironment(simulator)
-        // returns mock items on simulator and in debug mode. this is skipped if in test mode
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-            var tracks = [DummyMediaItem(.normal, persistentID: 0),
-                          DummyMediaItem(.endSilence, persistentID: 1),
-                          DummyMediaItem(.normal, persistentID: 2)]
-            if shuffled { tracks.shuffle() }
-            return tracks
-        }
-        #endif
+        guard authorization.isAuthorized else { return [] }
         if var tracks = mediaQuery.songs().items {
             if shuffled { tracks.shuffle() }
             return tracks
@@ -44,6 +31,7 @@ final class Playlist: Playlistable {
     }
 
     func find(ids: [MPMediaEntityPersistentID]) -> [MPMediaItem] {
+        guard authorization.isAuthorized else { return [] }
         let query = mediaQuery.songs()
         return ids.compactMap { (id: MPMediaEntityPersistentID) -> MPMediaItem? in
             let predicate = MPMediaPropertyPredicate(value: id, forProperty: MPMediaItemPropertyPersistentID)

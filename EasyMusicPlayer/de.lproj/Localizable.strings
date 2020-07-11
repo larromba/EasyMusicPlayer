@@ -14,20 +14,14 @@
 "track error title" = "Fehler";
 "track error msg" = "'%@' konnte nicht wiedergegeben werden";
 "track error button" = "OK";
-"accounts error title" = "Konten";
-"accounts error msg" = "Bitte überprüfe, ob deine Social-Media-Konten korrekt eingerichtet sind und versuche es noch einmal";
-"accounts error button" = "OK";
 "finished alert title" = "Ende";
 "finished alert msg" = "Deine Wiedergabeliste ist zu Ende";
 "finished alert button" = "OK";
 "authorization error title" = "Genehmigung";
 "authorization error message" = "In den Einstellungen erlauben Sie bitte den Zugriff auf Ihre Musik!";
 "authorization error button" = "OK";
+"play error title" = "Fehler";
+"play error message" = "Titel konnte nicht abgespielt werden";
+"play error button" = "OK";
 
-"share format" = "%@ - %@ (auf %@)";
-"share sheet title" = "Teilen";
-"share sheet desc" = "Wo willst du dieses Lied teilen?";
-"share option facebook" = "Facebook";
-"share option twitter" = "Twitter";
-"share option email" = "Email";
-"share option cancel" = "Abbrechen";
+"search view title" = "Suche";

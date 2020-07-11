@@ -17,6 +17,7 @@ protocol MusicServicing: AnyObject, Mockable {
     func setDelegate(delegate: MusicServiceDelegate)
     func setRepeatState(_ repeatState: RepeatState)
     func setTime(_ time: TimeInterval)
+    func prime(_ track: Track) -> Bool
     func play()
     func stop()
     func pause()
@@ -26,6 +27,7 @@ protocol MusicServicing: AnyObject, Mockable {
     func skip()
 }
 
+// swiftlint:disable type_body_length file_length
 final class MusicService: NSObject, MusicServicing {
     private var player: AudioPlayer?
     private weak var delegate: MusicServiceDelegate?
@@ -64,14 +66,11 @@ final class MusicService: NSObject, MusicServicing {
         self.interruptionHandler = interruptionHandler
         self.clock = clock
         self.playerFactory = playerFactory
-
         super.init()
-
         seeker.setDelegate(self)
         interruptionHandler.setDelegate(self)
         clock.setDelegate(self)
         trackManager.setDelegate(self)
-
         setupNotifications()
         setupRemote()
         authorizeThenPerform({
@@ -98,6 +97,10 @@ final class MusicService: NSObject, MusicServicing {
         guard let player = player else { return }
         player.currentTime = time
         delegate?.musicService(self, changedPlaybackTime: time)
+    }
+
+    func prime(_ track: Track) -> Bool {
+        return trackManager.prime(track)
     }
 
     func play() {
@@ -368,7 +371,7 @@ extension MusicService: SeekerDelegate {
     }
 }
 
-// MARK: - MusicInterupptionHandler
+// MARK: - MusicInterruptionHandler
 
 extension MusicService: MusicInterruptionDelegate {
     func interruptionHandler(_ handler: MusicInterruptionHandler, updtedState state: MusicInterruptionState) {

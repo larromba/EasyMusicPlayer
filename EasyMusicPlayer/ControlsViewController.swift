@@ -1,12 +1,8 @@
 import UIKit
 
 protocol ControlsViewDelegate: AnyObject {
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPlay button: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedStop button: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedPrev button: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedNext button: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedShuffle button: UIButton)
-    func controlsViewController(_ viewController: ControlsViewControlling, pressedRepeat button: UIButton)
+    func viewController(_ viewController: ControlsViewControlling, handleAction action: PlayerAction,
+                        forButton button: UIButton)
 }
 
 // sourcery: name = ControlsViewController
@@ -24,6 +20,7 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
     @IBOutlet private(set) weak var nextButton: UIButton!
     @IBOutlet private(set) weak var shuffleButton: UIButton!
     @IBOutlet private(set) weak var repeatButton: RepeatButton!
+    @IBOutlet private(set) weak var searchButton: UIButton!
 
     private weak var delegate: ControlsViewDelegate?
     var viewState: ControlsViewStating? {
@@ -42,27 +39,31 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
     // MARK: - IBAction
 
     @IBAction private func playButtonPressed(_ sender: UIButton) {
-        delegate?.controlsViewController(self, pressedPlay: sender)
+        delegate?.viewController(self, handleAction: .play, forButton: sender)
     }
 
     @IBAction private func stopButtonPressed(_ sender: UIButton) {
-        delegate?.controlsViewController(self, pressedStop: sender)
+        delegate?.viewController(self, handleAction: .stop, forButton: sender)
     }
 
     @IBAction private func prevButtonPressed(_ sender: UIButton) {
-        delegate?.controlsViewController(self, pressedPrev: sender)
+        delegate?.viewController(self, handleAction: .prev, forButton: sender)
     }
 
     @IBAction private func nextButtonPressed(_ sender: UIButton) {
-        delegate?.controlsViewController(self, pressedNext: sender)
+        delegate?.viewController(self, handleAction: .next, forButton: sender)
     }
 
     @IBAction private func shuffleButtonPressed(_ sender: UIButton) {
-        delegate?.controlsViewController(self, pressedShuffle: sender)
+        delegate?.viewController(self, handleAction: .shuffle, forButton: sender)
     }
 
     @IBAction private func repeatButtonPressed(_ sender: UIButton) {
-        delegate?.controlsViewController(self, pressedRepeat: sender)
+        delegate?.viewController(self, handleAction: .changeRepeatMode, forButton: sender)
+    }
+
+    @IBAction private func searchButtonPressed(_ sender: UIButton) {
+        delegate?.viewController(self, handleAction: .search, forButton: sender)
     }
 
     // MARK: - private
@@ -75,5 +76,6 @@ final class ControlsViewController: UIViewController, ControlsViewControlling {
         nextButton.bind(viewState.nextButton)
         shuffleButton.bind(viewState.shuffleButton)
         repeatButton.viewState = viewState.repeatButton
+        searchButton.bind(viewState.searchButton)
     }
 }

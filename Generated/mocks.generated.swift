@@ -155,6 +155,9 @@ class MockAlertController: NSObject, AlertControlling {
 class MockAppController: NSObject, AppControlling {
 }
 
+class MockAppRouter: NSObject, AppRouting {
+}
+
 class MockAudioPlayer: NSObject, AudioPlayer {
     var isPlaying: Bool {
         get { return _isPlaying }
@@ -761,6 +764,23 @@ class MockMediaQuery: NSObject, MediaQueryable {
     enum songs1: String, _StringRawRepresentable {
         case name = "songs1"
     }
+
+    // MARK: - search
+
+    static func search(_ text: String) -> [MPMediaItem] {
+        let functionName = search2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: text, forKey: search2.params.text)
+        invocations.record(invocation)
+        return actions.returnValue(for: functionName) as! [MPMediaItem]
+    }
+
+    enum search2: String, _StringRawRepresentable {
+        case name = "search2"
+        enum params: String, _StringRawRepresentable {
+            case text = "search(_text:String).text"
+        }
+    }
 }
 
 class MockMusicInterruptionHandler: NSObject, MusicInterruptionHandling {
@@ -862,88 +882,105 @@ class MockMusicService: NSObject, MusicServicing {
         }
     }
 
+    // MARK: - prime
+
+    func prime(_ track: Track) -> Bool {
+        let functionName = prime4.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: track, forKey: prime4.params.track)
+        invocations.record(invocation)
+        return actions.returnValue(for: functionName) as! Bool
+    }
+
+    enum prime4: String, _StringRawRepresentable {
+        case name = "prime4"
+        enum params: String, _StringRawRepresentable {
+            case track = "prime(_track:Track).track"
+        }
+    }
+
     // MARK: - play
 
     func play() {
-        let functionName = play4.name
+        let functionName = play5.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum play4: String, _StringRawRepresentable {
-        case name = "play4"
+    enum play5: String, _StringRawRepresentable {
+        case name = "play5"
     }
 
     // MARK: - stop
 
     func stop() {
-        let functionName = stop5.name
+        let functionName = stop6.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum stop5: String, _StringRawRepresentable {
-        case name = "stop5"
+    enum stop6: String, _StringRawRepresentable {
+        case name = "stop6"
     }
 
     // MARK: - pause
 
     func pause() {
-        let functionName = pause6.name
+        let functionName = pause7.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum pause6: String, _StringRawRepresentable {
-        case name = "pause6"
+    enum pause7: String, _StringRawRepresentable {
+        case name = "pause7"
     }
 
     // MARK: - previous
 
     func previous() {
-        let functionName = previous7.name
+        let functionName = previous8.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum previous7: String, _StringRawRepresentable {
-        case name = "previous7"
+    enum previous8: String, _StringRawRepresentable {
+        case name = "previous8"
     }
 
     // MARK: - next
 
     func next() {
-        let functionName = next8.name
+        let functionName = next9.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum next8: String, _StringRawRepresentable {
-        case name = "next8"
+    enum next9: String, _StringRawRepresentable {
+        case name = "next9"
     }
 
     // MARK: - shuffle
 
     func shuffle() {
-        let functionName = shuffle9.name
+        let functionName = shuffle10.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum shuffle9: String, _StringRawRepresentable {
-        case name = "shuffle9"
+    enum shuffle10: String, _StringRawRepresentable {
+        case name = "shuffle10"
     }
 
     // MARK: - skip
 
     func skip() {
-        let functionName = skip10.name
+        let functionName = skip11.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum skip10: String, _StringRawRepresentable {
-        case name = "skip10"
+    enum skip11: String, _StringRawRepresentable {
+        case name = "skip11"
     }
 }
 
@@ -966,6 +1003,81 @@ class MockPlayButton: NSObject, PlayButtonable {
 }
 
 class MockPlayerController: NSObject, PlayerControlling {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: PlayerControllerDelegate) {
+        let functionName = setDelegate1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate1: String, _StringRawRepresentable {
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:PlayerControllerDelegate).delegate"
+        }
+    }
+
+    // MARK: - play
+
+    func play(_ track: Track) {
+        let functionName = play2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: track, forKey: play2.params.track)
+        invocations.record(invocation)
+    }
+
+    enum play2: String, _StringRawRepresentable {
+        case name = "play2"
+        enum params: String, _StringRawRepresentable {
+            case track = "play(_track:Track).track"
+        }
+    }
+}
+
+class MockPlayerCoordinator: NSObject, PlayerCoordinating {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: PlayerCoordinatorDelegate) {
+        let functionName = setDelegate1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate1: String, _StringRawRepresentable {
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:PlayerCoordinatorDelegate).delegate"
+        }
+    }
+
+    // MARK: - play
+
+    func play(_ track: Track) {
+        let functionName = play2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: track, forKey: play2.params.track)
+        invocations.record(invocation)
+    }
+
+    enum play2: String, _StringRawRepresentable {
+        case name = "play2"
+        enum params: String, _StringRawRepresentable {
+            case track = "play(_track:Track).track"
+        }
+    }
 }
 
 class MockPlayerViewController: NSObject, PlayerViewControlling {
@@ -993,6 +1105,38 @@ class MockPlayerViewController: NSObject, PlayerViewControlling {
     }
     var _controlsViewController: ControlsViewControlling! = MockControlsViewController()
     var _controlsViewControllerHistory: [_Variable<ControlsViewControlling?>] = []
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: PlayerViewControllerDelegate) {
+        let functionName = setDelegate1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate1: String, _StringRawRepresentable {
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:PlayerViewControllerDelegate).delegate"
+        }
+    }
+
+    // MARK: - showSearch
+
+    func showSearch() {
+        let functionName = showSearch2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocations.record(invocation)
+    }
+
+    enum showSearch2: String, _StringRawRepresentable {
+        case name = "showSearch2"
+    }
 }
 
 class MockPlaylist: NSObject, Playlistable {
@@ -1210,6 +1354,153 @@ class MockScrubberViewController: NSObject, ScrubberViewControlling {
     }
 }
 
+class MockSearchController: NSObject, SearchControlling {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - setViewController
+
+    func setViewController(_ viewController: SearchViewControlling) {
+        let functionName = setViewController1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: viewController, forKey: setViewController1.params.viewController)
+        invocations.record(invocation)
+    }
+
+    enum setViewController1: String, _StringRawRepresentable {
+        case name = "setViewController1"
+        enum params: String, _StringRawRepresentable {
+            case viewController = "setViewController(_viewController:SearchViewControlling).viewController"
+        }
+    }
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: SearchControllerDelegate) {
+        let functionName = setDelegate2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate2.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate2: String, _StringRawRepresentable {
+        case name = "setDelegate2"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:SearchControllerDelegate).delegate"
+        }
+    }
+
+    // MARK: - start
+
+    func start() {
+        let functionName = start3.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocations.record(invocation)
+    }
+
+    enum start3: String, _StringRawRepresentable {
+        case name = "start3"
+    }
+}
+
+class MockSearchCoordinator: NSObject, SearchCoordinating {
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - setNavigationController
+
+    func setNavigationController(_ navigationController: UINavigationController) {
+        let functionName = setNavigationController1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: navigationController, forKey: setNavigationController1.params.navigationController)
+        invocations.record(invocation)
+    }
+
+    enum setNavigationController1: String, _StringRawRepresentable {
+        case name = "setNavigationController1"
+        enum params: String, _StringRawRepresentable {
+            case navigationController = "setNavigationController(_navigationController:UINavigationController).navigationController"
+        }
+    }
+
+    // MARK: - setViewController
+
+    func setViewController(_ viewController: SearchViewControlling) {
+        let functionName = setViewController2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: viewController, forKey: setViewController2.params.viewController)
+        invocations.record(invocation)
+    }
+
+    enum setViewController2: String, _StringRawRepresentable {
+        case name = "setViewController2"
+        enum params: String, _StringRawRepresentable {
+            case viewController = "setViewController(_viewController:SearchViewControlling).viewController"
+        }
+    }
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: SearchCoordinatorDelegate) {
+        let functionName = setDelegate3.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate3.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate3: String, _StringRawRepresentable {
+        case name = "setDelegate3"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:SearchCoordinatorDelegate).delegate"
+        }
+    }
+
+    // MARK: - start
+
+    func start() {
+        let functionName = start4.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocations.record(invocation)
+    }
+
+    enum start4: String, _StringRawRepresentable {
+        case name = "start4"
+    }
+}
+
+class MockSearchViewController: NSObject, SearchViewControlling {
+    var viewState: SearchViewStating? {
+        get { return _viewState }
+        set(value) { _viewState = value; _viewStateHistory.append(_Variable(value)) }
+    }
+    var _viewState: SearchViewStating?
+    var _viewStateHistory: [_Variable<SearchViewStating?>] = []
+    let invocations = _Invocations()
+    let actions = _Actions()
+    static let invocations = _Invocations()
+    static let actions = _Actions()
+
+    // MARK: - setDelegate
+
+    func setDelegate(_ delegate: SearchViewControllerDelegate) {
+        let functionName = setDelegate1.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
+        invocations.record(invocation)
+    }
+
+    enum setDelegate1: String, _StringRawRepresentable {
+        case name = "setDelegate1"
+        enum params: String, _StringRawRepresentable {
+            case delegate = "setDelegate(_delegate:SearchViewControllerDelegate).delegate"
+        }
+    }
+}
+
 class MockSeekCommandEvent: NSObject, SeekCommandEvent {
     var type: MPSeekCommandEventType {
         get { return _type }
@@ -1334,67 +1625,84 @@ class MockTrackManager: NSObject, TrackManaging {
         }
     }
 
+    // MARK: - prime
+
+    func prime(_ track: Track) -> Bool {
+        let functionName = prime3.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: track, forKey: prime3.params.track)
+        invocations.record(invocation)
+        return actions.returnValue(for: functionName) as! Bool
+    }
+
+    enum prime3: String, _StringRawRepresentable {
+        case name = "prime3"
+        enum params: String, _StringRawRepresentable {
+            case track = "prime(_track:Track).track"
+        }
+    }
+
     // MARK: - cuePrevious
 
     func cuePrevious() -> Bool {
-        let functionName = cuePrevious3.name
+        let functionName = cuePrevious4.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
         return actions.returnValue(for: functionName) as! Bool
     }
 
-    enum cuePrevious3: String, _StringRawRepresentable {
-        case name = "cuePrevious3"
+    enum cuePrevious4: String, _StringRawRepresentable {
+        case name = "cuePrevious4"
     }
 
     // MARK: - cueNext
 
     func cueNext() -> Bool {
-        let functionName = cueNext4.name
+        let functionName = cueNext5.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
         return actions.returnValue(for: functionName) as! Bool
     }
 
-    enum cueNext4: String, _StringRawRepresentable {
-        case name = "cueNext4"
+    enum cueNext5: String, _StringRawRepresentable {
+        case name = "cueNext5"
     }
 
     // MARK: - cueStart
 
     func cueStart() {
-        let functionName = cueStart5.name
+        let functionName = cueStart6.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum cueStart5: String, _StringRawRepresentable {
-        case name = "cueStart5"
+    enum cueStart6: String, _StringRawRepresentable {
+        case name = "cueStart6"
     }
 
     // MARK: - cueEnd
 
     func cueEnd() {
-        let functionName = cueEnd6.name
+        let functionName = cueEnd7.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocations.record(invocation)
     }
 
-    enum cueEnd6: String, _StringRawRepresentable {
-        case name = "cueEnd6"
+    enum cueEnd7: String, _StringRawRepresentable {
+        case name = "cueEnd7"
     }
 
     // MARK: - removeTrack
 
     func removeTrack(atIndex index: Int) {
-        let functionName = removeTrack7.name
+        let functionName = removeTrack8.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: index, forKey: removeTrack7.params.index)
+        invocation.set(parameter: index, forKey: removeTrack8.params.index)
         invocations.record(invocation)
     }
 
-    enum removeTrack7: String, _StringRawRepresentable {
-        case name = "removeTrack7"
+    enum removeTrack8: String, _StringRawRepresentable {
+        case name = "removeTrack8"
         enum params: String, _StringRawRepresentable {
             case index = "removeTrack(atIndexindex:Int).index"
         }
@@ -1403,14 +1711,14 @@ class MockTrackManager: NSObject, TrackManaging {
     // MARK: - setDelegate
 
     func setDelegate(_ delegate: TrackManagerDelegate) {
-        let functionName = setDelegate8.name
+        let functionName = setDelegate9.name
         let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: delegate, forKey: setDelegate8.params.delegate)
+        invocation.set(parameter: delegate, forKey: setDelegate9.params.delegate)
         invocations.record(invocation)
     }
 
-    enum setDelegate8: String, _StringRawRepresentable {
-        case name = "setDelegate8"
+    enum setDelegate9: String, _StringRawRepresentable {
+        case name = "setDelegate9"
         enum params: String, _StringRawRepresentable {
             case delegate = "setDelegate(_delegate:TrackManagerDelegate).delegate"
         }

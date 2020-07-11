@@ -27,7 +27,7 @@ struct Track {
 
 extension Track {
     static var empty: Track {
-        return Track(mediaItem: MPMediaItem(), artworkSize: .zero, delegate: nil)
+        return Track(mediaItem: MPMediaItem(), artworkSize: .zero)
     }
 }
 

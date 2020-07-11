@@ -8,8 +8,8 @@ protocol ScrubberControlling: AnyObject, Mockable {
 }
 
 protocol ScrubberControllerDelegate: AnyObject {
-    func scrubberController(_ controller: ScrubberControlling, touchMovedToPercentage percentage: Float)
-    func scrubberController(_ controller: ScrubberControlling, touchEndedAtPercentage percentage: Float)
+    func controller(_ controller: ScrubberControlling, touchMovedToPercentage percentage: Float)
+    func controller(_ controller: ScrubberControlling, touchEndedAtPercentage percentage: Float)
 }
 
 final class ScrubberController: ScrubberControlling {
@@ -29,7 +29,7 @@ final class ScrubberController: ScrubberControlling {
     }
 
     func moveScrubber(percentage: Float) {
-        moveScrubber(x: viewController.view.bounds.width * CGFloat(percentage))
+        moveScrubber(x: viewController.viewWidth * CGFloat(percentage))
     }
 
     func setIsUserInteractionEnabled(_ isEnabled: Bool) {
@@ -65,30 +65,29 @@ final class ScrubberController: ScrubberControlling {
 // MARK: - ScrubberViewDelegate
 
 extension ScrubberController: ScrubberViewDelegate {
-    func scrubberViewController(_ viewController: ScrubberViewControlling,
-                                touchesBegan touches: Set<UITouch>, with event: UIEvent?) {
+    func viewController(_ viewController: ScrubberViewControlling, touchesBegan touches: Set<UITouch>,
+                        with event: UIEvent?) {
         guard touches.first != nil, let viewState = viewController.viewState else { return }
         viewController.viewState = viewState.copy(barAlpha: lowAlpha)
     }
 
-    func scrubberViewController(_ viewController: ScrubberViewControlling,
-                                touchesMoved touches: Set<UITouch>, with event: UIEvent?) {
+    func viewController(_ viewController: ScrubberViewControlling, touchesMoved touches: Set<UITouch>,
+                        with event: UIEvent?) {
         guard let touch = touches.first else { return }
 
-        let x = touch.location(in: viewController.view).x
+        let x = viewController.tapLocation(for: touch).x
         moveScrubber(x: x)
 
-        let percentage = Float(x / viewController.view.bounds.width)
-        delegate?.scrubberController(self, touchMovedToPercentage: percentage)
+        let percentage = Float(x / viewController.viewWidth)
+        delegate?.controller(self, touchMovedToPercentage: percentage)
     }
 
-    func scrubberViewController(_ viewController: ScrubberViewControlling,
-                                touchesEnded touches: Set<UITouch>, with event: UIEvent?) {
+    func viewController(_ viewController: ScrubberViewControlling, touchesEnded touches: Set<UITouch>,
+                        with event: UIEvent?) {
         guard let touch = touches.first else { return }
 
-        let percentage = Float(touch.location(in: viewController.view).x / viewController.view.bounds.width)
-        delegate?.scrubberController(self, touchEndedAtPercentage: percentage)
-
+        let percentage = Float(viewController.tapLocation(for: touch).x / viewController.viewWidth)
+        delegate?.controller(self, touchEndedAtPercentage: percentage)
         animateTouchesEnded()
     }
 }
