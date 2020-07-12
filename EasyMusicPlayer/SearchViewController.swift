@@ -9,12 +9,15 @@ protocol SearchViewControlling: AnyObject, Mockable {
     var viewState: SearchViewStating? { get set }
 
     func setDelegate(_ delegate: SearchViewControllerDelegate)
+    func scrollToTop(animated: Bool)
 }
 
 final class SearchViewController: UIViewController, SearchViewControlling {
     @IBOutlet private(set) weak var searchBar: UISearchBar!
     @IBOutlet private(set) weak var tableView: UITableView!
     @IBOutlet private(set) weak var doneButton: UIBarButtonItem!
+    @IBOutlet private(set) weak var emptyLabel: UILabel!
+    @IBOutlet private(set) weak var emptyLabelCenterYConstraint: NSLayoutConstraint!
     private let keyboardNotification = KeyboardNotification()
 
     private weak var delegate: SearchViewControllerDelegate?
@@ -26,7 +29,6 @@ final class SearchViewController: UIViewController, SearchViewControlling {
         super.viewDidLoad()
         title = L10n.searchViewTitle
         keyboardNotification.delegate = self
-        searchBar.becomeFirstResponder()
         tableView.tableFooterView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 1.0))
         tableView.contentInsetAdjustmentBehavior = .never
     }
@@ -34,6 +36,11 @@ final class SearchViewController: UIViewController, SearchViewControlling {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         keyboardNotification.setup()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchBar.becomeFirstResponder()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,10 +52,16 @@ final class SearchViewController: UIViewController, SearchViewControlling {
         self.delegate = delegate
     }
 
+    func scrollToTop(animated: Bool) {
+        tableView.setContentOffset(.zero, animated: animated)
+    }
+
     // MARK: - private
 
     private func bind(_ viewState: SearchViewStating) {
         guard isViewLoaded else { return }
+        emptyLabel.text = viewState.emptyText
+        emptyLabel.isHidden = viewState.isEmptyLabelHidden
         tableView.reloadData()
     }
 
@@ -112,9 +125,13 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: KeyboardNotificationDelegate {
     func keyboardWithShow(height: CGFloat) {
         tableView.contentInset.bottom = height
+        emptyLabelCenterYConstraint.constant = -(height / 2.0) + searchBar.bounds.height
+        view.layoutIfNeeded()
     }
 
     func keyboardWillHide() {
         tableView.contentInset.bottom = 0
+        emptyLabelCenterYConstraint.constant = 0
+        view.layoutIfNeeded()
     }
 }

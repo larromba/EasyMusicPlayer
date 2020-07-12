@@ -111,7 +111,7 @@ final class ControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        let touches = Set<UITouch>(arrayLiteral: MockTouch(x: env.scrubberViewController.view.bounds.width / 2))
+        let touches = Set<UITouch>(arrayLiteral: MockTouch(x: env.scrubberViewController.viewWidth / 2))
         scrubberViewController.touchesBegan(touches, with: nil)
         scrubberViewController.touchesMoved(touches, with: nil)
         scrubberViewController.touchesEnded(touches, with: nil)

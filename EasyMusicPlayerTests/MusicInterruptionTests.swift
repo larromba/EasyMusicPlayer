@@ -39,7 +39,7 @@ final class MusicInterruptionTests: XCTestCase {
         // mocks
         env.inject()
         env.setPlaying()
-        playerFactory.audioPlayer?.invocations.reset()
+        playerFactory.audioPlayer?.invocations.clear()
 
         // sut
         interrupt()
@@ -81,7 +81,7 @@ final class MusicInterruptionTests: XCTestCase {
         // mocks
         env.inject()
         env.setPlaying()
-        playerFactory.audioPlayer?.invocations.reset()
+        playerFactory.audioPlayer?.invocations.clear()
 
         // sut
         removeHeadphones()
@@ -97,7 +97,7 @@ final class MusicInterruptionTests: XCTestCase {
         // mocks
         env.inject()
         env.setPlaying()
-        playerFactory.audioPlayer?.invocations.reset()
+        playerFactory.audioPlayer?.invocations.clear()
 
         // sut
         removeHeadphones()
@@ -121,7 +121,7 @@ final class MusicInterruptionTests: XCTestCase {
         // mocks
         env.inject()
         env.setPlaying()
-        playerFactory.audioPlayer?.invocations.reset()
+        playerFactory.audioPlayer?.invocations.clear()
 
         // sut
         interrupt()

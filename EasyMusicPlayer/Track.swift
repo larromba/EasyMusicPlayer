@@ -1,3 +1,4 @@
+import Logging
 import MediaPlayer
 import UIKit
 
@@ -83,8 +84,19 @@ private extension MPMediaItem {
         guard let title = title else {
             return []
         }
-        let components = title.components(separatedBy: "-")
+        guard let regex = try? NSRegularExpression(pattern: "\\s+\\-\\s+", options: [.caseInsensitive]) else {
+            assertionFailure("regex shouldn't fail")
+            return []
+        }
+        let matches = regex.matches(in: title, options: [], range: NSRange(location: 0, length: title.count))
+        guard matches.count == 1, let range = Range(matches[0].range, in: title) else {
+            logError("dash regex not found")
+            return []
+        }
+        let separator = title[range]
+        let components = title.components(separatedBy: separator)
         guard components.count == 2 else {
+            logError("unexpected components after separation by dash regex")
             return []
         }
         return [

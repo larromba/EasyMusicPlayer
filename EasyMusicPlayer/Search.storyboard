@@ -84,16 +84,26 @@
                                     <outlet property="delegate" destination="I0M-2G-Wo0" id="duz-so-SPe"/>
                                 </connections>
                             </tableView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AOQ-du-dRK">
+                                <rect key="frame" x="160.5" y="424.5" width="93.5" height="47.5"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="40"/>
+                                <color key="textColor" systemColor="systemGray4Color" red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="AOQ-du-dRK" firstAttribute="centerY" secondItem="t0Q-Za-mes" secondAttribute="centerY" id="2OU-yf-qW5"/>
                             <constraint firstItem="LJk-Xo-n3i" firstAttribute="leading" secondItem="1nP-md-x73" secondAttribute="leading" id="80a-a5-xEn"/>
                             <constraint firstItem="LJk-Xo-n3i" firstAttribute="trailing" secondItem="1nP-md-x73" secondAttribute="trailing" id="LHJ-mw-546"/>
                             <constraint firstItem="LJk-Xo-n3i" firstAttribute="top" secondItem="1nP-md-x73" secondAttribute="top" id="SPZ-y9-vYg"/>
                             <constraint firstItem="hih-Wx-xJ5" firstAttribute="bottom" secondItem="1nP-md-x73" secondAttribute="bottom" id="VV7-85-Hf5"/>
                             <constraint firstItem="hih-Wx-xJ5" firstAttribute="top" secondItem="LJk-Xo-n3i" secondAttribute="bottom" id="Xez-ON-5vD"/>
                             <constraint firstItem="hih-Wx-xJ5" firstAttribute="leading" secondItem="1nP-md-x73" secondAttribute="leading" id="Y3Y-oN-TpA"/>
+                            <constraint firstItem="AOQ-du-dRK" firstAttribute="centerX" secondItem="t0Q-Za-mes" secondAttribute="centerX" id="anh-Ys-RlE"/>
+                            <constraint firstItem="AOQ-du-dRK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1nP-md-x73" secondAttribute="leading" constant="20" id="gis-1V-2AW"/>
                             <constraint firstItem="hih-Wx-xJ5" firstAttribute="trailing" secondItem="1nP-md-x73" secondAttribute="trailing" id="lg4-gO-amV"/>
+                            <constraint firstItem="1nP-md-x73" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="AOQ-du-dRK" secondAttribute="trailing" constant="20" id="tKz-f0-gdN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1nP-md-x73"/>
                     </view>
@@ -106,6 +116,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="doneButton" destination="7gp-Cg-A3d" id="Qav-j9-XYM"/>
+                        <outlet property="emptyLabel" destination="AOQ-du-dRK" id="6YY-MF-Qi9"/>
+                        <outlet property="emptyLabelCenterYConstraint" destination="2OU-yf-qW5" id="ado-wL-tDU"/>
                         <outlet property="searchBar" destination="LJk-Xo-n3i" id="vHW-Um-a02"/>
                         <outlet property="tableView" destination="hih-Wx-xJ5" id="em3-MJ-OOl"/>
                     </connections>

@@ -42,8 +42,12 @@ final class Search: Searchable {
         operationQueue.cancelAllOperations()
         operationQueue.addOperation { [weak self] in
             guard let self = self else { return }
+            let songs = self.mediaQuery.songs().items ?? []
+            //swiftlint:disable line_length
+            let predicate = NSPredicate(format: "title contains[cd] %@ OR artist contains[cd] %@ OR albumTitle contains[cd] %@ OR genre contains[cd] %@", text, text, text, text)
+            let filteredItems = NSArray(array: songs).filtered(using: predicate) as! [MPMediaItem]
             DispatchQueue.main.async {
-                completion(self.mediaQuery.search(text))
+                completion(filteredItems)
             }
         }
     }

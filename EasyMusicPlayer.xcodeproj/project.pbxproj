@@ -103,6 +103,7 @@
 		7FA59D7821BAF34D00538013 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D7721BAF34D00538013 /* SnapshotHelper.swift */; };
 		7FA59D7A21BBD01000538013 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D7921BBD01000538013 /* Utility.swift */; };
 		7FA59D8221BBFD8400538013 /* MediaLibraryAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */; };
+		7FAFBA6524BB3BB80008A54D /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAFBA6424BB3BB80008A54D /* SearchTests.swift */; };
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
@@ -253,6 +254,7 @@
 		7FA59D7721BAF34D00538013 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		7FA59D7921BBD01000538013 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryAuthorization.swift; sourceTree = "<group>"; };
+		7FAFBA6424BB3BB80008A54D /* SearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTests.swift; sourceTree = "<group>"; };
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -608,13 +610,14 @@
 			isa = PBXGroup;
 			children = (
 				7F44F9D021B826D00041E4DE /* ControlTests.swift */,
+				7FAFBA6424BB3BB80008A54D /* SearchTests.swift */,
 				7F44F9E121B8307C0041E4DE /* RemoteTests.swift */,
 				7F44F9D321B827EE0041E4DE /* ControlStateTests.swift */,
 				7F44F9E321B830F70041E4DE /* RemoteStateTests.swift */,
 				7F44F9D521B828F10041E4DE /* MusicPlayerErrorTests.swift */,
 				7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */,
-				7FA59D6721BAA44500538013 /* DataTests.swift */,
 				7FF5B2FF1BE64E220044FCE5 /* TrackTests.swift */,
+				7FA59D6721BAA44500538013 /* DataTests.swift */,
 				7F05C5ED24B7DFDB0049E246 /* EndSilenceTests.swift */,
 				7F44F9DB21B82B000041E4DE /* Utility */,
 				7FA59D5521B9467A00538013 /* Protocols */,
@@ -991,6 +994,7 @@
 				7F44F9F021B849F10041E4DE /* DummyAudioPlayerFactory.swift in Sources */,
 				7FA59D6821BAA44500538013 /* DataTests.swift in Sources */,
 				7F05C5EE24B7DFDB0049E246 /* EndSilenceTests.swift in Sources */,
+				7FAFBA6524BB3BB80008A54D /* SearchTests.swift in Sources */,
 				7F5A83A621D940F4008F30BE /* DummyMediaQuery.swift in Sources */,
 				7F44F9EA21B83DBD0041E4DE /* MockMediaItem.swift in Sources */,
 			);

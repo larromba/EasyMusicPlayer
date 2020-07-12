@@ -5,6 +5,8 @@ protocol SearchViewStating {
     var rowHeight: CGFloat { get }
     var numberOfRows: Int { get }
     var numberOfSections: Int { get }
+    var isEmptyLabelHidden: Bool { get }
+    var emptyText: String { get }
 
     func item(at indexPath: IndexPath) -> Track
     func cellViewState(at indexPath: IndexPath) -> SearchCellViewStating
@@ -16,6 +18,10 @@ struct SearchViewState: SearchViewStating {
         return items.count
     }
     let numberOfSections: Int = 1
+    var isEmptyLabelHidden: Bool {
+        return !items.isEmpty
+    }
+    let emptyText: String = L10n.searchViewEmptyText
     private let items: [MPMediaItem]
 
     init(items: [MPMediaItem]) {

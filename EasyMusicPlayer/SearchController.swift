@@ -53,9 +53,13 @@ final class SearchController: SearchControlling {
 extension SearchController: SearchViewControllerDelegate {
     func viewController(_ viewController: SearchViewControlling, handleAction action: SearchAction) {
         switch action {
-        case .select(let item): delegate?.controller(self, didSelectItem: item)
-        case .search(let text): search(text)
-        case .done: delegate?.controller(self, didSelectItem: nil)
+        case .select(let item):
+            delegate?.controller(self, didSelectItem: item)
+        case .search(let text):
+            viewController.scrollToTop(animated: false)
+            search(text)
+        case .done:
+            delegate?.controller(self, didSelectItem: nil)
         }
     }
 }

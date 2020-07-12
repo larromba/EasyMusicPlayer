@@ -1,6 +1,9 @@
 // swiftlint:disable line_length
 // swiftlint:disable variable_name
 
+// https://github.com/larromba/swift-mockable 
+// 1.0.0
+
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
@@ -21,7 +24,7 @@ import MediaPlayer
 {% macro actionsVariableName  %}actions{% endmacro %}
 {% macro uniqueIdentifierForEnumParameter method param %}{{ method.name | replace:" ","" }}.{{ param.name | replace:" ","" }}{% endmacro %}
 {% macro mockMethod method count %}
-    {% if method.isInitializer %}required {{ method.name }}{% else %}{% if method.isStatic %}static {% endif %}func {{ method.name | replace:"  ","" }}{% endif %}{% if method.throws and not method.isInitializer %}{{ ' throws' }}{% endif %}{% if not method.returnTypeName.isVoid and not method.isInitializer %} -> {{ method.returnTypeName }}{% endif %} {
+    {% if method.isInitializer %}required {% if method.name == "init()" %}override {% endif %}{{ method.name }}{% else %}{% if method.isStatic %}static {% endif %}func {{ method.name | replace:"  ","" }}{% endif %}{% if method.throws and not method.isInitializer %}{{ ' throws' }}{% endif %}{% if not method.returnTypeName.isVoid and not method.isInitializer %} -> {{ method.returnTypeName }}{% endif %} {
         let functionName = {% call functionKeyName method count %}.name
         {% if method.throws and not method.isInitializer %}
         if let error = {% call actionsVariableName %}.error(for: functionName) {
@@ -40,7 +43,7 @@ import MediaPlayer
         {% endfor %}
         {% call invocationsVariableName %}.record(invocation)
         {% if not method.returnTypeName.isVoid and not method.isInitializer %}
-        {% if method.annotations.returnValue %}
+        {% if method.annotations.returnValue or method.annotations.returnValue.description %}
         {% call actionsVariableName %}.set(defaultReturnValue: {{ method.annotations.returnValue }}, for: functionName)
         {% endif %}
         return {% call actionsVariableName %}.returnValue(for: functionName){% if method.isOptionalReturnType and method.unwrappedReturnTypeName != 'Any' %} as? {% elif method.isOptionalReturnType and method.unwrappedReturnTypeName == 'Any' %} as {% else %} as! {% endif %}{{ method.unwrappedReturnTypeName }}
@@ -65,13 +68,13 @@ import MediaPlayer
         get { return {% call underlyingVariableName variable %} }
         set(value) { {% call underlyingVariableName variable %} = value; {% call underlyingVariableName variable %}History.append({% call helperClassPrefix %}Variable(value)) }
     }
-    {% if variable.annotations.value %}
+    {% if variable.annotations.value or variable.annotations.value.description %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.annotations.value }}
     {% elif variable.type.based.Mockable and variable.type.annotations.name %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.type.annotations.name }}()
     {% elif variable.type.based.Mockable %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.unwrappedTypeName }}()
-    {% elif variable.typeName|hasPrefix:"NS" or variable.typeName|hasPrefix:"UI" %}
+    {% elif variable.typeName|!contains:"." and variable.typeName|hasPrefix:"NS" or variable.typeName|hasPrefix:"UI" %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.typeName.unwrappedTypeName }}()
     {% elif variable.isArray %}
     var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = []
@@ -115,56 +118,56 @@ final class {% call helperClassPrefix %}Invocation {
 }
 
 final class {% call helperClassPrefix %}Actions {
-  enum Keys: String, {% call helperClassPrefix %}StringRawRepresentable {
-      case returnValue
-      case defaultReturnValue
-      case error
-  }
-  private var invocations: [{% call helperClassPrefix %}Invocation] = []
+    enum Keys: String, {% call helperClassPrefix %}StringRawRepresentable {
+        case returnValue
+        case defaultReturnValue
+        case error
+    }
+    private var invocations: [{% call helperClassPrefix %}Invocation] = []
 
-  // MARK: - returnValue
+    // MARK: - returnValue
 
-  func set<T: {% call helperClassPrefix %}StringRawRepresentable>(returnValue value: Any, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: value, forKey: Keys.returnValue)
-  }
-  func returnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Any? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
-  }
+    func set<T: {% call helperClassPrefix %}StringRawRepresentable>(returnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.returnValue)
+    }
+    func returnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
+    }
 
-  // MARK: - defaultReturnValue
+    // MARK: - defaultReturnValue
 
-  fileprivate func set<T: {% call helperClassPrefix %}StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
-  }
-  fileprivate func defaultReturnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Any? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
-  }
+    fileprivate func set<T: {% call helperClassPrefix %}StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
+    }
+    fileprivate func defaultReturnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
+    }
 
-  // MARK: - error
+    // MARK: - error
 
-  func set<T: {% call helperClassPrefix %}StringRawRepresentable>(error: Error, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: error, forKey: Keys.error)
-  }
-  func error<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Error? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.error) as? Error
-  }
+    func set<T: {% call helperClassPrefix %}StringRawRepresentable>(error: Error, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: error, forKey: Keys.error)
+    }
+    func error<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Error? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.error) as? Error
+    }
 
-  // MARK: - private
+    // MARK: - private
 
-  private func invocation<T: {% call helperClassPrefix %}StringRawRepresentable>(for name: T) -> {% call helperClassPrefix %}Invocation {
-      if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
-          return invocation
-      }
-      let invocation = {% call helperClassPrefix %}Invocation(name: name.rawValue)
-      invocations += [invocation]
-      return invocation
-  }
+    private func invocation<T: {% call helperClassPrefix %}StringRawRepresentable>(for name: T) -> {% call helperClassPrefix %}Invocation {
+        if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+            return invocation
+        }
+        let invocation = {% call helperClassPrefix %}Invocation(name: name.rawValue)
+        invocations += [invocation]
+        return invocation
+    }
 }
 
 final class {% call helperClassPrefix %}Invocations {
@@ -179,7 +182,7 @@ final class {% call helperClassPrefix %}Invocations {
     }
 
     func count<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> Int {
-        return history.filter {  $0.name == name.rawValue }.count
+        return history.filter { $0.name == name.rawValue }.count
     }
 
     func all() -> [{% call helperClassPrefix %}Invocation] {
@@ -187,10 +190,10 @@ final class {% call helperClassPrefix %}Invocations {
     }
 
     func find<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> [{% call helperClassPrefix %}Invocation] {
-        return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
+        return history.filter { $0.name == name.rawValue }.sorted { $0.date < $1.date }
     }
 
-    func reset() {
+    func clear() {
         history.removeAll()
     }
 }

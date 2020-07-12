@@ -1,8 +1,11 @@
-// Generated using Sourcery 0.15.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 // swiftlint:disable line_length
 // swiftlint:disable variable_name
+
+// https://github.com/larromba/swift-mockable 
+// 1.0.0
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
@@ -47,56 +50,56 @@ final class _Invocation {
 }
 
 final class _Actions {
-  enum Keys: String, _StringRawRepresentable {
-      case returnValue
-      case defaultReturnValue
-      case error
-  }
-  private var invocations: [_Invocation] = []
+    enum Keys: String, _StringRawRepresentable {
+        case returnValue
+        case defaultReturnValue
+        case error
+    }
+    private var invocations: [_Invocation] = []
 
-  // MARK: - returnValue
+    // MARK: - returnValue
 
-  func set<T: _StringRawRepresentable>(returnValue value: Any, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: value, forKey: Keys.returnValue)
-  }
-  func returnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
-  }
+    func set<T: _StringRawRepresentable>(returnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.returnValue)
+    }
+    func returnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
+    }
 
-  // MARK: - defaultReturnValue
+    // MARK: - defaultReturnValue
 
-  fileprivate func set<T: _StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
-  }
-  fileprivate func defaultReturnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
-  }
+    fileprivate func set<T: _StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
+    }
+    fileprivate func defaultReturnValue<T: _StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
+    }
 
-  // MARK: - error
+    // MARK: - error
 
-  func set<T: _StringRawRepresentable>(error: Error, for functionName: T) {
-      let invocation = self.invocation(for: functionName)
-      invocation.set(parameter: error, forKey: Keys.error)
-  }
-  func error<T: _StringRawRepresentable>(for functionName: T) -> Error? {
-      let invocation = self.invocation(for: functionName)
-      return invocation.parameter(for: Keys.error) as? Error
-  }
+    func set<T: _StringRawRepresentable>(error: Error, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: error, forKey: Keys.error)
+    }
+    func error<T: _StringRawRepresentable>(for functionName: T) -> Error? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.error) as? Error
+    }
 
-  // MARK: - private
+    // MARK: - private
 
-  private func invocation<T: _StringRawRepresentable>(for name: T) -> _Invocation {
-      if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
-          return invocation
-      }
-      let invocation = _Invocation(name: name.rawValue)
-      invocations += [invocation]
-      return invocation
-  }
+    private func invocation<T: _StringRawRepresentable>(for name: T) -> _Invocation {
+        if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+            return invocation
+        }
+        let invocation = _Invocation(name: name.rawValue)
+        invocations += [invocation]
+        return invocation
+    }
 }
 
 final class _Invocations {
@@ -111,7 +114,7 @@ final class _Invocations {
     }
 
     func count<T: _StringRawRepresentable>(_ name: T) -> Int {
-        return history.filter {  $0.name == name.rawValue }.count
+        return history.filter { $0.name == name.rawValue }.count
     }
 
     func all() -> [_Invocation] {
@@ -119,10 +122,10 @@ final class _Invocations {
     }
 
     func find<T: _StringRawRepresentable>(_ name: T) -> [_Invocation] {
-        return history.filter {  $0.name == name.rawValue }.sorted { $0.date < $1.date }
+        return history.filter { $0.name == name.rawValue }.sorted { $0.date < $1.date }
     }
 
-    func reset() {
+    func clear() {
         history.removeAll()
     }
 }
@@ -554,6 +557,22 @@ class MockControlsController: NSObject, ControlsControlling {
     enum setControlsStopped6: String, _StringRawRepresentable {
         case name = "setControlsStopped6"
     }
+
+    // MARK: - setIsAuthorized
+
+    func setIsAuthorized(_ isAuthorized: Bool) {
+        let functionName = setIsAuthorized7.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: isAuthorized, forKey: setIsAuthorized7.params.isAuthorized)
+        invocations.record(invocation)
+    }
+
+    enum setIsAuthorized7: String, _StringRawRepresentable {
+        case name = "setIsAuthorized7"
+        enum params: String, _StringRawRepresentable {
+            case isAuthorized = "setIsAuthorized(_isAuthorized:Bool).isAuthorized"
+        }
+    }
 }
 
 class MockControlsViewController: NSObject, ControlsViewControlling {
@@ -763,23 +782,6 @@ class MockMediaQuery: NSObject, MediaQueryable {
 
     enum songs1: String, _StringRawRepresentable {
         case name = "songs1"
-    }
-
-    // MARK: - search
-
-    static func search(_ text: String) -> [MPMediaItem] {
-        let functionName = search2.name
-        let invocation = _Invocation(name: functionName.rawValue)
-        invocation.set(parameter: text, forKey: search2.params.text)
-        invocations.record(invocation)
-        return actions.returnValue(for: functionName) as! [MPMediaItem]
-    }
-
-    enum search2: String, _StringRawRepresentable {
-        case name = "search2"
-        enum params: String, _StringRawRepresentable {
-            case text = "search(_text:String).text"
-        }
     }
 }
 
@@ -1320,18 +1322,12 @@ class MockScrubberViewController: NSObject, ScrubberViewControlling {
     }
     var _viewState: ScrubberViewStating?
     var _viewStateHistory: [_Variable<ScrubberViewStating?>] = []
-    var view: UIView! {
-        get { return _view }
-        set(value) { _view = value; _viewHistory.append(_Variable(value)) }
+    var viewWidth: CGFloat {
+        get { return _viewWidth }
+        set(value) { _viewWidth = value; _viewWidthHistory.append(_Variable(value)) }
     }
-    var _view: UIView! = UIView()
-    var _viewHistory: [_Variable<UIView?>] = []
-    var barView: UIView! {
-        get { return _barView }
-        set(value) { _barView = value; _barViewHistory.append(_Variable(value)) }
-    }
-    var _barView: UIView! = UIView()
-    var _barViewHistory: [_Variable<UIView?>] = []
+    var _viewWidth: CGFloat! = 0
+    var _viewWidthHistory: [_Variable<CGFloat?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -1350,6 +1346,24 @@ class MockScrubberViewController: NSObject, ScrubberViewControlling {
         case name = "setDelegate1"
         enum params: String, _StringRawRepresentable {
             case delegate = "setDelegate(_delegate:ScrubberViewDelegate).delegate"
+        }
+    }
+
+    // MARK: - tapLocation
+
+    func tapLocation(for touch: UITouch) -> CGPoint {
+        let functionName = tapLocation2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: touch, forKey: tapLocation2.params.touch)
+        invocations.record(invocation)
+        actions.set(defaultReturnValue: CGPoint.zero, for: functionName)
+        return actions.returnValue(for: functionName) as! CGPoint
+    }
+
+    enum tapLocation2: String, _StringRawRepresentable {
+        case name = "tapLocation2"
+        enum params: String, _StringRawRepresentable {
+            case touch = "tapLocation(fortouch:UITouch).touch"
         }
     }
 }
@@ -1499,6 +1513,22 @@ class MockSearchViewController: NSObject, SearchViewControlling {
             case delegate = "setDelegate(_delegate:SearchViewControllerDelegate).delegate"
         }
     }
+
+    // MARK: - scrollToTop
+
+    func scrollToTop(animated: Bool) {
+        let functionName = scrollToTop2.name
+        let invocation = _Invocation(name: functionName.rawValue)
+        invocation.set(parameter: animated, forKey: scrollToTop2.params.animated)
+        invocations.record(invocation)
+    }
+
+    enum scrollToTop2: String, _StringRawRepresentable {
+        case name = "scrollToTop2"
+        enum params: String, _StringRawRepresentable {
+            case animated = "scrollToTop(animated:Bool).animated"
+        }
+    }
 }
 
 class MockSeekCommandEvent: NSObject, SeekCommandEvent {
@@ -1578,13 +1608,13 @@ class MockTrackManager: NSObject, TrackManaging {
         get { return _currentTrackIndex }
         set(value) { _currentTrackIndex = value; _currentTrackIndexHistory.append(_Variable(value)) }
     }
-    var _currentTrackIndex: Int!
+    var _currentTrackIndex: Int! = 0
     var _currentTrackIndexHistory: [_Variable<Int?>] = []
     var totalTracks: Int {
         get { return _totalTracks }
         set(value) { _totalTracks = value; _totalTracksHistory.append(_Variable(value)) }
     }
-    var _totalTracks: Int!
+    var _totalTracks: Int! = 0
     var _totalTracksHistory: [_Variable<Int?>] = []
     var isLastTrack: Bool {
         get { return _isLastTrack }

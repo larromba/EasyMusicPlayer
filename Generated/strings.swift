@@ -41,6 +41,8 @@ internal enum L10n {
   internal static let playErrorMessage = L10n.tr("Localizable", "play error message")
   /// Error
   internal static let playErrorTitle = L10n.tr("Localizable", "play error title")
+  /// Nothing Found
+  internal static let searchViewEmptyText = L10n.tr("Localizable", "search view empty text")
   /// Search
   internal static let searchViewTitle = L10n.tr("Localizable", "search view title")
   /// %@

@@ -26,12 +26,17 @@ final class AppTestEnvironment {
     private(set) var musicService: MusicServicing!
     private(set) var dataManager: DataManaging!
     private(set) var userService: UserServicing!
+    private(set) var playerCoordinator: PlayerCoordinating!
     private(set) var playerController: PlayerControlling!
     private(set) var controlsController: ControlsControlling!
     private(set) var alertController: AlertControlling!
     private(set) var infoController: InfoControlling!
     private(set) var scrubberController: ScrubberControlling!
     private(set) var authorization: Authorization!
+    private(set) var search: Searchable!
+    private(set) var searchController: SearchControlling!
+    private(set) var searchCoordinator: SearchCoordinating!
+    private(set) var appRouter: AppRouting!
 
     init(playerViewController: PlayerViewControlling = MockPlayerViewController(),
          scrubberViewController: ScrubberViewControlling = MockScrubberViewController(),
@@ -138,25 +143,30 @@ final class AppTestEnvironment {
 
 extension AppTestEnvironment: TestEnvironment {
     func inject() {
-//        authorization = MusicAuthorization(authorizer: authorizerType)
-//        playlist = Playlist(authorization: authorization, mediaQuery: mediaQueryType)
-//        dataManager = DataManger(userDefaults: userDefaults)
-//        userService = UserService(dataManager: dataManager)
-//        trackManager = TrackManager(userService: userService, authorization: authorization, playlist: playlist)
-//        musicService = MusicService(trackManager: trackManager, remote: remote, audioSession: audioSession,
-//                                    authorization: authorization, seeker: seeker,
-//                                    interruptionHandler: interruptionHandler, clock: clock,
-//                                    playerFactory: playerFactory)
-//        scrubberController = ScrubberController(viewController: scrubberViewController, remote: remote)
-//        infoController = InfoController(viewController: infoViewController, remoteInfo: remoteInfo)
-//        controlsController = ControlsController(viewController: controlsViewController, remote: remote)
-//        alertController = AlertController(presenter: alertPresenter)
-//        playerController = PlayerController(viewController: playerViewController,
-//                                            scrubberController: scrubberController,
-//                                            infoController: infoController,
-//                                            controlsController: controlsController,
-//                                            alertController: alertController,
-//                                            musicService: musicService,
-//                                            userService: userService)
+        authorization = MusicAuthorization(authorizer: authorizerType)
+        playlist = Playlist(authorization: authorization, mediaQuery: mediaQueryType)
+        dataManager = DataManger(userDefaults: userDefaults)
+        userService = UserService(dataManager: dataManager)
+        trackManager = TrackManager(userService: userService, authorization: authorization, playlist: playlist)
+        musicService = MusicService(trackManager: trackManager, remote: remote, audioSession: audioSession,
+                                    authorization: authorization, seeker: seeker,
+                                    interruptionHandler: interruptionHandler, clock: clock,
+                                    playerFactory: playerFactory)
+        scrubberController = ScrubberController(viewController: scrubberViewController, remote: remote)
+        infoController = InfoController(viewController: infoViewController, remoteInfo: remoteInfo)
+        controlsController = ControlsController(viewController: controlsViewController, remote: remote)
+        alertController = AlertController(presenter: alertPresenter)
+        playerController = PlayerController(viewController: playerViewController,
+                                            scrubberController: scrubberController,
+                                            infoController: infoController,
+                                            controlsController: controlsController,
+                                            musicService: musicService,
+                                            userService: userService,
+                                            authorization: authorization)
+        playerCoordinator = PlayerCoordinator(playerController: playerController, alertController: alertController)
+        search = Search(authorization: authorization, mediaQuery: mediaQueryType)
+        searchController = SearchController(search: search)
+        searchCoordinator = SearchCoordinator(searchController: searchController)
+        appRouter = AppRouter(playerCoordinator: playerCoordinator, searchCoordinator: searchCoordinator)
     }
 }
