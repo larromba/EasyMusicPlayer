@@ -4,8 +4,7 @@ import UIKit
 
 extension UIViewController {
     static func fromStoryboard<T: UIViewController>() -> T {
-        let viewController = UIStoryboard.main()
-            .instantiateViewController(withIdentifier: "\(classForCoder())") as! T
+        let viewController = UIStoryboard.player.instantiateViewController(withIdentifier: "\(self)") as! T
         _ = viewController.view
         return viewController
     }

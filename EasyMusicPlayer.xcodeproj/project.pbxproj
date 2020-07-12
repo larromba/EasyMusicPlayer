@@ -33,7 +33,6 @@
 		7F44F9E221B8307C0041E4DE /* RemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E121B8307C0041E4DE /* RemoteTests.swift */; };
 		7F44F9E421B830F70041E4DE /* RemoteStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E321B830F70041E4DE /* RemoteStateTests.swift */; };
 		7F44F9E621B83AF40041E4DE /* UIButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E521B83AF40041E4DE /* UIButtonExtensions.swift */; };
-		7F44F9EA21B83DBD0041E4DE /* MockMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9E921B83DBD0041E4DE /* MockMediaItem.swift */; };
 		7F44F9EC21B845870041E4DE /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9EB21B845870041E4DE /* AudioPlayer.swift */; };
 		7F44F9F021B849F10041E4DE /* DummyAudioPlayerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */; };
 		7F5A83A421D932AD008F30BE /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A321D932AD008F30BE /* Presentable.swift */; };
@@ -104,6 +103,7 @@
 		7FA59D7A21BBD01000538013 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D7921BBD01000538013 /* Utility.swift */; };
 		7FA59D8221BBFD8400538013 /* MediaLibraryAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */; };
 		7FAFBA6524BB3BB80008A54D /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAFBA6424BB3BB80008A54D /* SearchTests.swift */; };
+		7FAFBA6724BB49E20008A54D /* UIBarButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAFBA6624BB49E20008A54D /* UIBarButtonExtensions.swift */; };
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
@@ -176,7 +176,6 @@
 		7F44F9E121B8307C0041E4DE /* RemoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTests.swift; sourceTree = "<group>"; };
 		7F44F9E321B830F70041E4DE /* RemoteStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteStateTests.swift; sourceTree = "<group>"; };
 		7F44F9E521B83AF40041E4DE /* UIButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtensions.swift; sourceTree = "<group>"; };
-		7F44F9E921B83DBD0041E4DE /* MockMediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMediaItem.swift; sourceTree = "<group>"; };
 		7F44F9EB21B845870041E4DE /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAudioPlayerFactory.swift; sourceTree = "<group>"; };
 		7F5A83A321D932AD008F30BE /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
@@ -255,6 +254,7 @@
 		7FA59D7921BBD01000538013 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryAuthorization.swift; sourceTree = "<group>"; };
 		7FAFBA6424BB3BB80008A54D /* SearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTests.swift; sourceTree = "<group>"; };
+		7FAFBA6624BB49E20008A54D /* UIBarButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonExtensions.swift; sourceTree = "<group>"; };
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -342,7 +342,6 @@
 				7FA59D5A21B95C0C00538013 /* AppTestEnvironment.swift */,
 				7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */,
 				7F5A83A521D940F4008F30BE /* DummyMediaQuery.swift */,
-				7F44F9E921B83DBD0041E4DE /* MockMediaItem.swift */,
 				7FA59D5821B957AC00538013 /* MockTouch.swift */,
 			);
 			name = Utility;
@@ -519,6 +518,7 @@
 			children = (
 				7FA59D5221B9465600538013 /* URLExtensions.swift */,
 				7F44F9E521B83AF40041E4DE /* UIButtonExtensions.swift */,
+				7FAFBA6624BB49E20008A54D /* UIBarButtonExtensions.swift */,
 				7FA59D6521B97DB000538013 /* ViewControllerExtensions.swift */,
 			);
 			name = Extensions;
@@ -988,6 +988,7 @@
 				7F44F9D621B828F10041E4DE /* MusicPlayerErrorTests.swift in Sources */,
 				7F44F9E621B83AF40041E4DE /* UIButtonExtensions.swift in Sources */,
 				7FA59D5321B9465600538013 /* URLExtensions.swift in Sources */,
+				7FAFBA6724BB49E20008A54D /* UIBarButtonExtensions.swift in Sources */,
 				7F44F9D421B827EE0041E4DE /* ControlStateTests.swift in Sources */,
 				7F44F9E421B830F70041E4DE /* RemoteStateTests.swift in Sources */,
 				7F44F9D121B826D00041E4DE /* ControlTests.swift in Sources */,
@@ -996,7 +997,6 @@
 				7F05C5EE24B7DFDB0049E246 /* EndSilenceTests.swift in Sources */,
 				7FAFBA6524BB3BB80008A54D /* SearchTests.swift in Sources */,
 				7F5A83A621D940F4008F30BE /* DummyMediaQuery.swift in Sources */,
-				7F44F9EA21B83DBD0041E4DE /* MockMediaItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -28,7 +28,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatOne_whenPressedOnFirstTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(library, currentTrack: library[0])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -40,7 +40,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatOne_whenPressedOnMidTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -52,7 +52,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatOne_whenPressedOnEndTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(library, currentTrack: library[2])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -69,7 +69,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatNone_whenPressedOnFirstTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(library, currentTrack: library[0])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -81,7 +81,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatNone_whenPressedOnMidTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -93,7 +93,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatNone_whenPressedOnEndTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(library, currentTrack: library[2])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -107,7 +107,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatAll_whenPressedOnFirstTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(library, currentTrack: library[0])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -119,7 +119,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatAll_whenPressedOnMidTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -131,7 +131,7 @@ final class RemoteStateTests: XCTestCase {
 
     func test_repeatAll_whenPressedOnEndTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(library, currentTrack: library[2])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -216,7 +216,7 @@ final class RemoteStateTests: XCTestCase {
         let remoteCommandCenterInfo = MockNowPlayingInfoCenter()
         env.remoteInfo = remoteCommandCenterInfo
         let image = UIImage()
-        let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
+        let item = DummyMediaItem(artist: "arkist", title: "fill your coffee", image: image)
         env.setSavedTracks([item], currentTrack: item)
         env.inject()
         env.setPlaying()
@@ -245,7 +245,7 @@ final class RemoteStateTests: XCTestCase {
         env.remoteInfo = remoteCommandCenterInfo
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setPlaying()
 
@@ -258,6 +258,6 @@ final class RemoteStateTests: XCTestCase {
         // test
         let info = remoteCommandCenterInfo.nowPlayingInfo
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval,
-                       MockMediaItem.playbackDuration / 2)
+                       DummyAsset.normal.playbackDuration / 2)
     }
 }

@@ -43,8 +43,8 @@ final class EndSilenceTests: XCTestCase {
     func test_musicService_whenTrackWithEndSilenceLoaded_expectFinishedStateTriggered() {
         // mock
         env.playerFactory = AudioPlayerFactory()
-        env.setLibraryTracks([DummyMediaItem(.endSilence, persistentID: 0)])
         env.inject()
+        env.setLibraryTracks([DummyMediaItem(asset: .endSilence)])
 
         // sut
         env.setPlaying()

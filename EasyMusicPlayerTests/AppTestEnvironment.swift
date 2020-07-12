@@ -2,7 +2,7 @@
 import Foundation
 import MediaPlayer
 
-let defaultTracks: [MPMediaItem] = [.mock(id: 0), .mock(id: 1), .mock(id: 2)]
+let library: [DummyMediaItem] = [.mock(id: 0), .mock(id: 1), .mock(id: 2)]
 
 final class AppTestEnvironment {
     var playerViewController: PlayerViewControlling
@@ -107,7 +107,7 @@ final class AppTestEnvironment {
         self.authorizerType = authorizerType
     }
 
-    func setLibraryTracks(_ tracks: [MPMediaItem]) {
+    func setLibraryTracks(_ tracks: [MPMediaItem] = library) {
         let mediaQueryType = MockMediaQuery.self
         mediaQueryType.actions.set(returnValue: DummyMediaQuery(items: tracks), for: MockMediaQuery.songs1.name)
         self.mediaQueryType = mediaQueryType
@@ -136,7 +136,7 @@ final class AppTestEnvironment {
     private static func resetAllStaticMocks() {
         MockMediaLibrary.actions.set(returnValue: MPMediaLibraryAuthorizationStatus.authorized,
                                      for: MockMediaLibrary.authorizationStatus1.name)
-        MockMediaQuery.actions.set(returnValue: DummyMediaQuery(items: [MockMediaItem()]),
+        MockMediaQuery.actions.set(returnValue: DummyMediaQuery(items: [DummyMediaItem()]),
                                    for: MockMediaQuery.songs1.name)
     }
 }

@@ -5,7 +5,7 @@ import XCTest
 final class TrackTests: XCTestCase {
     func test_track_whenDashFormat_expectArtistAndTitleValues() {
         // mocks
-        let mediaItem = MockMediaItem(title: "   arkist   -   fill my coffee  ")
+        let mediaItem = DummyMediaItem(title: "   arkist   -   fill my coffee  ")
 
         // sut
         let track = Track(mediaItem: mediaItem)
@@ -17,7 +17,7 @@ final class TrackTests: XCTestCase {
 
     func test_track_whenNotDashFormat_expectArtistAndTitleValues() {
         // mocks
-        let mediaItem = MockMediaItem(title: "   arkist   -   fill my - coffee  ")
+        let mediaItem = DummyMediaItem(title: "   arkist   -   fill my - coffee  ")
 
         // sut
         let track = Track(mediaItem: mediaItem)
@@ -29,7 +29,7 @@ final class TrackTests: XCTestCase {
 
     func test_track_whenEmpty_expectDefaultValues() {
         // mocks
-        let mediaItem = MockMediaItem()
+        let mediaItem = DummyMediaItem()
 
         // sut
         let track = Track(mediaItem: mediaItem)

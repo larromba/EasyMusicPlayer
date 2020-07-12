@@ -2,6 +2,8 @@
 import Foundation
 import MediaPlayer
 
+// MARK: - DummyAsset
+
 enum DummyAsset {
     case normal
     case endSilence
@@ -25,19 +27,25 @@ enum DummyAsset {
     }
 }
 
+// MARK: - DummyMediaItem
+
 final class DummyMediaItem: MPMediaItem {
-    private let image = Asset.arkistRendezvousFillYourCoffee.image
-    private lazy var mediaItemArtwork = MPMediaItemArtwork(boundsSize: image.size) { _ -> UIImage in
-        return self.image
-    }
-    private let _persistentID: MPMediaEntityPersistentID
-    private let _assetUrl: URL
-    private let _playbackDuration: TimeInterval
+    private let _artist: String
     override var artist: String { return "Arkist" }
+
+    private let _title: String
     override var title: String { return "Fill Your Coffee" }
+
+    private let _playbackDuration: TimeInterval
     override var playbackDuration: TimeInterval { return _playbackDuration }
-    override var artwork: MPMediaItemArtwork? { return mediaItemArtwork }
+
+    private let _artwork: MPMediaItemArtwork?
+    override var artwork: MPMediaItemArtwork? { return _artwork }
+
+    private let _assetUrl: URL
     override var assetURL: URL { return _assetUrl }
+
+    private let _persistentID: MPMediaEntityPersistentID
     override var persistentID: MPMediaEntityPersistentID { return _persistentID }
 
     @available(*, unavailable)
@@ -45,20 +53,54 @@ final class DummyMediaItem: MPMediaItem {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(_ asset: DummyAsset, persistentID: MPMediaEntityPersistentID) {
+    init(asset: DummyAsset = .normal, artist: String = "Arkist", title: String = "Fill Your Coffee",
+         id: MPMediaEntityPersistentID = 0, image: UIImage? = Asset.arkistRendezvousFillYourCoffee.image) {
         _assetUrl = asset.url
-        _persistentID = persistentID
+        _artist = artist
+        _title = title
+        _persistentID = id
         _playbackDuration = asset.playbackDuration
+        if let image = image {
+            _artwork = MPMediaItemArtwork(boundsSize: image.size) { _ in return image }
+        } else {
+            _artwork = nil
+        }
+        super.init()
+    }
+
+    init(track: Track) {
+        _assetUrl = track.url ?? URL(fileURLWithPath: "")
+        _artist = track.artist
+        _title = track.title
+        _persistentID = track.id
+        _playbackDuration = track.duration.value
+        if let artwork = track.artwork {
+            _artwork = MPMediaItemArtwork(boundsSize: artwork.size) { _ in return artwork }
+        } else {
+            _artwork = nil
+        }
         super.init()
     }
 }
 
+extension DummyMediaItem {
+    static var mock: DummyMediaItem {
+        return DummyMediaItem(asset: .normal, id: 0)
+    }
+
+    static func mock(id: MPMediaEntityPersistentID) -> DummyMediaItem {
+        return DummyMediaItem(asset: .normal, id: id)
+    }
+}
+
+// MARK: - DummyMediaQuery
+
 final class DummyMediaQuery: MPMediaQuery {
     override var items: [MPMediaItem]? {
         if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-            return [DummyMediaItem(.normal, persistentID: 0),
-                    DummyMediaItem(.endSilence, persistentID: 1),
-                    DummyMediaItem(.normal, persistentID: 2)]
+            return [DummyMediaItem(asset: .normal, id: 0),
+                    DummyMediaItem(asset: .endSilence, id: 1),
+                    DummyMediaItem(asset: .normal, id: 2)]
         } else {
             return super.items
         }

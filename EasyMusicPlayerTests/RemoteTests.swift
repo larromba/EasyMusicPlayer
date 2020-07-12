@@ -84,7 +84,7 @@ final class RemoteTests: XCTestCase {
 
     func test_remoteControls_whenPrevPressed_expectPlaysPreviousTrack() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setPlaying()
 
@@ -99,7 +99,7 @@ final class RemoteTests: XCTestCase {
 
     func test_remoteControls_whenNextPressed_expectPlaysNextTrack() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setPlaying()
 
@@ -119,11 +119,12 @@ final class RemoteTests: XCTestCase {
 
         // sut
         let event = MockChangePlaybackPositionCommandEvent()
-        event._positionTime = MockMediaItem.playbackDuration / 2
+        let time = DummyAsset.normal.playbackDuration / 2
+        event._positionTime = time
         remote.changePlayback?(event)
 
         // test
-        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, time)
     }
 
     func test_remoteControls_whenPreviousSeeked_expectChangesPlayLocationInTrack() {

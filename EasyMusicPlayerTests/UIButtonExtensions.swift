@@ -1,7 +1,8 @@
 import UIKit
 
 extension UIButton {
-    func tap() -> Bool {
+    @discardableResult
+    func fire() -> Bool {
         guard isEnabled else { return false }
         sendActions(for: .touchUpInside)
         return true

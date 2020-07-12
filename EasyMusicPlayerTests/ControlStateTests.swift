@@ -35,7 +35,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatOne_whenPressedOnFirstTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(library, currentTrack: library[0])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -47,7 +47,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatOne_whenPressedOnMidTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -59,7 +59,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatOne_whenPressedOnEndTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(library, currentTrack: library[2])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -83,7 +83,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatNone_whenPressedOnFirstTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(library, currentTrack: library[0])
         env.inject()
         env.setRepeatState(.one)
         env.setPlaying()
@@ -95,7 +95,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatNone_whenPressedOnMidTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -107,7 +107,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatNone_whenPressedOnEndTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(library, currentTrack: library[2])
         env.inject()
         env.setRepeatState(.none)
         env.setPlaying()
@@ -142,7 +142,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatAll_whenPressedOnMidTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -154,7 +154,7 @@ final class ControlStateTests: XCTestCase {
 
     func test_repeatAll_whenPressedOnEndTrack_expectState() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[2])
+        env.setSavedTracks(library, currentTrack: library[2])
         env.inject()
         env.setRepeatState(.all)
         env.setPlaying()
@@ -243,14 +243,14 @@ final class ControlStateTests: XCTestCase {
         let infoViewController: InfoViewController = .fromStoryboard()
         env.infoViewController = infoViewController
         let image = UIImage()
-        let item = MockMediaItem(artist: "arkist", title: "fill your coffee", image: image)
+        let item = DummyMediaItem(artist: "arkist", title: "fill your coffee", image: image)
         env.setSavedTracks([item], currentTrack: item)
         env.inject()
         env.setPlaying()
 
         // test
-        XCTAssertEqual(infoViewController.artistLabel.text, "arkist")
-        XCTAssertEqual(infoViewController.trackLabel.text, "fill your coffee")
+        XCTAssertEqual(infoViewController.artistLabel.text, "Arkist")
+        XCTAssertEqual(infoViewController.trackLabel.text, "Fill Your Coffee")
         XCTAssertEqual(infoViewController.trackPositionLabel.text, "1 of 1")
         XCTAssertEqual(infoViewController.timeLabel.text, "00:00:00")
         XCTAssertEqual(infoViewController.artworkImageView.image, image)

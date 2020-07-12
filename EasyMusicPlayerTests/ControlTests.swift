@@ -26,7 +26,7 @@ final class ControlTests: XCTestCase {
         env.inject()
 
         // sut
-        XCTAssertTrue(controlsViewController.playButton.tap())
+        XCTAssertTrue(controlsViewController.playButton.fire())
 
         // test
         XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
@@ -38,7 +38,7 @@ final class ControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        XCTAssertTrue(controlsViewController.playButton.tap())
+        XCTAssertTrue(controlsViewController.playButton.fire())
 
         // test
         XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.pause3.name) ?? false)
@@ -50,7 +50,7 @@ final class ControlTests: XCTestCase {
         env.setPlaying()
 
         // sut
-        XCTAssertTrue(controlsViewController.stopButton.tap())
+        XCTAssertTrue(controlsViewController.stopButton.fire())
 
         // test
         XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.stop4.name) ?? false)
@@ -58,13 +58,13 @@ final class ControlTests: XCTestCase {
 
     func test_controls_whenShufflePressed_expectShufflesMusicAndPlays() {
         // mocks
-        let library = (0..<100).map { Track(mediaItem: MockMediaItem(id: $0)) }
-        env.setSavedTracks(library.map { MockMediaItem(track: $0) }, currentTrack: MockMediaItem(track: library[1]))
+        let library = (0..<100).map { Track(mediaItem: DummyMediaItem(id: $0)) }
+        env.setSavedTracks(library.map { DummyMediaItem(track: $0) }, currentTrack: DummyMediaItem(track: library[1]))
         env.inject()
 
         // sut
         XCTAssertEqual(env.trackManager.library, library)
-        XCTAssertTrue(controlsViewController.shuffleButton.tap())
+        XCTAssertTrue(controlsViewController.shuffleButton.fire())
 
         // test
         XCTAssertNotEqual(env.trackManager.library, library)
@@ -74,13 +74,13 @@ final class ControlTests: XCTestCase {
 
     func test_controls_whenPrevPressed_expectPlaysPreviousTrack() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setPlaying()
 
         // sut
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
-        XCTAssertTrue(controlsViewController.prevButton.tap())
+        XCTAssertTrue(controlsViewController.prevButton.fire())
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 0)
@@ -89,13 +89,13 @@ final class ControlTests: XCTestCase {
 
     func test_controls_whenNextPressed_expectPlaysNextTrack() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setPlaying()
 
         // sut
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
-        XCTAssertTrue(controlsViewController.nextButton.tap())
+        XCTAssertTrue(controlsViewController.nextButton.fire())
 
         // test
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 2)
@@ -106,7 +106,7 @@ final class ControlTests: XCTestCase {
         // mocks
         let scrubberViewController: ScrubberViewController = .fromStoryboard()
         env.scrubberViewController = scrubberViewController
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
         env.setPlaying()
 
@@ -117,7 +117,7 @@ final class ControlTests: XCTestCase {
         scrubberViewController.touchesEnded(touches, with: nil)
 
         // test
-        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, MockMediaItem.playbackDuration / 2)
+        XCTAssertEqual(playerFactory.audioPlayer?.currentTime ?? 0, DummyAsset.normal.playbackDuration / 2)
     }
 
     func test_controls_whenRepeatAllPressed_expectChangesRepeatState() {
@@ -126,7 +126,7 @@ final class ControlTests: XCTestCase {
         env.setRepeatState(.all)
 
         // sut
-        XCTAssertTrue(controlsViewController.repeatButton.tap())
+        XCTAssertTrue(controlsViewController.repeatButton.fire())
 
         // test
         XCTAssertEqual(env.musicService.state.repeatState, .none)
@@ -138,7 +138,7 @@ final class ControlTests: XCTestCase {
         env.setRepeatState(.none)
 
         // sut
-        XCTAssertTrue(controlsViewController.repeatButton.tap())
+        XCTAssertTrue(controlsViewController.repeatButton.fire())
 
         // test
         XCTAssertEqual(env.musicService.state.repeatState, .one)
@@ -150,7 +150,7 @@ final class ControlTests: XCTestCase {
         env.setRepeatState(.one)
 
         // sut
-        XCTAssertTrue( controlsViewController.repeatButton.tap())
+        XCTAssertTrue( controlsViewController.repeatButton.fire())
 
         // test
         XCTAssertEqual(env.musicService.state.repeatState, .all)
@@ -175,5 +175,17 @@ final class ControlTests: XCTestCase {
         // test
         waitSync()
         XCTAssertEqual(controlsViewController.playButton.backgroundImage(for: .normal), Asset.pauseButton.image)
+    }
+
+    func test_controls_whenNotAuthorized_expectSearchDisabled() {
+        XCTFail()
+    }
+
+    func test_controls_whenAuthorized_expectSearchEnabled() {
+        XCTFail()
+    }
+
+    func test_controls_whenSearchPressed_expectSearchView() {
+        XCTFail()
     }
 }

@@ -26,7 +26,7 @@ final class DataTests: XCTestCase {
         env.setRepeatState(.none)
 
         // sut
-        XCTAssertTrue(controlsViewController.repeatButton.tap())
+        XCTAssertTrue(controlsViewController.repeatButton.fire())
 
         // test
         XCTAssertEqual(env.userService.repeatState, .one)
@@ -45,7 +45,7 @@ final class DataTests: XCTestCase {
 
     func test_currentTrackID_whenTrackChanged_expectIsPersisted() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[0])
+        env.setSavedTracks(library, currentTrack: library[0])
         env.inject()
         env.next()
 
@@ -55,7 +55,7 @@ final class DataTests: XCTestCase {
 
     func test_currentTrackID_whenAppOpens_expectIsLoadedFromStore() {
         // mocks
-        env.setSavedTracks(defaultTracks, currentTrack: defaultTracks[1])
+        env.setSavedTracks(library, currentTrack: library[1])
         env.inject()
 
         // test
@@ -64,9 +64,9 @@ final class DataTests: XCTestCase {
 
     func test_shuffle_whenPressed_expectTrackIDsArePersisted() {
         // mocks
-        let library = (0..<100).map { MockMediaItem(id: $0) }
-        env.setLibraryTracks(library)
         env.inject()
+        let library = (0..<100).map { DummyMediaItem(id: $0) }
+        env.setLibraryTracks(library)
         env.shuffle()
 
         // test
@@ -77,10 +77,10 @@ final class DataTests: XCTestCase {
 
     func test_trackIDs_whenAppOpens_expectIsLoadedFromStore() {
         // mocks
-        env.setLibraryTracks(defaultTracks)
         env.inject()
+        env.setLibraryTracks()
 
         // test
-        XCTAssertEqual(env.musicService.state.totalTracks, defaultTracks.count)
+        XCTAssertEqual(env.musicService.state.totalTracks, library.count)
     }
 }
