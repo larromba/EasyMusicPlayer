@@ -87,11 +87,12 @@ final class SearchTests: XCTestCase {
 
     func test_search_whenTextChanged_expectSearch() {
         // mocks
-        env.setLibraryTracks([
-            DummyMediaItem(artist: "alpha", title: "title"),
-            DummyMediaItem(artist: "bravo", title: "title"),
-            DummyMediaItem(artist: "charlie", title: "title")
-        ])
+        let tracks = [
+            DummyMediaItem(artist: "alpha", title: "title", id: 0),
+            DummyMediaItem(artist: "bravo", title: "title", id: 1),
+            DummyMediaItem(artist: "charlie", title: "title", id: 2)
+        ]
+        env.setSavedTracks(tracks, currentTrack: tracks[0])
         env.inject()
         start()
         playerViewController.present(navigationController, animated: false, completion: nil)
@@ -154,10 +155,11 @@ final class SearchTests: XCTestCase {
 
     func test_result_whenNoImage_expectLongerTitle() {
         // mocks
-        env.setLibraryTracks([
-            DummyMediaItem(artist: "alpha alpha alpha alpha alpha alpha"),
-            DummyMediaItem(artist: "blpha blpha blpha blpha blpha blpha", image: nil)
-        ])
+        let tracks = [
+            DummyMediaItem(artist: "alpha alpha alpha alpha alpha alpha", id: 0),
+            DummyMediaItem(artist: "blpha blpha blpha blpha blpha blpha", id: 1, image: nil)
+        ]
+        env.setSavedTracks(tracks, currentTrack: tracks[0])
         env.inject()
         start()
 
@@ -187,12 +189,12 @@ final class SearchTests: XCTestCase {
 
     func test_result_whenSelected_expectTrackPlays() {
         // mocks
-        let library = [
+        let tracks = [
             DummyMediaItem(artist: "alpha", title: "alpha", id: 0),
             DummyMediaItem(artist: "bravo", title: "bravo", id: 1),
             DummyMediaItem(artist: "charlie", title: "charlie", id: 2)
         ]
-        env.setSavedTracks(library, currentTrack: library[0])
+        env.setSavedTracks(tracks, currentTrack: tracks[0])
         env.inject()
         env.setStopped()
         start()
