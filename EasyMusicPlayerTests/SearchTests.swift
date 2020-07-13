@@ -223,11 +223,36 @@ final class SearchTests: XCTestCase {
     }
 
     func test_search_whenSearchStarted_expectLoadingIndicatorStartsAndTableDisabled() {
-        XCTFail()
+        // mocks
+        env.inject()
+        simulateRouterAction()
+        playerViewController.present(navigationController, animated: false, completion: nil)
+
+        // sut
+        let searchBar = searchViewController.searchBar!
+        searchBar.delegate?.searchBar?(searchBar, textDidChange: " ")
+
+        // sut
+        XCTAssertTrue(searchViewController.activityIndicatorView.isAnimating)
+        XCTAssertFalse(searchViewController.tableView.isUserInteractionEnabled)
+        XCTAssertEqual(searchViewController.tableView.alpha, 0.5)
     }
 
     func test_search_whenSearchFinished_expectLoadingIndicatorStopsAndTableEnabled() {
-        XCTFail()
+        // mocks
+        env.inject()
+        simulateRouterAction()
+        playerViewController.present(navigationController, animated: false, completion: nil)
+
+        // sut
+        let searchBar = searchViewController.searchBar!
+        searchBar.delegate?.searchBar?(searchBar, textDidChange: " ")
+
+        // sut
+        waitSync()
+        XCTAssertFalse(searchViewController.activityIndicatorView.isAnimating)
+        XCTAssertTrue(searchViewController.tableView.isUserInteractionEnabled)
+        XCTAssertEqual(searchViewController.tableView.alpha, 1.0)
     }
 
     // MARK: - private

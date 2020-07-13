@@ -22,6 +22,7 @@ final class SearchController: SearchControlling {
 
     func setViewController(_ viewController: SearchViewControlling) {
         self.viewController = viewController
+        viewController.viewState = SearchViewState(items: [], isLoading: false)
         viewController.setDelegate(self)
     }
 
