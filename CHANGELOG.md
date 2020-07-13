@@ -75,10 +75,10 @@ Apple ID: 1067558718
 # Future work
 
 3.0.0:
-* fix disambigous state (e.g. is paying but remote shows paused state)
+* fix disambigous state (e.g. is playing but remote shows paused state)
 BUG: remove app store share description (fb + twitter)
 BUG: no sound popup keeps reappearing
-BUG MPMediaItemArtwork
 
 4.0.0:
 to increase startup speed for large playlists - use [MPMediaEntityPersistentID] instead of [MPMediaItem]?
+BUG: MPMediaItemArtwork not appearing?

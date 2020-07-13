@@ -50,7 +50,7 @@ final class SilenceDetectionTests: XCTestCase {
     func test_musicService_whenTrackWithEndSilenceLoaded_expectFinishedStateTriggeredEarlier() {
         // mock
         env.playerFactory = AudioPlayerFactory()
-        env.setLibraryTracks([DummyMediaItem(asset: .endSilence)])
+        env.setLibraryTracks([DummyMediaItem(asset: .endSilence)]) // normally 17 seconds
         env.inject()
 
         // sut
@@ -58,11 +58,12 @@ final class SilenceDetectionTests: XCTestCase {
         env.musicService.setTime(3.0)
 
         // test
-        waitSync(for: 2.0)
+        waitSync(for: 3.0)
         guard let alert = viewController.presentedViewController as? UIAlertController else {
             XCTFail("expected UIAlertController")
             return
         }
         XCTAssertEqual(alert.title, "End")
+        XCTAssertEqual(alert.message, "Your playlist finished")
     }
 }

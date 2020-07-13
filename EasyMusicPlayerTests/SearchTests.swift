@@ -43,7 +43,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenOpened_expecLibraryShown() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
 
         // sut
         playerViewController.present(navigationController, animated: false, completion: nil)
@@ -56,7 +56,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenDonePressed_expectSearchClosed() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -70,7 +70,7 @@ final class SearchTests: XCTestCase {
     func test_search_wheneyboardDonePressed_expectSearchClosed() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -90,7 +90,7 @@ final class SearchTests: XCTestCase {
             DummyMediaItem(artist: "charlie", title: "title")
         ])
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -106,7 +106,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenNoText_expectRestoresAll() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -121,7 +121,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenNoResults_expectEmptyTextShown() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -137,7 +137,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenHasResults_expectEmptyLabelHidden() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
@@ -153,7 +153,7 @@ final class SearchTests: XCTestCase {
             DummyMediaItem(artist: "alpha alpha alpha alpha alpha alpha", image: nil)
         ])
         env.inject()
-        simulateRouterAction()
+        start()
 
         // sut
         playerViewController.present(navigationController, animated: false, completion: nil)
@@ -167,7 +167,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenResultSelected_expectSearchClosed() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -189,7 +189,7 @@ final class SearchTests: XCTestCase {
         env.setSavedTracks(library, currentTrack: library[0])
         env.inject()
         env.setStopped()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -205,7 +205,7 @@ final class SearchTests: XCTestCase {
     func test_result_whenSelectedAndNotFound_expectErrorThrown() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -225,7 +225,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenSearchStarted_expectLoadingIndicatorStartsAndTableDisabled() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -241,7 +241,7 @@ final class SearchTests: XCTestCase {
     func test_search_whenSearchFinished_expectLoadingIndicatorStopsAndTableEnabled() {
         // mocks
         env.inject()
-        simulateRouterAction()
+        start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -257,7 +257,7 @@ final class SearchTests: XCTestCase {
 
     // MARK: - private
 
-    private func simulateRouterAction() {
+    private func start() {
         env.searchCoordinator.setNavigationController(navigationController)
         env.searchCoordinator.setViewController(searchViewController)
         env.searchCoordinator.start()
