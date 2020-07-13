@@ -47,6 +47,7 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
+        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
@@ -108,9 +109,11 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
+        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: "")
 
@@ -139,6 +142,7 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
+        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
@@ -157,6 +161,7 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
+        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
@@ -191,6 +196,7 @@ final class SearchTests: XCTestCase {
         env.inject()
         env.setStopped()
         start()
+        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -227,13 +233,16 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
+        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: " ")
 
         // sut
+        waitSync()
         XCTAssertTrue(searchViewController.activityIndicatorView.isAnimating)
         XCTAssertFalse(searchViewController.tableView.isUserInteractionEnabled)
         XCTAssertEqual(searchViewController.tableView.alpha, 0.5)
@@ -243,9 +252,11 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
+        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: " ")
 
