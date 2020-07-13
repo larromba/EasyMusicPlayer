@@ -209,7 +209,7 @@ final class SearchTests: XCTestCase {
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
-        searchViewController.viewState = SearchViewState(items: [DummyMediaItem(id: 999)])
+        searchViewController.viewState = SearchViewState(items: [DummyMediaItem(id: 999)], isLoading: false)
         XCTAssertTrue(searchViewController.selectRow(0))
 
         // test
@@ -220,6 +220,14 @@ final class SearchTests: XCTestCase {
         }
         XCTAssertEqual(alert.title, "Error")
         XCTAssertEqual(alert.message, "Couldn't play track")
+    }
+
+    func test_search_whenSearchStarted_expectLoadingIndicatorStartsAndTableDisabled() {
+        XCTFail()
+    }
+
+    func test_search_whenSearchFinished_expectLoadingIndicatorStopsAndTableEnabled() {
+        XCTFail()
     }
 
     // MARK: - private

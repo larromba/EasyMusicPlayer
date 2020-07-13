@@ -3,7 +3,7 @@ import AVFoundation
 import TestExtensions
 import XCTest
 
-final class EndSilenceTests: XCTestCase {
+final class SilenceDetectionTests: XCTestCase {
     private var viewController: PlayerViewController!
     private var env: AppTestEnvironment!
 
@@ -23,7 +23,7 @@ final class EndSilenceTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_duration_whenTrackWithEndSilenceLoaded_expectReducedDuration() {
+    func test_trackManager_whenTrackWithEndSilenceLoaded_expectReducedDuration() {
         // mocks
         class Delegate: TrackManagerDelegate {
             var track: Track?
@@ -39,7 +39,7 @@ final class EndSilenceTests: XCTestCase {
         env.trackManager.setDelegate(delegate)
 
         // sut
-        let track = env.trackManager.currentTrack
+        let track = env.trackManager.currentTrackResolved
 
         // test
         waitSync(for: 2.0)
@@ -47,7 +47,7 @@ final class EndSilenceTests: XCTestCase {
         XCTAssertEqual(delegate.track?.duration ?? 0.0, 4.0, accuracy: 1.0)
     }
 
-    func test_musicService_whenTrackWithEndSilenceLoaded_expectFinishedStateTriggered() {
+    func test_musicService_whenTrackWithEndSilenceLoaded_expectFinishedStateTriggeredEarlier() {
         // mock
         env.playerFactory = AudioPlayerFactory()
         env.setLibraryTracks([DummyMediaItem(asset: .endSilence)])

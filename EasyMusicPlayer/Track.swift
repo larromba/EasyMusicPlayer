@@ -11,6 +11,8 @@ struct Track {
         return mediaItemArtwork?.image(at: artworkSize)
     }
     let id: MPMediaEntityPersistentID
+    let albumTitle: String?
+    let genre: String?
     private let mediaItemArtwork: MPMediaItemArtwork?
     private let artworkSize: CGSize
 }
@@ -24,6 +26,8 @@ extension Track {
         mediaItemArtwork = mediaItem.artwork
         url = mediaItem.assetURL
         id = mediaItem.persistentID
+        albumTitle = mediaItem.albumTitle
+        genre = mediaItem.genre
     }
 
     static var empty: Track {
@@ -37,6 +41,8 @@ extension Track {
             duration: duration,
             url: url,
             id: id,
+            albumTitle: albumTitle,
+            genre: genre,
             mediaItemArtwork: mediaItemArtwork,
             artworkSize: artworkSize
         )

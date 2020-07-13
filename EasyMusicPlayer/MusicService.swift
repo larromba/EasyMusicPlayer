@@ -48,7 +48,7 @@ final class MusicService: NSObject, MusicServicing {
             volume: audioSession.outputVolume,
             currentTrackIndex: trackManager.currentTrackIndex,
             totalTracks: trackManager.totalTracks,
-            currentTrack: trackManager.currentTrack,
+            currentTrack: trackManager.currentTrackResolved,
             time: player?.currentTime ?? 0.0,
             playState: playState,
             repeatState: repeatState
@@ -113,7 +113,7 @@ final class MusicService: NSObject, MusicServicing {
                 self.throwError(.noVolume)
                 return
             }
-            guard let url = self.trackManager.currentTrack.url else {
+            guard let url = self.trackManager.currentTrackResolved.url else {
                 self.throwError(.playerInit)
                 return
             }
@@ -139,7 +139,7 @@ final class MusicService: NSObject, MusicServicing {
                 return
             }
 
-            self.player?.updateDuration(self.trackManager.currentTrack.duration)
+            self.player?.updateDuration(self.trackManager.currentTrackResolved.duration)
             self.clock.start()
             self.interruptionHandler.setIsPlaying(true)
             self.changePlayState(.playing)

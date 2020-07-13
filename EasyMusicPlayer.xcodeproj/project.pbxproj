@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		7F05C5EA24B7CB780049E246 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5E924B7CB780049E246 /* Remote.swift */; };
 		7F05C5EC24B7CBEC0049E246 /* RemoteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */; };
-		7F05C5EE24B7DFDB0049E246 /* EndSilenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5ED24B7DFDB0049E246 /* EndSilenceTests.swift */; };
+		7F05C5EE24B7DFDB0049E246 /* SilenceDetectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5ED24B7DFDB0049E246 /* SilenceDetectionTests.swift */; };
 		7F0F97AB24B9E78D007FE1BA /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97AA24B9E78D007FE1BA /* SearchController.swift */; };
 		7F0F97AD24B9E95D007FE1BA /* PlayerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97AC24B9E95D007FE1BA /* PlayerCoordinator.swift */; };
 		7F0F97B024B9EF40007FE1BA /* PlayerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97AF24B9EF40007FE1BA /* PlayerAction.swift */; };
@@ -105,6 +105,9 @@
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
+		7FD8F2A924BC8E5D0065CA76 /* BaseOperation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FD8F2A824BC8E5D0065CA76 /* BaseOperation.framework */; };
+		7FD8F2AB24BC8E850065CA76 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD8F2AA24BC8E850065CA76 /* SearchOperation.swift */; };
+		7FD8F2AD24BCB0460065CA76 /* DurationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD8F2AC24BCB0460065CA76 /* DurationOperation.swift */; };
 		7FDCC3071DF9D57100E62194 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FDCC3091DF9D57100E62194 /* InfoPlist.strings */; };
 		7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */; };
 		7FF5B2ED1BE64E210044FCE5 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EC1BE64E210044FCE5 /* PlayerViewController.swift */; };
@@ -149,7 +152,7 @@
 /* Begin PBXFileReference section */
 		7F05C5E924B7CB780049E246 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteState.swift; sourceTree = "<group>"; };
-		7F05C5ED24B7DFDB0049E246 /* EndSilenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndSilenceTests.swift; sourceTree = "<group>"; };
+		7F05C5ED24B7DFDB0049E246 /* SilenceDetectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilenceDetectionTests.swift; sourceTree = "<group>"; };
 		7F0F97AA24B9E78D007FE1BA /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		7F0F97AC24B9E95D007FE1BA /* PlayerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCoordinator.swift; sourceTree = "<group>"; };
 		7F0F97AF24B9EF40007FE1BA /* PlayerAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAction.swift; sourceTree = "<group>"; };
@@ -254,6 +257,9 @@
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7FD8F2A824BC8E5D0065CA76 /* BaseOperation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaseOperation.framework; path = Carthage/Build/iOS/BaseOperation.framework; sourceTree = "<group>"; };
+		7FD8F2AA24BC8E850065CA76 /* SearchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOperation.swift; sourceTree = "<group>"; };
+		7FD8F2AC24BCB0460065CA76 /* DurationOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationOperation.swift; sourceTree = "<group>"; };
 		7FDCC3081DF9D57100E62194 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7FDCC30A1DF9D57600E62194 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7FDCC30B1DF9D57700E62194 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -298,6 +304,7 @@
 			files = (
 				7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */,
 				7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */,
+				7FD8F2A924BC8E5D0065CA76 /* BaseOperation.framework in Frameworks */,
 				7FF5B31F1BE654470044FCE5 /* MediaPlayer.framework in Frameworks */,
 				7F854F7721B8022100A93D5B /* Logging.framework in Frameworks */,
 			);
@@ -474,6 +481,8 @@
 				7F9F883C24B753B8005DF5D7 /* ExtendedAudioPlayer.swift */,
 				7F05C5E924B7CB780049E246 /* Remote.swift */,
 				7F7B7F9224BA7026006F6B3F /* KeyboardNotification.swift */,
+				7FD8F2AA24BC8E850065CA76 /* SearchOperation.swift */,
+				7FD8F2AC24BCB0460065CA76 /* DurationOperation.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -612,7 +621,7 @@
 				7F44F9D721B829330041E4DE /* MusicInterruptionTests.swift */,
 				7FF5B2FF1BE64E220044FCE5 /* TrackTests.swift */,
 				7FA59D6721BAA44500538013 /* DataTests.swift */,
-				7F05C5ED24B7DFDB0049E246 /* EndSilenceTests.swift */,
+				7F05C5ED24B7DFDB0049E246 /* SilenceDetectionTests.swift */,
 				7F44F9DB21B82B000041E4DE /* Utility */,
 				7FA59D5521B9467A00538013 /* Protocols */,
 				7FA59D5421B9466C00538013 /* Extensions */,
@@ -625,6 +634,7 @@
 		7FF5B3201BE6544B0044FCE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7FD8F2A824BC8E5D0065CA76 /* BaseOperation.framework */,
 				7FA59D6121B9768500538013 /* TestExtensions.framework */,
 				7F854F7221B8022100A93D5B /* Logging.framework */,
 				7FCFE90D1BF3AF8F00981545 /* Social.framework */,
@@ -847,11 +857,13 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Logging.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BaseOperation.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Logging.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BaseOperation.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -909,6 +921,7 @@
 				7F71B80F21A489C300135925 /* ScrubberViewState.swift in Sources */,
 				7F0F97BF24BA0047007FE1BA /* SearchCellViewState.swift in Sources */,
 				7F7B7F9324BA7026006F6B3F /* KeyboardNotification.swift in Sources */,
+				7FD8F2AD24BCB0460065CA76 /* DurationOperation.swift in Sources */,
 				7F7A032224B88D8000043EB1 /* _Simulator.swift in Sources */,
 				7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */,
 				7F0F97B924B9F825007FE1BA /* SearchCoordinator.swift in Sources */,
@@ -928,6 +941,7 @@
 				7F44F9EC21B845870041E4DE /* AudioPlayer.swift in Sources */,
 				7F71B85021A5DF1000135925 /* NowPlayingInfoCentering.swift in Sources */,
 				7F71B80921A486DC00135925 /* PlayerController.swift in Sources */,
+				7FD8F2AB24BC8E850065CA76 /* SearchOperation.swift in Sources */,
 				7F71B81221A4979E00135925 /* InfoController.swift in Sources */,
 				7F0F97BB24B9FB24007FE1BA /* SearchViewController.swift in Sources */,
 				7F71B87821A8001F00135925 /* MediaQueryable.swift in Sources */,
@@ -984,7 +998,7 @@
 				7F44F9D121B826D00041E4DE /* ControlTests.swift in Sources */,
 				7F44F9F021B849F10041E4DE /* DummyAudioPlayerFactory.swift in Sources */,
 				7FA59D6821BAA44500538013 /* DataTests.swift in Sources */,
-				7F05C5EE24B7DFDB0049E246 /* EndSilenceTests.swift in Sources */,
+				7F05C5EE24B7DFDB0049E246 /* SilenceDetectionTests.swift in Sources */,
 				7FAFBA6524BB3BB80008A54D /* SearchTests.swift in Sources */,
 				7F5A83A621D940F4008F30BE /* DummyMediaQuery.swift in Sources */,
 			);

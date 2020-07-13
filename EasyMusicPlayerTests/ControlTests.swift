@@ -64,12 +64,12 @@ final class ControlTests: XCTestCase {
         env.inject()
 
         // sut
-        XCTAssertEqual(env.trackManager.library, library)
+        XCTAssertEqual(env.trackManager.tracksResolved, library)
         XCTAssertTrue(controlsViewController.shuffleButton.fire())
 
         // test
-        XCTAssertNotEqual(env.trackManager.library, library)
-        XCTAssertEqual(env.trackManager.library.count, library.count)
+        XCTAssertNotEqual(env.trackManager.tracksResolved, library)
+        XCTAssertEqual(env.trackManager.tracksResolved.count, library.count)
         XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 

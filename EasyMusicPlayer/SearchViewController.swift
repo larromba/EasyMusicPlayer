@@ -18,6 +18,7 @@ final class SearchViewController: UIViewController, SearchViewControlling {
     @IBOutlet private(set) weak var doneButton: UIBarButtonItem!
     @IBOutlet private(set) weak var emptyLabel: UILabel!
     @IBOutlet private(set) weak var emptyLabelCenterYConstraint: NSLayoutConstraint!
+    private(set) var activityIndicatorView = UIActivityIndicatorView()
     private let keyboardNotification = KeyboardNotification()
 
     private weak var delegate: SearchViewControllerDelegate?
@@ -31,6 +32,7 @@ final class SearchViewController: UIViewController, SearchViewControlling {
         keyboardNotification.delegate = self
         tableView.tableFooterView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 1.0))
         tableView.contentInsetAdjustmentBehavior = .never
+        navigationItem.setLeftBarButton(UIBarButtonItem(customView: activityIndicatorView), animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -62,6 +64,15 @@ final class SearchViewController: UIViewController, SearchViewControlling {
         guard isViewLoaded else { return }
         emptyLabel.text = viewState.emptyText
         emptyLabel.isHidden = viewState.isEmptyLabelHidden
+        if viewState.isLoading {
+            activityIndicatorView.startAnimating()
+            tableView.alpha = 0.5
+            tableView.isUserInteractionEnabled = false
+        } else {
+            activityIndicatorView.stopAnimating()
+            tableView.alpha = 1.0
+            tableView.isUserInteractionEnabled = true
+        }
         tableView.reloadData()
     }
 

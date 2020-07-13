@@ -75,6 +75,7 @@ Apple ID: 1067558718
 # Future work
 
 3.0.0:
+fix travis tests
 simple search loading?
 simple search performance for 10000 entries?
 * fix disambigous state (e.g. is paying but remote shows paused state)

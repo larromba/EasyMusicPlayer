@@ -51,7 +51,7 @@ enum AppControllerFactory {
             playerController: playerController,
             alertController: AlertController(presenter: playerViewController)
         )
-        let search = Search(authorization: authorization, mediaQuery: MPMediaQuery.self)
+        let search = Search(authorization: authorization, trackManager: trackManager)
         let searchController = SearchController(search: search)
         let searchCoordinator = SearchCoordinator(searchController: searchController)
         let router = AppRouter(playerCoordinator: playerCoordinator, searchCoordinator: searchCoordinator)

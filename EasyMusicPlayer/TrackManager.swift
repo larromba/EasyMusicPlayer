@@ -4,13 +4,15 @@ import MediaPlayer
 
 // sourcery: name = TrackManager
 protocol TrackManaging: Mockable {
-    var library: [Track] { get } // might be slow on large playlists
-    // sourcery: value = .empty
-    var currentTrack: Track { get }
-    // sourcery: value = 0
-    var currentTrackIndex: Int { get }
+    var tracks: [MPMediaItem] { get }
+    var tracksResolved: [Track] { get } // might be slow on larger collections - use sparingly
     // sourcery: value = 0
     var totalTracks: Int { get }
+    var currentTrack: MPMediaItem? { get }
+    // sourcery: value = .empty
+    var currentTrackResolved: Track { get }
+    // sourcery: value = 0
+    var currentTrackIndex: Int { get }
     var isLastTrack: Bool { get }
 
     func loadSavedPlaylist()
@@ -28,35 +30,50 @@ protocol TrackManagerDelegate: AnyObject {
     func trackManager(_ manager: TrackManaging, updatedTrack track: Track)
 }
 
+// use Track instances / properties for anything displayed on the UI
+// use MPMediaItem instances / properties for searching / anything that needs speed
 final class TrackManager: TrackManaging {
     private let userService: UserServicing
     private let authorization: Authorization
     private let playlist: Playlistable
-    private var lastTrack: Track {
-        guard let track = tracks.last else { return .empty }
-        return Track(mediaItem: track)
-    }
-    private var tracks: [MPMediaItem] = []
     private let operationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
     private weak var delegate: TrackManagerDelegate?
-    private(set) var currentTrackIndex: Int = 0 {
-        didSet {
-            guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else { return }
-            currentTrack = Track(mediaItem: tracks[currentTrackIndex])
-            userService.currentTrackID = currentTrack.id
-            resolveDuration(for: currentTrack)
-        }
-    }
-    private(set) var currentTrack: Track
-    var library: [Track] {
+
+    // MARK: - tracks
+    private(set) var tracks: [MPMediaItem] = []
+    var tracksResolved: [Track] {
         return tracks.map { Track(mediaItem: $0) }
     }
     var totalTracks: Int {
         return tracks.count
+    }
+
+    // MARK: - current track
+    var currentTrack: MPMediaItem? {
+        guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else { return nil }
+        return tracks[currentTrackIndex]
+    }
+    private(set) var currentTrackResolved: Track // not a getter, because the duration could update after it's set
+    private(set) var currentTrackIndex: Int = 0 {
+        didSet {
+            guard let currentTrack = currentTrack else { return }
+            currentTrackResolved = Track(mediaItem: currentTrack)
+            userService.currentTrackID = currentTrackResolved.id
+            resolveDuration(for: currentTrackResolved)
+        }
+    }
+
+    // MARK: - last track
+    private var lastTrack: MPMediaItem? {
+        return tracks.last
+    }
+    private var lastTrackResolved: Track {
+        guard let track = lastTrack else { return .empty }
+        return Track(mediaItem: track)
     }
     var isLastTrack: Bool {
         return currentTrack == lastTrack
@@ -66,7 +83,7 @@ final class TrackManager: TrackManaging {
         self.userService = userService
         self.authorization = authorization
         self.playlist = playlist
-        currentTrack = .empty
+        currentTrackResolved = .empty
     }
 
     func setDelegate(_ delegate: TrackManagerDelegate) {
@@ -145,19 +162,10 @@ final class TrackManager: TrackManaging {
 
     private func resolveDuration(for track: Track) {
         operationQueue.cancelAllOperations()
-        operationQueue.addOperation { [weak self] in
-            do {
-                guard let self = self, let url = track.url else { return }
-                let information = try AudioAnalysisInformation(contentsOf: url)
-                guard information.durationOfEndSilence > 5 else { return }
-                DispatchQueue.main.async {
-                    logMagic("silence detected: got new track duration \(information.durationWithoutEndSilence)")
-                    self.currentTrack = track.copy(duration: information.durationWithoutEndSilence)
-                    self.delegate?.trackManager(self, updatedTrack: self.currentTrack)
-                }
-            } catch {
-                logError(error.localizedDescription)
-            }
-        }
+        operationQueue.addOperation(DurationOperation(track: track) { track in
+            logMagic("silence detected: got new track duration \(track.duration)")
+            self.currentTrackResolved = track
+            self.delegate?.trackManager(self, updatedTrack: self.currentTrackResolved)
+        })
     }
 }

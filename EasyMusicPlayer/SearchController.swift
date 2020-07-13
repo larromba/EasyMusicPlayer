@@ -36,13 +36,14 @@ final class SearchController: SearchControlling {
     // MARK: - private
 
     private func search(_ text: String?) {
+        viewController?.viewState = viewController?.viewState?.copy(isLoading: true)
         if let text = text, !text.isEmpty {
             search.find(text) { [weak self] items in
-                self?.viewController?.viewState = SearchViewState(items: items)
+                self?.viewController?.viewState = SearchViewState(items: items, isLoading: false)
             }
         } else {
             search.all { [weak self] items in
-                self?.viewController?.viewState = SearchViewState(items: items)
+                self?.viewController?.viewState = SearchViewState(items: items, isLoading: false)
             }
         }
     }

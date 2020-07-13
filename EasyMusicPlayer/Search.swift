@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import MediaPlayer
 
 protocol Searchable {
@@ -8,16 +9,16 @@ protocol Searchable {
 
 final class Search: Searchable {
     private let authorization: Authorization
-    private let mediaQuery: MediaQueryable.Type
+    private let trackManager: TrackManaging
     private let operationQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         return queue
     }()
 
-    init(authorization: Authorization, mediaQuery: MediaQueryable.Type) {
+    init(authorization: Authorization, trackManager: TrackManaging) {
         self.authorization = authorization
-        self.mediaQuery = mediaQuery
+        self.trackManager = trackManager
     }
 
     func all(_ completion: @escaping ([MPMediaItem]) -> Void) {
@@ -29,7 +30,8 @@ final class Search: Searchable {
         operationQueue.addOperation { [weak self] in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                completion(self.mediaQuery.songs().items ?? [])
+                log("resetting tracks")
+                completion(self.trackManager.tracks)
             }
         }
     }
@@ -40,15 +42,6 @@ final class Search: Searchable {
             return
         }
         operationQueue.cancelAllOperations()
-        operationQueue.addOperation { [weak self] in
-            guard let self = self else { return }
-            let songs = self.mediaQuery.songs().items ?? []
-            //swiftlint:disable line_length
-            let predicate = NSPredicate(format: "title contains[cd] %@ OR artist contains[cd] %@ OR albumTitle contains[cd] %@ OR genre contains[cd] %@", text, text, text, text)
-            let filteredItems = NSArray(array: songs).filtered(using: predicate) as! [MPMediaItem]
-            DispatchQueue.main.async {
-                completion(filteredItems)
-            }
-        }
+        operationQueue.addOperation(SearchOperation(tracks: trackManager.tracks, text: text, completion: completion))
     }
 }

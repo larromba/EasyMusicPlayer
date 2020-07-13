@@ -1,2 +1,3 @@
+github "larromba/baseoperation" "1.0.0"
 github "larromba/log" "1.0.0"
 github "larromba/testextensions" "1.0.0"

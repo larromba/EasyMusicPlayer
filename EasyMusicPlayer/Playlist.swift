@@ -33,12 +33,14 @@ final class Playlist: Playlistable {
     func find(ids: [MPMediaEntityPersistentID]) -> [MPMediaItem] {
         guard authorization.isAuthorized else { return [] }
         let query = mediaQuery.songs()
+        var i = 0
         return ids.compactMap { (id: MPMediaEntityPersistentID) -> MPMediaItem? in
             let predicate = MPMediaPropertyPredicate(value: id, forProperty: MPMediaItemPropertyPersistentID)
             query.addFilterPredicate(predicate)
             let items = query.items
             query.removeFilterPredicate(predicate)
-            return items?.first // one id media item, so take first
+            i += 1
+            return items?.first // expecting unique id per media item, so take first
         }
     }
 }

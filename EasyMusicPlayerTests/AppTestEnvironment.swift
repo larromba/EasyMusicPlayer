@@ -166,7 +166,7 @@ extension AppTestEnvironment: TestEnvironment {
                                             userService: userService,
                                             authorization: authorization)
         playerCoordinator = PlayerCoordinator(playerController: playerController, alertController: alertController)
-        search = Search(authorization: authorization, mediaQuery: mediaQueryType)
+        search = Search(authorization: authorization, trackManager: trackManager)
         searchController = SearchController(search: search)
         searchCoordinator = SearchCoordinator(searchController: searchController)
         appRouter = AppRouter(playerCoordinator: playerCoordinator, searchCoordinator: searchCoordinator)

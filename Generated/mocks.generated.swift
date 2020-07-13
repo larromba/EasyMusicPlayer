@@ -1592,30 +1592,42 @@ class MockSeeker: NSObject, Seekable {
 }
 
 class MockTrackManager: NSObject, TrackManaging {
-    var library: [Track] {
-        get { return _library }
-        set(value) { _library = value; _libraryHistory.append(_Variable(value)) }
+    var tracks: [MPMediaItem] {
+        get { return _tracks }
+        set(value) { _tracks = value; _tracksHistory.append(_Variable(value)) }
     }
-    var _library: [Track]! = []
-    var _libraryHistory: [_Variable<[Track]?>] = []
-    var currentTrack: Track {
-        get { return _currentTrack }
-        set(value) { _currentTrack = value; _currentTrackHistory.append(_Variable(value)) }
+    var _tracks: [MPMediaItem]! = []
+    var _tracksHistory: [_Variable<[MPMediaItem]?>] = []
+    var tracksResolved: [Track] {
+        get { return _tracksResolved }
+        set(value) { _tracksResolved = value; _tracksResolvedHistory.append(_Variable(value)) }
     }
-    var _currentTrack: Track! = .empty
-    var _currentTrackHistory: [_Variable<Track?>] = []
-    var currentTrackIndex: Int {
-        get { return _currentTrackIndex }
-        set(value) { _currentTrackIndex = value; _currentTrackIndexHistory.append(_Variable(value)) }
-    }
-    var _currentTrackIndex: Int! = 0
-    var _currentTrackIndexHistory: [_Variable<Int?>] = []
+    var _tracksResolved: [Track]! = []
+    var _tracksResolvedHistory: [_Variable<[Track]?>] = []
     var totalTracks: Int {
         get { return _totalTracks }
         set(value) { _totalTracks = value; _totalTracksHistory.append(_Variable(value)) }
     }
     var _totalTracks: Int! = 0
     var _totalTracksHistory: [_Variable<Int?>] = []
+    var currentTrack: MPMediaItem? {
+        get { return _currentTrack }
+        set(value) { _currentTrack = value; _currentTrackHistory.append(_Variable(value)) }
+    }
+    var _currentTrack: MPMediaItem?
+    var _currentTrackHistory: [_Variable<MPMediaItem?>] = []
+    var currentTrackResolved: Track {
+        get { return _currentTrackResolved }
+        set(value) { _currentTrackResolved = value; _currentTrackResolvedHistory.append(_Variable(value)) }
+    }
+    var _currentTrackResolved: Track! = .empty
+    var _currentTrackResolvedHistory: [_Variable<Track?>] = []
+    var currentTrackIndex: Int {
+        get { return _currentTrackIndex }
+        set(value) { _currentTrackIndex = value; _currentTrackIndexHistory.append(_Variable(value)) }
+    }
+    var _currentTrackIndex: Int! = 0
+    var _currentTrackIndexHistory: [_Variable<Int?>] = []
     var isLastTrack: Bool {
         get { return _isLastTrack }
         set(value) { _isLastTrack = value; _isLastTrackHistory.append(_Variable(value)) }
