@@ -23,9 +23,9 @@ final class MusicAuthorization: Authorization {
             return
         }
         authorizer.requestAuthorization { status in
-            DispatchQueue.main.async(execute: {
+            DispatchQueue.main.async {
                 completion(status == .authorized)
-            })
+            }
         }
     }
 }

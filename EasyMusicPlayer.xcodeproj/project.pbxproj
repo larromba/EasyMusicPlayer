@@ -78,7 +78,6 @@
 		7F71B8AD21A82B7600135925 /* assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8AB21A82B7500135925 /* assets.swift */; };
 		7F71B8AE21A82B7600135925 /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8AC21A82B7600135925 /* strings.swift */; };
 		7F71B8BD21A833DB00135925 /* URLSessioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8BC21A833DB00135925 /* URLSessioning.swift */; };
-		7F7A032024B884E800043EB1 /* Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A031F24B884E800043EB1 /* Duration.swift */; };
 		7F7A032224B88D8000043EB1 /* _Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A032124B88D8000043EB1 /* _Simulator.swift */; };
 		7F7A5CFC1BE8D5A600D2BC9E /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
@@ -88,7 +87,6 @@
 		7F92B6F51C1A09F100A5273A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F41C1A09F100A5273A /* UserService.swift */; };
 		7F9F883B24B72093005DF5D7 /* AudioAnalysisInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */; };
 		7F9F883D24B753B8005DF5D7 /* ExtendedAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F883C24B753B8005DF5D7 /* ExtendedAudioPlayer.swift */; };
-		7F9F884124B77F0A005DF5D7 /* AsyncAwait.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F9F884024B77F0A005DF5D7 /* AsyncAwait.framework */; };
 		7FA59D4F21B9297500538013 /* AudioPlayerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D4E21B9297500538013 /* AudioPlayerFactory.swift */; };
 		7FA59D5121B9441000538013 /* TestEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5021B9441000538013 /* TestEnvironment.swift */; };
 		7FA59D5321B9465600538013 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D5221B9465600538013 /* URLExtensions.swift */; };
@@ -228,7 +226,6 @@
 		7F71B8AB21A82B7500135925 /* assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = assets.swift; path = Generated/assets.swift; sourceTree = SOURCE_ROOT; };
 		7F71B8AC21A82B7600135925 /* strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = strings.swift; path = Generated/strings.swift; sourceTree = SOURCE_ROOT; };
 		7F71B8BC21A833DB00135925 /* URLSessioning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessioning.swift; sourceTree = "<group>"; };
-		7F7A031F24B884E800043EB1 /* Duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Duration.swift; sourceTree = "<group>"; };
 		7F7A032124B88D8000043EB1 /* _Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _Simulator.swift; sourceTree = "<group>"; };
 		7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -238,7 +235,6 @@
 		7F92B6F41C1A09F100A5273A /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalysisInformation.swift; sourceTree = "<group>"; };
 		7F9F883C24B753B8005DF5D7 /* ExtendedAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedAudioPlayer.swift; sourceTree = "<group>"; };
-		7F9F884024B77F0A005DF5D7 /* AsyncAwait.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AsyncAwait.framework; path = Carthage/Build/iOS/AsyncAwait.framework; sourceTree = "<group>"; };
 		7FA59D4E21B9297500538013 /* AudioPlayerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerFactory.swift; sourceTree = "<group>"; };
 		7FA59D5021B9441000538013 /* TestEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnvironment.swift; sourceTree = "<group>"; };
 		7FA59D5221B9465600538013 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
@@ -302,7 +298,6 @@
 			files = (
 				7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */,
 				7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */,
-				7F9F884124B77F0A005DF5D7 /* AsyncAwait.framework in Frameworks */,
 				7FF5B31F1BE654470044FCE5 /* MediaPlayer.framework in Frameworks */,
 				7F854F7721B8022100A93D5B /* Logging.framework in Frameworks */,
 			);
@@ -467,7 +462,6 @@
 		7F7A5CFE1BE8DDFD00D2BC9E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				7F7A031F24B884E800043EB1 /* Duration.swift */,
 				7F71B82D21A5903D00135925 /* DataManager.swift */,
 				7F71B86621A72ABE00135925 /* MusicInterruptionHandler.swift */,
 				7F71B85E21A70B3700135925 /* MusicAuthorization.swift */,
@@ -631,7 +625,6 @@
 		7FF5B3201BE6544B0044FCE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7F9F884024B77F0A005DF5D7 /* AsyncAwait.framework */,
 				7FA59D6121B9768500538013 /* TestExtensions.framework */,
 				7F854F7221B8022100A93D5B /* Logging.framework */,
 				7FCFE90D1BF3AF8F00981545 /* Social.framework */,
@@ -854,13 +847,11 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Logging.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/AsyncAwait.framework",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Logging.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/AsyncAwait.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -962,7 +953,6 @@
 				7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */,
 				7F0F97B024B9EF40007FE1BA /* PlayerAction.swift in Sources */,
 				7F71B81E21A55C4300135925 /* RepeatButtonViewState.swift in Sources */,
-				7F7A032024B884E800043EB1 /* Duration.swift in Sources */,
 				7F71B85721A606EE00135925 /* UIButtonAnimationExtensions.swift in Sources */,
 				7F5A83A421D932AD008F30BE /* Presentable.swift in Sources */,
 				7F71B86521A70F9500135925 /* Seeker.swift in Sources */,

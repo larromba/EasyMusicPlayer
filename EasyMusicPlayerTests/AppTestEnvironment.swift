@@ -2,7 +2,7 @@
 import Foundation
 import MediaPlayer
 
-let library: [DummyMediaItem] = [.mock(id: 0), .mock(id: 1), .mock(id: 2)]
+let library = [DummyMediaItem(id: 0), DummyMediaItem(id: 1), DummyMediaItem(id: 2)]
 
 final class AppTestEnvironment {
     var playerViewController: PlayerViewControlling
@@ -107,13 +107,13 @@ final class AppTestEnvironment {
         self.authorizerType = authorizerType
     }
 
-    func setLibraryTracks(_ tracks: [MPMediaItem] = library) {
+    func setLibraryTracks(_ tracks: [MPMediaItem]) {
         let mediaQueryType = MockMediaQuery.self
         mediaQueryType.actions.set(returnValue: DummyMediaQuery(items: tracks), for: MockMediaQuery.songs1.name)
         self.mediaQueryType = mediaQueryType
     }
 
-    func setSavedTracks(_ tracks: [MPMediaItem], currentTrack: MPMediaItem?, isAvailableInLibrary: Bool = true) {
+    func setSavedTracks(_ tracks: [MPMediaItem], currentTrack: MPMediaItem, isAvailableInLibrary: Bool = true) {
         if isAvailableInLibrary {
             setLibraryTracks(tracks)
         }
@@ -121,7 +121,7 @@ final class AppTestEnvironment {
         let dataManager = DataManger(userDefaults: userDefaults)
         let userService = UserService(dataManager: dataManager)
         userService.trackIDs = tracks.map { $0.persistentID }
-        userService.currentTrackID = currentTrack?.persistentID
+        userService.currentTrackID = currentTrack.persistentID
         self.userDefaults = userDefaults
     }
 
@@ -134,9 +134,11 @@ final class AppTestEnvironment {
     // MARK: - private
 
     private static func resetAllStaticMocks() {
+        MockMediaLibrary.invocations.clear()
         MockMediaLibrary.actions.set(returnValue: MPMediaLibraryAuthorizationStatus.authorized,
                                      for: MockMediaLibrary.authorizationStatus1.name)
-        MockMediaQuery.actions.set(returnValue: DummyMediaQuery(items: [DummyMediaItem()]),
+        MockMediaQuery.invocations.clear()
+        MockMediaQuery.actions.set(returnValue: DummyMediaQuery(items: library),
                                    for: MockMediaQuery.songs1.name)
     }
 }

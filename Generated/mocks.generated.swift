@@ -838,7 +838,7 @@ class MockMusicService: NSObject, MusicServicing {
 
     // MARK: - setDelegate
 
-    func setDelegate(delegate: MusicServiceDelegate) {
+    func setDelegate(_ delegate: MusicServiceDelegate) {
         let functionName = setDelegate1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: delegate, forKey: setDelegate1.params.delegate)
@@ -848,7 +848,7 @@ class MockMusicService: NSObject, MusicServicing {
     enum setDelegate1: String, _StringRawRepresentable {
         case name = "setDelegate1"
         enum params: String, _StringRawRepresentable {
-            case delegate = "setDelegate(delegate:MusicServiceDelegate).delegate"
+            case delegate = "setDelegate(_delegate:MusicServiceDelegate).delegate"
         }
     }
 

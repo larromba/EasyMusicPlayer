@@ -58,7 +58,7 @@ final class PlayerController: PlayerControlling {
         viewController.setDelegate(self)
         scrubberController.setDelegate(self)
         controlsController.setDelegate(self)
-        musicService.setDelegate(delegate: self)
+        musicService.setDelegate(self)
 
         if let repeatMode = userService.repeatState {
             musicService.setRepeatState(repeatMode)
@@ -128,7 +128,7 @@ extension PlayerController: MusicServiceDelegate {
     func musicService(_ sender: MusicServicing, changedPlaybackTime playbackTime: TimeInterval) {
         guard !isUserScrubbing else { return }
 
-        let duration = musicService.state.currentTrack.duration.value
+        let duration = musicService.state.currentTrack.duration
         let percentage = duration > 0 ? playbackTime / duration : 0
 
         scrubberController.moveScrubber(percentage: Float(percentage))
@@ -157,13 +157,13 @@ extension PlayerController: MusicServiceDelegate {
 extension PlayerController: ScrubberControllerDelegate {
     func controller(_ controller: ScrubberControlling, touchMovedToPercentage percentage: Float) {
         isUserScrubbing = true
-        let duration = musicService.state.currentTrack.duration.value
+        let duration = musicService.state.currentTrack.duration
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
     }
 
     func controller(_ controller: ScrubberControlling, touchEndedAtPercentage percentage: Float) {
-        let duration = musicService.state.currentTrack.duration.value
+        let duration = musicService.state.currentTrack.duration
         let time = duration * TimeInterval(percentage)
         infoController.setTime(time, duration: duration)
         musicService.setTime(time)

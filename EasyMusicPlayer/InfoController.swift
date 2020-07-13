@@ -34,7 +34,7 @@ final class InfoController: InfoControlling {
             MPMediaItemPropertyArtist: track.artist,
             MPMediaItemPropertyArtwork: mediaItemArtwork,
             MPNowPlayingInfoPropertyElapsedPlaybackTime: playbackTime,
-            MPMediaItemPropertyPlaybackDuration: track.duration.value,
+            MPMediaItemPropertyPlaybackDuration: track.duration,
             MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue
         ]
     }

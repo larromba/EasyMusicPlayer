@@ -37,12 +37,18 @@ final class TrackManager: TrackManaging {
         return Track(mediaItem: track)
     }
     private var tracks: [MPMediaItem] = []
+    private let operationQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        return queue
+    }()
     private weak var delegate: TrackManagerDelegate?
     private(set) var currentTrackIndex: Int = 0 {
         didSet {
             guard currentTrackIndex >= 0, currentTrackIndex < tracks.count else { return }
-            currentTrack = Track(mediaItem: tracks[currentTrackIndex], delegate: self)
+            currentTrack = Track(mediaItem: tracks[currentTrackIndex])
             userService.currentTrackID = currentTrack.id
+            resolveDuration(for: currentTrack)
         }
     }
     private(set) var currentTrack: Track
@@ -136,13 +142,22 @@ final class TrackManager: TrackManaging {
     private func saveTracks(_ tracks: [MPMediaItem]) {
         userService.trackIDs = tracks.map { return $0.persistentID }
     }
-}
 
-// MARK: - DurationDelegate
-
-extension TrackManager: DurationDelegate {
-    func duration(_ duration: Duration, didUpdateTime time: TimeInterval) {
-        logMagic("silence detected: got new track duration \(time)")
-        delegate?.trackManager(self, updatedTrack: currentTrack)
+    private func resolveDuration(for track: Track) {
+        operationQueue.cancelAllOperations()
+        operationQueue.addOperation { [weak self] in
+            do {
+                guard let self = self, let url = track.url else { return }
+                let information = try AudioAnalysisInformation(contentsOf: url)
+                guard information.durationOfEndSilence > 5 else { return }
+                DispatchQueue.main.async {
+                    logMagic("silence detected: got new track duration \(information.durationWithoutEndSilence)")
+                    self.currentTrack = track.copy(duration: information.durationWithoutEndSilence)
+                    self.delegate?.trackManager(self, updatedTrack: self.currentTrack)
+                }
+            } catch {
+                logError(error.localizedDescription)
+            }
+        }
     }
 }

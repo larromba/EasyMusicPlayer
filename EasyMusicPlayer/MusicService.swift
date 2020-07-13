@@ -14,7 +14,7 @@ protocol MusicServiceDelegate: AnyObject {
 protocol MusicServicing: AnyObject, Mockable {
     var state: MusicServiceState { get }
 
-    func setDelegate(delegate: MusicServiceDelegate)
+    func setDelegate(_ delegate: MusicServiceDelegate)
     func setRepeatState(_ repeatState: RepeatState)
     func setTime(_ time: TimeInterval)
     func prime(_ track: Track) -> Bool
@@ -85,7 +85,7 @@ final class MusicService: NSObject, MusicServicing {
         cleanUp()
     }
 
-    func setDelegate(delegate: MusicServiceDelegate) {
+    func setDelegate(_ delegate: MusicServiceDelegate) {
         self.delegate = delegate
     }
 
@@ -139,7 +139,7 @@ final class MusicService: NSObject, MusicServicing {
                 return
             }
 
-            self.player?.updateDuration(self.trackManager.currentTrack.duration.value)
+            self.player?.updateDuration(self.trackManager.currentTrack.duration)
             self.clock.start()
             self.interruptionHandler.setIsPlaying(true)
             self.changePlayState(.playing)
@@ -396,6 +396,6 @@ extension MusicService: ClockDelegate {
 
 extension MusicService: TrackManagerDelegate {
     func trackManager(_ manager: TrackManaging, updatedTrack track: Track) {
-        player?.updateDuration(track.duration.value)
+        player?.updateDuration(track.duration)
     }
 }

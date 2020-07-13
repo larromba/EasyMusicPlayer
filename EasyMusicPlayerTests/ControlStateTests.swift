@@ -243,7 +243,7 @@ final class ControlStateTests: XCTestCase {
         let infoViewController: InfoViewController = .fromStoryboard()
         env.infoViewController = infoViewController
         let image = UIImage()
-        let item = DummyMediaItem(artist: "arkist", title: "fill your coffee", image: image)
+        let item = DummyMediaItem(image: image)
         env.setSavedTracks([item], currentTrack: item)
         env.inject()
         env.setPlaying()

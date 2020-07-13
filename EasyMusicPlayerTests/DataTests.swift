@@ -64,9 +64,9 @@ final class DataTests: XCTestCase {
 
     func test_shuffle_whenPressed_expectTrackIDsArePersisted() {
         // mocks
-        env.inject()
         let library = (0..<100).map { DummyMediaItem(id: $0) }
         env.setLibraryTracks(library)
+        env.inject()
         env.shuffle()
 
         // test
@@ -78,7 +78,6 @@ final class DataTests: XCTestCase {
     func test_trackIDs_whenAppOpens_expectIsLoadedFromStore() {
         // mocks
         env.inject()
-        env.setLibraryTracks()
 
         // test
         XCTAssertEqual(env.musicService.state.totalTracks, library.count)

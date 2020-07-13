@@ -216,7 +216,7 @@ final class RemoteStateTests: XCTestCase {
         let remoteCommandCenterInfo = MockNowPlayingInfoCenter()
         env.remoteInfo = remoteCommandCenterInfo
         let image = UIImage()
-        let item = DummyMediaItem(artist: "arkist", title: "fill your coffee", image: image)
+        let item = DummyMediaItem(image: image)
         env.setSavedTracks([item], currentTrack: item)
         env.inject()
         env.setPlaying()
@@ -224,13 +224,13 @@ final class RemoteStateTests: XCTestCase {
         // test
         let info = remoteCommandCenterInfo.nowPlayingInfo
         XCTAssertEqual(info?.count, 6)
-        XCTAssertEqual(info?[MPMediaItemPropertyArtist] as? String, "arkist")
-        XCTAssertEqual(info?[MPMediaItemPropertyTitle] as? String, "fill your coffee")
+        XCTAssertEqual(info?[MPMediaItemPropertyArtist] as? String, "Arkist")
+        XCTAssertEqual(info?[MPMediaItemPropertyTitle] as? String, "Fill Your Coffee")
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyMediaType] as? NSNumber, 1)
         let artwork = remoteCommandCenterInfo.nowPlayingInfo?[MPMediaItemPropertyArtwork] as? MPMediaItemArtwork
         XCTAssertEqual(artwork?.image(at: image.size), image)
-        XCTAssertEqual(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval, 210.0)
+        XCTAssertEqual(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval, DummyAsset.normal.playbackDuration)
         XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
         var mediaType: MPNowPlayingInfoMediaType?
         if let rawValue = info?[MPNowPlayingInfoPropertyMediaType] as? UInt {

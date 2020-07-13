@@ -2,14 +2,15 @@
 
 ## 3.0.0 (TBC)
     added silence detection
+    added simple search
 
-## 2.0.2 (10/01/2019)
+## 2.0.2 (10/01/2019) 
     fixed minor bug when removing and reattaching bluetooth headphones
 
 ## 2.0.1 (31/12/2018)
     added open source logo to splash screen
 
-## 2.0.0 (07/12/2018)
+## 2.0.0 (07/12/2018) (Free)
     removed sharing option
     large code refactor
     open sourced code
@@ -74,7 +75,8 @@ Apple ID: 1067558718
 # Future work
 
 3.0.0:
-* simple search
+simple search loading?
+simple search performance for 10000 entries?
 * fix disambigous state (e.g. is paying but remote shows paused state)
 BUG: remove app store share description (fb + twitter)
 BUG: no sound popup keeps reappearing

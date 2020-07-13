@@ -18,6 +18,7 @@ final class ControlTests: XCTestCase {
         controlsViewController = nil
         playerFactory = nil
         env = nil
+        UIApplication.shared.keyWindow!.rootViewController = nil
         super.tearDown()
     }
 
@@ -166,26 +167,56 @@ final class ControlTests: XCTestCase {
         }
         env.inject()
         env.setStopped()
-        env.musicService.setDelegate(delegate: Delegate()) // detach delegate
+        env.musicService.setDelegate(Delegate()) // detach delegate
 
         // sut
         env.setPlaying()
         NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
 
         // test
-        waitSync()
         XCTAssertEqual(controlsViewController.playButton.backgroundImage(for: .normal), Asset.pauseButton.image)
     }
 
     func test_controls_whenNotAuthorized_expectSearchDisabled() {
-        XCTFail()
+        // mock
+        env.setAuthorizationStatus(.denied)
+        env.inject()
+
+        // sut
+        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+
+        // test
+        XCTAssertFalse(controlsViewController.searchButton.isEnabled)
     }
 
     func test_controls_whenAuthorized_expectSearchEnabled() {
-        XCTFail()
+        // mock
+        env.setAuthorizationStatus(.authorized)
+        env.inject()
+
+        // sut
+        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+
+        // test
+        XCTAssertTrue(controlsViewController.searchButton.isEnabled)
     }
 
     func test_controls_whenSearchPressed_expectSearchView() {
-        XCTFail()
+        // mock
+        let playerViewController: PlayerViewController = .fromStoryboard()
+        env.playerViewController = playerViewController
+        env.inject()
+        UIApplication.shared.keyWindow!.rootViewController = playerViewController
+        NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
+
+        // sut
+        XCTAssertTrue(controlsViewController.searchButton.fire())
+
+        // test
+        guard let navigationController = playerViewController.presentedViewController as? UINavigationController else {
+            XCTFail("expected UINavigationController")
+            return
+        }
+        XCTAssertTrue(navigationController.viewControllers.first is SearchViewController)
     }
 }

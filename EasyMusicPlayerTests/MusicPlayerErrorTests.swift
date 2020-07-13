@@ -33,7 +33,7 @@ final class MusicPlayerErrorTests: XCTestCase {
         guard
             let invocation = MockMediaLibrary.invocations.find(MockMediaLibrary.requestAuthorization2.name).first,
             let handler = invocation.parameter(for: MockMediaLibrary.requestAuthorization2.params.handler)
-                as? ((MPMediaLibraryAuthorizationStatus) -> Void) else {
+                as? (MPMediaLibraryAuthorizationStatus) -> Void else {
                     XCTFail("expected handler")
                     return
         }
@@ -53,8 +53,8 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     func test_playerError_whenNoTracks_expectAlertThrown() {
         // mocks
-        env.inject()
         env.setLibraryTracks([])
+        env.inject()
         env.setPlaying()
 
         // test

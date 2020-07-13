@@ -25,26 +25,33 @@ final class EndSilenceTests: XCTestCase {
 
     func test_duration_whenTrackWithEndSilenceLoaded_expectReducedDuration() {
         // mocks
-        class DummyDelegate: DurationDelegate {
-            func duration(_ duration: Duration, didUpdateTime time: TimeInterval) {}
+        class Delegate: TrackManagerDelegate {
+            var track: Track?
+
+            func trackManager(_ manager: TrackManaging, updatedTrack track: Track) {
+                self.track = track
+            }
         }
-        let assetUrl = DummyAsset.endSilence.url
-        let durationDel = DummyDelegate()
+        let mediaItem = DummyMediaItem(asset: .endSilence)
+        env.setSavedTracks([mediaItem], currentTrack: mediaItem)
+        let delegate = Delegate() // needs strong reference to avoid deallocation
+        env.inject()
+        env.trackManager.setDelegate(delegate)
 
         // sut
-        let duration = Duration(DummyAsset.endSilence.playbackDuration, url: assetUrl, delegate: durationDel)
+        let track = env.trackManager.currentTrack
 
         // test
-        waitSync()
-        XCTAssertNotEqual(duration.value, DummyAsset.endSilence.playbackDuration)
-        XCTAssertEqual(duration.value, 4.0, accuracy: 1.0)
+        waitSync(for: 2.0)
+        XCTAssertLessThan(delegate.track?.duration ?? 0.0, track.duration)
+        XCTAssertEqual(delegate.track?.duration ?? 0.0, 4.0, accuracy: 1.0)
     }
 
     func test_musicService_whenTrackWithEndSilenceLoaded_expectFinishedStateTriggered() {
         // mock
         env.playerFactory = AudioPlayerFactory()
-        env.inject()
         env.setLibraryTracks([DummyMediaItem(asset: .endSilence)])
+        env.inject()
 
         // sut
         env.setPlaying()

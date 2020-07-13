@@ -5,7 +5,7 @@ import UIKit
 struct Track {
     let artist: String
     let title: String
-    let duration: Duration
+    let duration: TimeInterval
     let url: URL?
     var artwork: UIImage? {
         return mediaItemArtwork?.image(at: artworkSize)
@@ -13,22 +13,33 @@ struct Track {
     let id: MPMediaEntityPersistentID
     private let mediaItemArtwork: MPMediaItemArtwork?
     private let artworkSize: CGSize
+}
 
-    init(mediaItem: MPMediaItem, artworkSize: CGSize = CGSize(width: 512, height: 512),
-         delegate: DurationDelegate? = nil) {
+extension Track {
+    init(mediaItem: MPMediaItem, artworkSize: CGSize = CGSize(width: 512, height: 512)) {
         self.artworkSize = artworkSize
         artist = mediaItem.resolvedArtist
         title = mediaItem.resolvedTitle
-        duration = Duration(mediaItem.playbackDuration, url: mediaItem.assetURL, delegate: delegate)
+        duration = mediaItem.playbackDuration
         mediaItemArtwork = mediaItem.artwork
         url = mediaItem.assetURL
         id = mediaItem.persistentID
     }
-}
 
-extension Track {
     static var empty: Track {
         return Track(mediaItem: MPMediaItem(), artworkSize: .zero)
+    }
+
+    func copy(duration: TimeInterval) -> Track {
+        return Track(
+            artist: artist,
+            title: title,
+            duration: duration,
+            url: url,
+            id: id,
+            mediaItemArtwork: mediaItemArtwork,
+            artworkSize: artworkSize
+        )
     }
 }
 

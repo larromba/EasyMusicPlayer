@@ -31,10 +31,10 @@ enum DummyAsset {
 
 final class DummyMediaItem: MPMediaItem {
     private let _artist: String
-    override var artist: String { return "Arkist" }
+    override var artist: String { return _artist }
 
     private let _title: String
-    override var title: String { return "Fill Your Coffee" }
+    override var title: String { return _title }
 
     private let _playbackDuration: TimeInterval
     override var playbackDuration: TimeInterval { return _playbackDuration }
@@ -73,23 +73,13 @@ final class DummyMediaItem: MPMediaItem {
         _artist = track.artist
         _title = track.title
         _persistentID = track.id
-        _playbackDuration = track.duration.value
+        _playbackDuration = track.duration
         if let artwork = track.artwork {
             _artwork = MPMediaItemArtwork(boundsSize: artwork.size) { _ in return artwork }
         } else {
             _artwork = nil
         }
         super.init()
-    }
-}
-
-extension DummyMediaItem {
-    static var mock: DummyMediaItem {
-        return DummyMediaItem(asset: .normal, id: 0)
-    }
-
-    static func mock(id: MPMediaEntityPersistentID) -> DummyMediaItem {
-        return DummyMediaItem(asset: .normal, id: id)
     }
 }
 
