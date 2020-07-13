@@ -24,7 +24,7 @@ final class SearchTests: XCTestCase {
         searchViewController = nil
         playerViewController = nil
         env = nil
-        UIApplication.shared.keyWindow!.rootViewController = nil
+//        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
@@ -47,7 +47,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
@@ -62,6 +61,7 @@ final class SearchTests: XCTestCase {
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         XCTAssertTrue(searchViewController.doneButton.fire())
 
         // test
@@ -76,6 +76,7 @@ final class SearchTests: XCTestCase {
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         let searchBar = searchViewController.searchBar
         searchBar?.delegate?.searchBarSearchButtonClicked?(searchViewController.searchBar)
 
@@ -96,6 +97,7 @@ final class SearchTests: XCTestCase {
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: "charlie")
 
@@ -109,7 +111,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -129,6 +130,7 @@ final class SearchTests: XCTestCase {
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: "zzz")
 
@@ -142,7 +144,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
@@ -161,7 +162,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
@@ -196,7 +196,6 @@ final class SearchTests: XCTestCase {
         env.inject()
         env.setStopped()
         start()
-        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -216,6 +215,7 @@ final class SearchTests: XCTestCase {
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
+        waitSync()
         searchViewController.viewState = SearchViewState(items: [DummyMediaItem(id: 999)], isLoading: false)
         XCTAssertTrue(searchViewController.selectRow(0))
 
@@ -233,7 +233,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
@@ -242,7 +241,6 @@ final class SearchTests: XCTestCase {
         searchBar.delegate?.searchBar?(searchBar, textDidChange: " ")
 
         // sut
-        waitSync()
         XCTAssertTrue(searchViewController.activityIndicatorView.isAnimating)
         XCTAssertFalse(searchViewController.tableView.isUserInteractionEnabled)
         XCTAssertEqual(searchViewController.tableView.alpha, 0.5)
@@ -252,7 +250,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        waitSync()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
