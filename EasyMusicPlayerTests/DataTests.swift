@@ -7,9 +7,9 @@ final class DataTests: XCTestCase {
     private var env: AppTestEnvironment!
 
     override func setUp() {
+        super.setUp()
         userDefaults = UserDefaults(suiteName: UUID().uuidString)
         env = AppTestEnvironment(userDefaults: userDefaults)
-        super.setUp()
     }
 
     override func tearDown() {

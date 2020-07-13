@@ -8,11 +8,11 @@ final class SilenceDetectionTests: XCTestCase {
     private var env: AppTestEnvironment!
 
     override func setUp() {
+        super.setUp()
+        UIView.setAnimationsEnabled(false)
         viewController = .fromStoryboard()
         env = AppTestEnvironment(playerViewController: viewController, alertPresenter: viewController)
         UIApplication.shared.keyWindow!.rootViewController = viewController
-        UIView.setAnimationsEnabled(false)
-        super.setUp()
     }
 
     override func tearDown() {

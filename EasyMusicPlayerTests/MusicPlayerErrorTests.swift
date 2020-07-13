@@ -9,10 +9,10 @@ final class MusicPlayerErrorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        UIView.setAnimationsEnabled(false)
         viewController = .fromStoryboard()
         env = AppTestEnvironment(playerViewController: viewController, alertPresenter: viewController)
         UIApplication.shared.keyWindow!.rootViewController = viewController
-        UIView.setAnimationsEnabled(false)
     }
 
     override func tearDown() {

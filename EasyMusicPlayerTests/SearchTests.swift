@@ -9,14 +9,14 @@ final class SearchTests: XCTestCase {
     private var env: AppTestEnvironment!
 
     override func setUp() {
+        super.setUp()
+        UIView.setAnimationsEnabled(false)
         navigationController = UIStoryboard.search.instantiateInitialViewController() as? UINavigationController
         searchViewController = navigationController.viewControllers.first as? SearchViewController
         _ = searchViewController.view
         playerViewController = .fromStoryboard()
         env = AppTestEnvironment(playerViewController: playerViewController, alertPresenter: playerViewController)
         UIApplication.shared.keyWindow!.rootViewController = playerViewController
-        UIView.setAnimationsEnabled(false)
-        super.setUp()
     }
 
     override func tearDown() {
@@ -24,6 +24,7 @@ final class SearchTests: XCTestCase {
         searchViewController = nil
         playerViewController = nil
         env = nil
+        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
