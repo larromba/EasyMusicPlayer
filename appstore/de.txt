@@ -1,24 +1,3 @@
-==== App ====
-
-Unbekannter Interpret
-Unbekannter Titel
-[x] von [x]
-Fehler
-Du hast keine Musik
-OK
-Deine Lautstärke ist zu niedrig
-[x] konnte nicht wiedergegeben werden
-Konten
-Bitte überprüfe, ob deine Social-Media-Konten korrekt eingerichtet sind und versuche es noch einmal
-Ende
-Deine Wiedergabeliste ist zu Ende
-auf
-Teilen
-Wo willst du dieses Lied teilen?
-Facebook 
-Twitter 
-Abbrechen
-
 ==== Name ====
 
 Easy Music Player

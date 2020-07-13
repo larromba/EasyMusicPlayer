@@ -20,6 +20,7 @@ final class PlayerController: PlayerControlling {
     private let userService: UserServicing
     private var isUserScrubbing: Bool = false
     private let authorization: Authorization
+    private var lastKnownPlayState: PlayState = .stopped
     private weak var delegate: PlayerControllerDelegate?
 
     init(viewController: PlayerViewControlling,
@@ -85,9 +86,11 @@ final class PlayerController: PlayerControlling {
 
     @objc
     private func applicationDidBecomeActive() {
-        // this keeps the ui in sync with any state changes whilst inactive
-        musicService(musicService, changedState: musicService.state.playState)
         controlsController.setIsAuthorized(authorization.isAuthorized)
+
+        // this keeps the ui in sync with any state changes whilst inactive
+        guard lastKnownPlayState != musicService.state.playState else { return }
+        musicService(musicService, changedState: musicService.state.playState)
     }
 }
 
@@ -95,6 +98,7 @@ final class PlayerController: PlayerControlling {
 
 extension PlayerController: MusicServiceDelegate {
     func musicService(_ sender: MusicServicing, changedState state: PlayState) {
+        lastKnownPlayState = state
         controlsController.setMusicServiceState(sender.state)
         switch state {
         case .playing:

@@ -1,24 +1,3 @@
-==== App ====
-
-Unknown Artist
-Unknown Title
-[x] of [x]
-Error
-You have no music
-OK
-Your volume is too low
-Could not play [x]
-Accounts
-Please check your social accounts are correctly setup and try again
-End
-Your playlist finished 
-via
-Share
-Where do you want to share this tune?
-Facebook
-Twitter
-Cancel
-
 ==== Name ====
 
 Easy Music Player
@@ -28,14 +7,13 @@ Easy Music Player
 "Easy Music Player" is a simple and alternative way to play music saved to your phone. This app has been lovingly crafted with only one purpose in mind - to play your music well.
 
 Contains:
-- Play, Pause, Next, Previous, Shuffle
+- Play, Pause, Next, Previous, Shuffle, Search
 - Time scrubber bar
 - Repeat none / one / all
-- Share music on Twitter & Facebook
 - Play music in the background
 - Control music from your homescreen and lockscreen
 
-Compatible with iPad and iPhone. Optimised for iPhone 6.
+Compatible with iPad and iPhone. Optimised for iPhone 8.
 
 ==== Keywords ====
 
