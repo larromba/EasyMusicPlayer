@@ -94,7 +94,7 @@ final class TrackManager: TrackManaging {
         guard authorization.isAuthorized else {
             tracks = []
             currentTrackIndex = 0
-                return
+            return
         }
         guard
             let currentTrackID = userService.currentTrackID,

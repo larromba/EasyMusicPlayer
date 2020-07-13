@@ -42,7 +42,7 @@ final class SilenceDetectionTests: XCTestCase {
         let track = env.trackManager.currentTrackResolved
 
         // test
-        waitSync(for: 2.0)
+        waitSync(for: 3.0)
         XCTAssertLessThan(delegate.track?.duration ?? 0.0, track.duration)
         XCTAssertEqual(delegate.track?.duration ?? 0.0, 4.0, accuracy: 1.0)
     }
@@ -59,11 +59,6 @@ final class SilenceDetectionTests: XCTestCase {
 
         // test
         waitSync(for: 3.0)
-        guard let alert = viewController.presentedViewController as? UIAlertController else {
-            XCTFail("expected UIAlertController")
-            return
-        }
-        XCTAssertEqual(alert.title, "End")
-        XCTAssertEqual(alert.message, "Your playlist finished")
+        XCTAssertEqual(env.musicService.state.playState, .finished)
     }
 }

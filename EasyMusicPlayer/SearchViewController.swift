@@ -33,6 +33,7 @@ final class SearchViewController: UIViewController, SearchViewControlling {
         tableView.tableFooterView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 1.0))
         tableView.contentInsetAdjustmentBehavior = .never
         navigationItem.setLeftBarButton(UIBarButtonItem(customView: activityIndicatorView), animated: false)
+        _ = viewState.map(bind)
     }
 
     override func viewWillAppear(_ animated: Bool) {
