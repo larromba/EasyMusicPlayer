@@ -24,7 +24,7 @@ final class SearchTests: XCTestCase {
         searchViewController = nil
         playerViewController = nil
         env = nil
-//        UIApplication.shared.keyWindow!.rootViewController = nil
+        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
@@ -264,6 +264,8 @@ final class SearchTests: XCTestCase {
         env.searchCoordinator.start()
     }
 }
+
+// MARK: - SearchViewController
 
 private extension SearchViewController {
     var numOfRows: Int {

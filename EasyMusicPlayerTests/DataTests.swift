@@ -71,7 +71,7 @@ final class DataTests: XCTestCase {
 
         // test
         let trackIDs = env.userService.trackIDs
-        XCTAssertEqual(trackIDs?.count, library.count)
+        XCTAssertEqual(trackIDs?.count ?? -1, library.count)
         XCTAssertNotEqual(trackIDs, library.map { $0.persistentID })
     }
 

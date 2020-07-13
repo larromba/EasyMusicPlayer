@@ -2,7 +2,7 @@ language: swift
 jobs:
     include:
         - script: xcodebuild -project EasyMusicPlayer.xcodeproj -scheme EasyMusicPlayer -destination platform\=iOS\ Simulator,name=iPhone\ 8 test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED=NO TRAVIS=1 | xcpretty && exit ${PIPESTATUS[0]}
-osx_image: xcode11.4
+osx_image: xcode11.5
 addons:
   homebrew:
     packages:

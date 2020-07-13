@@ -18,7 +18,7 @@ final class ControlTests: XCTestCase {
         controlsViewController = nil
         playerFactory = nil
         env = nil
-//        UIApplication.shared.keyWindow!.rootViewController = nil
+        UIApplication.shared.keyWindow!.rootViewController = nil
         super.tearDown()
     }
 

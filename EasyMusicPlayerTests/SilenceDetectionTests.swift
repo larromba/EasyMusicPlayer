@@ -18,14 +18,14 @@ final class SilenceDetectionTests: XCTestCase {
     override func tearDown() {
         viewController = nil
         env = nil
-//        UIApplication.shared.keyWindow!.rootViewController = nil
+        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
 
     func test_trackManager_whenTrackWithEndSilenceLoaded_expectReducedDuration() {
         // mocks
-        class Delegate: TrackManagerDelegate {
+        final class Delegate: TrackManagerDelegate {
             var track: Track?
 
             func trackManager(_ manager: TrackManaging, updatedTrack track: Track) {
@@ -39,11 +39,11 @@ final class SilenceDetectionTests: XCTestCase {
         env.trackManager.setDelegate(delegate)
 
         // sut
-        let track = env.trackManager.currentTrackResolved
+        let originalTrack = env.trackManager.currentTrack
 
         // test
         waitSync(for: 3.0)
-        XCTAssertLessThan(delegate.track?.duration ?? 0.0, track.duration)
+        XCTAssertLessThan(delegate.track?.duration ?? 0.0, originalTrack?.playbackDuration ?? -1.0)
         XCTAssertEqual(delegate.track?.duration ?? 0.0, 4.0, accuracy: 1.0)
     }
 

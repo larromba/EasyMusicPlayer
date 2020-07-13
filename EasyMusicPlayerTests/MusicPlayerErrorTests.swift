@@ -18,7 +18,7 @@ final class MusicPlayerErrorTests: XCTestCase {
     override func tearDown() {
         viewController = nil
         env = nil
-//        UIApplication.shared.keyWindow!.rootViewController = nil
+        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
