@@ -19,7 +19,9 @@ final class RemoteTests: XCTestCase {
     }
 
     override func tearDown() {
+        controlsViewController = nil
         remote = nil
+        playerFactory = nil
         env = nil
         super.tearDown()
     }

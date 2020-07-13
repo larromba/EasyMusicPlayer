@@ -24,7 +24,7 @@ final class SearchTests: XCTestCase {
         searchViewController = nil
         playerViewController = nil
         env = nil
-        UIApplication.shared.keyWindow!.rootViewController = nil
+//        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
@@ -151,7 +151,7 @@ final class SearchTests: XCTestCase {
         // mocks
         env.setLibraryTracks([
             DummyMediaItem(artist: "alpha alpha alpha alpha alpha alpha"),
-            DummyMediaItem(artist: "alpha alpha alpha alpha alpha alpha", image: nil)
+            DummyMediaItem(artist: "blpha blpha blpha blpha blpha blpha", image: nil)
         ])
         env.inject()
         start()
