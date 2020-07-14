@@ -41,7 +41,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // test
-        waitSync()
         XCTAssertEqual(searchViewController.numOfRows, library.count)
     }
 
@@ -128,7 +127,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // test
-        waitSync()
         XCTAssertEqual(searchViewController.numOfRows, library.count)
         XCTAssertTrue(searchViewController.emptyLabel.isHidden)
     }
@@ -144,7 +142,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // test
-        waitSync()
         XCTAssertLessThan(searchViewController.cell(at: 0)?.titleLabel?.frame.size.width ?? 0.0,
                           searchViewController.cell(at: 1)?.titleLabel?.frame.size.width ?? 0.0)
     }
@@ -239,7 +236,6 @@ final class SearchTests: XCTestCase {
         env.searchCoordinator.setViewController(searchViewController)
         env.searchCoordinator.start()
         #if TRAVIS
-        searchViewController.tableView.reloadData()
         waitSync(for: 3.0)
         #else
         waitSync()
