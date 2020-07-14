@@ -18,7 +18,6 @@ final class SilenceDetectionTests: XCTestCase {
     override func tearDown() {
         viewController = nil
         env = nil
-//        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }

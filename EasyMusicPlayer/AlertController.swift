@@ -8,20 +8,18 @@ protocol AlertControlling: Mockable {
 
 final class AlertController: AlertControlling {
     private let presenter: Presentable
-    private weak var alertController: UIAlertController?
 
     init(presenter: Presentable) {
         self.presenter = presenter
     }
 
     func showAlert(_ alert: Alert) {
-        guard alertController == nil else {
-            logWarning("already showing an alert")
+        guard !presenter.isPresenting else {
+            logWarning("can't present alert as already presenting something")
             return
         }
         let alertController = UIAlertController(title: alert.title, message: alert.text, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: alert.buttonTitle, style: .default))
         presenter.present(alertController, animated: true, completion: nil)
-        self.alertController = alertController
     }
 }

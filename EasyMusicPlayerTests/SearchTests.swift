@@ -25,7 +25,6 @@ final class SearchTests: XCTestCase {
         searchViewController = nil
         playerViewController = nil
         env = nil
-//        UIApplication.shared.keyWindow!.rootViewController = nil
         UIView.setAnimationsEnabled(true)
         super.tearDown()
     }
@@ -52,7 +51,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         XCTAssertTrue(searchViewController.doneButton.fire())
 
         // test
@@ -66,7 +64,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         let searchBar = searchViewController.searchBar
         searchBar?.delegate?.searchBarSearchButtonClicked?(searchViewController.searchBar)
 
@@ -87,7 +84,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: "charlie")
 
@@ -103,7 +99,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: "")
 
@@ -118,7 +113,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: "zzz")
 
@@ -139,8 +133,6 @@ final class SearchTests: XCTestCase {
         XCTAssertTrue(searchViewController.emptyLabel.isHidden)
     }
 
-    #if !TRAVIS
-    // TODO: why does this fail on Travis? :/
     func test_result_whenNoImage_expectLongerTitle() {
         // mocks
         let tracks = [
@@ -156,7 +148,6 @@ final class SearchTests: XCTestCase {
         XCTAssertLessThan(searchViewController.cell(at: 0)?.titleLabel?.frame.size.width ?? 0.0,
                           searchViewController.cell(at: 1)?.titleLabel?.frame.size.width ?? 0.0)
     }
-    #endif
 
     func test_search_whenResultSelected_expectSearchClosed() {
         // mocks
@@ -164,16 +155,13 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         XCTAssertTrue(searchViewController.selectRow(0))
 
         // test
-        waitSync(for: 1.0)
+        waitSync()
         XCTAssertNil(playerViewController.presentedViewController)
     }
 
-    #if !TRAVIS
-    // TODO: why does this fail on Travis? :/
     func test_result_whenSelected_expectTrackPlays() {
         // mocks
         let tracks = [
@@ -186,7 +174,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         XCTAssertTrue(searchViewController.selectRow(1))
 
         // test
@@ -194,7 +181,6 @@ final class SearchTests: XCTestCase {
         XCTAssertEqual(env.musicService.state.playState, .playing)
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
     }
-    #endif
 
     func test_result_whenSelectedAndNotFound_expectErrorThrown() {
         // mocks
@@ -202,7 +188,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         searchViewController.viewState = SearchViewState(items: [DummyMediaItem(id: 999)], isLoading: false)
         XCTAssertTrue(searchViewController.selectRow(0))
 
@@ -222,7 +207,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: " ")
 
@@ -238,7 +222,6 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync()
         let searchBar = searchViewController.searchBar!
         searchBar.delegate?.searchBar?(searchBar, textDidChange: " ")
 
@@ -252,10 +235,11 @@ final class SearchTests: XCTestCase {
     // MARK: - private
 
     private func start() {
-        waitSync()
         env.searchCoordinator.setNavigationController(navigationController)
         env.searchCoordinator.setViewController(searchViewController)
         env.searchCoordinator.start()
+        searchViewController.tableView.reloadData()
+        waitSync(for: 3.0)
     }
 }
 

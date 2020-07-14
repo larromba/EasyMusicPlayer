@@ -89,31 +89,26 @@ final class DummyMediaItem: MPMediaItem {
 
 // MARK: - DummyMediaQuery
 
+// for library, see MediaQueryable
 final class DummyMediaQuery: MPMediaQuery {
-    private static let library: [DummyMediaItem] = {
-        // REINSTALL APP ON SIMULATOR AFTER CHANGING THIS
-
-        // use to test a small, specific library
-        return [DummyMediaItem(asset: .normal, id: 0),
-                DummyMediaItem(asset: .endSilence, id: 1),
-                DummyMediaItem(asset: .normal, id: 2)]
-
-//        // use to test a large number of items - might be slow on load
-//        return (0..<50_000).map {
-//            DummyMediaItem(asset: .normal, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
-//        }
-    }()
+    private let _items: [MPMediaItem]
     private var id: MPMediaEntityPersistentID?
 
+    init(items: [MPMediaItem]) {
+        _items = items
+        super.init(filterPredicates: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override var items: [MPMediaItem]? {
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-            if let id = id {
-                return [type(of: self).library[Int(id)]]
-            } else {
-                return type(of: self).library
-            }
+        if let id = id {
+            return [_items[Int(id)]]
         } else {
-            return super.items
+            return _items
         }
     }
 
