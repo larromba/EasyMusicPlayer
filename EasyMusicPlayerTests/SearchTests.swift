@@ -17,6 +17,7 @@ final class SearchTests: XCTestCase {
         playerViewController = .fromStoryboard()
         env = AppTestEnvironment(playerViewController: playerViewController, alertPresenter: playerViewController)
         UIApplication.shared.keyWindow!.rootViewController = playerViewController
+        playerViewController.present(navigationController, animated: false, completion: nil)
     }
 
     override func tearDown() {
@@ -30,24 +31,15 @@ final class SearchTests: XCTestCase {
     }
 
     func test_search_whenOpened_expectKeyboardAppears() {
-        // mocks
-        env.inject()
-
-        // sut
-        playerViewController.present(navigationController, animated: false, completion: nil)
-
         // test
         waitSync()
         XCTAssertTrue(searchViewController.searchBar.isFirstResponder)
     }
 
-    func test_search_whenOpened_expecLibraryShown() {
+    func test_search_whenOpened_expectLibraryShown() {
         // mocks
         env.inject()
         start()
-
-        // sut
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
         waitSync()
@@ -58,7 +50,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -69,11 +60,10 @@ final class SearchTests: XCTestCase {
         XCTAssertNil(playerViewController.presentedViewController)
     }
 
-    func test_search_wheneyboardDonePressed_expectSearchClosed() {
+    func test_search_whenKeyboardDonePressed_expectSearchClosed() {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -95,7 +85,6 @@ final class SearchTests: XCTestCase {
         env.setSavedTracks(tracks, currentTrack: tracks[0])
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -112,7 +101,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -128,7 +116,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -145,7 +132,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
         waitSync()
@@ -163,9 +149,6 @@ final class SearchTests: XCTestCase {
         env.inject()
         start()
 
-        // sut
-        playerViewController.present(navigationController, animated: false, completion: nil)
-
         // test
         waitSync()
         XCTAssertLessThan(searchViewController.cell(at: 0)?.titleLabel?.frame.size.width ?? 0.0,
@@ -176,14 +159,13 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
         XCTAssertTrue(searchViewController.selectRow(0))
 
         // test
-        waitSync()
+        waitSync(for: 1.0)
         XCTAssertNil(playerViewController.presentedViewController)
     }
 
@@ -196,9 +178,8 @@ final class SearchTests: XCTestCase {
         ]
         env.setSavedTracks(tracks, currentTrack: tracks[0])
         env.inject()
-//        env.setStopped()
+        env.setStopped()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -214,7 +195,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -235,7 +215,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
@@ -252,7 +231,6 @@ final class SearchTests: XCTestCase {
         // mocks
         env.inject()
         start()
-        playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
         waitSync()
