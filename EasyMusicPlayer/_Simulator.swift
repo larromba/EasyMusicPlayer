@@ -9,11 +9,22 @@ enum DummyAsset {
     case endSilence
 
     var url: URL {
-        switch self {
-        case .normal:
-            return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
-        case .endSilence:
-            return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioWithSilencePath"] as! String)
+        // if not testing
+        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
+            switch self {
+            case .normal:
+                return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
+            case .endSilence:
+                return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioWithSilencePath"] as! String)
+            }
+        // if testing, need to use the bundled audio else CI doesn't work
+        } else {
+            switch self {
+            case .normal:
+                return Bundle.safeMain.url(forResource: "arkist - fill your coffee", withExtension: "m4a")!
+            case .endSilence:
+                return Bundle.safeMain.url(forResource: "audio with silence", withExtension: "mp3")!
+            }
         }
     }
 
@@ -91,15 +102,17 @@ final class DummyMediaItem: MPMediaItem {
 
 final class DummyMediaQuery: MPMediaQuery {
     private static let library: [DummyMediaItem] = {
-//        // REINSTALL APP ON SIMULATOR AFTER CHANGING THIS
-//        // use to test a small, specific library
-//        return [DummyMediaItem(asset: .normal, id: 0),
-//                DummyMediaItem(asset: .endSilence, id: 1),
-//                DummyMediaItem(asset: .normal, id: 2)]
+        // REINSTALL APP ON SIMULATOR AFTER CHANGING THIS
+
+        // use to test a small, specific library
+        return [DummyMediaItem(asset: .normal, id: 0),
+                DummyMediaItem(asset: .endSilence, id: 1),
+                DummyMediaItem(asset: .normal, id: 2)]
+
 //        // use to test a large number of items - might be slow on load
-        return (0..<50_000).map {
-            DummyMediaItem(asset: .normal, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
-        }
+//        return (0..<50_000).map {
+//            DummyMediaItem(asset: .normal, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
+//        }
     }()
     private var id: MPMediaEntityPersistentID?
 

@@ -35,14 +35,19 @@ This assumes you're farmiliar with Xcode and building iOS apps.
 
 *Please note that you might need to change your app's bundle identifier and certificates to match your own.*
 
+To install the app-store version:
 1. `carthage update --platform iOS`
 2. open `EasyMusicPlayer.xcodeproj`
 3. select `EasyMusicPlayer-Release` target
 4. select your device from the device list
 5. run the app on your phone
 
-### Setting Up
-On the simulator, the app sues 1 mock audio file that's added 3 times. See `Playlist.swift` for more information
+To debug on the simulator (using dummy audio files):
+1. `carthage update --platform iOS --no-use-binaries`
+2. open `EasyMusicPlayer.xcodeproj`
+3. select `EasyMusicPlayer` target
+4. select your device from the device list
+5. run the app on your phone
 
 ### Generating snapshots
 ```

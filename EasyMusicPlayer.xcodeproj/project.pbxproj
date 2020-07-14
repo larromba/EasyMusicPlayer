@@ -38,6 +38,94 @@
 		7F5A83A421D932AD008F30BE /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A321D932AD008F30BE /* Presentable.swift */; };
 		7F5A83A621D940F4008F30BE /* DummyMediaQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A521D940F4008F30BE /* DummyMediaQuery.swift */; };
 		7F5EF45A24BE08E1002B7D7D /* Experiement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5EF45924BE08E1002B7D7D /* Experiement.swift */; };
+		7F5EF4CF24BE1108002B7D7D /* ControlsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81921A4A76500135925 /* ControlsViewController.swift */; };
+		7F5EF4D024BE1108002B7D7D /* assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8AB21A82B7500135925 /* assets.swift */; };
+		7F5EF4D124BE1108002B7D7D /* URLSessioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8BC21A833DB00135925 /* URLSessioning.swift */; };
+		7F5EF4D224BE1108002B7D7D /* AudioPlayerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D4E21B9297500538013 /* AudioPlayerFactory.swift */; };
+		7F5EF4D324BE1108002B7D7D /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EC1BE64E210044FCE5 /* PlayerViewController.swift */; };
+		7F5EF4D424BE1108002B7D7D /* ControlsViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81B21A55AD200135925 /* ControlsViewState.swift */; };
+		7F5EF4D524BE1108002B7D7D /* PlayerViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85221A5E82E00135925 /* PlayerViewState.swift */; };
+		7F5EF4D624BE1108002B7D7D /* ScrubberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80C21A4872300135925 /* ScrubberViewController.swift */; };
+		7F5EF4D724BE1108002B7D7D /* Mockable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B83321A5926B00135925 /* Mockable.swift */; };
+		7F5EF4D824BE1108002B7D7D /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82821A5898500135925 /* Error.swift */; };
+		7F5EF4D924BE1108002B7D7D /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5E924B7CB780049E246 /* Remote.swift */; };
+		7F5EF4DA24BE1108002B7D7D /* PlayState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85821A60B4800135925 /* PlayState.swift */; };
+		7F5EF4DB24BE1108002B7D7D /* ExtendedAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F883C24B753B8005DF5D7 /* ExtendedAudioPlayer.swift */; };
+		7F5EF4DC24BE1108002B7D7D /* MusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B31C1BE654220044FCE5 /* MusicService.swift */; };
+		7F5EF4DD24BE1108002B7D7D /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B83721A59FAD00135925 /* AlertController.swift */; };
+		7F5EF4DE24BE1108002B7D7D /* InfoViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81521A4A32100135925 /* InfoViewState.swift */; };
+		7F5EF4DF24BE1108002B7D7D /* UIStoryboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090671BFA096600F449FD /* UIStoryboardExtensions.swift */; };
+		7F5EF4E024BE1108002B7D7D /* RepeatState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82F21A5915800135925 /* RepeatState.swift */; };
+		7F5EF4E124BE1108002B7D7D /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8AC21A82B7600135925 /* strings.swift */; };
+		7F5EF4E224BE1108002B7D7D /* ScrubberViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80E21A489C300135925 /* ScrubberViewState.swift */; };
+		7F5EF4E324BE1108002B7D7D /* SearchCellViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97BE24BA0047007FE1BA /* SearchCellViewState.swift */; };
+		7F5EF4E424BE1108002B7D7D /* KeyboardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7B7F9224BA7026006F6B3F /* KeyboardNotification.swift */; };
+		7F5EF4E524BE1108002B7D7D /* DurationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD8F2AC24BCB0460065CA76 /* DurationOperation.swift */; };
+		7F5EF4E624BE1108002B7D7D /* _Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A032124B88D8000043EB1 /* _Simulator.swift */; };
+		7F5EF4E724BE1108002B7D7D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EA1BE64E210044FCE5 /* AppDelegate.swift */; };
+		7F5EF4E824BE1108002B7D7D /* SearchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97B824B9F825007FE1BA /* SearchCoordinator.swift */; };
+		7F5EF4E924BE1108002B7D7D /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86A21A7302F00135925 /* Clock.swift */; };
+		7F5EF4EA24BE1108002B7D7D /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B87521A7FED900135925 /* Playlist.swift */; };
+		7F5EF4EB24BE1108002B7D7D /* RepeatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */; };
+		7F5EF4EC24BE1108002B7D7D /* Keyable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B83121A5922100135925 /* Keyable.swift */; };
+		7F5EF4ED24BE1108002B7D7D /* MusicAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85E21A70B3700135925 /* MusicAuthorization.swift */; };
+		7F5EF4EE24BE1108002B7D7D /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80221A484BC00135925 /* AppController.swift */; };
+		7F5EF4EF24BE1108002B7D7D /* RemoteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */; };
+		7F5EF4F024BE1108002B7D7D /* UserDefaultable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B83521A5927C00135925 /* UserDefaultable.swift */; };
+		7F5EF4F124BE1108002B7D7D /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D7921BBD01000538013 /* Utility.swift */; };
+		7F5EF4F224BE1108002B7D7D /* MediaLibraryAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA59D8121BBFD8400538013 /* MediaLibraryAuthorization.swift */; };
+		7F5EF4F324BE1108002B7D7D /* AudioAnalysisInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */; };
+		7F5EF4F424BE1108002B7D7D /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B84D21A5DCBB00135925 /* Alert.swift */; };
+		7F5EF4F524BE1108002B7D7D /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
+		7F5EF4F624BE1108002B7D7D /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9EB21B845870041E4DE /* AudioPlayer.swift */; };
+		7F5EF4F724BE1108002B7D7D /* NowPlayingInfoCentering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B84F21A5DF1000135925 /* NowPlayingInfoCentering.swift */; };
+		7F5EF4F824BE1108002B7D7D /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80821A486DC00135925 /* PlayerController.swift */; };
+		7F5EF4F924BE1108002B7D7D /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD8F2AA24BC8E850065CA76 /* SearchOperation.swift */; };
+		7F5EF4FA24BE1108002B7D7D /* InfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81121A4979E00135925 /* InfoController.swift */; };
+		7F5EF4FB24BE1108002B7D7D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97BA24B9FB24007FE1BA /* SearchViewController.swift */; };
+		7F5EF4FC24BE1108002B7D7D /* MediaQueryable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B87721A8001F00135925 /* MediaQueryable.swift */; };
+		7F5EF4FD24BE1108002B7D7D /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97C224BA0166007FE1BA /* SearchCell.swift */; };
+		7F5EF4FE24BE1108002B7D7D /* SearchViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97BC24B9FB7E007FE1BA /* SearchViewState.swift */; };
+		7F5EF4FF24BE1108002B7D7D /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97C424BA0316007FE1BA /* Search.swift */; };
+		7F5EF50024BE1108002B7D7D /* AppControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80421A4852F00135925 /* AppControllerFactory.swift */; };
+		7F5EF50124BE1108002B7D7D /* CellIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97C024BA0154007FE1BA /* CellIdentifiable.swift */; };
+		7F5EF50224BE1108002B7D7D /* ControlsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81721A4A75900135925 /* ControlsController.swift */; };
+		7F5EF50324BE1108002B7D7D /* AudioSessioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85C21A6C79300135925 /* AudioSessioning.swift */; };
+		7F5EF50424BE1108002B7D7D /* ScrubberController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80A21A4871B00135925 /* ScrubberController.swift */; };
+		7F5EF50524BE1108002B7D7D /* PlayButtonViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81F21A55D8D00135925 /* PlayButtonViewState.swift */; };
+		7F5EF50624BE1108002B7D7D /* Authorizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86021A70BB700135925 /* Authorizable.swift */; };
+		7F5EF50724BE1108002B7D7D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82D21A5903D00135925 /* DataManager.swift */; };
+		7F5EF50824BE1108002B7D7D /* MusicInterruptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86621A72ABE00135925 /* MusicInterruptionHandler.swift */; };
+		7F5EF50924BE1108002B7D7D /* PlayerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97AC24B9E95D007FE1BA /* PlayerCoordinator.swift */; };
+		7F5EF50A24BE1108002B7D7D /* GenericButtonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B82621A5638300135925 /* GenericButtonState.swift */; };
+		7F5EF50B24BE1108002B7D7D /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97AA24B9E78D007FE1BA /* SearchController.swift */; };
+		7F5EF50C24BE1108002B7D7D /* MusicServiceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86C21A7327F00135925 /* MusicServiceState.swift */; };
+		7F5EF50D24BE1108002B7D7D /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F41C1A09F100A5273A /* UserService.swift */; };
+		7F5EF50E24BE1108002B7D7D /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4090541BF7E44900F449FD /* PlayButton.swift */; };
+		7F5EF50F24BE1108002B7D7D /* MusicInterruptionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86821A72DFF00135925 /* MusicInterruptionState.swift */; };
+		7F5EF51024BE1108002B7D7D /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
+		7F5EF51124BE1108002B7D7D /* PlayerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97AF24B9EF40007FE1BA /* PlayerAction.swift */; };
+		7F5EF51224BE1108002B7D7D /* RepeatButtonViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81D21A55C4300135925 /* RepeatButtonViewState.swift */; };
+		7F5EF51324BE1108002B7D7D /* UIButtonAnimationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B85621A606EE00135925 /* UIButtonAnimationExtensions.swift */; };
+		7F5EF51424BE1108002B7D7D /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A321D932AD008F30BE /* Presentable.swift */; };
+		7F5EF51524BE1108002B7D7D /* Seeker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B86421A70F9500135925 /* Seeker.swift */; };
+		7F5EF51624BE1108002B7D7D /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97B524B9F76C007FE1BA /* AppRouter.swift */; };
+		7F5EF51724BE1108002B7D7D /* SearchAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F0F97C824BA16A1007FE1BA /* SearchAction.swift */; };
+		7F5EF51824BE1108002B7D7D /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A5CFB1BE8D5A600D2BC9E /* Track.swift */; };
+		7F5EF51924BE1108002B7D7D /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81321A497AB00135925 /* InfoViewController.swift */; };
+		7F5EF51B24BE1108002B7D7D /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
+		7F5EF51C24BE1108002B7D7D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
+		7F5EF51D24BE1108002B7D7D /* BaseOperation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FD8F2A824BC8E5D0065CA76 /* BaseOperation.framework */; };
+		7F5EF51E24BE1108002B7D7D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF5B31E1BE654470044FCE5 /* MediaPlayer.framework */; };
+		7F5EF51F24BE1108002B7D7D /* Logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F854F7221B8022100A93D5B /* Logging.framework */; };
+		7F5EF52124BE1108002B7D7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7FDCC3091DF9D57100E62194 /* InfoPlist.strings */; };
+		7F5EF52224BE1108002B7D7D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2F31BE64E220044FCE5 /* LaunchScreen.storyboard */; };
+		7F5EF52324BE1108002B7D7D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7F71B83D21A5C4C500135925 /* Localizable.strings */; };
+		7F5EF52424BE1108002B7D7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2F11BE64E210044FCE5 /* Assets.xcassets */; };
+		7F5EF52524BE1108002B7D7D /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F0F97B124B9F426007FE1BA /* Search.storyboard */; };
+		7F5EF52624BE1108002B7D7D /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FF5B2EE1BE64E210044FCE5 /* Player.storyboard */; };
+		7F5EF52F24BE11EF002B7D7D /* audio with silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7F5EF52D24BE11EF002B7D7D /* audio with silence.mp3 */; };
+		7F5EF53024BE11EF002B7D7D /* arkist - fill your coffee.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7F5EF52E24BE11EF002B7D7D /* arkist - fill your coffee.m4a */; };
 		7F71B80321A484BC00135925 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80221A484BC00135925 /* AppController.swift */; };
 		7F71B80521A4852F00135925 /* AppControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80421A4852F00135925 /* AppControllerFactory.swift */; };
 		7F71B80921A486DC00135925 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80821A486DC00135925 /* PlayerController.swift */; };
@@ -183,6 +271,9 @@
 		7F5A83A321D932AD008F30BE /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		7F5A83A521D940F4008F30BE /* DummyMediaQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyMediaQuery.swift; sourceTree = "<group>"; };
 		7F5EF45924BE08E1002B7D7D /* Experiement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experiement.swift; sourceTree = "<group>"; };
+		7F5EF52B24BE1108002B7D7D /* EasyMusicPlayer-Release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "EasyMusicPlayer-Release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F5EF52D24BE11EF002B7D7D /* audio with silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "audio with silence.mp3"; path = "audio/audio with silence.mp3"; sourceTree = SOURCE_ROOT; };
+		7F5EF52E24BE11EF002B7D7D /* arkist - fill your coffee.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "arkist - fill your coffee.m4a"; path = "audio/arkist - fill your coffee.m4a"; sourceTree = SOURCE_ROOT; };
 		7F71B80221A484BC00135925 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		7F71B80421A4852F00135925 /* AppControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppControllerFactory.swift; sourceTree = "<group>"; };
 		7F71B80821A486DC00135925 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
@@ -285,6 +376,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7F5EF51A24BE1108002B7D7D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F5EF51B24BE1108002B7D7D /* Social.framework in Frameworks */,
+				7F5EF51C24BE1108002B7D7D /* AVFoundation.framework in Frameworks */,
+				7F5EF51D24BE1108002B7D7D /* BaseOperation.framework in Frameworks */,
+				7F5EF51E24BE1108002B7D7D /* MediaPlayer.framework in Frameworks */,
+				7F5EF51F24BE1108002B7D7D /* Logging.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7FA59D6021B9766800538013 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -357,6 +460,15 @@
 				7F44F9DF21B82CC70041E4DE /* mocks.generated.swift */,
 			);
 			name = Generated;
+			sourceTree = "<group>";
+		};
+		7F5EF53124BE11F9002B7D7D /* TestAudio */ = {
+			isa = PBXGroup;
+			children = (
+				7F5EF52E24BE11EF002B7D7D /* arkist - fill your coffee.m4a */,
+				7F5EF52D24BE11EF002B7D7D /* audio with silence.mp3 */,
+			);
+			name = TestAudio;
 			sourceTree = "<group>";
 		};
 		7F71B80621A4869F00135925 /* Factory */ = {
@@ -440,6 +552,7 @@
 			children = (
 				7FF5B2F61BE64E220044FCE5 /* Info.plist */,
 				7FF5B2F11BE64E210044FCE5 /* Assets.xcassets */,
+				7F5EF53124BE11F9002B7D7D /* TestAudio */,
 				7FCFE91D1BF4AD6800981545 /* Storyboard */,
 				7FCFE91E1BF4AD7100981545 /* Strings */,
 			);
@@ -585,6 +698,7 @@
 				7FF5B2E71BE64E210044FCE5 /* EasyMusic.app */,
 				7FF5B2FB1BE64E220044FCE5 /* EasyMusicPlayerTests.xctest */,
 				7FA59D6D21BAF2F900538013 /* EasyMusicPlayerSnapshot.xctest */,
+				7F5EF52B24BE1108002B7D7D /* EasyMusicPlayer-Release.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -650,6 +764,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7F5EF4CA24BE1108002B7D7D /* EasyMusicPlayer-Release */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F5EF52824BE1108002B7D7D /* Build configuration list for PBXNativeTarget "EasyMusicPlayer-Release" */;
+			buildPhases = (
+				7F5EF4CB24BE1108002B7D7D /* Run Script */,
+				7F5EF4CC24BE1108002B7D7D /* ShellScript */,
+				7F5EF4CD24BE1108002B7D7D /* ShellScript */,
+				7F5EF4CE24BE1108002B7D7D /* Sources */,
+				7F5EF51A24BE1108002B7D7D /* Frameworks */,
+				7F5EF52024BE1108002B7D7D /* Resources */,
+				7F5EF52724BE1108002B7D7D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "EasyMusicPlayer-Release";
+			productName = EasyMusic;
+			productReference = 7F5EF52B24BE1108002B7D7D /* EasyMusicPlayer-Release.app */;
+			productType = "com.apple.product-type.application";
+		};
 		7FA59D6C21BAF2F900538013 /* EasyMusicPlayerSnapshot */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7FA59D7621BAF2F900538013 /* Build configuration list for PBXNativeTarget "EasyMusicPlayerSnapshot" */;
@@ -719,6 +854,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Lee Arromba";
 				TargetAttributes = {
+					7F5EF4CA24BE1108002B7D7D = {
+						DevelopmentTeam = PFC77GK3D7;
+					};
 					7FA59D6C21BAF2F900538013 = {
 						CreatedOnToolsVersion = 10.1;
 						DevelopmentTeam = PFC77GK3D7;
@@ -763,6 +901,7 @@
 			projectRoot = "";
 			targets = (
 				7FF5B2E61BE64E210044FCE5 /* EasyMusicPlayer */,
+				7F5EF4CA24BE1108002B7D7D /* EasyMusicPlayer-Release */,
 				7FF5B2FA1BE64E220044FCE5 /* EasyMusicPlayerTests */,
 				7FA59D6C21BAF2F900538013 /* EasyMusicPlayerSnapshot */,
 			);
@@ -770,6 +909,19 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7F5EF52024BE1108002B7D7D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F5EF52124BE1108002B7D7D /* InfoPlist.strings in Resources */,
+				7F5EF52224BE1108002B7D7D /* LaunchScreen.storyboard in Resources */,
+				7F5EF52324BE1108002B7D7D /* Localizable.strings in Resources */,
+				7F5EF52424BE1108002B7D7D /* Assets.xcassets in Resources */,
+				7F5EF52524BE1108002B7D7D /* Search.storyboard in Resources */,
+				7F5EF52624BE1108002B7D7D /* Player.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7FA59D6B21BAF2F900538013 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -785,7 +937,9 @@
 				7FF5B2F51BE64E220044FCE5 /* LaunchScreen.storyboard in Resources */,
 				7F71B83B21A5C4C500135925 /* Localizable.strings in Resources */,
 				7FF5B2F21BE64E220044FCE5 /* Assets.xcassets in Resources */,
+				7F5EF52F24BE11EF002B7D7D /* audio with silence.mp3 in Resources */,
 				7F0F97B224B9F426007FE1BA /* Search.storyboard in Resources */,
+				7F5EF53024BE11EF002B7D7D /* arkist - fill your coffee.m4a in Resources */,
 				7FF5B2F01BE64E210044FCE5 /* Player.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -800,6 +954,75 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		7F5EF4CB24BE1108002B7D7D /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nsh base_lang.sh\n";
+		};
+		7F5EF4CC24BE1108002B7D7D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nswiftgen config run --config .swiftgen.yml\n";
+		};
+		7F5EF4CD24BE1108002B7D7D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nif which swiftlint >/dev/null; then\n    swiftlint autocorrect --config \".swiftlint.auto.yml\" && swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		7F5EF52724BE1108002B7D7D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Logging.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BaseOperation.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Logging.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/BaseOperation.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 		7F71B84421A5C7CD00135925 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -889,6 +1112,88 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7F5EF4CE24BE1108002B7D7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F5EF4CF24BE1108002B7D7D /* ControlsViewController.swift in Sources */,
+				7F5EF4D024BE1108002B7D7D /* assets.swift in Sources */,
+				7F5EF4D124BE1108002B7D7D /* URLSessioning.swift in Sources */,
+				7F5EF4D224BE1108002B7D7D /* AudioPlayerFactory.swift in Sources */,
+				7F5EF4D324BE1108002B7D7D /* PlayerViewController.swift in Sources */,
+				7F5EF4D424BE1108002B7D7D /* ControlsViewState.swift in Sources */,
+				7F5EF4D524BE1108002B7D7D /* PlayerViewState.swift in Sources */,
+				7F5EF4D624BE1108002B7D7D /* ScrubberViewController.swift in Sources */,
+				7F5EF4D724BE1108002B7D7D /* Mockable.swift in Sources */,
+				7F5EF4D824BE1108002B7D7D /* Error.swift in Sources */,
+				7F5EF4D924BE1108002B7D7D /* Remote.swift in Sources */,
+				7F5EF4DA24BE1108002B7D7D /* PlayState.swift in Sources */,
+				7F5EF4DB24BE1108002B7D7D /* ExtendedAudioPlayer.swift in Sources */,
+				7F5EF4DC24BE1108002B7D7D /* MusicService.swift in Sources */,
+				7F5EF4DD24BE1108002B7D7D /* AlertController.swift in Sources */,
+				7F5EF4DE24BE1108002B7D7D /* InfoViewState.swift in Sources */,
+				7F5EF4DF24BE1108002B7D7D /* UIStoryboardExtensions.swift in Sources */,
+				7F5EF4E024BE1108002B7D7D /* RepeatState.swift in Sources */,
+				7F5EF4E124BE1108002B7D7D /* strings.swift in Sources */,
+				7F5EF4E224BE1108002B7D7D /* ScrubberViewState.swift in Sources */,
+				7F5EF4E324BE1108002B7D7D /* SearchCellViewState.swift in Sources */,
+				7F5EF4E424BE1108002B7D7D /* KeyboardNotification.swift in Sources */,
+				7F5EF4E524BE1108002B7D7D /* DurationOperation.swift in Sources */,
+				7F5EF4E624BE1108002B7D7D /* _Simulator.swift in Sources */,
+				7F5EF4E724BE1108002B7D7D /* AppDelegate.swift in Sources */,
+				7F5EF4E824BE1108002B7D7D /* SearchCoordinator.swift in Sources */,
+				7F5EF4E924BE1108002B7D7D /* Clock.swift in Sources */,
+				7F5EF4EA24BE1108002B7D7D /* Playlist.swift in Sources */,
+				7F5EF4EB24BE1108002B7D7D /* RepeatButton.swift in Sources */,
+				7F5EF4EC24BE1108002B7D7D /* Keyable.swift in Sources */,
+				7F5EF4ED24BE1108002B7D7D /* MusicAuthorization.swift in Sources */,
+				7F5EF4EE24BE1108002B7D7D /* AppController.swift in Sources */,
+				7F5EF4EF24BE1108002B7D7D /* RemoteState.swift in Sources */,
+				7F5EF4F024BE1108002B7D7D /* UserDefaultable.swift in Sources */,
+				7F5EF4F124BE1108002B7D7D /* Utility.swift in Sources */,
+				7F5EF4F224BE1108002B7D7D /* MediaLibraryAuthorization.swift in Sources */,
+				7F5EF4F324BE1108002B7D7D /* AudioAnalysisInformation.swift in Sources */,
+				7F5EF4F424BE1108002B7D7D /* Alert.swift in Sources */,
+				7F5EF4F524BE1108002B7D7D /* NSBundleExtensions.swift in Sources */,
+				7F5EF4F624BE1108002B7D7D /* AudioPlayer.swift in Sources */,
+				7F5EF4F724BE1108002B7D7D /* NowPlayingInfoCentering.swift in Sources */,
+				7F5EF4F824BE1108002B7D7D /* PlayerController.swift in Sources */,
+				7F5EF4F924BE1108002B7D7D /* SearchOperation.swift in Sources */,
+				7F5EF4FA24BE1108002B7D7D /* InfoController.swift in Sources */,
+				7F5EF4FB24BE1108002B7D7D /* SearchViewController.swift in Sources */,
+				7F5EF4FC24BE1108002B7D7D /* MediaQueryable.swift in Sources */,
+				7F5EF4FD24BE1108002B7D7D /* SearchCell.swift in Sources */,
+				7F5EF4FE24BE1108002B7D7D /* SearchViewState.swift in Sources */,
+				7F5EF4FF24BE1108002B7D7D /* Search.swift in Sources */,
+				7F5EF50024BE1108002B7D7D /* AppControllerFactory.swift in Sources */,
+				7F5EF50124BE1108002B7D7D /* CellIdentifiable.swift in Sources */,
+				7F5EF50224BE1108002B7D7D /* ControlsController.swift in Sources */,
+				7F5EF50324BE1108002B7D7D /* AudioSessioning.swift in Sources */,
+				7F5EF50424BE1108002B7D7D /* ScrubberController.swift in Sources */,
+				7F5EF50524BE1108002B7D7D /* PlayButtonViewState.swift in Sources */,
+				7F5EF50624BE1108002B7D7D /* Authorizable.swift in Sources */,
+				7F5EF50724BE1108002B7D7D /* DataManager.swift in Sources */,
+				7F5EF50824BE1108002B7D7D /* MusicInterruptionHandler.swift in Sources */,
+				7F5EF50924BE1108002B7D7D /* PlayerCoordinator.swift in Sources */,
+				7F5EF50A24BE1108002B7D7D /* GenericButtonState.swift in Sources */,
+				7F5EF50B24BE1108002B7D7D /* SearchController.swift in Sources */,
+				7F5EF50C24BE1108002B7D7D /* MusicServiceState.swift in Sources */,
+				7F5EF50D24BE1108002B7D7D /* UserService.swift in Sources */,
+				7F5EF50E24BE1108002B7D7D /* PlayButton.swift in Sources */,
+				7F5EF50F24BE1108002B7D7D /* MusicInterruptionState.swift in Sources */,
+				7F5EF51024BE1108002B7D7D /* TrackManager.swift in Sources */,
+				7F5EF51124BE1108002B7D7D /* PlayerAction.swift in Sources */,
+				7F5EF51224BE1108002B7D7D /* RepeatButtonViewState.swift in Sources */,
+				7F5EF51324BE1108002B7D7D /* UIButtonAnimationExtensions.swift in Sources */,
+				7F5EF51424BE1108002B7D7D /* Presentable.swift in Sources */,
+				7F5EF51524BE1108002B7D7D /* Seeker.swift in Sources */,
+				7F5EF51624BE1108002B7D7D /* AppRouter.swift in Sources */,
+				7F5EF51724BE1108002B7D7D /* SearchAction.swift in Sources */,
+				7F5EF51824BE1108002B7D7D /* Track.swift in Sources */,
+				7F5EF51924BE1108002B7D7D /* InfoViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7FA59D6921BAF2F900538013 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1072,6 +1377,66 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7F5EF52924BE1108002B7D7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 24;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = PFC77GK3D7;
+				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = EasyMusicPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0.0;
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7F5EF52A24BE1108002B7D7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 24;
+				DEVELOPMENT_TEAM = PFC77GK3D7;
+				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = EasyMusicPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 3.0.0;
+				OTHER_SWIFT_FLAGS = "";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DRELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		7FA59D7421BAF2F900538013 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1343,6 +1708,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7F5EF52824BE1108002B7D7D /* Build configuration list for PBXNativeTarget "EasyMusicPlayer-Release" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F5EF52924BE1108002B7D7D /* Debug */,
+				7F5EF52A24BE1108002B7D7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7FA59D7621BAF2F900538013 /* Build configuration list for PBXNativeTarget "EasyMusicPlayerSnapshot" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
