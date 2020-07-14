@@ -167,7 +167,7 @@ final class SearchTests: XCTestCase {
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // test
-        waitSync(for: 1.0)
+        waitSync()
         XCTAssertLessThan(searchViewController.cell(at: 0)?.titleLabel?.frame.size.width ?? 0.0,
                           searchViewController.cell(at: 1)?.titleLabel?.frame.size.width ?? 0.0)
     }
@@ -196,12 +196,12 @@ final class SearchTests: XCTestCase {
         ]
         env.setSavedTracks(tracks, currentTrack: tracks[0])
         env.inject()
-        env.setStopped()
+//        env.setStopped()
         start()
         playerViewController.present(navigationController, animated: false, completion: nil)
 
         // sut
-        waitSync(for: 1.0)
+        waitSync()
         XCTAssertTrue(searchViewController.selectRow(1))
 
         // test
