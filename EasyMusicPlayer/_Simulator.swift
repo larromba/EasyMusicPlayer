@@ -9,22 +9,11 @@ enum DummyAsset {
     case endSilence
 
     var url: URL {
-        // if not testing
-        if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil {
-            switch self {
-            case .normal:
-                return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
-            case .endSilence:
-                return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioWithSilencePath"] as! String)
-            }
-        // if testing, need to use the bundled audio else CI doesn't work
-        } else {
-            switch self {
-            case .normal:
-                return Bundle.safeMain.url(forResource: "arkist - fill your coffee", withExtension: "m4a")!
-            case .endSilence:
-                return Bundle.safeMain.url(forResource: "audio with silence", withExtension: "mp3")!
-            }
+        switch self {
+        case .normal:
+            return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
+        case .endSilence:
+            return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioWithSilencePath"] as! String)
         }
     }
 

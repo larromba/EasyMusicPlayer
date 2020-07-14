@@ -178,7 +178,6 @@ final class SearchTests: XCTestCase {
         ]
         env.setSavedTracks(tracks, currentTrack: tracks[0])
         env.inject()
-        env.setStopped()
         start()
 
         // sut
