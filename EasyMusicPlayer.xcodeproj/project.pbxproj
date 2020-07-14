@@ -37,6 +37,7 @@
 		7F44F9F021B849F10041E4DE /* DummyAudioPlayerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */; };
 		7F5A83A421D932AD008F30BE /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A321D932AD008F30BE /* Presentable.swift */; };
 		7F5A83A621D940F4008F30BE /* DummyMediaQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A521D940F4008F30BE /* DummyMediaQuery.swift */; };
+		7F5EF45A24BE08E1002B7D7D /* Experiement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5EF45924BE08E1002B7D7D /* Experiement.swift */; };
 		7F71B80321A484BC00135925 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80221A484BC00135925 /* AppController.swift */; };
 		7F71B80521A4852F00135925 /* AppControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80421A4852F00135925 /* AppControllerFactory.swift */; };
 		7F71B80921A486DC00135925 /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B80821A486DC00135925 /* PlayerController.swift */; };
@@ -181,6 +182,7 @@
 		7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAudioPlayerFactory.swift; sourceTree = "<group>"; };
 		7F5A83A321D932AD008F30BE /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		7F5A83A521D940F4008F30BE /* DummyMediaQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyMediaQuery.swift; sourceTree = "<group>"; };
+		7F5EF45924BE08E1002B7D7D /* Experiement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Experiement.swift; sourceTree = "<group>"; };
 		7F71B80221A484BC00135925 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		7F71B80421A4852F00135925 /* AppControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppControllerFactory.swift; sourceTree = "<group>"; };
 		7F71B80821A486DC00135925 /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
@@ -612,6 +614,7 @@
 		7FF5B2FE1BE64E220044FCE5 /* EasyMusicPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
+				7F5EF45924BE08E1002B7D7D /* Experiement.swift */,
 				7F44F9D021B826D00041E4DE /* ControlTests.swift */,
 				7FAFBA6424BB3BB80008A54D /* SearchTests.swift */,
 				7F44F9E121B8307C0041E4DE /* RemoteTests.swift */,
@@ -981,6 +984,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F5EF45A24BE08E1002B7D7D /* Experiement.swift in Sources */,
 				7FF5B3001BE64E220044FCE5 /* TrackTests.swift in Sources */,
 				7FA59D5B21B95C0C00538013 /* AppTestEnvironment.swift in Sources */,
 				7FA59D6621B97DB000538013 /* ViewControllerExtensions.swift in Sources */,
