@@ -32,9 +32,9 @@ final class SilenceDetectionTests: XCTestCase {
                 self.track = track
             }
         }
+        let delegate = Delegate() // needs strong reference to avoid deallocation
         let mediaItem = DummyMediaItem(asset: .endSilence)
         env.setSavedTracks([mediaItem], currentTrack: mediaItem)
-        let delegate = Delegate() // needs strong reference to avoid deallocation
         env.inject()
         env.trackManager.setDelegate(delegate)
 
@@ -50,10 +50,12 @@ final class SilenceDetectionTests: XCTestCase {
     func test_musicService_whenTrackWithEndSilenceLoaded_expectFinishedStateTriggeredEarlier() {
         // mock
         env.playerFactory = AudioPlayerFactory()
-        env.setLibraryTracks([DummyMediaItem(asset: .endSilence)]) // normally 17 seconds
+        let mediaItem = DummyMediaItem(asset: .endSilence)
+        env.setSavedTracks([mediaItem], currentTrack: mediaItem) // normally 17 seconds
         env.inject()
 
         // sut
+        waitSync()
         env.setPlaying()
         env.musicService.setTime(3.0)
 
