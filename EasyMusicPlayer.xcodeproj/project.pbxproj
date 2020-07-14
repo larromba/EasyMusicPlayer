@@ -37,7 +37,6 @@
 		7F44F9F021B849F10041E4DE /* DummyAudioPlayerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */; };
 		7F5A83A421D932AD008F30BE /* Presentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A321D932AD008F30BE /* Presentable.swift */; };
 		7F5A83A621D940F4008F30BE /* DummyMediaQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5A83A521D940F4008F30BE /* DummyMediaQuery.swift */; };
-		7F5EF45A24BE08E1002B7D7D /* SanityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5EF45924BE08E1002B7D7D /* SanityTests.swift */; };
 		7F5EF4CF24BE1108002B7D7D /* ControlsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B81921A4A76500135925 /* ControlsViewController.swift */; };
 		7F5EF4D024BE1108002B7D7D /* assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8AB21A82B7500135925 /* assets.swift */; };
 		7F5EF4D124BE1108002B7D7D /* URLSessioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F71B8BC21A833DB00135925 /* URLSessioning.swift */; };
@@ -270,7 +269,6 @@
 		7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAudioPlayerFactory.swift; sourceTree = "<group>"; };
 		7F5A83A321D932AD008F30BE /* Presentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presentable.swift; sourceTree = "<group>"; };
 		7F5A83A521D940F4008F30BE /* DummyMediaQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyMediaQuery.swift; sourceTree = "<group>"; };
-		7F5EF45924BE08E1002B7D7D /* SanityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SanityTests.swift; sourceTree = "<group>"; };
 		7F5EF52B24BE1108002B7D7D /* EasyMusicPlayer-Release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "EasyMusicPlayer-Release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F5EF52D24BE11EF002B7D7D /* audio with silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "audio with silence.mp3"; path = "audio/audio with silence.mp3"; sourceTree = SOURCE_ROOT; };
 		7F5EF52E24BE11EF002B7D7D /* arkist - fill your coffee.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "arkist - fill your coffee.m4a"; path = "audio/arkist - fill your coffee.m4a"; sourceTree = SOURCE_ROOT; };
@@ -728,7 +726,6 @@
 		7FF5B2FE1BE64E220044FCE5 /* EasyMusicPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
-				7F5EF45924BE08E1002B7D7D /* SanityTests.swift */,
 				7F44F9D021B826D00041E4DE /* ControlTests.swift */,
 				7FAFBA6424BB3BB80008A54D /* SearchTests.swift */,
 				7F44F9E121B8307C0041E4DE /* RemoteTests.swift */,
@@ -1289,7 +1286,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F5EF45A24BE08E1002B7D7D /* SanityTests.swift in Sources */,
 				7FF5B3001BE64E220044FCE5 /* TrackTests.swift in Sources */,
 				7FA59D5B21B95C0C00538013 /* AppTestEnvironment.swift in Sources */,
 				7FA59D6621B97DB000538013 /* ViewControllerExtensions.swift in Sources */,

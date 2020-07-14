@@ -47,6 +47,9 @@ final class SilenceDetectionTests: XCTestCase {
         XCTAssertEqual(delegate.track?.duration ?? 0.0, 4.0, accuracy: 1.0)
     }
 
+    #if !TRAVIS
+    // AVAudioPlayer will always fail on travis
+    // see https://stackoverflow.com/questions/40172431/avplayer-fails-to-load-files-during-unit-tests-on-ci-servers
     func test_musicService_whenTrackWithEndSilenceLoaded_expectFinishedStateTriggeredEarlier() {
         // mock
         env.playerFactory = AudioPlayerFactory()
@@ -55,12 +58,12 @@ final class SilenceDetectionTests: XCTestCase {
         env.inject()
 
         // sut
-        waitSync()
         env.setPlaying()
         env.musicService.setTime(3.0)
 
         // test
-        waitSync(for: 3.0)
+        waitSync(for: 2.0)
         XCTAssertEqual(env.musicService.state.playState, .finished)
     }
+    #endif
 }

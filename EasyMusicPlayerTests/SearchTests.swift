@@ -150,7 +150,7 @@ final class SearchTests: XCTestCase {
         start()
 
         // test
-        waitSync(for: 1.0)
+        waitSync(for: 2.0)
         XCTAssertLessThan(searchViewController.cell(at: 0)?.titleLabel?.frame.size.width ?? 0.0,
                           searchViewController.cell(at: 1)?.titleLabel?.frame.size.width ?? 0.0)
     }
@@ -182,11 +182,11 @@ final class SearchTests: XCTestCase {
         start()
 
         // sut
-        waitSync(for: 1.0)
+        waitSync(for: 2.0)
         XCTAssertTrue(searchViewController.selectRow(1))
 
         // test
-        waitSync(for: 1.0)
+        waitSync()
         XCTAssertEqual(env.musicService.state.playState, .playing)
         XCTAssertEqual(env.musicService.state.currentTrackIndex, 1)
     }
@@ -247,6 +247,7 @@ final class SearchTests: XCTestCase {
     // MARK: - private
 
     private func start() {
+        waitSync()
         env.searchCoordinator.setNavigationController(navigationController)
         env.searchCoordinator.setViewController(searchViewController)
         env.searchCoordinator.start()
