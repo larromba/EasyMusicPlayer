@@ -2,7 +2,8 @@
 import MediaPlayer
 import XCTest
 
-final class ExpTests: XCTestCase {
+// swiftlint:disable type_name
+final class _CISanityTests: XCTestCase { // underscore so it comes first in CI
     private var player: AVAudioPlayer!
 
     override func setUp() {
@@ -14,6 +15,8 @@ final class ExpTests: XCTestCase {
         super.tearDown()
     }
 
+    // v3.0.0
+    // discovered ci bugs because the mock audio files waren't playing
     func test_audio_whenURLLoaded_expectPlays() {
         do {
             player = try AVAudioPlayer(contentsOf: DummyAsset.endSilence.url)
