@@ -1,15 +1,15 @@
 import Foundation
 
 struct MusicInterruptionState {
-    let isHeadphonesAttached: Bool
+    let isOutputAvailable: Bool
     let isPlayingInBackground: Bool
     let isAudioSessionInterrupted: Bool
 }
 
 extension MusicInterruptionState {
-    func copy(isHeadphonesAttached: Bool) -> MusicInterruptionState {
+    func copy(isOutputAvailable: Bool) -> MusicInterruptionState {
         return MusicInterruptionState(
-            isHeadphonesAttached: isHeadphonesAttached,
+            isOutputAvailable: isOutputAvailable,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
@@ -17,7 +17,7 @@ extension MusicInterruptionState {
 
     func copy(isPlayingInBackground: Bool) -> MusicInterruptionState {
         return MusicInterruptionState(
-            isHeadphonesAttached: isHeadphonesAttached,
+            isOutputAvailable: isOutputAvailable,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
@@ -25,7 +25,7 @@ extension MusicInterruptionState {
 
     func copy(isAudioSessionInterrupted: Bool) -> MusicInterruptionState {
         return MusicInterruptionState(
-            isHeadphonesAttached: isHeadphonesAttached,
+            isOutputAvailable: isOutputAvailable,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
@@ -33,7 +33,7 @@ extension MusicInterruptionState {
 
     func copy(isHeadphonesRemovedByMistake: Bool, isAudioSessionInterrupted: Bool) -> MusicInterruptionState {
         return MusicInterruptionState(
-            isHeadphonesAttached: isHeadphonesAttached,
+            isOutputAvailable: isOutputAvailable,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )

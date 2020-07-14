@@ -16,17 +16,13 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
     private var isPlaying: Bool = false
     private weak var delegate: MusicInterruptionDelegate?
     private var state = MusicInterruptionState(
-        isHeadphonesAttached: false,
+        isOutputAvailable: false,
         isPlayingInBackground: false,
         isAudioSessionInterrupted: false
     ) { didSet { log(state) } }
 
     init(session: AudioSessioning) {
-        let isHeadphonesAttached = !session.currentRoute.outputs.filter {
-            $0.portName == AVAudioSession.Port.headphones.rawValue
-        }.isEmpty
-        state = state.copy(isHeadphonesAttached: isHeadphonesAttached)
-
+        state = state.copy(isOutputAvailable: !session.currentRoute.outputs.isEmpty)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationWillResignActive(_:)),
@@ -85,15 +81,15 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         }
         switch reason {
         case .oldDeviceUnavailable:
-            state = state.copy(isHeadphonesAttached: false)
+            state = state.copy(isOutputAvailable: false)
             if isPlaying {
                 notify(.pause)
             }
         case .newDeviceAvailable:
-            if !isPlaying && !state.isHeadphonesAttached && !state.isAudioSessionInterrupted {
+            if !isPlaying && !state.isOutputAvailable && !state.isAudioSessionInterrupted {
                 notify(.play)
             }
-            state = state.copy(isHeadphonesAttached: true)
+            state = state.copy(isOutputAvailable: true)
         default:
             break
         }
@@ -117,7 +113,7 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
                 notify(.pause)
             }
         case .ended:
-            if !isPlaying && state.isAudioSessionInterrupted && state.isHeadphonesAttached {
+            if !isPlaying && state.isAudioSessionInterrupted && state.isOutputAvailable {
                 notify(.play)
             }
             state = state.copy(isAudioSessionInterrupted: false)
