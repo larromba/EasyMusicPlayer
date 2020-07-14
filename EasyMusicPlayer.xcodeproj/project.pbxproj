@@ -82,6 +82,9 @@
 		7F7A5D051BE916C800D2BC9E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */; };
 		7F7B7F9324BA7026006F6B3F /* KeyboardNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7B7F9224BA7026006F6B3F /* KeyboardNotification.swift */; };
 		7F854F7721B8022100A93D5B /* Logging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F854F7221B8022100A93D5B /* Logging.framework */; };
+		7F87289724BE564A00D274B1 /* InterruptionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F87289624BE564A00D274B1 /* InterruptionAction.swift */; };
+		7F87289B24BE5A5B00D274B1 /* HeadphonesRouteDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F87289A24BE5A5B00D274B1 /* HeadphonesRouteDescription.swift */; };
+		7F87289D24BE5ABD00D274B1 /* HeadphonesPortDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F87289C24BE5ABC00D274B1 /* HeadphonesPortDescription.swift */; };
 		7F92B6F11C19AD0A00A5273A /* RepeatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */; };
 		7F92B6F51C1A09F100A5273A /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F92B6F41C1A09F100A5273A /* UserService.swift */; };
 		7F9F883B24B72093005DF5D7 /* AudioAnalysisInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */; };
@@ -232,6 +235,9 @@
 		7F7A5D041BE916C800D2BC9E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		7F7B7F9224BA7026006F6B3F /* KeyboardNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardNotification.swift; sourceTree = "<group>"; };
 		7F854F7221B8022100A93D5B /* Logging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Logging.framework; path = Carthage/Build/iOS/Logging.framework; sourceTree = "<group>"; };
+		7F87289624BE564A00D274B1 /* InterruptionAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterruptionAction.swift; sourceTree = "<group>"; };
+		7F87289A24BE5A5B00D274B1 /* HeadphonesRouteDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphonesRouteDescription.swift; sourceTree = "<group>"; };
+		7F87289C24BE5ABC00D274B1 /* HeadphonesPortDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadphonesPortDescription.swift; sourceTree = "<group>"; };
 		7F92B6F01C19AD0A00A5273A /* RepeatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatButton.swift; sourceTree = "<group>"; };
 		7F92B6F41C1A09F100A5273A /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalysisInformation.swift; sourceTree = "<group>"; };
@@ -342,6 +348,8 @@
 				7FA59D5A21B95C0C00538013 /* AppTestEnvironment.swift */,
 				7F44F9EF21B849F10041E4DE /* DummyAudioPlayerFactory.swift */,
 				7FA59D5821B957AC00538013 /* MockTouch.swift */,
+				7F87289A24BE5A5B00D274B1 /* HeadphonesRouteDescription.swift */,
+				7F87289C24BE5ABC00D274B1 /* HeadphonesPortDescription.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -493,6 +501,7 @@
 				7F71B85821A60B4800135925 /* PlayState.swift */,
 				7F71B82821A5898500135925 /* Error.swift */,
 				7F71B86821A72DFF00135925 /* MusicInterruptionState.swift */,
+				7F87289624BE564A00D274B1 /* InterruptionAction.swift */,
 				7F71B86C21A7327F00135925 /* MusicServiceState.swift */,
 				7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */,
 				7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */,
@@ -952,6 +961,7 @@
 				7F71B80B21A4871B00135925 /* ScrubberController.swift in Sources */,
 				7F71B82021A55D8D00135925 /* PlayButtonViewState.swift in Sources */,
 				7F71B86121A70BB700135925 /* Authorizable.swift in Sources */,
+				7F87289724BE564A00D274B1 /* InterruptionAction.swift in Sources */,
 				7F71B82E21A5903D00135925 /* DataManager.swift in Sources */,
 				7F71B86721A72ABE00135925 /* MusicInterruptionHandler.swift in Sources */,
 				7F0F97AD24B9E95D007FE1BA /* PlayerCoordinator.swift in Sources */,
@@ -990,12 +1000,14 @@
 				7F44F9E621B83AF40041E4DE /* UIButtonExtensions.swift in Sources */,
 				7FA59D5321B9465600538013 /* URLExtensions.swift in Sources */,
 				7FAFBA6724BB49E20008A54D /* UIBarButtonExtensions.swift in Sources */,
+				7F87289D24BE5ABD00D274B1 /* HeadphonesPortDescription.swift in Sources */,
 				7F44F9D421B827EE0041E4DE /* ControlStateTests.swift in Sources */,
 				7F44F9E421B830F70041E4DE /* RemoteStateTests.swift in Sources */,
 				7F44F9D121B826D00041E4DE /* ControlTests.swift in Sources */,
 				7F44F9F021B849F10041E4DE /* DummyAudioPlayerFactory.swift in Sources */,
 				7FA59D6821BAA44500538013 /* DataTests.swift in Sources */,
 				7F05C5EE24B7DFDB0049E246 /* SilenceDetectionTests.swift in Sources */,
+				7F87289B24BE5A5B00D274B1 /* HeadphonesRouteDescription.swift in Sources */,
 				7FAFBA6524BB3BB80008A54D /* SearchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

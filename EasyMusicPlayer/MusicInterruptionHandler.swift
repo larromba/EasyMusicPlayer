@@ -3,7 +3,7 @@ import Logging
 import UIKit
 
 protocol MusicInterruptionDelegate: AnyObject {
-    func interruptionHandler(_ handler: MusicInterruptionHandler, updtedState state: MusicInterruptionState)
+    func interruptionHandler(_ handler: MusicInterruptionHandler, handleAction action: InterruptionAction)
 }
 
 // sourcery: name = MusicInterruptionHandler
@@ -16,12 +16,17 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
     private var isPlaying: Bool = false
     private weak var delegate: MusicInterruptionDelegate?
     private var state = MusicInterruptionState(
-        isHeadphonesRemovedByMistake: false,
+        isHeadphonesAttached: false,
         isPlayingInBackground: false,
         isAudioSessionInterrupted: false
     ) { didSet { log(state) } }
 
-    init() {
+    init(session: AudioSessioning) {
+        let isHeadphonesAttached = !session.currentRoute.outputs.filter {
+            $0.portName == AVAudioSession.Port.headphones.rawValue
+        }.isEmpty
+        state = state.copy(isHeadphonesAttached: isHeadphonesAttached)
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationWillResignActive(_:)),
@@ -50,12 +55,6 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
 
     func setIsPlaying(_ isPlaying: Bool) {
         self.isPlaying = isPlaying
-        if isPlaying {
-            state = state.copy(
-                isHeadphonesRemovedByMistake: false,
-                isAudioSessionInterrupted: false
-            )
-        }
     }
 
     func setDelegate(_ delegate: MusicInterruptionDelegate) {
@@ -86,15 +85,15 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         }
         switch reason {
         case .oldDeviceUnavailable:
+            state = state.copy(isHeadphonesAttached: false)
             if isPlaying {
-                state = state.copy(isHeadphonesRemovedByMistake: true)
-                notifyStateChange()
+                notify(.pause)
             }
         case .newDeviceAvailable:
-            if !isPlaying && state.isHeadphonesRemovedByMistake {
-                state = state.copy(isHeadphonesRemovedByMistake: false)
-                notifyStateChange()
+            if !isPlaying && !state.isHeadphonesAttached && !state.isAudioSessionInterrupted {
+                notify(.play)
             }
+            state = state.copy(isHeadphonesAttached: true)
         default:
             break
         }
@@ -113,24 +112,24 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         }
         switch reason {
         case .began:
+            state = state.copy(isAudioSessionInterrupted: true)
             if isPlaying {
-                state = state.copy(isAudioSessionInterrupted: true)
-                notifyStateChange()
+                notify(.pause)
             }
         case .ended:
-            if !isPlaying && state.isAudioSessionInterrupted {
-                state = state.copy(isAudioSessionInterrupted: false)
-                notifyStateChange()
+            if !isPlaying && state.isAudioSessionInterrupted && state.isHeadphonesAttached {
+                notify(.play)
             }
+            state = state.copy(isAudioSessionInterrupted: false)
         default:
             assertionFailure("unhandled AVAudioSession.InterruptionType")
         }
     }
 
-    private func notifyStateChange() {
+    private func notify(_ action: InterruptionAction) {
         DispatchQueue.main.async {
-            log("**** notifyStateChange ****")
-            self.delegate?.interruptionHandler(self, updtedState: self.state)
+            log("**** notifying interruption action: \(action) ****")
+            self.delegate?.interruptionHandler(self, handleAction: action)
         }
     }
 }

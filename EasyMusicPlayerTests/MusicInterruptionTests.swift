@@ -10,7 +10,9 @@ final class MusicInterruptionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        interruptionHandler = MusicInterruptionHandler()
+        let session = MockAudioSession()
+        session.currentRoute = HeadphonesRouteDescription()
+        interruptionHandler = MusicInterruptionHandler(session: session)
         playerFactory = DummyAudioPlayerFactory()
         env = AppTestEnvironment(interruptionHandler: interruptionHandler, playerFactory: playerFactory)
     }
@@ -101,6 +103,7 @@ final class MusicInterruptionTests: XCTestCase {
 
         // sut
         removeHeadphones()
+        waitSync()
         interrupt()
         waitSync()
         attachHeadphones()
@@ -125,6 +128,7 @@ final class MusicInterruptionTests: XCTestCase {
 
         // sut
         interrupt()
+        waitSync()
         removeHeadphones()
         waitSync()
         uninterrupt()

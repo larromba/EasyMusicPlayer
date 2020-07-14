@@ -238,8 +238,12 @@ final class SearchTests: XCTestCase {
         env.searchCoordinator.setNavigationController(navigationController)
         env.searchCoordinator.setViewController(searchViewController)
         env.searchCoordinator.start()
+        #if TRAVIS
         searchViewController.tableView.reloadData()
         waitSync(for: 3.0)
+        #else
+        waitSync()
+        #endif
     }
 }
 

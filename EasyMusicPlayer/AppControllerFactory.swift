@@ -25,13 +25,14 @@ enum AppControllerFactory {
         let playlist = Playlist(authorization: authorization, mediaQuery: MPMediaQuery.self)
         let trackManager = TrackManager(userService: userService, authorization: authorization, playlist: playlist)
         let seeker = Seeker(seekInterval: 0.2)
-        let interruptionHandler = MusicInterruptionHandler()
+        let audioSession = AVAudioSession.sharedInstance()
+        let interruptionHandler = MusicInterruptionHandler(session: audioSession)
         let clock = Clock(timeInterval: 1.0)
         let playerFactory = AudioPlayerFactory()
         let musicService = MusicService(
             trackManager: trackManager,
             remote: remote,
-            audioSession: AVAudioSession.sharedInstance(),
+            audioSession: audioSession,
             authorization: authorization,
             seeker: seeker,
             interruptionHandler: interruptionHandler,

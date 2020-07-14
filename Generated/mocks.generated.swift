@@ -314,6 +314,12 @@ class MockAudioSession: NSObject, AudioSessioning {
     }
     var _outputVolume: Float! = 1
     var _outputVolumeHistory: [_Variable<Float?>] = []
+    var currentRoute: AVAudioSessionRouteDescription {
+        get { return _currentRoute }
+        set(value) { _currentRoute = value; _currentRouteHistory.append(_Variable(value)) }
+    }
+    var _currentRoute: AVAudioSessionRouteDescription!
+    var _currentRouteHistory: [_Variable<AVAudioSessionRouteDescription?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()

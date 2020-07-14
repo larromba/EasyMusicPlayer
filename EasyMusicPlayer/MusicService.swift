@@ -263,6 +263,7 @@ final class MusicService: NSObject, MusicServicing {
     }
 
     private func changePlayState(_ state: PlayState) {
+        log(state)
         playState = state
         delegate?.musicService(self, changedState: state)
     }
@@ -374,11 +375,10 @@ extension MusicService: SeekerDelegate {
 // MARK: - MusicInterruptionHandler
 
 extension MusicService: MusicInterruptionDelegate {
-    func interruptionHandler(_ handler: MusicInterruptionHandler, updtedState state: MusicInterruptionState) {
-        if state.isHeadphonesRemovedByMistake || state.isAudioSessionInterrupted {
-            pause()
-        } else {
-            play()
+    func interruptionHandler(_ handler: MusicInterruptionHandler, handleAction action: InterruptionAction) {
+        switch action {
+        case .pause: pause()
+        case .play: play()
         }
     }
 }
