@@ -236,7 +236,7 @@ final class SearchTests: XCTestCase {
         env.searchCoordinator.setViewController(searchViewController)
         env.searchCoordinator.start()
         #if TRAVIS // for some reason more time is needed on CI
-        waitSync(for: 3.0)
+        waitSync(for: 4.0)
         #else
         waitSync()
         #endif

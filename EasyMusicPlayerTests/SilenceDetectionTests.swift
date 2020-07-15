@@ -1,4 +1,3 @@
-import AVFoundation
 @testable import EasyMusic
 import TestExtensions
 import XCTest

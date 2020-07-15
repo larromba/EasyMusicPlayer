@@ -14,19 +14,17 @@ protocol MusicInterruptionHandling: Mockable {
 
 final class MusicInterruptionHandler: MusicInterruptionHandling {
     private weak var delegate: MusicInterruptionDelegate?
-    private var state = MusicInterruptionState(
-        disconnected: [],
-        current: [],
-        isPlaying: false,
-        isPlayingInBackground: false,
-        isExpectedToContinue: false,
-        isAudioSessionInterrupted: false
-    ) { didSet { log(state) } }
     private let session: AudioSession
+    private var state = MusicInterruptionState(
+        routeChangeInterruption: RouteChangeInterruption(),
+        audioSessionInterruption: AudioSessionInterruption(),
+        isPlaying: false,
+        isPlayingInBackground: false
+    ) { didSet { log(state) } }
 
     init(session: AudioSession) {
         self.session = session
-        state.current = session.outputRoutes
+        state.routeChangeInterruption.currentOutputRoutes = session.outputRoutes
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationWillResignActive(_:)),
@@ -87,19 +85,21 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         }
         switch reason {
         case .oldDeviceUnavailable:
-            state.disconnected += previous.outputRoutes
-            state.current = session.outputRoutes
+            state.routeChangeInterruption.stage = .start
+            state.routeChangeInterruption.disconnectedOutputRoutes += previous.outputRoutes
+            state.routeChangeInterruption.currentOutputRoutes = session.outputRoutes
             if state.isPlaying {
-                state.isExpectedToContinue = true
+                state.routeChangeInterruption.isAudioInterrupted = true
                 notify(.pause)
             }
         case .newDeviceAvailable:
-            if !state.isPlaying && state.isExpectedToContinue && state.disconnected.intersects(session.outputRoutes)
-            && !state.isAudioSessionInterrupted {
+            state.routeChangeInterruption.stage = .end
+            if state.isExpectedToContinue && state.routeChangeInterruption.didReattachDevice(session.outputRoutes) {
+                state.finish()
                 notify(.play)
             }
-            state.disconnected = []
-            state.current = session.outputRoutes
+            state.routeChangeInterruption.disconnectedOutputRoutes = []
+            state.routeChangeInterruption.currentOutputRoutes = session.outputRoutes
         default:
             break
         }
@@ -119,17 +119,17 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         }
         switch reason {
         case .began:
-            state.isAudioSessionInterrupted = true
+            state.audioSessionInterruption.stage = .start
             if state.isPlaying {
-                state.isExpectedToContinue = true
+                state.audioSessionInterruption.isAudioInterrupted = true
                 notify(.pause)
             }
         case .ended:
-            if !state.isPlaying && state.isExpectedToContinue && state.isAudioSessionInterrupted
-            && !state.isDisconnected {
+            state.audioSessionInterruption.stage = .end
+            if state.isExpectedToContinue {
+                state.finish()
                 notify(.play)
             }
-            state.isAudioSessionInterrupted = false
         default:
             assertionFailure("unhandled AVAudioSession.InterruptionType")
         }
@@ -140,14 +140,5 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
             log("**** notifying interruption action: \(action) ****")
             self.delegate?.interruptionHandler(self, handleAction: action)
         }
-    }
-}
-
-// MARK: - Array
-
-private extension Array where Element == AVAudioSession.Port {
-    func intersects(_ items: [AVAudioSession.Port]) -> Bool {
-        guard !self.isEmpty && !items.isEmpty else { return false }
-        return !Set(self).isDisjoint(with: Set(items))
     }
 }

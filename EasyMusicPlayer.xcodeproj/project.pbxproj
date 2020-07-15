@@ -103,6 +103,11 @@
 		7FAFBA6524BB3BB80008A54D /* SearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAFBA6424BB3BB80008A54D /* SearchTests.swift */; };
 		7FAFBA6724BB49E20008A54D /* UIBarButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAFBA6624BB49E20008A54D /* UIBarButtonExtensions.swift */; };
 		7FB4F8C124BE9DD600E8BE42 /* AudioSessionRouteDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4F8C024BE9DD600E8BE42 /* AudioSessionRouteDescription.swift */; };
+		7FB4F8C724BF330700E8BE42 /* InterruptionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4F8C624BF330700E8BE42 /* InterruptionState.swift */; };
+		7FB4F8C924BF332A00E8BE42 /* Interruption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4F8C824BF332A00E8BE42 /* Interruption.swift */; };
+		7FB4F8CB24BF334A00E8BE42 /* RouteChangeInterruption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4F8CA24BF334A00E8BE42 /* RouteChangeInterruption.swift */; };
+		7FB4F8CD24BF336500E8BE42 /* AudionSessionInterruption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4F8CC24BF336500E8BE42 /* AudionSessionInterruption.swift */; };
+		7FB4F8CF24BF34DC00E8BE42 /* OutputRouteConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FB4F8CE24BF34DC00E8BE42 /* OutputRouteConvertible.swift */; };
 		7FCFE90E1BF3AF8F00981545 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FCFE90D1BF3AF8F00981545 /* Social.framework */; };
 		7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */; };
 		7FD4F6001BFE1E9A00DCE572 /* TrackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */; };
@@ -256,6 +261,11 @@
 		7FAFBA6424BB3BB80008A54D /* SearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTests.swift; sourceTree = "<group>"; };
 		7FAFBA6624BB49E20008A54D /* UIBarButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonExtensions.swift; sourceTree = "<group>"; };
 		7FB4F8C024BE9DD600E8BE42 /* AudioSessionRouteDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionRouteDescription.swift; sourceTree = "<group>"; };
+		7FB4F8C624BF330700E8BE42 /* InterruptionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterruptionState.swift; sourceTree = "<group>"; };
+		7FB4F8C824BF332A00E8BE42 /* Interruption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interruption.swift; sourceTree = "<group>"; };
+		7FB4F8CA24BF334A00E8BE42 /* RouteChangeInterruption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteChangeInterruption.swift; sourceTree = "<group>"; };
+		7FB4F8CC24BF336500E8BE42 /* AudionSessionInterruption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudionSessionInterruption.swift; sourceTree = "<group>"; };
+		7FB4F8CE24BF34DC00E8BE42 /* OutputRouteConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputRouteConvertible.swift; sourceTree = "<group>"; };
 		7FCFE90D1BF3AF8F00981545 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		7FCFE9271BF4B0F500981545 /* NSBundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtensions.swift; sourceTree = "<group>"; };
 		7FD4F5FF1BFE1E9A00DCE572 /* TrackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TrackManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -413,6 +423,8 @@
 				7F44F9EB21B845870041E4DE /* AudioPlayer.swift */,
 				7F5A83A321D932AD008F30BE /* Presentable.swift */,
 				7F0F97C024BA0154007FE1BA /* CellIdentifiable.swift */,
+				7FB4F8C824BF332A00E8BE42 /* Interruption.swift */,
+				7FB4F8CE24BF34DC00E8BE42 /* OutputRouteConvertible.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -498,7 +510,10 @@
 				7F71B85821A60B4800135925 /* PlayState.swift */,
 				7F71B82821A5898500135925 /* Error.swift */,
 				7F71B86821A72DFF00135925 /* MusicInterruptionState.swift */,
+				7FB4F8CA24BF334A00E8BE42 /* RouteChangeInterruption.swift */,
+				7FB4F8CC24BF336500E8BE42 /* AudionSessionInterruption.swift */,
 				7F87289624BE564A00D274B1 /* InterruptionAction.swift */,
+				7FB4F8C624BF330700E8BE42 /* InterruptionState.swift */,
 				7F71B86C21A7327F00135925 /* MusicServiceState.swift */,
 				7F9F883A24B72093005DF5D7 /* AudioAnalysisInformation.swift */,
 				7F05C5EB24B7CBEC0049E246 /* RemoteState.swift */,
@@ -924,6 +939,7 @@
 				7F71B80F21A489C300135925 /* ScrubberViewState.swift in Sources */,
 				7F0F97BF24BA0047007FE1BA /* SearchCellViewState.swift in Sources */,
 				7F7B7F9324BA7026006F6B3F /* KeyboardNotification.swift in Sources */,
+				7FB4F8C724BF330700E8BE42 /* InterruptionState.swift in Sources */,
 				7FD8F2AD24BCB0460065CA76 /* DurationOperation.swift in Sources */,
 				7F7A032224B88D8000043EB1 /* _Simulator.swift in Sources */,
 				7FF5B2EB1BE64E210044FCE5 /* AppDelegate.swift in Sources */,
@@ -933,6 +949,7 @@
 				7F92B6F11C19AD0A00A5273A /* RepeatButton.swift in Sources */,
 				7F71B83221A5922100135925 /* Keyable.swift in Sources */,
 				7F71B85F21A70B3700135925 /* MusicAuthorization.swift in Sources */,
+				7FB4F8CB24BF334A00E8BE42 /* RouteChangeInterruption.swift in Sources */,
 				7F71B80321A484BC00135925 /* AppController.swift in Sources */,
 				7F05C5EC24B7CBEC0049E246 /* RemoteState.swift in Sources */,
 				7F71B83621A5927C00135925 /* UserDefaultable.swift in Sources */,
@@ -943,6 +960,7 @@
 				7FCFE9281BF4B0F500981545 /* NSBundleExtensions.swift in Sources */,
 				7F44F9EC21B845870041E4DE /* AudioPlayer.swift in Sources */,
 				7F71B85021A5DF1000135925 /* NowPlayingInfoCenter.swift in Sources */,
+				7FB4F8C924BF332A00E8BE42 /* Interruption.swift in Sources */,
 				7F71B80921A486DC00135925 /* PlayerController.swift in Sources */,
 				7FD8F2AB24BC8E850065CA76 /* SearchOperation.swift in Sources */,
 				7F71B81221A4979E00135925 /* InfoController.swift in Sources */,
@@ -955,6 +973,8 @@
 				7F71B80521A4852F00135925 /* AppControllerFactory.swift in Sources */,
 				7F0F97C124BA0154007FE1BA /* CellIdentifiable.swift in Sources */,
 				7F71B81821A4A75900135925 /* ControlsController.swift in Sources */,
+				7FB4F8CF24BF34DC00E8BE42 /* OutputRouteConvertible.swift in Sources */,
+				7FB4F8CD24BF336500E8BE42 /* AudionSessionInterruption.swift in Sources */,
 				7F71B85D21A6C79300135925 /* AudioSession.swift in Sources */,
 				7F71B80B21A4871B00135925 /* ScrubberController.swift in Sources */,
 				7F71B82021A55D8D00135925 /* PlayButtonViewState.swift in Sources */,

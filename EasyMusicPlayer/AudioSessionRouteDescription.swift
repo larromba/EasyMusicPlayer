@@ -2,8 +2,8 @@ import AVFoundation
 import Foundation
 
 // sourcery: name = AudioSessionRouteDescription
-protocol AudioSessionRouteDescription: Mockable {
-    var outputRoutes: [AVAudioSession.Port] { get }
+protocol AudioSessionRouteDescription: OutputRouteConvertible, Mockable {
+    // 🦄
 }
 extension AVAudioSessionRouteDescription: AudioSessionRouteDescription {
     var outputRoutes: [AVAudioSession.Port] {
