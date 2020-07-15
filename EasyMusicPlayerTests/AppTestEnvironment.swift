@@ -8,16 +8,16 @@ final class AppTestEnvironment {
     var playerViewController: PlayerViewControlling
     var scrubberViewController: ScrubberViewControlling
     var remote: Remoting
-    var remoteInfo: NowPlayingInfoCentering
+    var remoteInfo: NowPlayingInfoCenter
     var controlsViewController: ControlsViewControlling
     var alertPresenter: Presentable
-    var audioSession: AudioSessioning
+    var audioSession: AudioSession
     var seeker: Seekable
     var interruptionHandler: MusicInterruptionHandling
     var clock: Clocking
     var playerFactory: AudioPlayerFactoring
     var userDefaults: UserDefaultable
-    var mediaQueryType: MediaQueryable.Type
+    var mediaQueryType: MediaQuery.Type
     var infoViewController: InfoViewControlling
     var authorizerType: MediaLibraryAuthorizable.Type
 
@@ -42,17 +42,17 @@ final class AppTestEnvironment {
          scrubberViewController: ScrubberViewControlling = MockScrubberViewController(),
          remote: Remoting = Remote(),
          infoViewController: InfoViewControlling = MockInfoViewController(),
-         remoteInfo: NowPlayingInfoCentering = MockNowPlayingInfoCenter(),
+         remoteInfo: NowPlayingInfoCenter = MockNowPlayingInfoCenter(),
          controlsViewController: ControlsViewControlling = MockControlsViewController(),
          alertPresenter: Presentable = UIViewController(),
-         audioSession: AudioSessioning = MockAudioSession(),
+         audioSession: AudioSession = MockAudioSession(),
          authorizerType: MediaLibraryAuthorizable.Type = MockMediaLibrary.self,
          seeker: Seekable = MockSeeker(),
          interruptionHandler: MusicInterruptionHandling = MockMusicInterruptionHandler(),
          clock: Clocking = MockClock(),
          playerFactory: AudioPlayerFactoring = DummyAudioPlayerFactory(),
          userDefaults: UserDefaultable = MockUserDefaults(),
-         mediaQueryType: MediaQueryable.Type = MockMediaQuery.self) {
+         mediaQueryType: MediaQuery.Type = MockMediaQuery.self) {
         AppTestEnvironment.resetAllStaticMocks()
         self.playerViewController = playerViewController
         self.scrubberViewController = scrubberViewController

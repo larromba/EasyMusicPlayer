@@ -10,10 +10,10 @@ protocol InfoControlling: Mockable {
 }
 
 final class InfoController: InfoControlling {
-    private let remoteInfo: NowPlayingInfoCentering
+    private let remoteInfo: NowPlayingInfoCenter
     private let viewController: InfoViewControlling
 
-    init(viewController: InfoViewControlling, remoteInfo: NowPlayingInfoCentering) {
+    init(viewController: InfoViewControlling, remoteInfo: NowPlayingInfoCenter) {
         self.viewController = viewController
         self.remoteInfo = remoteInfo
         setup()

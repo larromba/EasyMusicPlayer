@@ -1,15 +1,30 @@
+import AVFoundation
 import Foundation
 
 struct MusicInterruptionState {
-    let isOutputAvailable: Bool
+    let disconnected: [AVAudioSession.Port]
+    let current: [AVAudioSession.Port]
+    var isAvailable: Bool {
+        return !current.isEmpty
+    }
     let isPlayingInBackground: Bool
     let isAudioSessionInterrupted: Bool
 }
 
 extension MusicInterruptionState {
-    func copy(isOutputAvailable: Bool) -> MusicInterruptionState {
+    func copy(disconnected: [AVAudioSession.Port]) -> MusicInterruptionState {
         return MusicInterruptionState(
-            isOutputAvailable: isOutputAvailable,
+            disconnected: disconnected,
+            current: current,
+            isPlayingInBackground: isPlayingInBackground,
+            isAudioSessionInterrupted: isAudioSessionInterrupted
+        )
+    }
+
+    func copy(current: [AVAudioSession.Port]) -> MusicInterruptionState {
+        return MusicInterruptionState(
+            disconnected: disconnected,
+            current: current,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
@@ -17,7 +32,8 @@ extension MusicInterruptionState {
 
     func copy(isPlayingInBackground: Bool) -> MusicInterruptionState {
         return MusicInterruptionState(
-            isOutputAvailable: isOutputAvailable,
+            disconnected: disconnected,
+            current: current,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )
@@ -25,15 +41,8 @@ extension MusicInterruptionState {
 
     func copy(isAudioSessionInterrupted: Bool) -> MusicInterruptionState {
         return MusicInterruptionState(
-            isOutputAvailable: isOutputAvailable,
-            isPlayingInBackground: isPlayingInBackground,
-            isAudioSessionInterrupted: isAudioSessionInterrupted
-        )
-    }
-
-    func copy(isHeadphonesRemovedByMistake: Bool, isAudioSessionInterrupted: Bool) -> MusicInterruptionState {
-        return MusicInterruptionState(
-            isOutputAvailable: isOutputAvailable,
+            disconnected: disconnected,
+            current: current,
             isPlayingInBackground: isPlayingInBackground,
             isAudioSessionInterrupted: isAudioSessionInterrupted
         )

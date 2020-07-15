@@ -2,7 +2,7 @@
 // swiftlint:disable variable_name
 
 // https://github.com/larromba/swift-mockable 
-// 1.0.0
+// 2.0.0
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)

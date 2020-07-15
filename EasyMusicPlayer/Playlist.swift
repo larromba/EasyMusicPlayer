@@ -9,9 +9,9 @@ protocol Playlistable: Mockable {
 
 final class Playlist: Playlistable {
     private let authorization: Authorization
-    private let mediaQuery: MediaQueryable.Type
+    private let mediaQuery: MediaQuery.Type
 
-    init(authorization: Authorization, mediaQuery: MediaQueryable.Type) {
+    init(authorization: Authorization, mediaQuery: MediaQuery.Type) {
         self.authorization = authorization
         self.mediaQuery = mediaQuery
 

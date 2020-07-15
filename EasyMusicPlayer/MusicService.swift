@@ -33,7 +33,7 @@ final class MusicService: NSObject, MusicServicing {
     private weak var delegate: MusicServiceDelegate?
     private let trackManager: TrackManaging
     private let remote: Remoting
-    private let audioSession: AudioSessioning
+    private let audioSession: AudioSession
     private let authorization: Authorization
     private let seeker: Seekable
     private let interruptionHandler: MusicInterruptionHandling
@@ -55,7 +55,7 @@ final class MusicService: NSObject, MusicServicing {
         )
     }
 
-    init(trackManager: TrackManaging, remote: Remoting, audioSession: AudioSessioning,
+    init(trackManager: TrackManaging, remote: Remoting, audioSession: AudioSession,
          authorization: Authorization, seeker: Seekable, interruptionHandler: MusicInterruptionHandling,
          clock: Clocking, playerFactory: AudioPlayerFactoring) {
         self.trackManager = trackManager

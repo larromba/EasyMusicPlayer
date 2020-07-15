@@ -16,13 +16,16 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
     private var isPlaying: Bool = false
     private weak var delegate: MusicInterruptionDelegate?
     private var state = MusicInterruptionState(
-        isOutputAvailable: false,
+        disconnected: [],
+        current: [],
         isPlayingInBackground: false,
         isAudioSessionInterrupted: false
     ) { didSet { log(state) } }
+    private let session: AudioSession
 
-    init(session: AudioSessioning) {
-        state = state.copy(isOutputAvailable: !session.currentRoute.outputs.isEmpty)
+    init(session: AudioSession) {
+        self.session = session
+        state = state.copy(current: session.outputRoutes)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(applicationWillResignActive(_:)),
@@ -73,23 +76,27 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
 
     @objc
     private func audioSessionRouteChange(_ notification: Notification) {
-        logWarning("**** audioSessionRouteChange ****", String(describing: notification.userInfo))
+        let userInfo = notification.userInfo
+        logWarning("**** audioSessionRouteChange ****", String(describing: userInfo))
         guard
-            let rawValue = (notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? NSNumber)?.uintValue,
+            let previous = userInfo?[AVAudioSessionRouteChangePreviousRouteKey] as? AudioSessionRouteDescription,
+            let rawValue = (userInfo?[AVAudioSessionRouteChangeReasonKey] as? NSNumber)?.uintValue,
             let reason = AVAudioSession.RouteChangeReason(rawValue: rawValue) else {
                 return
         }
         switch reason {
         case .oldDeviceUnavailable:
-            state = state.copy(isOutputAvailable: false)
+            state = state.copy(disconnected: state.disconnected + previous.outputRoutes)
+            state = state.copy(current: session.outputRoutes)
             if isPlaying {
                 notify(.pause)
             }
         case .newDeviceAvailable:
-            if !isPlaying && !state.isOutputAvailable && !state.isAudioSessionInterrupted {
+            if !isPlaying && state.disconnected.intersects(session.outputRoutes) && !state.isAudioSessionInterrupted {
                 notify(.play)
             }
-            state = state.copy(isOutputAvailable: true)
+            state = state.copy(disconnected: [])
+            state = state.copy(current: session.outputRoutes)
         default:
             break
         }
@@ -99,10 +106,11 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
     // see https://developer.apple.com/documentation/avfoundation/avaudiosession/1616596-interruptionnotification
     @objc
     private func audioSessionInterruption(_ notification: Notification) {
-        logWarning("**** audioSessionInterruption ****", String(describing: notification.userInfo))
+        let userInfo = notification.userInfo
+        logWarning("**** audioSessionInterruption ****", String(describing: userInfo))
         guard
-            let rawValue = (notification.userInfo?[AVAudioSessionInterruptionTypeKey] as? NSNumber)?.uintValue,
-            let key = (notification.userInfo?[AVAudioSessionInterruptionWasSuspendedKey] as? Bool), !key,
+            let key = (userInfo?[AVAudioSessionInterruptionWasSuspendedKey] as? Bool), !key,
+            let rawValue = (userInfo?[AVAudioSessionInterruptionTypeKey] as? NSNumber)?.uintValue,
             let reason = AVAudioSession.InterruptionType(rawValue: rawValue) else {
                 return
         }
@@ -113,7 +121,7 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
                 notify(.pause)
             }
         case .ended:
-            if !isPlaying && state.isAudioSessionInterrupted && state.isOutputAvailable {
+            if !isPlaying && state.isAudioSessionInterrupted && state.disconnected.isEmpty {
                 notify(.play)
             }
             state = state.copy(isAudioSessionInterrupted: false)
@@ -127,5 +135,14 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
             log("**** notifying interruption action: \(action) ****")
             self.delegate?.interruptionHandler(self, handleAction: action)
         }
+    }
+}
+
+// MARK: - Array
+
+private extension Array where Element == AVAudioSession.Port {
+    func intersects(_ items: [AVAudioSession.Port]) -> Bool {
+        guard !self.isEmpty && !items.isEmpty else { return false }
+        return !Set(self).isDisjoint(with: Set(items))
     }
 }

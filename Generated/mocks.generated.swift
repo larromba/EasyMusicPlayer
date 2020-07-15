@@ -5,7 +5,7 @@
 // swiftlint:disable variable_name
 
 // https://github.com/larromba/swift-mockable 
-// 1.0.0
+// 2.0.0
 
 import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
@@ -307,19 +307,25 @@ class MockAudioPlayerFactory: NSObject, AudioPlayerFactoring {
     }
 }
 
-class MockAudioSession: NSObject, AudioSessioning {
+class MockAudioSession: NSObject, AudioSession {
     var outputVolume: Float {
         get { return _outputVolume }
         set(value) { _outputVolume = value; _outputVolumeHistory.append(_Variable(value)) }
     }
     var _outputVolume: Float! = 1
     var _outputVolumeHistory: [_Variable<Float?>] = []
-    var currentRoute: AVAudioSessionRouteDescription {
-        get { return _currentRoute }
-        set(value) { _currentRoute = value; _currentRouteHistory.append(_Variable(value)) }
+    var outputDataSource: AVAudioSessionDataSourceDescription? {
+        get { return _outputDataSource }
+        set(value) { _outputDataSource = value; _outputDataSourceHistory.append(_Variable(value)) }
     }
-    var _currentRoute: AVAudioSessionRouteDescription!
-    var _currentRouteHistory: [_Variable<AVAudioSessionRouteDescription?>] = []
+    var _outputDataSource: AVAudioSessionDataSourceDescription?
+    var _outputDataSourceHistory: [_Variable<AVAudioSessionDataSourceDescription?>] = []
+    var outputRoutes: [AVAudioSession.Port] {
+        get { return _outputRoutes }
+        set(value) { _outputRoutes = value; _outputRoutesHistory.append(_Variable(value)) }
+    }
+    var _outputRoutes: [AVAudioSession.Port]! = []
+    var _outputRoutesHistory: [_Variable<[AVAudioSession.Port]?>] = []
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -366,6 +372,15 @@ class MockAudioSession: NSObject, AudioSessioning {
             case options = "setActive_objc(_active:Bool,options:AVAudioSession.SetActiveOptions).options"
         }
     }
+}
+
+class MockAudioSessionRouteDescription: NSObject, AudioSessionRouteDescription {
+    var outputRoutes: [AVAudioSession.Port] {
+        get { return _outputRoutes }
+        set(value) { _outputRoutes = value; _outputRoutesHistory.append(_Variable(value)) }
+    }
+    var _outputRoutes: [AVAudioSession.Port]! = []
+    var _outputRoutesHistory: [_Variable<[AVAudioSession.Port]?>] = []
 }
 
 class MockAuthorization: NSObject, Authorization {
@@ -771,7 +786,7 @@ class MockMediaLibrary: NSObject, MediaLibraryAuthorizable {
     }
 }
 
-class MockMediaQuery: NSObject, MediaQueryable {
+class MockMediaQuery: NSObject, MediaQuery {
     let invocations = _Invocations()
     let actions = _Actions()
     static let invocations = _Invocations()
@@ -992,7 +1007,7 @@ class MockMusicService: NSObject, MusicServicing {
     }
 }
 
-class MockNowPlayingInfoCenter: NSObject, NowPlayingInfoCentering {
+class MockNowPlayingInfoCenter: NSObject, NowPlayingInfoCenter {
     var nowPlayingInfo: [String: Any]? {
         get { return _nowPlayingInfo }
         set(value) { _nowPlayingInfo = value; _nowPlayingInfoHistory.append(_Variable(value)) }

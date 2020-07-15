@@ -7,20 +7,24 @@ final class MusicInterruptionTests: XCTestCase {
     private var interruptionHandler: MusicInterruptionHandler!
     private var env: AppTestEnvironment!
     private var playerFactory: DummyAudioPlayerFactory!
+    private var session: MockAudioSession!
+    private var previous: MockAudioSessionRouteDescription!
 
     override func setUp() {
         super.setUp()
-        let session = MockAudioSession()
-        session.currentRoute = HeadphonesRouteDescription()
+        session = MockAudioSession()
+        previous = MockAudioSessionRouteDescription()
         interruptionHandler = MusicInterruptionHandler(session: session)
         playerFactory = DummyAudioPlayerFactory()
         env = AppTestEnvironment(interruptionHandler: interruptionHandler, playerFactory: playerFactory)
     }
 
     override func tearDown() {
+        session = nil
         interruptionHandler = nil
         playerFactory = nil
         env = nil
+        previous = nil
         super.tearDown()
     }
 
@@ -93,6 +97,22 @@ final class MusicInterruptionTests: XCTestCase {
         // test
         waitSync()
         XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
+    }
+
+    func test_interruption_whenDifferentOutputReattached_expectDoesNotPlayMusic() {
+        // mocks
+        env.inject()
+        env.setPlaying()
+        playerFactory.audioPlayer?.invocations.clear()
+
+        // sut
+        removeHeadphones()
+        waitSync()
+        attachBluetoothHeadphones()
+
+        // test
+        waitSync()
+        XCTAssertFalse(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? true)
     }
 
     func test_interruption_whenHeadphonesRemovedAndReattachedBeforeInterruptionFinishes_expectDoesNotTakePriority() {
@@ -172,16 +192,31 @@ final class MusicInterruptionTests: XCTestCase {
     }
 
     private func removeHeadphones() {
+        previous.outputRoutes = [AVAudioSession.Port.headphones]
+        session.outputRoutes = [AVAudioSession.Port.builtInSpeaker]
         let code = AVAudioSession.RouteChangeReason.oldDeviceUnavailable.rawValue
         let notification = Notification(name: AVAudioSession.routeChangeNotification, object: nil,
-                                        userInfo: [AVAudioSessionRouteChangeReasonKey: NSNumber(value: code)])
+                                        userInfo: [AVAudioSessionRouteChangeReasonKey: NSNumber(value: code),
+                                                   AVAudioSessionRouteChangePreviousRouteKey: previous!])
         NotificationCenter.default.post(notification)
     }
 
     private func attachHeadphones() {
+        session.outputRoutes = [AVAudioSession.Port.headphones]
         let code = AVAudioSession.RouteChangeReason.newDeviceAvailable.rawValue
         let notification = Notification(name: AVAudioSession.routeChangeNotification, object: nil,
-                                        userInfo: [AVAudioSessionRouteChangeReasonKey: NSNumber(value: code)])
+                                        userInfo: [AVAudioSessionRouteChangeReasonKey: NSNumber(value: code),
+                                                   AVAudioSessionRouteChangePreviousRouteKey: previous!])
+        NotificationCenter.default.post(notification)
+        previous.outputRoutes = [AVAudioSession.Port.headphones]
+    }
+
+    private func attachBluetoothHeadphones() {
+        session.outputRoutes = [AVAudioSession.Port.bluetoothA2DP]
+        let code = AVAudioSession.RouteChangeReason.newDeviceAvailable.rawValue
+        let notification = Notification(name: AVAudioSession.routeChangeNotification, object: nil,
+                                        userInfo: [AVAudioSessionRouteChangeReasonKey: NSNumber(value: code),
+                                                   AVAudioSessionRouteChangePreviousRouteKey: previous!])
         NotificationCenter.default.post(notification)
     }
 }
