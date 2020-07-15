@@ -3,6 +3,7 @@
 ## 3.0.0 (TBC)
     added silence detection
     added simple search
+    fix: interruption handling
 
 ## 2.0.2 (10/01/2019) 
     fixed minor bug when removing and reattaching bluetooth headphones

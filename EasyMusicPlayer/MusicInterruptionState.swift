@@ -2,49 +2,16 @@ import AVFoundation
 import Foundation
 
 struct MusicInterruptionState {
-    let disconnected: [AVAudioSession.Port]
-    let current: [AVAudioSession.Port]
+    var disconnected: [AVAudioSession.Port]
+    var isDisconnected: Bool {
+        return !disconnected.isEmpty
+    }
+    var current: [AVAudioSession.Port]
     var isAvailable: Bool {
         return !current.isEmpty
     }
-    let isPlayingInBackground: Bool
-    let isAudioSessionInterrupted: Bool
-}
-
-extension MusicInterruptionState {
-    func copy(disconnected: [AVAudioSession.Port]) -> MusicInterruptionState {
-        return MusicInterruptionState(
-            disconnected: disconnected,
-            current: current,
-            isPlayingInBackground: isPlayingInBackground,
-            isAudioSessionInterrupted: isAudioSessionInterrupted
-        )
-    }
-
-    func copy(current: [AVAudioSession.Port]) -> MusicInterruptionState {
-        return MusicInterruptionState(
-            disconnected: disconnected,
-            current: current,
-            isPlayingInBackground: isPlayingInBackground,
-            isAudioSessionInterrupted: isAudioSessionInterrupted
-        )
-    }
-
-    func copy(isPlayingInBackground: Bool) -> MusicInterruptionState {
-        return MusicInterruptionState(
-            disconnected: disconnected,
-            current: current,
-            isPlayingInBackground: isPlayingInBackground,
-            isAudioSessionInterrupted: isAudioSessionInterrupted
-        )
-    }
-
-    func copy(isAudioSessionInterrupted: Bool) -> MusicInterruptionState {
-        return MusicInterruptionState(
-            disconnected: disconnected,
-            current: current,
-            isPlayingInBackground: isPlayingInBackground,
-            isAudioSessionInterrupted: isAudioSessionInterrupted
-        )
-    }
+    var isPlaying: Bool
+    var isPlayingInBackground: Bool
+    var isExpectedToContinue: Bool
+    var isAudioSessionInterrupted: Bool
 }

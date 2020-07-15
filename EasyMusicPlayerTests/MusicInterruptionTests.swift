@@ -99,6 +99,23 @@ final class MusicInterruptionTests: XCTestCase {
         XCTAssertTrue(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? false)
     }
 
+    func test_interruption_whenStoppedAndHeadphonesReattached_expectDoesNotPlayMusic() {
+        // mocks
+        env.inject()
+        env.setPlaying()
+        env.setStopped()
+        playerFactory.audioPlayer?.invocations.clear()
+
+        // sut
+        removeHeadphones()
+        waitSync()
+        attachHeadphones()
+
+        // test
+        waitSync()
+        XCTAssertFalse(playerFactory.audioPlayer?.invocations.isInvoked(MockAudioPlayer.play2.name) ?? true)
+    }
+
     func test_interruption_whenDifferentOutputReattached_expectDoesNotPlayMusic() {
         // mocks
         env.inject()
