@@ -5,7 +5,10 @@ final class Snapshots: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
+        addUIInterruptionMonitor(withDescription: "permissions") { alert -> Bool in
+            alert.buttons["OK"].tap()
+            return true
+        }
         app = XCUIApplication()
         setupSnapshot(app)
         continueAfterFailure = false
@@ -19,11 +22,25 @@ final class Snapshots: XCTestCase {
     func testMainSnapshot() {
         app.launch()
         app.buttons["PlayButton"].tap()
-        app.otherElements
-            .containing(.staticText, identifier:"v2.0.0")
-            .children(matching: .other).element(boundBy: 1)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            app.children(matching: .window).element(boundBy: 0)
             .children(matching: .other).element
-            .tap()
+            .children(matching: .other).element
+            .children(matching: .other).element
+            .children(matching: .other).element
+            .children(matching: .other)
+            .element(boundBy: 1)
+            .children(matching: .other).element.tap()
+        } else {
+            app.children(matching: .window)
+            .element(boundBy: 0)
+            .children(matching: .other).element
+            .children(matching: .other).element
+            .children(matching: .other).element
+            .children(matching: .other)
+            .element(boundBy: 1)
+            .children(matching: .other).element.tap()
+        }
         snapshot("Main")
     }
 }

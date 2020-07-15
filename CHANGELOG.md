@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.0 (TBC)
+## 3.0.0 (15/07/2020)
     added silence detection
     added simple search
     fix: interruption handling
