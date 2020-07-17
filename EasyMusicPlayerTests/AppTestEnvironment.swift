@@ -37,6 +37,7 @@ final class AppTestEnvironment {
     private(set) var searchController: SearchControlling!
     private(set) var searchCoordinator: SearchCoordinating!
     private(set) var appRouter: AppRouting!
+    private(set) var app: Appable!
 
     init(playerViewController: PlayerViewControlling = MockPlayerViewController(),
          scrubberViewController: ScrubberViewControlling = MockScrubberViewController(),
@@ -170,5 +171,6 @@ extension AppTestEnvironment: TestEnvironment {
         searchController = SearchController(search: search)
         searchCoordinator = SearchCoordinator(searchController: searchController)
         appRouter = AppRouter(playerCoordinator: playerCoordinator, searchCoordinator: searchCoordinator)
+        app = App(router: appRouter)
     }
 }

@@ -4,7 +4,7 @@ import UIKit
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    private var appController: AppControlling?
+    private var app: Appable?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -14,12 +14,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
         #endif
-
         guard let viewController = window?.rootViewController as? PlayerViewController else {
             fatalError("expected PlayerViewController")
         }
-        appController = AppControllerFactory.make(playerViewController: viewController)
-
+        app = AppFactory.make(playerViewController: viewController)
         return true
     }
 }

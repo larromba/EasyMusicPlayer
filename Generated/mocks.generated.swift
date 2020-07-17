@@ -155,10 +155,10 @@ class MockAlertController: NSObject, AlertControlling {
     }
 }
 
-class MockAppController: NSObject, AppControlling {
+class MockAppRouter: NSObject, AppRouting {
 }
 
-class MockAppRouter: NSObject, AppRouting {
+class MockAppController: NSObject, Appable {
 }
 
 class MockAudioPlayer: NSObject, AudioPlayer {
