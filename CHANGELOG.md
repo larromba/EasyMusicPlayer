@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.1 (13/11/2020)
+    fix: iOS 14 crash
+
 ## 3.0.0 (15/07/2020)
     added silence detection
     added simple search
@@ -76,5 +79,6 @@ Apple ID: 1067558718
 # Future work
 
 4.0.0:
+scroll to position in queue
 to increase startup speed for large playlists - use [MPMediaEntityPersistentID] instead of [MPMediaItem]?
 BUG: MPMediaItemArtwork not appearing?

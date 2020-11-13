@@ -85,6 +85,11 @@ final class DummyMediaItem: MPMediaItem {
     override var hash: Int {
         return Int(_persistentID)
     }
+
+    // fix crash: iOS 14
+    override func value(forProperty property: String) -> Any? {
+        return nil
+    }
 }
 
 // MARK: - DummyMediaQuery

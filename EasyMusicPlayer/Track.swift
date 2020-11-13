@@ -31,7 +31,17 @@ extension Track {
     }
 
     static var empty: Track {
-        return Track(mediaItem: MPMediaItem(), artworkSize: .zero)
+        return Track(
+            artist: "",
+            title: "",
+            duration: 0,
+            url: nil,
+            id: 0,
+            albumTitle: nil,
+            genre: nil,
+            mediaItemArtwork: nil,
+            artworkSize: .zero
+        )
     }
 
     func copy(duration: TimeInterval) -> Track {
