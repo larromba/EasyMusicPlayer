@@ -137,14 +137,14 @@ extension SearchViewController: UISearchBarDelegate {
 extension SearchViewController: KeyboardNotificationDelegate {
     func keyboardWithShow(height: CGFloat) {
         tableView.contentInset.bottom = height
-        tableView.scrollIndicatorInsets.bottom = height
+        tableView.verticalScrollIndicatorInsets.bottom = height
         emptyLabelCenterYConstraint.constant = -(height / 2.0) + searchBar.bounds.height
         view.layoutIfNeeded()
     }
 
     func keyboardWillHide() {
         tableView.contentInset.bottom = 0
-        tableView.scrollIndicatorInsets.bottom = 0
+        tableView.verticalScrollIndicatorInsets.bottom = 0
         emptyLabelCenterYConstraint.constant = 0
         view.layoutIfNeeded()
     }
