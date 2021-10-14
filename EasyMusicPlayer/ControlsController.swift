@@ -2,7 +2,7 @@ import Foundation
 import MediaPlayer
 
 // sourcery: name = ControlsController
-protocol ControlsControlling: AnyObject, Mockable {
+protocol ControlsControlling: Mockable {
     var repeatButtonState: RepeatState? { get }
     var playButtonState: PlayState? { get }
 

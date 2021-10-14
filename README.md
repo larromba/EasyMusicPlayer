@@ -36,7 +36,7 @@ This assumes you're farmiliar with Xcode and building iOS apps.
 *Please note that you might need to change your app's bundle identifier and certificates to match your own.*
 
 To install the app-store version on your device:
-1. `carthage update --platform iOS`
+1. `carthage update --platform iOS` then `sh fix-frameworks.sh`
 2. open `EasyMusicPlayer.xcodeproj`
 3. select `EasyMusicPlayer-Release` target
 4. select your device from the device list

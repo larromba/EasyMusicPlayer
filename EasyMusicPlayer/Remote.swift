@@ -23,7 +23,7 @@ protocol SeekCommandEvent: Mockable {
 extension MPSeekCommandEvent: SeekCommandEvent {}
 
 // sourcery: name = Remote
-protocol Remoting: AnyObject, Mockable {
+protocol Remoting: Mockable {
     var state: RemoteState { get set }
     var togglePlayPause: (() -> Void)? { get set }
     var pause: (() -> Void)? { get set }

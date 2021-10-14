@@ -10,7 +10,7 @@ protocol MusicServiceDelegate: AnyObject {
 }
 
 // sourcery: name = MusicService
-protocol MusicServicing: AnyObject, Mockable {
+protocol MusicServicing: Mockable {
     var state: MusicServiceState { get }
 
     func setDelegate(_ delegate: MusicServiceDelegate)

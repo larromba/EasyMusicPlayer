@@ -6,7 +6,7 @@ protocol ControlsViewDelegate: AnyObject {
 }
 
 // sourcery: name = ControlsViewController
-protocol ControlsViewControlling: AnyObject, Mockable {
+protocol ControlsViewControlling: Mockable {
     var viewState: ControlsViewStating? { get set }
 
     func setDelegate(_ delegate: ControlsViewDelegate)

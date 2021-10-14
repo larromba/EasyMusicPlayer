@@ -10,7 +10,7 @@ protocol ScrubberViewDelegate: AnyObject {
 }
 
 // sourcery: name = ScrubberViewController
-protocol ScrubberViewControlling: AnyObject, Mockable {
+protocol ScrubberViewControlling: Mockable {
     var viewState: ScrubberViewStating? { get set }
     // sourcery: value = 0.0
     var viewWidth: CGFloat { get }

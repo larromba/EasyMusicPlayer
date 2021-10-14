@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.2 (13/10/2021)
+    Xcode 13.0 & iOS 15.0 updates
+
 ## 3.0.1 (13/11/2020)
     fix: iOS 14 crash
 

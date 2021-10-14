@@ -1,7 +1,7 @@
 import UIKit
 
 // sourcery: name = ScrubberController
-protocol ScrubberControlling: AnyObject, Mockable {
+protocol ScrubberControlling: Mockable {
     func moveScrubber(percentage: Float)
     func setIsUserInteractionEnabled(_ isEnabled: Bool)
     func setDelegate(_ delegate: ScrubberControllerDelegate)

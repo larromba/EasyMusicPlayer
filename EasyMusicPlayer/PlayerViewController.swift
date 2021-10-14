@@ -2,7 +2,7 @@ import MediaPlayer
 import UIKit
 
 // sourcery: name = PlayerViewController
-protocol PlayerViewControlling: AnyObject, Mockable {
+protocol PlayerViewControlling: Mockable {
     var viewState: PlayerViewStating? { get set }
     var scrubberViewController: ScrubberViewControlling { get }
     var infoViewController: InfoViewControlling { get }

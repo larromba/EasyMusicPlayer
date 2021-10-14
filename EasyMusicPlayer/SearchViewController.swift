@@ -5,7 +5,7 @@ protocol SearchViewControllerDelegate: AnyObject {
 }
 
 // sourcery: name = SearchViewController
-protocol SearchViewControlling: AnyObject, Mockable {
+protocol SearchViewControlling: Mockable {
     var viewState: SearchViewStating? { get set }
 
     func setDelegate(_ delegate: SearchViewControllerDelegate)

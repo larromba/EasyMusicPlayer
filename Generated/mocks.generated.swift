@@ -1,6 +1,5 @@
-// Generated using Sourcery 0.18.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.4.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-
 // swiftlint:disable line_length
 // swiftlint:disable variable_name
 
@@ -397,7 +396,7 @@ class MockAuthorization: NSObject, Authorization {
 
     // MARK: - authorize
 
-    func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
+    func authorize(_ completion: @escaping (_ success: Bool) -> Void) {
         let functionName = authorize1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: completion, forKey: authorize1.params.completion)
@@ -407,7 +406,7 @@ class MockAuthorization: NSObject, Authorization {
     enum authorize1: String, _StringRawRepresentable {
         case name = "authorize1"
         enum params: String, _StringRawRepresentable {
-            case completion = "authorize(_completion:@escaping((_success:Bool)->Void)).completion"
+            case completion = "authorize(_completion:@escaping(_success:Bool)->Void).completion"
         }
     }
 }
@@ -1215,61 +1214,61 @@ class MockRemote: NSObject, Remoting {
         set(value) { _togglePlayPause = value; _togglePlayPauseHistory.append(_Variable(value)) }
     }
     var _togglePlayPause: (() -> Void)?
-    var _togglePlayPauseHistory: [_Variable<() -> Void?>] = []
+    var _togglePlayPauseHistory: [_Variable<(() -> Void)?>] = []
     var pause: (() -> Void)? {
         get { return _pause }
         set(value) { _pause = value; _pauseHistory.append(_Variable(value)) }
     }
     var _pause: (() -> Void)?
-    var _pauseHistory: [_Variable<() -> Void?>] = []
+    var _pauseHistory: [_Variable<(() -> Void)?>] = []
     var play: (() -> Void)? {
         get { return _play }
         set(value) { _play = value; _playHistory.append(_Variable(value)) }
     }
     var _play: (() -> Void)?
-    var _playHistory: [_Variable<() -> Void?>] = []
+    var _playHistory: [_Variable<(() -> Void)?>] = []
     var stop: (() -> Void)? {
         get { return _stop }
         set(value) { _stop = value; _stopHistory.append(_Variable(value)) }
     }
     var _stop: (() -> Void)?
-    var _stopHistory: [_Variable<() -> Void?>] = []
+    var _stopHistory: [_Variable<(() -> Void)?>] = []
     var prev: (() -> Void)? {
         get { return _prev }
         set(value) { _prev = value; _prevHistory.append(_Variable(value)) }
     }
     var _prev: (() -> Void)?
-    var _prevHistory: [_Variable<() -> Void?>] = []
+    var _prevHistory: [_Variable<(() -> Void)?>] = []
     var next: (() -> Void)? {
         get { return _next }
         set(value) { _next = value; _nextHistory.append(_Variable(value)) }
     }
     var _next: (() -> Void)?
-    var _nextHistory: [_Variable<() -> Void?>] = []
+    var _nextHistory: [_Variable<(() -> Void)?>] = []
     var seekBackward: ((SeekCommandEvent) -> Void)? {
         get { return _seekBackward }
         set(value) { _seekBackward = value; _seekBackwardHistory.append(_Variable(value)) }
     }
     var _seekBackward: ((SeekCommandEvent) -> Void)?
-    var _seekBackwardHistory: [_Variable<(SeekCommandEvent) -> Void?>] = []
+    var _seekBackwardHistory: [_Variable<((SeekCommandEvent) -> Void)?>] = []
     var seekForward: ((SeekCommandEvent) -> Void)? {
         get { return _seekForward }
         set(value) { _seekForward = value; _seekForwardHistory.append(_Variable(value)) }
     }
     var _seekForward: ((SeekCommandEvent) -> Void)?
-    var _seekForwardHistory: [_Variable<(SeekCommandEvent) -> Void?>] = []
+    var _seekForwardHistory: [_Variable<((SeekCommandEvent) -> Void)?>] = []
     var changePlayback: ((ChangePlaybackPositionCommandEvent) -> Void)? {
         get { return _changePlayback }
         set(value) { _changePlayback = value; _changePlaybackHistory.append(_Variable(value)) }
     }
     var _changePlayback: ((ChangePlaybackPositionCommandEvent) -> Void)?
-    var _changePlaybackHistory: [_Variable<(ChangePlaybackPositionCommandEvent) -> Void?>] = []
+    var _changePlaybackHistory: [_Variable<((ChangePlaybackPositionCommandEvent) -> Void)?>] = []
     var repeatMode: ((ChangeRepeatModeCommandEvent) -> Void)? {
         get { return _repeatMode }
         set(value) { _repeatMode = value; _repeatModeHistory.append(_Variable(value)) }
     }
     var _repeatMode: ((ChangeRepeatModeCommandEvent) -> Void)?
-    var _repeatModeHistory: [_Variable<(ChangeRepeatModeCommandEvent) -> Void?>] = []
+    var _repeatModeHistory: [_Variable<((ChangeRepeatModeCommandEvent) -> Void)?>] = []
 }
 
 class MockRepeatButton: NSObject, RepeatButtonable {
@@ -1796,7 +1795,7 @@ class MockURLSession: NSObject, URLSessioning {
 
     // MARK: - dataTask
 
-    func dataTask(with request: URLRequest,completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         let functionName = dataTask1.name
         let invocation = _Invocation(name: functionName.rawValue)
         invocation.set(parameter: request, forKey: dataTask1.params.request)

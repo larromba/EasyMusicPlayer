@@ -3,7 +3,7 @@ import Foundation
 import Logging
 
 // sourcery: name = AudioPlayer
-protocol AudioPlayer: AnyObject, Mockable {
+protocol AudioPlayer: Mockable {
     var isPlaying: Bool { get }
     var duration: TimeInterval { get }
     var delegate: AVAudioPlayerDelegate? { get set }

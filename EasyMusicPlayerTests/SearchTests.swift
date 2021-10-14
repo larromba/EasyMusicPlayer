@@ -142,6 +142,7 @@ final class SearchTests: XCTestCase {
         start()
 
         // test
+        waitSync()
         XCTAssertLessThan(searchViewController.cell(at: 0)?.titleLabel?.frame.size.width ?? 0.0,
                           searchViewController.cell(at: 1)?.titleLabel?.frame.size.width ?? 0.0)
     }

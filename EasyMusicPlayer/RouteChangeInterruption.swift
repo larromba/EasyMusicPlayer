@@ -3,7 +3,7 @@ import Foundation
 
 final class RouteChangeInterruption: Interruption {
     var stage: InterruptionStage = .none
-    var isAudioInterrupted: Bool = false
+    var isAudioInterrupted = false
     var disconnectedOutputRoutes = [AVAudioSession.Port]()
     var currentOutputRoutes = [AVAudioSession.Port]()
 

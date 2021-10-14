@@ -15,7 +15,7 @@ final class SearchOperation: BaseOperation {
     }
 
     override func execute() {
-        //swiftlint:disable line_length
+        // swiftlint:disable line_length
         let predicate = NSPredicate(format: "title contains[cd] %@ OR artist contains[cd] %@ OR albumTitle contains[cd] %@ OR genre contains[cd] %@", text, text, text, text)
         let filteredItems = NSArray(array: tracks).filtered(using: predicate) as! [MPMediaItem]
         guard !self.isCancelled else {

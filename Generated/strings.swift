@@ -1,15 +1,14 @@
 // swiftlint:disable all
-// Generated using SwiftGen, by O.Halligon — https://github.com/SwiftGen/SwiftGen
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
 
 import Foundation
 
-// swiftlint:disable superfluous_disable_command
-// swiftlint:disable file_length
+// swiftlint:disable superfluous_disable_command file_length implicit_return
 
 // MARK: - Strings
 
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
-// swiftlint:disable nesting type_body_length type_name
+// swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
   /// OK
   internal static let authorizationErrorButton = L10n.tr("Localizable", "authorization error button")
@@ -46,8 +45,8 @@ internal enum L10n {
   /// Search
   internal static let searchViewTitle = L10n.tr("Localizable", "search view title")
   /// %@
-  internal static func timeFormat(_ p1: String) -> String {
-    return L10n.tr("Localizable", "time format", p1)
+  internal static func timeFormat(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "time format", String(describing: p1))
   }
   /// %02d:%02d:%02d
   internal static func timeIntervalFormat(_ p1: Int, _ p2: Int, _ p3: Int) -> String {
@@ -56,8 +55,8 @@ internal enum L10n {
   /// OK
   internal static let trackErrorButton = L10n.tr("Localizable", "track error button")
   /// Couldn't play '%@'
-  internal static func trackErrorMsg(_ p1: String) -> String {
-    return L10n.tr("Localizable", "track error msg", p1)
+  internal static func trackErrorMsg(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "track error msg", String(describing: p1))
   }
   /// Error
   internal static let trackErrorTitle = L10n.tr("Localizable", "track error title")
@@ -71,15 +70,25 @@ internal enum L10n {
   internal static let unknownTrack = L10n.tr("Localizable", "unknown track")
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
-// swiftlint:enable nesting type_body_length type_name
+// swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
 
 // MARK: - Implementation Details
 
 extension L10n {
   private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
+    let format = BundleToken.bundle.localizedString(forKey: key, value: nil, table: table)
     return String(format: format, locale: Locale.current, arguments: args)
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

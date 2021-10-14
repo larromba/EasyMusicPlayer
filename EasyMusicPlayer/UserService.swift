@@ -2,7 +2,7 @@ import Foundation
 import MediaPlayer
 
 // sourcery: name = UserService
-protocol UserServicing: AnyObject, Mockable {
+protocol UserServicing: Mockable {
     var repeatState: RepeatState? { get set }
     var currentTrackID: MPMediaEntityPersistentID? { get set }
     var trackIDs: [MPMediaEntityPersistentID]? { get set }

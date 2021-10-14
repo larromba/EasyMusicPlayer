@@ -18,7 +18,7 @@ final class PlayerController: PlayerControlling {
     private let controlsController: ControlsControlling
     private let musicService: MusicServicing
     private let userService: UserServicing
-    private var isUserScrubbing: Bool = false
+    private var isUserScrubbing = false
     private let authorization: Authorization
     private var lastKnownPlayState: PlayState = .stopped
     private weak var delegate: PlayerControllerDelegate?
