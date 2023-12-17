@@ -1,0 +1,20 @@
+==== Name ====
+
+Easy Music Player
+
+==== Description ====
+
+"Easy Music Player" è un modo semplice e alternativo per riprodurre musica salvata sul telefono. Questa app è stata realizzata con amore con un solo scopo in mente: riprodurre bene la tua musica.
+
+contiene:
+- Riproduci, Pausa, Successivo, Precedente, Casuale, Cerca
+- Barra di scorrimento temporale
+- Ripeti nessuno / uno / tutti
+- Riproduci musica in sottofondo
+- Controlla la musica dalla tua schermata iniziale e dalla schermata di blocco
+
+Compatibile con iPad e iPhone. Ottimizzato per iPhone 8.
+
+==== Keywords ====
+
+musica,giocatore,facile,audio,suono,streaming,multimediale,radio,semplice,migliore,piccolo,mp3,mp4,cd,gratis,online,ascoltare,bluetooth

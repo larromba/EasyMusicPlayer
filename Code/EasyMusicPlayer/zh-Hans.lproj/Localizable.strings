@@ -1,0 +1,28 @@
+"unknown artist" = "未知艺术家";
+"unknown track" = "未知标题";
+
+"time format" = "%@";
+"time interval format" = "%02d:%02d:%02d";
+"track position format" = "%i, %i";
+
+"no music error title" = "错误";
+"no music error msg" = "你有没有音乐";
+"no music error button" = "好";
+"no volume error title" = "错误";
+"no volume error msg" = "你的音量过低";
+"no volume error button" = "好";
+"track error title" = "错误";
+"track error msg" = "不能玩'%@'";
+"track error button" = "好";
+"finished alert title" = "结束";
+"finished alert msg" = "您的播放列表完成";
+"finished alert button" = "好";
+"authorization error title" = "授权";
+"authorization error message" = "在设置中，请允许我们访问您的音乐！";
+"authorization error button" = "好";
+"play error title" = "错误";
+"play error message" = "无法播放曲目";
+"play error button" = "好";
+
+"search view title" = "搜索";
+"search view empty text" = "什么都没找到";

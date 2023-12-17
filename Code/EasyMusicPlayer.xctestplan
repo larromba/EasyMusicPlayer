@@ -1,0 +1,49 @@
+{
+  "configurations" : [
+    {
+      "id" : "491795C6-948D-4EFB-AD04-70016BB92529",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:EasyMusicPlayer.xcodeproj",
+      "identifier" : "7F2AE67D2B29CACA00B627AA",
+      "name" : "EasyMusicPlayer"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:EasyMusicPlayer.xcodeproj",
+        "identifier" : "7F2AE68D2B29CACB00B627AA",
+        "name" : "EasyMusicPlayerTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "skippedTests" : [
+        "SnapshotTests"
+      ],
+      "target" : {
+        "containerPath" : "container:EasyMusicPlayer.xcodeproj",
+        "identifier" : "7F2AE6972B29CACB00B627AA",
+        "name" : "EasyMusicPlayerUITests"
+      }
+    },
+    {
+      "enabled" : false,
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:EasyMusicPlayer.xcodeproj",
+        "identifier" : "7F7E396D2B2E4F5C0099DBA9",
+        "name" : "EasyMusicPlayerSnapshotTests"
+      }
+    }
+  ],
+  "version" : 1
+}

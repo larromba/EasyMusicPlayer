@@ -1,0 +1,26 @@
+==== Name ====
+
+Easy Music Player
+
+==== Description ====
+
+"Easy Music Player" is a simple and alternative way to play music saved to your phone. This app has been lovingly crafted with only one purpose in mind - to play your music well.
+
+Contains:
+- Play, Pause, Next, Previous, Shuffle, Search
+- Time scrubber bar
+- Repeat none / one / all
+- Play music in the background
+- Control music from your homescreen and lockscreen
+
+Compatible with iPad and iPhone. Optimised for iPhone 8.
+
+==== Keywords ====
+
+https://adwords.google.com/ko/KeywordPlanner/Home?__u=6602591676&__c=5826143196&authuser=0#search
+[music player]
+
+audio,sound,streaming,media,radio,simple,best,small,mp3,mp4,cd,free,online,listen,bluetooth
+
+(...for other langs)
+music, player, easy, audio, sound, streaming, media, radio, simple, best, small, mp3, mp4, cd, free, online, listen, bluetooth

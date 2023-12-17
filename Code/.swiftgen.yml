@@ -1,0 +1,14 @@
+strings:
+  inputs: 
+    - EasyMusicPlayer/Base.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift5
+      output: EasyMusicPlayer/Strings.swift
+xcassets:
+  inputs:
+    - EasyMusicPlayer/Assets.xcassets
+    - EasyMusicPlayer/Preview Assets.xcassets
+    - EasyMusicPlayer/Colors.xcassets
+  outputs:
+    - templateName: swift5
+      output: EasyMusicPlayer/Assets.swift

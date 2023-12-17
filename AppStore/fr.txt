@@ -1,0 +1,21 @@
+==== Name ====
+
+Easy Music Player
+
+==== Description ====
+
+"Easy Music Player" est un moyen simple et alternatif de lire de la musique enregistrée sur votre téléphone. Cette application a été conçue avec amour dans un seul but: bien jouer votre musique.
+
+Contient:
+- Lecture, pause, suivant, précédent, lecture aléatoire, recherche
+- Barre d'épurateur de temps
+- Répéter aucun / un / tout
+- Jouez de la musique en arrière-plan
+- Contrôlez la musique depuis votre écran d'accueil et votre écran de verrouillage
+
+Compatible avec iPad et iPhone. Optimisé pour iPhone 8.
+
+
+==== Keywords ====
+
+musique,joueur,facile,audio,son,streaming,médias,radio,simple,mieux,petit,mp3,mp4,cd,gratuit,ligne,écouter,bluetooth

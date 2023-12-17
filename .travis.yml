@@ -1,0 +1,16 @@
+language: swift
+jobs:
+    include:
+        - script: xcodebuild -project Code/EasyMusicPlayer.xcodeproj -scheme EasyMusicPlayer GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS TRAVIS=1' OTHER_SWIFT_FLAGS='$OTHER_SWIFT_FLAGS -DTRAVIS' -destination platform\=iOS\ Simulator,name=iPhone\ 8 test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED=NO TRAVIS=1 | xcpretty && exit ${PIPESTATUS[0]}
+osx_image: xcode14
+# addons:
+#   homebrew:
+#     packages:
+#     - carthage
+# before_install:
+#   - brew update
+#   - brew upgrade carthage 
+#   - chmod +x carthage.sh
+#   - ./carthage.sh --xcode12 bootstrap --platform ios --no-use-binaries
+#   - chmod +x fix-frameworks.sh
+#   - ./fix-frameworks.sh

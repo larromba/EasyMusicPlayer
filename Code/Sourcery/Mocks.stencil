@@ -1,0 +1,235 @@
+// swiftlint:disable line_length
+// swiftlint:disable variable_name
+
+// https://github.com/larromba/swift-mockable 
+// 2.0.0
+
+import Foundation
+#if os(iOS) || os(tvOS) || os(watchOS)
+import UIKit
+#elseif os(OSX)
+import AppKit
+#endif
+
+import Combine
+@testable import EasyMusicPlayer
+import MediaPlayer
+
+{% macro helperClassPrefix %}_{% endmacro %}
+{% macro swiftifyMethodName name %}{{ name | replace:"(","_" | replace:")","" | replace:":","_" | replace:"`","" | snakeToCamelCase | lowerFirstWord }}{% endmacro %}
+{% macro underlyingVariableName variable %}_{{ variable.name }}{% endmacro %}
+{% macro mockedClassName className %}Mock{{ className }}{% endmacro %}
+{% macro functionKeyName method count %}{{ method.callName }}{{ count }}{% endmacro %}
+{% macro parametersEnumName %}params{% endmacro %}
+{% macro invocationsVariableName  %}invocations{% endmacro %}
+{% macro actionsVariableName  %}actions{% endmacro %}
+{% macro uniqueIdentifierForEnumParameter method param %}{{ method.name | replace:" ","" }}.{{ param.name | replace:" ","" }}{% endmacro %}
+{% macro mockMethod method count %}
+    {% if method.isInitializer %}required {% if method.name == "init()" %}override {% endif %}{{ method.name }}{% else %}{% if method.isStatic %}static {% endif %}func {{ method.name | replace:"  ","" }}{% endif %}{% if method.throws and not method.isInitializer %}{{ ' throws' }}{% endif %}{% if not method.returnTypeName.isVoid and not method.isInitializer %} -> {{ method.returnTypeName }}{% endif %} {
+        let functionName = {% call functionKeyName method count %}.name
+        {% if method.throws and not method.isInitializer %}
+        if let error = {% call actionsVariableName %}.error(for: functionName) {
+            throw error
+        }
+        {% endif %}
+        let invocation = {% call helperClassPrefix %}Invocation(name: functionName.rawValue)
+        {% for param in method.parameters %}
+        {% if param.isOptional %}
+        if let {{ param.name }} = {{ param.name }} {
+            invocation.set(parameter: {{ param.name }}, forKey: {% call functionKeyName method count %}.{% call parametersEnumName %}.{{ param.name }})
+        }
+        {% else %}
+        invocation.set(parameter: {{ param.name }}, forKey: {% call functionKeyName method count %}.{% call parametersEnumName %}.{{ param.name }})
+        {% endif %}
+        {% endfor %}
+        {% call invocationsVariableName %}.record(invocation)
+        {% if not method.returnTypeName.isVoid and not method.isInitializer %}
+        {% if method.annotations.returnValue or method.annotations.returnValue.description %}
+        {% call actionsVariableName %}.set(defaultReturnValue: {{ method.annotations.returnValue }}, for: functionName)
+        {% endif %}
+        return {% call actionsVariableName %}.returnValue(for: functionName){% if method.isOptionalReturnType and method.unwrappedReturnTypeName != 'Any' %} as? {% elif method.isOptionalReturnType and method.unwrappedReturnTypeName == 'Any' %} as {% else %} as! {% endif %}{{ method.unwrappedReturnTypeName }}
+        {% endif %}
+    }
+{% endmacro %}
+{% macro enumDefinition method count %}
+    enum {% call functionKeyName method count %}: String, {% call helperClassPrefix %}StringRawRepresentable {
+        case name = "{% call functionKeyName method count %}"
+        {% if not method.parameters.count == 0 %}
+        enum {% call parametersEnumName %}: String, {% call helperClassPrefix %}StringRawRepresentable {
+        {% for parameter in method.parameters %}
+            case {{ parameter.name }} = "{% call uniqueIdentifierForEnumParameter method parameter %}"
+        {% endfor %}
+        }
+        {% endif %}
+    }
+{% endmacro %}
+{% macro mockVariableTypeName variable %}{% if variable.isOptional %}{{ variable.typeName }}{% else %}{{ variable.typeName }}!{% endif %}{% endmacro %}
+{% macro mockVariable variable %}
+    var {{ variable.name }}: {{ variable.typeName }} {
+        get { return {% call underlyingVariableName variable %} }
+        set(value) { {% call underlyingVariableName variable %} = value; {% call underlyingVariableName variable %}History.append({% call helperClassPrefix %}Variable(value)) }
+    }
+    {% if variable.annotations.value or variable.annotations.value.description %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.annotations.value }}
+    {% elif variable.type.based.Mockable and variable.type.annotations.name %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.type.annotations.name }}()
+    {% elif variable.type.based.Mockable %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = Mock{{ variable.unwrappedTypeName }}()
+    {% elif variable.typeName|!contains:"." and variable.typeName|hasPrefix:"NS" or variable.typeName|hasPrefix:"UI" %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = {{ variable.typeName.unwrappedTypeName }}()
+    {% elif variable.isArray %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = []
+    {% elif variable.isDictionary %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %} = [:]
+    {% else %}
+    var {% call underlyingVariableName variable %}: {% call mockVariableTypeName variable %}
+    {% endif %}
+    var {% call underlyingVariableName variable %}History: [{% call helperClassPrefix %}Variable<{{ variable.unwrappedTypeName }}?>] = []
+{% endmacro %}
+// MARK: - Sourcery Helper
+
+protocol {% call helperClassPrefix %}StringRawRepresentable: RawRepresentable {
+    var rawValue: String { get }
+}
+
+struct {% call helperClassPrefix %}Variable<T> {
+    let date = Date()
+    var variable: T?
+
+    init(_ variable: T?) {
+        self.variable = variable
+    }
+}
+
+final class {% call helperClassPrefix %}Invocation {
+    let name: String
+    let date = Date()
+    private var parameters: [String: Any] = [:]
+
+    init(name: String) {
+        self.name = name
+    }
+
+    fileprivate func set<T: {% call helperClassPrefix %}StringRawRepresentable>(parameter: Any, forKey key: T) {
+        parameters[key.rawValue] = parameter
+    }
+    func parameter<T: {% call helperClassPrefix %}StringRawRepresentable>(for key: T) -> Any? {
+        return parameters[key.rawValue]
+    }
+}
+
+final class {% call helperClassPrefix %}Actions {
+    enum Keys: String, {% call helperClassPrefix %}StringRawRepresentable {
+        case returnValue
+        case defaultReturnValue
+        case error
+    }
+    private var invocations: [{% call helperClassPrefix %}Invocation] = []
+
+    // MARK: - returnValue
+
+    func set<T: {% call helperClassPrefix %}StringRawRepresentable>(returnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.returnValue)
+    }
+    func returnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.returnValue) ?? invocation.parameter(for: Keys.defaultReturnValue)
+    }
+
+    // MARK: - defaultReturnValue
+
+    fileprivate func set<T: {% call helperClassPrefix %}StringRawRepresentable>(defaultReturnValue value: Any, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: value, forKey: Keys.defaultReturnValue)
+    }
+    fileprivate func defaultReturnValue<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Any? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.defaultReturnValue) as? (() -> Void)
+    }
+
+    // MARK: - error
+
+    func set<T: {% call helperClassPrefix %}StringRawRepresentable>(error: Error, for functionName: T) {
+        let invocation = self.invocation(for: functionName)
+        invocation.set(parameter: error, forKey: Keys.error)
+    }
+    func error<T: {% call helperClassPrefix %}StringRawRepresentable>(for functionName: T) -> Error? {
+        let invocation = self.invocation(for: functionName)
+        return invocation.parameter(for: Keys.error) as? Error
+    }
+
+    // MARK: - private
+
+    private func invocation<T: {% call helperClassPrefix %}StringRawRepresentable>(for name: T) -> {% call helperClassPrefix %}Invocation {
+        if let invocation = invocations.filter({ $0.name == name.rawValue }).first {
+            return invocation
+        }
+        let invocation = {% call helperClassPrefix %}Invocation(name: name.rawValue)
+        invocations += [invocation]
+        return invocation
+    }
+}
+
+final class {% call helperClassPrefix %}Invocations {
+    private var history = [{% call helperClassPrefix %}Invocation]()
+
+    fileprivate func record(_ invocation: {% call helperClassPrefix %}Invocation) {
+        history += [invocation]
+    }
+
+    func isInvoked<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> Bool {
+        return history.contains(where: { $0.name == name.rawValue })
+    }
+
+    func count<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> Int {
+        return history.filter { $0.name == name.rawValue }.count
+    }
+
+    func all() -> [{% call helperClassPrefix %}Invocation] {
+        return history.sorted { $0.date < $1.date }
+    }
+
+    func find<T: {% call helperClassPrefix %}StringRawRepresentable>(_ name: T) -> [{% call helperClassPrefix %}Invocation] {
+        return history.filter { $0.name == name.rawValue }.sorted { $0.date < $1.date }
+    }
+
+    func clear() {
+        history.removeAll()
+    }
+}
+
+// MARK: - Sourcery Mocks
+{% for type in types.protocols where type.based.Mockable or type|annotated:"Mockable" %}
+
+{% if type.name != "Mockable" %}
+class {% if type.annotations.name %}{% call mockedClassName type.annotations.name %}{% else %}{% call mockedClassName type.name %}{% endif %}{% if type.annotations.inherits %}: {{ type.annotations.inherits }}{% else %}: NSObject{% endif %}, {{ type.name }} {
+{% for value in type.annotations.associatedtype %}
+    typealias {{ value }} = Any
+{% endfor %}
+{% for variable in type.allVariables|!definedInExtension %}
+    {% call mockVariable variable %}
+{% endfor %}
+    {% if not type.allMethods.count == 0 %}
+    let {% call invocationsVariableName %} = {% call helperClassPrefix %}Invocations()
+    let {% call actionsVariableName %} = {% call helperClassPrefix %}Actions()
+    static let {% call invocationsVariableName %} = {% call helperClassPrefix %}Invocations()
+    static let {% call actionsVariableName %} = {% call helperClassPrefix %}Actions()
+    {% for method in type.allMethods|!definedInExtension %}
+
+    // MARK: - {{ method.shortName }}
+
+    {% call mockMethod method forloop.counter %}
+
+    {% call enumDefinition method forloop.counter %}
+    {% endfor %}
+    {% endif %}
+    {% if type.annotations.init == "coder" %}
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    {% endif %}
+}
+{% endif %}
+{% endfor %}

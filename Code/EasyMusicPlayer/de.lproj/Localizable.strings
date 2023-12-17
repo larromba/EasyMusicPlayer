@@ -1,0 +1,28 @@
+"unknown artist" = "Unbekannter Interpret";
+"unknown track" = "Unbekannter Titel";
+
+"time format" = "%@";
+"time interval format" = "%02d:%02d:%02d";
+"track position format" = "%i von %i";
+
+"no music error title" = "Fehler";
+"no music error msg" = "Du hast keine Musik";
+"no music error button" = "OK";
+"no volume error title" = "Fehler";
+"no volume error msg" = "Deine Lautstärke ist zu niedrig";
+"no volume error button" = "OK";
+"track error title" = "Fehler";
+"track error msg" = "'%@' konnte nicht wiedergegeben werden";
+"track error button" = "OK";
+"finished alert title" = "Ende";
+"finished alert msg" = "Deine Wiedergabeliste ist zu Ende";
+"finished alert button" = "OK";
+"authorization error title" = "Genehmigung";
+"authorization error message" = "In den Einstellungen erlauben Sie bitte den Zugriff auf Ihre Musik!";
+"authorization error button" = "OK";
+"play error title" = "Fehler";
+"play error message" = "Titel konnte nicht abgespielt werden";
+"play error button" = "OK";
+
+"search view title" = "Suche";
+"search view empty text" = "Nichts gefunden";
