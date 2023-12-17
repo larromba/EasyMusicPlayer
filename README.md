@@ -1,6 +1,6 @@
 # Easy Music Player [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://img.shields.io) [![Open Source Love png1](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-| master  | dev |
+| main  | develop |
 | ------------- | ------------- |
 | [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=main)](https://travis-ci.com/larromba/EasyMusicPlayer) | [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=dev)](https://travis-ci.com/larromba/EasyMusicPlayer) |
 
