@@ -1,6 +1,0 @@
-sources:
-  - ./EasyMusicPlayer
-templates:
-  - ./Templates
-output:
-  ./Generated
