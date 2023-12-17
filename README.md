@@ -114,7 +114,7 @@ Have fun! This app is live in the app store, so your contributions will help peo
 ## Localizations
 There's a number of things localised. You can find them in text files here: 
 
-`Code/EasyMusicPlayer/[LANGUAGE].lproj. 
+`Code/EasyMusicPlayer/[LANGUAGE].lproj.`
 
 Most of them were Google translated, so please feel welcome to make corrections, or even add a new language!
 
