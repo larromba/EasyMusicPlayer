@@ -2,6 +2,7 @@
 
 ## 4.0.0 (13/12/2023)
     SwiftUI
+    Dark mode
     Made the project more accessible to other developers by using industry standard practises & technologies
 
 ## 3.0.2 (13/10/2021)
