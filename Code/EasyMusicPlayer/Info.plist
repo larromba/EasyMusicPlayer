@@ -26,7 +26,5 @@
 	<array>
 		<string>audio</string>
 	</array>
-	<key>CFBundleDisplayName</key>
-	<string>EasyMusic</string>
 </dict>
 </plist>

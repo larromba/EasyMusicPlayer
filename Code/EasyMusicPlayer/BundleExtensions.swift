@@ -28,6 +28,6 @@ extension Bundle {
 
     // helpful for unit testing
     static var safeMain: Bundle {
-        return Bundle(identifier: "com.pinkchicken.EasyMusicPlayer2")!
+        return Bundle(identifier: "com.pinkchicken.easymusicplayer")!
     }
 }
