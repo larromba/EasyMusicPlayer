@@ -26,5 +26,7 @@
 	<array>
 		<string>audio</string>
 	</array>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app plays music from your library</string>
 </dict>
 </plist>
