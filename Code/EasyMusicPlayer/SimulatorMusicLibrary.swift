@@ -10,34 +10,49 @@ extension MPMediaQuery {
     }
 
     private static let smallLibary = [
-        SimulatorMediaItem(asset: .normal, id: 0),
-        SimulatorMediaItem(asset: .normal, id: 1),
-        SimulatorMediaItem(asset: .normal, id: 2)
+        SimulatorMediaItem(asset: .track1, artist: "Foo", title: "Apple", id: 0),
+        SimulatorMediaItem(asset: .track2, artist: "Bar", title: "Orange", id: 1),
+        SimulatorMediaItem(asset: .track3, artist: "The Foo Bars", title: "Pear", id: 2)
     ]
 
     private static let largeLibrary: [MPMediaItem] = {
         return (0..<50_000).map {
-            SimulatorMediaItem(asset: .normal, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
+            SimulatorMediaItem(asset: .random, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
         }
     }()
 }
 
 // MARK: - DummyAsset
 
-enum DummyAsset {
-    case normal
+enum DummyAsset: Int {
+    case track1
+    case track2
+    case track3
+
+    static var random: DummyAsset {
+        DummyAsset(rawValue: Int.random(in: 0..<3))!
+    }
 
     var url: URL {
+        let tracks = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
         switch self {
-        case .normal:
-            return URL(fileURLWithPath: Bundle.safeMain.infoDictionary!["DummyAudioPath"] as! String)
+        case .track1:
+            return URL(fileURLWithPath: tracks["Track #1"]!)
+        case .track2:
+            return URL(fileURLWithPath: tracks["Track #2"]!)
+        case .track3:
+            return URL(fileURLWithPath: tracks["Track #3"]!)
         }
     }
 
     var playbackDuration: TimeInterval {
         switch self {
-        case .normal:
-            return 290
+        case .track1:
+            return 32
+        case .track2:
+            return 31
+        case .track3:
+            return 34
         }
     }
 }
@@ -69,7 +84,7 @@ final class SimulatorMediaItem: MPMediaItem {
     }
 
     init(
-        asset: DummyAsset = .normal,
+        asset: DummyAsset = .track1,
         artist: String = "Arkist",
         title: String = "Fill Your Coffee",
         id: MPMediaEntityPersistentID = 0,
