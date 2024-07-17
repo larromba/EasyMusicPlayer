@@ -33,7 +33,7 @@ struct InfoView: View {
             Text(viewModel.artist)
                 .font(.system(size: 22, weight: .bold))
                 .foregroundColor(.infoViewText)
-            Text(viewModel.track)
+            Text(viewModel.trackTitle)
                 .font(.system(size: 17))
                 .foregroundColor(.infoViewText)
         }

@@ -22,11 +22,11 @@ final class InfoViewModelTests: XCTestCase {
 
     func test_state_whenPlayReceived_expectItemUpdate() {
         let item = MediaItemMock()
-        setup(musicPlayer: MusicPlayableMock(info: .mock(item: item)))
+        setup(musicPlayer: MusicPlayableMock(info: .mock(track: item)))
 
         musicPlayer.stateSubject.send(.play)
 
-        XCTAssertEqual(sut.item, item)
+        XCTAssertEqual(sut.track, item)
     }
 
     func test_state_whenPlayReceived_expectTimeUpdate() {
@@ -47,7 +47,7 @@ final class InfoViewModelTests: XCTestCase {
 
     func test_state_whenPlayReceived_expectRemoteUpdate() {
         let item = MediaItemMock(artist: "artist", title: "title", artwork: .mock, playbackDuration: 100)
-        setup(musicPlayer: MusicPlayableMock(info: .mock(item: item, time: 10)))
+        setup(musicPlayer: MusicPlayableMock(info: .mock(track: item, time: 10)))
 
         musicPlayer.stateSubject.send(.play)
 
@@ -60,6 +60,49 @@ final class InfoViewModelTests: XCTestCase {
         XCTAssertEqual(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval, 100)
     }
 
+    func test_state_whenResetReceived_expectItemUpdate() {
+        musicPlayer.stateSubject.send(.reset)
+
+        XCTAssertEqual(sut.track, nil)
+    }
+
+    func test_state_whenResetReceived_expectTimeUpdate() {
+        musicPlayer.stateSubject.send(.reset)
+
+        XCTAssertEqual(sut.time, "")
+    }
+
+    func test_state_whenResetReceived_expectPositionUpdate() {
+        musicPlayer.stateSubject.send(.reset)
+
+        XCTAssertEqual(sut.position, "")
+    }
+
+    func test_state_whenResetReceived_expectRemoteUpdate() {
+        remote.nowPlayingInfo = [MPNowPlayingInfoPropertyElapsedPlaybackTime: 60]
+
+        musicPlayer.stateSubject.send(.reset)
+
+        let info = remote.nowPlayingInfo
+        XCTAssertTrue(info?.keys.isEmpty ?? false)
+    }
+
+    func test_state_whenStopReceived_expectTimeUpdate() {
+        musicPlayer.stateSubject.send(.stop)
+
+        XCTAssertEqual(sut.time, "00:00:00")
+    }
+
+    func test_state_whenStopReceived_expectRemoteUpdate() {
+        remote.nowPlayingInfo = [:]
+        sut.track = MediaItemMock()
+
+        musicPlayer.stateSubject.send(.stop)
+
+        let info = remote.nowPlayingInfo
+        XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
+    }
+
     func test_state_whenClockReceived_expecTimeUpdate() {
         musicPlayer.stateSubject.send(.clock(60))
 
@@ -68,7 +111,7 @@ final class InfoViewModelTests: XCTestCase {
 
     func test_state_whenClockReceived_expectRemoteUpdate() {
         remote.nowPlayingInfo = [:]
-        sut.item = MediaItemMock(playbackDuration: 100)
+        sut.track = MediaItemMock(playbackDuration: 100)
 
         musicPlayer.stateSubject.send(.clock(60))
 

@@ -4,18 +4,18 @@ import UIKit
 
 @MainActor
 final class InfoViewModel: ObservableObject {
-    @Published var item: MPMediaItem?
+    @Published var track: MPMediaItem?
     @Published var time = ""
     @Published var position = ""
 
     var artist: String {
-        item?.resolvedArtist ?? ""
+        track?.resolvedArtist ?? ""
     }
-    var track: String {
-        item?.resolvedTitle ?? ""
+    var trackTitle: String {
+        track?.resolvedTitle ?? ""
     }
     var artwork: UIImage {
-        item?.artwork?.image(at: .artwork) ?? .imagePlaceholder
+        track?.artwork?.image(at: .artwork) ?? .imagePlaceholder
     }
 
     private let musicPlayer: MusicPlayable
@@ -38,6 +38,8 @@ final class InfoViewModel: ObservableObject {
                 updateClock(timeInterval)
             case .stop:
                 stop()
+            case .reset:
+                reset()
             default:
                 break
             }
@@ -45,7 +47,7 @@ final class InfoViewModel: ObservableObject {
     }
 
     private func updateTrack() {
-        item = musicPlayer.info.track.item
+        track = musicPlayer.info.track.track
         position = L10n.trackPositionFormat(musicPlayer.info.track.number, musicPlayer.info.tracks.count)
         time = L10n.timeFormat(stringFromTimeInterval(musicPlayer.info.time))
 
@@ -69,11 +71,20 @@ final class InfoViewModel: ObservableObject {
 
     private func stop() {
         time = L10n.timeFormat(stringFromTimeInterval(0))
+
+        updateRemoteTime(0)
+    }
+
+    private func reset() {
+        track = nil
+        time = ""
+        position = ""
+        remote.nowPlayingInfo = [:]
     }
 
     private func updateRemoteTrack() {
         remote.nowPlayingInfo = [
-            MPMediaItemPropertyTitle: track,
+            MPMediaItemPropertyTitle: trackTitle,
             MPMediaItemPropertyArtist: artist,
             MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: .artwork) { _ in self.artwork },
             MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue
@@ -83,7 +94,7 @@ final class InfoViewModel: ObservableObject {
     private func updateRemoteTime(_ timeInterval: TimeInterval) {
         guard var nowPlayingInfo = remote.nowPlayingInfo else { return }
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = timeInterval
-        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = item?.playbackDuration ?? 0
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = track?.playbackDuration ?? 0
         remote.nowPlayingInfo = nowPlayingInfo
     }
 }

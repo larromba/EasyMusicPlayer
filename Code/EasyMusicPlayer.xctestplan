@@ -17,7 +17,6 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:EasyMusicPlayer.xcodeproj",
         "identifier" : "7F2AE68D2B29CACB00B627AA",
@@ -25,7 +24,6 @@
       }
     },
     {
-      "parallelizable" : true,
       "skippedTests" : [
         "SnapshotTests"
       ],

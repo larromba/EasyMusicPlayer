@@ -29,7 +29,7 @@ struct SearchView: View {
 
     private var searchResultsView: some View {
         List {
-            ForEach(viewModel.tracks, id: \.id) { track in
+            ForEach(viewModel.tracks) { track in
                 VStack(alignment: .leading) {
                     Text(track.resolvedArtist)
                         .font(.system(size: 20, weight: .light))
@@ -40,7 +40,6 @@ struct SearchView: View {
                 }
                 .background(.black.opacity(0.01)) // hack to make the whole row tappable
                 .frame(maxWidth: .infinity, alignment: .leading)
-
                 .onTapGesture {
                     viewModel.select(track)
                 }

@@ -8,7 +8,7 @@ final class ScrubberViewModelTests: XCTestCase {
     private var sut: ScrubberViewModel!
 
     override func setUpWithError() throws {
-        musicPlayer = MusicPlayableMock(info: .mock(item: .mock(playbackDuration: 60)))
+        musicPlayer = MusicPlayableMock(info: .mock(track: .mock(playbackDuration: 60)))
         sut = ScrubberViewModel(musicPlayer: musicPlayer)
         sut.maxWidth = 100
     }

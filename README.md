@@ -19,7 +19,7 @@ If you're new to programming, and want an introduction, please go [here](https:/
 
 This is used to automatically create the code that accesses `Assets.xcassets` and `Colors.xcassets`.
 
-You can read more [here](https://github.com/realm/SwiftLint).
+You can read more [here](https://github.com/SwiftGen/SwiftGen).
 
 **SwiftLint**
 
@@ -27,7 +27,7 @@ You can read more [here](https://github.com/realm/SwiftLint).
 
 This is a dependency used to lint the code.
 
-You can read more [here](https://github.com/SwiftGen/SwiftGen).
+You can read more [here](https://github.com/realm/SwiftLint).
 
 **mockolo** *(unit testing only)*
 

@@ -30,13 +30,17 @@ public func logHack(_ items: Any..., separator: String = " ", terminator: String
     _log(items, separator: separator, terminator: terminator)
 }
 
-// want to use print functionality, but print turns Any...[] into [[Any]], meaning the separator is ignored
 // swiftlint:disable identifier_name cyclomatic_complexity
+// outputs only in DEBUG mode
 func _log(_ items: Any..., separator s: String = " ", terminator t: String = "\n") {
+    #if DEBUG
+
     guard let i = items[0] as? [Any] else {
         assertionFailure("expected [Any]")
         return
     }
+
+    // when just calling print(), print turns Any...[] into [[Any]], meaning the separator is ignored
     switch i.count {
     case 1:
         print(i[0], separator: s, terminator: t)
@@ -61,4 +65,6 @@ func _log(_ items: Any..., separator s: String = " ", terminator t: String = "\n
     default:
         print(i, separator: s, terminator: t)
     }
+
+    #endif
 }

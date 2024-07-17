@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.1 (05/07/2024)
+    fix: library refresh bug
+    fix: search selecting wrong track 
+
 ## 4.0.0 (13/12/2023)
     SwiftUI
     Dark mode

@@ -1,12 +1,14 @@
 #if DEBUG && targetEnvironment(simulator)
 import MediaPlayer
 
+// MARK: - MPMediaQuery
+
 extension MPMediaQuery {
     // CHANGE THIS TO TEST DIFFERENT LIBRARIES ON THE SIMULATOR
     static func songs() -> MPMediaQuery {
-        SimulatorMediaQuery(items: smallLibary)
-//        SimulatorMediaQuery(items: largeLibrary)
-//        SimulatorMediaQuery(items: uiTestLibrary)
+//        SimulatorMediaQuery(tracks: smallLibary)
+        SimulatorMediaQuery(tracks: largeLibrary)
+//        SimulatorMediaQuery(tracks: uiTestLibrary)
     }
 
     private static let smallLibary = [
@@ -22,44 +24,42 @@ extension MPMediaQuery {
     }()
 }
 
-// MARK: - DummyAsset
-
-enum DummyAsset: Int {
-    case track1
-    case track2
-    case track3
-
-    static var random: DummyAsset {
-        DummyAsset(rawValue: Int.random(in: 0..<3))!
-    }
-
-    var url: URL {
-        let tracks = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
-        switch self {
-        case .track1:
-            return URL(fileURLWithPath: tracks["Track #1"]!)
-        case .track2:
-            return URL(fileURLWithPath: tracks["Track #2"]!)
-        case .track3:
-            return URL(fileURLWithPath: tracks["Track #3"]!)
-        }
-    }
-
-    var playbackDuration: TimeInterval {
-        switch self {
-        case .track1:
-            return 32
-        case .track2:
-            return 31
-        case .track3:
-            return 34
-        }
-    }
-}
-
-// MARK: - DummyMediaItem
+// MARK: - SimulatorMediaItem
 
 final class SimulatorMediaItem: MPMediaItem {
+    enum MediaAsset: Int {
+        case track1
+        case track2
+        case track3
+
+        static var random: MediaAsset {
+            MediaAsset(rawValue: .random(in: 0..<3))!
+        }
+
+        var url: URL {
+            let tracks = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
+            switch self {
+            case .track1:
+                return URL(fileURLWithPath: tracks["Track #1"]!)
+            case .track2:
+                return URL(fileURLWithPath: tracks["Track #2"]!)
+            case .track3:
+                return URL(fileURLWithPath: tracks["Track #3"]!)
+            }
+        }
+
+        var playbackDuration: TimeInterval {
+            switch self {
+            case .track1:
+                return 32
+            case .track2:
+                return 31
+            case .track3:
+                return 34
+            }
+        }
+    }
+
     private let _artist: String
     override var artist: String { return _artist }
 
@@ -84,7 +84,7 @@ final class SimulatorMediaItem: MPMediaItem {
     }
 
     init(
-        asset: DummyAsset = .track1,
+        asset: MediaAsset = .track1,
         artist: String = "Arkist",
         title: String = "Fill Your Coffee",
         id: MPMediaEntityPersistentID = 0,
@@ -113,15 +113,14 @@ final class SimulatorMediaItem: MPMediaItem {
     }
 }
 
-// MARK: - DummyMediaQuery
+// MARK: - SimulatorMediaQuery
 
-// for library, see MediaQueryable
 final class SimulatorMediaQuery: MPMediaQuery {
     private let _items: [MPMediaItem]
     private var id: MPMediaEntityPersistentID?
 
-    init(items: [MPMediaItem]) {
-        _items = items
+    init(tracks: [MPMediaItem]) {
+        _items = tracks
         super.init(filterPredicates: nil)
     }
 

@@ -72,7 +72,7 @@ extension MPMediaItemArtwork {
 
 extension MusicPlayerInformation {
     static func mock(
-        item: MPMediaItem? = nil,
+        track: MPMediaItem? = nil,
         index: Int = 0,
         tracks: [MPMediaItem] = [],
         time: TimeInterval = 0,
@@ -81,7 +81,7 @@ extension MusicPlayerInformation {
     ) -> MusicPlayerInformation {
         MusicPlayerInformation(
             track: CurrentTrackInformation(
-                item: item,
+                track: track,
                 index: index
             ),
             tracks: tracks,

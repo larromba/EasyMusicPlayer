@@ -144,7 +144,7 @@ final class ControlsViewModelTests: XCTestCase {
 
     func test_state_whenInvoked_expectPrevButtonUpdated() {
         setup(musicPlayer: MusicPlayableMock(info: .mock(repeatMode: .one)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.one)]
+        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.one)]
 
         states.forEach {
             musicPlayer.stateSubject.send($0)
@@ -156,7 +156,7 @@ final class ControlsViewModelTests: XCTestCase {
 
     func test_state_givenNoRepeatMode_andIndexGT0_whenInvoked_expectPrevButtonUpdated() {
         setup(musicPlayer: MusicPlayableMock(info: .mock(index: 5, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.none)]
+        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
 
         states.forEach {
             musicPlayer.stateSubject.send($0)
@@ -168,7 +168,7 @@ final class ControlsViewModelTests: XCTestCase {
 
     func test_state_givenNoRepeatMode_andIndexLT0_whenInvoked_expectPrevButtonUpdated() {
         setup(musicPlayer: MusicPlayableMock(info: .mock(index: 0, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.none)]
+        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
 
         states.forEach {
             musicPlayer.stateSubject.send($0)
@@ -182,7 +182,7 @@ final class ControlsViewModelTests: XCTestCase {
 
     func test_state_whenInvoked_expectNextButtonUpdated() {
         setup(musicPlayer: MusicPlayableMock(info: .mock(repeatMode: .one)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.one)]
+        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.one)]
 
         states.forEach {
             musicPlayer.stateSubject.send($0)
@@ -195,7 +195,7 @@ final class ControlsViewModelTests: XCTestCase {
     func test_state_givenNoRepeatMode_andIndexGTEAll_whenInvoked_expectPrevButtonUpdated() {
         let tracks = Array(repeating: MediaItemMock(), count: 5)
         setup(musicPlayer: MusicPlayableMock(info: .mock(index: 4, tracks: tracks, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.none)]
+        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
 
         states.forEach {
             musicPlayer.stateSubject.send($0)
@@ -208,7 +208,7 @@ final class ControlsViewModelTests: XCTestCase {
     func test_state_givenNoRepeatMode_andIndexLTAll_whenInvoked_expectPrevButtonUpdated() {
         let tracks = Array(repeating: MediaItemMock(), count: 5)
         setup(musicPlayer: MusicPlayableMock(info: .mock(index: 0, tracks: tracks, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.none)]
+        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
 
         states.forEach {
             musicPlayer.stateSubject.send($0)
@@ -242,6 +242,14 @@ final class ControlsViewModelTests: XCTestCase {
 
     func test_state_whenStopReceived_expectUpdates() {
         musicPlayer.stateSubject.send(.stop)
+
+        XCTAssertEqual(sut.playButton.image, .playButton)
+        XCTAssertTrue(sut.stopButton.isDisabled)
+        XCTAssertFalse(remote.stopCommand.isEnabled)
+    }
+
+    func test_state_whenResetReceived_expectUpdates() {
+        musicPlayer.stateSubject.send(.reset)
 
         XCTAssertEqual(sut.playButton.image, .playButton)
         XCTAssertTrue(sut.stopButton.isDisabled)

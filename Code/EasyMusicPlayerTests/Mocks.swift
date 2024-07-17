@@ -175,28 +175,38 @@ class MusicAuthorizableMock: MusicAuthorizable {
     }
 }
 
-class PlaylistableMock: Playlistable {
+class MusicLibraryableMock: MusicLibraryable {
     init() { }
 
 
-    private(set) var createCallCount = 0
-    var createHandler: ((Bool) -> ([MPMediaItem]))?
-    func create(shuffled: Bool) -> [MPMediaItem] {
-        createCallCount += 1
-        if let createHandler = createHandler {
-            return createHandler(shuffled)
+    private(set) var makePlaylistCallCount = 0
+    var makePlaylistHandler: ((Bool) -> ([MPMediaItem]))?
+    func makePlaylist(isShuffled: Bool) -> [MPMediaItem] {
+        makePlaylistCallCount += 1
+        if let makePlaylistHandler = makePlaylistHandler {
+            return makePlaylistHandler(isShuffled)
         }
         return [MPMediaItem]()
     }
 
-    private(set) var findCallCount = 0
-    var findHandler: (([UInt64]) -> ([MPMediaItem]))?
-    func find(ids: [UInt64]) -> [MPMediaItem] {
-        findCallCount += 1
-        if let findHandler = findHandler {
-            return findHandler(ids)
+    private(set) var findTracksCallCount = 0
+    var findTracksHandler: (([MPMediaEntityPersistentID]) -> ([MPMediaItem]))?
+    func findTracks(with ids: [MPMediaEntityPersistentID]) -> [MPMediaItem] {
+        findTracksCallCount += 1
+        if let findTracksHandler = findTracksHandler {
+            return findTracksHandler(ids)
         }
         return [MPMediaItem]()
+    }
+
+    private(set) var areTrackIDsValidCallCount = 0
+    var areTrackIDsValidHandler: (([MPMediaEntityPersistentID]) -> (Bool))?
+    func areTrackIDsValid(_ ids: [MPMediaEntityPersistentID]) -> Bool {
+        areTrackIDsValidCallCount += 1
+        if let areTrackIDsValidHandler = areTrackIDsValidHandler {
+            return areTrackIDsValidHandler(ids)
+        }
+        return false
     }
 }
 
@@ -398,16 +408,16 @@ class MusicPlayableMock: MusicPlayable {
 
 class MusicQueuableMock: MusicQueuable {
     init() { }
-    init(current: MPMediaItem? = nil, repeatMode: RepeatMode, index: Int = 0, items: [MPMediaItem] = [MPMediaItem]()) {
-        self.current = current
+    init(currentTrack: MPMediaItem? = nil, repeatMode: RepeatMode, currentTrackIndex: Int = 0, tracks: [MPMediaItem] = [MPMediaItem]()) {
+        self.currentTrack = currentTrack
         self._repeatMode = repeatMode
-        self.index = index
-        self.items = items
+        self.currentTrackIndex = currentTrackIndex
+        self.tracks = tracks
     }
 
 
-    private(set) var currentSetCallCount = 0
-    var current: MPMediaItem? = nil { didSet { currentSetCallCount += 1 } }
+    private(set) var currentTrackSetCallCount = 0
+    var currentTrack: MPMediaItem? = nil { didSet { currentTrackSetCallCount += 1 } }
 
     private(set) var repeatModeSetCallCount = 0
     private var _repeatMode: RepeatMode!  { didSet { repeatModeSetCallCount += 1 } }
@@ -416,11 +426,11 @@ class MusicQueuableMock: MusicQueuable {
         set { _repeatMode = newValue }
     }
 
-    private(set) var indexSetCallCount = 0
-    var index: Int = 0 { didSet { indexSetCallCount += 1 } }
+    private(set) var currentTrackIndexSetCallCount = 0
+    var currentTrackIndex: Int = 0 { didSet { currentTrackIndexSetCallCount += 1 } }
 
-    private(set) var itemsSetCallCount = 0
-    var items: [MPMediaItem] = [MPMediaItem]() { didSet { itemsSetCallCount += 1 } }
+    private(set) var tracksSetCallCount = 0
+    var tracks: [MPMediaItem] = [MPMediaItem]() { didSet { tracksSetCallCount += 1 } }
 
     private(set) var primeCallCount = 0
     var primeHandler: ((MPMediaItem) -> ())?
@@ -432,24 +442,14 @@ class MusicQueuableMock: MusicQueuable {
         
     }
 
-    private(set) var itemCallCount = 0
-    var itemHandler: ((MusicQueueTrackPosition) -> (MPMediaItem?))?
-    func item(for position: MusicQueueTrackPosition) -> MPMediaItem? {
-        itemCallCount += 1
-        if let itemHandler = itemHandler {
-            return itemHandler(position)
+    private(set) var trackCallCount = 0
+    var trackHandler: ((MusicQueueTrackPosition) -> (MPMediaItem?))?
+    func track(for position: MusicQueueTrackPosition) -> MPMediaItem? {
+        trackCallCount += 1
+        if let trackHandler = trackHandler {
+            return trackHandler(position)
         }
         return nil
-    }
-
-    private(set) var resetCallCount = 0
-    var resetHandler: (() -> ())?
-    func reset()  {
-        resetCallCount += 1
-        if let resetHandler = resetHandler {
-            resetHandler()
-        }
-        
     }
 
     private(set) var loadCallCount = 0
@@ -470,6 +470,16 @@ class MusicQueuableMock: MusicQueuable {
             createHandler()
         }
         
+    }
+
+    private(set) var hasUpdatesCallCount = 0
+    var hasUpdatesHandler: (() -> (Bool))?
+    func hasUpdates() -> Bool {
+        hasUpdatesCallCount += 1
+        if let hasUpdatesHandler = hasUpdatesHandler {
+            return hasUpdatesHandler()
+        }
+        return false
     }
 
     private(set) var toggleRepeatModeCallCount = 0

@@ -4,55 +4,55 @@ import MediaPlayer
 
 /// @mockable
 protocol MusicQueuable: AnyObject {
-    var current: MPMediaItem? { get }
+    var currentTrack: MPMediaItem? { get }
     var repeatMode: RepeatMode { get set }
-    var index: Int { get }
-    var items: [MPMediaItem] { get }
+    var currentTrackIndex: Int { get }
+    var tracks: [MPMediaItem] { get }
 
     func prime(_ track: MPMediaItem)
-    func item(for position: MusicQueueTrackPosition) -> MPMediaItem?
+    func track(for position: MusicQueueTrackPosition) -> MPMediaItem?
     func load()
     func create()
+    func hasUpdates() -> Bool
     func toggleRepeatMode()
 }
 
 // deals with figuring out what comes next
 // also writes data to the user service (e.g. current track etc)
-// TODO: NSNotification.Name.MPMediaLibraryDidChange indicates when the music library changes.
 final class MusicQueue: MusicQueuable {
-    var current: MPMediaItem? {
-        items[safe: index]
+    var currentTrack: MPMediaItem? {
+        tracks[safe: currentTrackIndex]
     }
     var repeatMode: RepeatMode {
         didSet { userService.repeatMode = repeatMode }
     }
-    private(set) var index = 0 {
-        didSet { userService.currentTrackID = current?.persistentID }
+    private(set) var currentTrackIndex = 0 {
+        didSet { userService.currentTrackID = currentTrack?.persistentID }
     }
-    private let playlist: Playlistable
+    private let musicLibrary: MusicLibraryable
     private let userService: UserServicing
 
     init(
-        playlist: Playlistable = Playlist(),
+        musicLibrary: MusicLibraryable = MusicLibrary(),
         userService: UserServicing = UserService()
     ) {
-        self.playlist = playlist
+        self.musicLibrary = musicLibrary
         self.userService = userService
         repeatMode = userService.repeatMode ?? .none
     }
 
-    private(set) var items = [MPMediaItem]() {
-        didSet { userService.trackIDs = items.map { $0.persistentID } }
+    private(set) var tracks = [MPMediaItem]() {
+        didSet { userService.trackIDs = tracks.map { $0.persistentID } }
     }
 
     func prime(_ track: MPMediaItem) {
-        index = items.firstIndex(where: { $0.persistentID == track.persistentID }) ?? 0
+        currentTrackIndex = tracks.firstIndex(where: { $0.persistentID == track.persistentID }) ?? 0
     }
 
-    func item(for position: MusicQueueTrackPosition) -> MPMediaItem? {
+    func track(for position: MusicQueueTrackPosition) -> MPMediaItem? {
         switch position {
         case .current:
-            return current
+            return currentTrack
         case .next:
             return cueNext()
         case .previous:
@@ -61,20 +61,24 @@ final class MusicQueue: MusicQueuable {
     }
 
     func load() {
-        guard let trackIDs = userService.trackIDs, !trackIDs.isEmpty else {
+        guard let trackIDs = userService.trackIDs, !trackIDs.isEmpty, musicLibrary.areTrackIDsValid(trackIDs) else {
             create()
             return
         }
-        items = playlist.find(ids: trackIDs)
-        guard let trackID = userService.currentTrackID, let track = playlist.find(ids: [trackID]).first else {
+        tracks = musicLibrary.findTracks(with: trackIDs)
+        guard let trackID = userService.currentTrackID, let track = musicLibrary.findTracks(with: [trackID]).first else {
             return
         }
         prime(track)
     }
 
     func create() {
-        items = playlist.create(shuffled: true)
-        index = 0
+        tracks = musicLibrary.makePlaylist(isShuffled: true)
+        currentTrackIndex = 0
+    }
+
+    func hasUpdates() -> Bool {
+        !musicLibrary.areTrackIDsValid(tracks.map { $0.id })
     }
 
     func toggleRepeatMode() {
@@ -84,40 +88,40 @@ final class MusicQueue: MusicQueuable {
     private func cueNext() -> MPMediaItem? {
         switch repeatMode {
         case .none:
-            guard index + 1 < items.endIndex else {
+            guard currentTrackIndex + 1 < tracks.endIndex else {
                 return nil
             }
-            index += 1
-            return current
+            currentTrackIndex += 1
+            return currentTrack
         case .one:
-            return current
+            return currentTrack
         case .all:
-            guard index + 1 < items.endIndex else {
-                index = items.startIndex
-                return current
+            guard currentTrackIndex + 1 < tracks.endIndex else {
+                currentTrackIndex = tracks.startIndex
+                return currentTrack
             }
-            index += 1
-            return current
+            currentTrackIndex += 1
+            return currentTrack
         }
     }
 
     private func cuePrevious() -> MPMediaItem? {
         switch repeatMode {
         case .none:
-            guard index - 1 >= items.startIndex else {
+            guard currentTrackIndex - 1 >= tracks.startIndex else {
                 return nil
             }
-            index -= 1
-            return current
+            currentTrackIndex -= 1
+            return currentTrack
         case .one:
-            return current
+            return currentTrack
         case .all:
-            guard index - 1 >= items.startIndex else {
-                index = items.endIndex - 1
-                return current
+            guard currentTrackIndex - 1 >= tracks.startIndex else {
+                currentTrackIndex = tracks.endIndex - 1
+                return currentTrack
             }
-            index -= 1
-            return current
+            currentTrackIndex -= 1
+            return currentTrack
         }
     }
 }

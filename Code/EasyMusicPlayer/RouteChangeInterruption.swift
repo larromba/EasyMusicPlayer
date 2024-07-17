@@ -15,9 +15,9 @@ final class RouteChangeInterruption: MusicInterruption {
 // MARK: - Array
 
 private extension Array where Element == AVAudioSession.Port {
-    func intersects(_ items: [AVAudioSession.Port]) -> Bool {
-        guard !self.isEmpty && !items.isEmpty else { return false }
-        return !Set(self).isDisjoint(with: Set(items))
+    func intersects(_ elements: [AVAudioSession.Port]) -> Bool {
+        guard !self.isEmpty && !elements.isEmpty else { return false }
+        return !Set(self).isDisjoint(with: Set(elements))
     }
 }
 

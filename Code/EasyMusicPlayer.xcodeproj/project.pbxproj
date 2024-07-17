@@ -13,6 +13,7 @@
 		7F2AE6892B29CACB00B627AA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F2AE6882B29CACB00B627AA /* Preview Assets.xcassets */; };
 		7F2AE6932B29CACB00B627AA /* PlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2AE6922B29CACB00B627AA /* PlayerViewModelTests.swift */; };
 		7F2AE69D2B29CACB00B627AA /* EasyMusicPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2AE69C2B29CACB00B627AA /* EasyMusicPlayerUITests.swift */; };
+		7F3402D22C3938BA001358EB /* CurrentTrackInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3402D12C3938BA001358EB /* CurrentTrackInformation.swift */; };
 		7F7E38CB2B2D107F0099DBA9 /* casette.aif in Resources */ = {isa = PBXBuildFile; fileRef = 7F7E38CA2B2D107F0099DBA9 /* casette.aif */; };
 		7F7E38D02B2D14650099DBA9 /* prev.aif in Resources */ = {isa = PBXBuildFile; fileRef = 7F7E38CC2B2D13F40099DBA9 /* prev.aif */; };
 		7F7E38D12B2D14650099DBA9 /* play.aif in Resources */ = {isa = PBXBuildFile; fileRef = 7F7E38CE2B2D13F40099DBA9 /* play.aif */; };
@@ -54,7 +55,7 @@
 		7F9DC8EE2B2A5B95005CBF37 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC8ED2B2A5B95005CBF37 /* UserService.swift */; };
 		7F9DC8F62B2A5C76005CBF37 /* RepeatMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC8F52B2A5C76005CBF37 /* RepeatMode.swift */; };
 		7F9DC9012B2A5E3B005CBF37 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC9002B2A5E3B005CBF37 /* Log.swift */; };
-		7F9DC9072B2A5ED6005CBF37 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC9062B2A5ED6005CBF37 /* Playlist.swift */; };
+		7F9DC9072B2A5ED6005CBF37 /* MusicLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC9062B2A5ED6005CBF37 /* MusicLibrary.swift */; };
 		7F9DC9102B2A5F51005CBF37 /* MusicAuthorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC90A2B2A5F51005CBF37 /* MusicAuthorization.swift */; };
 		7F9DC9132B2A5F51005CBF37 /* MusicInterruptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC90D2B2A5F51005CBF37 /* MusicInterruptionHandler.swift */; };
 		7F9DC9152B2A5F51005CBF37 /* Seeker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9DC90F2B2A5F51005CBF37 /* Seeker.swift */; };
@@ -123,6 +124,7 @@
 		7F2AE6922B29CACB00B627AA /* PlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModelTests.swift; sourceTree = "<group>"; };
 		7F2AE6982B29CACB00B627AA /* EasyMusicPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyMusicPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F2AE69C2B29CACB00B627AA /* EasyMusicPlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyMusicPlayerUITests.swift; sourceTree = "<group>"; };
+		7F3402D12C3938BA001358EB /* CurrentTrackInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTrackInformation.swift; sourceTree = "<group>"; };
 		7F7E38CA2B2D107F0099DBA9 /* casette.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = casette.aif; path = ../../Audio/casette.aif; sourceTree = "<group>"; };
 		7F7E38CC2B2D13F40099DBA9 /* prev.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = prev.aif; path = ../../Audio/prev.aif; sourceTree = "<group>"; };
 		7F7E38CD2B2D13F40099DBA9 /* next.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = next.aif; path = ../../Audio/next.aif; sourceTree = "<group>"; };
@@ -168,7 +170,7 @@
 		7F9DC8ED2B2A5B95005CBF37 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		7F9DC8F52B2A5C76005CBF37 /* RepeatMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatMode.swift; sourceTree = "<group>"; };
 		7F9DC9002B2A5E3B005CBF37 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		7F9DC9062B2A5ED6005CBF37 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
+		7F9DC9062B2A5ED6005CBF37 /* MusicLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicLibrary.swift; sourceTree = "<group>"; };
 		7F9DC90A2B2A5F51005CBF37 /* MusicAuthorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicAuthorization.swift; sourceTree = "<group>"; };
 		7F9DC90D2B2A5F51005CBF37 /* MusicInterruptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicInterruptionHandler.swift; sourceTree = "<group>"; };
 		7F9DC90F2B2A5F51005CBF37 /* Seeker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Seeker.swift; sourceTree = "<group>"; };
@@ -519,7 +521,7 @@
 				7F9DC90A2B2A5F51005CBF37 /* MusicAuthorization.swift */,
 				7F9DC9542B2C9268005CBF37 /* SoundEffects.swift */,
 				7F9DC9432B2B272F005CBF37 /* AudioClock.swift */,
-				7F9DC9062B2A5ED6005CBF37 /* Playlist.swift */,
+				7F9DC9062B2A5ED6005CBF37 /* MusicLibrary.swift */,
 				7F9DC8ED2B2A5B95005CBF37 /* UserService.swift */,
 			);
 			name = Service;
@@ -554,6 +556,7 @@
 				7F9DC9602B2CA4A9005CBF37 /* MusicPlayerError.swift */,
 				7F9DC9632B2CA4CE005CBF37 /* MusicPlayerState.swift */,
 				7F7E38E12B2DA4F00099DBA9 /* MusicPlayerInformation.swift */,
+				7F3402D12C3938BA001358EB /* CurrentTrackInformation.swift */,
 				7F9DC8F52B2A5C76005CBF37 /* RepeatMode.swift */,
 				7F9DC90F2B2A5F51005CBF37 /* Seeker.swift */,
 			);
@@ -810,6 +813,7 @@
 				7F2AE6842B29CACA00B627AA /* PlayerView.swift in Sources */,
 				7F9DC94B2B2B6A50005CBF37 /* SearchViewModel.swift in Sources */,
 				7F7E38E22B2DA4F00099DBA9 /* MusicPlayerInformation.swift in Sources */,
+				7F3402D22C3938BA001358EB /* CurrentTrackInformation.swift in Sources */,
 				7F7E39282B2DBB940099DBA9 /* NowPlayingInfoCenter.swift in Sources */,
 				7F9DC8EC2B2A3951005CBF37 /* ControlsViewModel.swift in Sources */,
 				7F9DC93D2B2A62DF005CBF37 /* Snapshot.swift in Sources */,
@@ -818,7 +822,7 @@
 				7F2AE6822B29CACA00B627AA /* EasyMusicPlayerApp.swift in Sources */,
 				7F9DC9642B2CA4CE005CBF37 /* MusicPlayerState.swift in Sources */,
 				7F7E39442B2E0C2D0099DBA9 /* Queue.swift in Sources */,
-				7F9DC9072B2A5ED6005CBF37 /* Playlist.swift in Sources */,
+				7F9DC9072B2A5ED6005CBF37 /* MusicLibrary.swift in Sources */,
 				7F7E393F2B2DE22E0099DBA9 /* Draggable.swift in Sources */,
 				7F9DC95F2B2C9FA3005CBF37 /* MusicPlayerButton.swift in Sources */,
 				7F9DC8E02B2A13D3005CBF37 /* InfoViewModel.swift in Sources */,
@@ -1071,7 +1075,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "\"EasyMusicPlayer/Preview Assets.xcassets\"";
 				DEVELOPMENT_TEAM = PFC77GK3D7;
 				ENABLE_PREVIEWS = YES;
@@ -1089,7 +1093,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 4.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1104,7 +1108,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 0;
 				DEVELOPMENT_ASSET_PATHS = "\"EasyMusicPlayer/Preview Assets.xcassets\"";
 				DEVELOPMENT_TEAM = PFC77GK3D7;
 				ENABLE_PREVIEWS = YES;
@@ -1122,7 +1126,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.0;
+				MARKETING_VERSION = 4.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.pinkchicken.easymusicplayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

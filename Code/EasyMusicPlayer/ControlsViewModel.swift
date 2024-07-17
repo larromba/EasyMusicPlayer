@@ -132,7 +132,7 @@ final class ControlsViewModel: ObservableObject {
             stopButton.isDisabled = false
             remote.stopCommand.isEnabled = true
             updateNavigationControls()
-        case .stop:
+        case .stop, .reset:
             playButton.image = .playButton
             stopButton.isDisabled = true
             remote.stopCommand.isEnabled = false

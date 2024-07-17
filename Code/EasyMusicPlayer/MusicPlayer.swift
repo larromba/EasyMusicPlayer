@@ -14,10 +14,10 @@ final class MusicPlayer: NSObject, MusicPlayable {
     var info: MusicPlayerInformation {
         MusicPlayerInformation(
             track: CurrentTrackInformation(
-                item: queue.current,
-                index: queue.index
+                track: queue.currentTrack,
+                index: queue.currentTrackIndex
             ),
-            tracks: queue.items,
+            tracks: queue.tracks,
             time: audioPlayer?.currentTime ?? 0,
             isPlaying: audioPlayer?.isPlaying ?? false,
             repeatMode: queue.repeatMode
@@ -25,6 +25,8 @@ final class MusicPlayer: NSObject, MusicPlayable {
     }
 
     // dependencies
+    private let notificationCenter: NotificationCenter
+    private let mediaLibrary: MPMediaLibrary
     private let audioClock: AudioClocking
     private let queue: MusicQueuable
     private let authorization: MusicAuthorizable
@@ -39,6 +41,8 @@ final class MusicPlayer: NSObject, MusicPlayable {
     private var cancellables = [AnyCancellable]()
 
     init(
+        notificationCenter: NotificationCenter = .default,
+        mediaLibrary: MPMediaLibrary = .default(),
         audioClock: AudioClocking = AudioClock(),
         queue: MusicQueuable = MusicQueue(),
         authorization: MusicAuthorizable = MusicAuthorization(),
@@ -47,6 +51,8 @@ final class MusicPlayer: NSObject, MusicPlayable {
         remote: MPRemoteCommandCenter = .shared(),
         seeker: Seeker = Seeker()
     ) {
+        self.notificationCenter = notificationCenter
+        self.mediaLibrary = mediaLibrary
         self.audioClock = audioClock
         self.queue = queue
         self.authorization = authorization
@@ -75,11 +81,13 @@ final class MusicPlayer: NSObject, MusicPlayable {
                 statePublisher.send(.error(.auth))
                 return
             }
+            setupMediaLibraryDidChangeNotification()
             queue.load()
         }
     }
 
     func play(_ track: MPMediaItem) {
+        stop()
         queue.prime(track)
         play()
     }
@@ -93,11 +101,11 @@ final class MusicPlayer: NSObject, MusicPlayable {
             statePublisher.send(.error(.volume))
             return
         }
-        guard !queue.items.isEmpty else {
+        guard !queue.tracks.isEmpty else {
             statePublisher.send(.error(.noMusic))
             return
         }
-        guard let current = queue.item(for: position) else {
+        guard let current = queue.track(for: position) else {
             statePublisher.send(.error(.finished))
             return
         }
@@ -113,7 +121,6 @@ final class MusicPlayer: NSObject, MusicPlayable {
         } catch {
             logError("play error: \(String(describing: error))")
             statePublisher.send(.error(.play))
-            return
         }
     }
 
@@ -199,6 +206,21 @@ final class MusicPlayer: NSObject, MusicPlayable {
             stop()
             logError("start error: \(String(describing: error))")
             statePublisher.send(.error(.play))
+        }
+    }
+
+    private func setupMediaLibraryDidChangeNotification() {
+        mediaLibrary.beginGeneratingLibraryChangeNotifications()
+
+        notificationCenter.addObserver(
+            forName: .MPMediaLibraryDidChange,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            guard let self, queue.hasUpdates() else { return }
+            stop()
+            queue.create()
+            statePublisher.send(.reset)
         }
     }
 
