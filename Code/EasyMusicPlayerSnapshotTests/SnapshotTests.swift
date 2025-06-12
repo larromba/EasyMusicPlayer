@@ -1,10 +1,12 @@
 import XCTest
 
 @MainActor
-final class SnapshotTests: XCTestCase {
+final class SnapshotTests: XCTestCase, Sendable {
     private var app: XCUIApplication!
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
+        try await super.setUp()
+
         app = XCUIApplication()
         addUIInterruptionMonitor(withDescription: "permissions") { alert -> Bool in
             alert.buttons["Allow"].tap()
@@ -14,8 +16,10 @@ final class SnapshotTests: XCTestCase {
         continueAfterFailure = false
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         app = nil
+
+        try await super.tearDown()
     }
 
     func test_whenLaunchApp_expectGenerateSnapshots() throws {
