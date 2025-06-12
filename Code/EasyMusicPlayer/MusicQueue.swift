@@ -1,9 +1,9 @@
 import Combine
 import Foundation
-import MediaPlayer
+@preconcurrency import MediaPlayer
 
 /// @mockable
-protocol MusicQueuable: AnyObject {
+protocol MusicQueuable: AnyObject, Sendable {
     var currentTrack: MPMediaItem? { get }
     var repeatMode: RepeatMode { get set }
     var currentTrackIndex: Int { get }
@@ -17,20 +17,35 @@ protocol MusicQueuable: AnyObject {
     func toggleRepeatMode()
 }
 
-// deals with figuring out what comes next
-// also writes data to the user service (e.g. current track etc)
+/// deals with figuring out what comes next
+/// also writes data to the user service (e.g. current track etc)
 final class MusicQueue: MusicQueuable {
     var currentTrack: MPMediaItem? {
         tracks[safe: currentTrackIndex]
     }
     var repeatMode: RepeatMode {
-        didSet { userService.repeatMode = repeatMode }
+        get { userService.repeatMode ?? .none }
+        set { userService.repeatMode = newValue }
     }
-    private(set) var currentTrackIndex = 0 {
-        didSet { userService.currentTrackID = currentTrack?.persistentID }
+    private(set) var currentTrackIndex: Int {
+        get { _currentTrackIndex.withValue { $0 } }
+        set {
+            _currentTrackIndex.setValue(newValue)
+            userService.currentTrackID = currentTrack?.persistentID
+        }
     }
+    private(set) var tracks: [MPMediaItem] {
+        get { _tracks.withValue { $0 } }
+        set {
+            _tracks.setValue(newValue)
+            userService.trackIDs = newValue.map { $0.persistentID }
+        }
+    }
+
     private let musicLibrary: MusicLibraryable
     private let userService: UserServicing
+    private let _tracks = LockIsolated<[MPMediaItem]>([])
+    private let _currentTrackIndex = LockIsolated<Int>(0)
 
     init(
         musicLibrary: MusicLibraryable = MusicLibrary(),
@@ -38,11 +53,6 @@ final class MusicQueue: MusicQueuable {
     ) {
         self.musicLibrary = musicLibrary
         self.userService = userService
-        repeatMode = userService.repeatMode ?? .none
-    }
-
-    private(set) var tracks = [MPMediaItem]() {
-        didSet { userService.trackIDs = tracks.map { $0.persistentID } }
     }
 
     func prime(_ track: MPMediaItem) {
