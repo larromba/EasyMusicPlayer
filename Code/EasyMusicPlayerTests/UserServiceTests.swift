@@ -1,26 +1,31 @@
 import AVFoundation
 @testable import EasyMusicPlayer
-import XCTest
+import Testing
 
-final class UserServiceTests: XCTestCase {
-    private var sut: UserService!
+struct UserServiceTests {
+    private let sut = UserService(userDefaults: UserDefaults(suiteName: "test")!)
 
-    override func setUp() async throws {
-        sut = UserService(userDefaults: UserDefaults(suiteName: "test")!)
-    }
+    // MARK: - repeatMode
 
-    override func tearDown() async throws {
-        sut = nil
-    }
-
-    func test_data_whenSaved_expectCanBeRestored() {
+    @Test
+    func repeatMode_whenSet_expectCanBeFetched() {
         sut.repeatMode = .one
-        XCTAssertEqual(sut.repeatMode, .one)
+        #expect(sut.repeatMode == .one)
+    }
 
+    // MARK: - currentTrackID
+
+    @Test
+    func currentTrackID_whenSet_expectCanBeFetched() {
         sut.currentTrackID = 10
-        XCTAssertEqual(sut.currentTrackID, 10)
+        #expect(sut.currentTrackID == 10)
+    }
 
+    // MARK: - trackIDs
+
+    @Test
+    func trackIDs_whenSet_expectCanBeFetched() {
         sut.trackIDs = [0, 1, 2]
-        XCTAssertEqual(sut.trackIDs, [0, 1, 2])
+        #expect(sut.trackIDs == [0, 1, 2])
     }
 }
