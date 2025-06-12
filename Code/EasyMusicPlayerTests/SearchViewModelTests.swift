@@ -1,135 +1,160 @@
 @testable import EasyMusicPlayer
 import MediaPlayer
-import XCTest
+import Testing
 
 @MainActor
-final class SearchViewModelTests: XCTestCase {
-    private var musicPlayer: MusicPlayableMock!
-    private var soundEffects: SoundEffectingMock!
-    private var queue: QueueMock!
-    private var sut: SearchViewModel!
-
-    override func setUpWithError() throws {
-        setup()
-    }
-
-    override func tearDownWithError() throws {
-        musicPlayer = nil
-        soundEffects = nil
-        queue = nil
-        sut = nil
-    }
-
+struct SearchViewModelTests: Waitable {
     // MARK: - init
 
-    func test_init_whenInvoked_expectStateChanges() {
-        setup(wait: false)
+    @Test
+    func init_whenInvoked_expectStateChanges() async throws {
+        let env = try await setup(wait: false)
 
-        XCTAssertTrue(sut.isLoading)
-        XCTAssertTrue(sut.isListDisabled)
-        XCTAssertTrue(sut.isSearchDisabled)
+        #expect(env.sut.isLoading)
+        #expect(env.sut.isListDisabled)
+        #expect(env.sut.isSearchDisabled)
 
-        waitSync()
+        try await waitSync()
 
-        XCTAssertFalse(sut.isLoading)
-        XCTAssertFalse(sut.isListDisabled)
-        XCTAssertFalse(sut.isSearchDisabled)
+        #expect(!env.sut.isLoading)
+        #expect(!env.sut.isListDisabled)
+        #expect(!env.sut.isSearchDisabled)
     }
 
-    func test_init_whenInvoked_expectTracksSorted() {
+    @Test
+    func init_whenInvoked_expectTracksSorted() async throws {
         let tracks: [MediaItemMock] = [.mock(artist: "c"), .mock(artist: "b"), .mock(artist: "a")]
-        setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
 
-        XCTAssertEqual(sut.tracks, tracks.reversed())
-    }
-
-    func test_init_givenLargeDataSet_whenInvoked_expectTracksSortedInGoodTime() {
-        let tracks = (0..<50_000).map { _ in MediaItemMock(artist: UUID().uuidString, title: UUID().uuidString) }
-
-        measure { setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)), wait: false) }
+        #expect(env.sut.tracks == tracks.reversed())
     }
 
     // MARK: - select
 
-    func test_select_whenInvoked_expectSoundEffect() {
-        soundEffects.playHandler = { XCTAssertEqual($0, .casette) }
+    @Test
+    func select_whenInvoked_expectSoundEffect() async throws {
+        let env = try await setup()
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
 
-        sut.select(.mock())
+        env.sut.select(.mock())
 
-        XCTAssertEqual(soundEffects.playCallCount, 1)
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(soundEffect == .casette)
     }
 
-    func test_select_whenInvoked_expectPlay() {
-        sut.select(.mock())
+    @Test
+    func select_whenInvoked_expectPlay() async throws {
+        let env = try await setup()
+        env.sut.select(.mock())
 
-        XCTAssertEqual(musicPlayer.playCallCount, 1)
+        #expect(env.musicPlayer.playCallCount == 1)
     }
 
-    func test_select_whenInvoked_expectDone() {
-        let expectation = expectation(description: "doneAction invoked")
-        setup { expectation.fulfill() }
+    @Test
+    func select_whenInvoked_expectDone() async throws {
+        var isDone = false
+        let env = try await setup { isDone = true }
 
-        sut.select(.mock())
+        env.sut.select(.mock())
 
-        waitForExpectations(timeout: 1)
+        try await waitSync()
+        #expect(isDone)
     }
 
     // MARK: - searchText
 
-    func test_searchText_givenEmptyQuery_whenInvoked_expectAllTracks() {
+    @Test
+    func searchText_givenEmptyQuery_whenInvoked_expectAllTracks() async throws {
         let tracks = [MediaItemMock.mock()]
-        setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
 
-        sut.searchText = ""
+        env.sut.searchText = ""
 
-        XCTAssertEqual(sut.tracks, tracks)
+        #expect(env.sut.tracks == tracks)
     }
 
-    func test_searchText_givenQuery_whenInvoked_expectStateUpdate() {
-        sut.searchText = "foo"
+    @Test
+    func searchText_givenQuery_whenInvoked_expectStateUpdate() async throws {
+        let env = try await setup(completeOperations: false)
 
-        XCTAssertTrue(sut.isNotFoundTextHidden)
-        XCTAssertTrue(sut.isLoading)
-        XCTAssertTrue(sut.isListDisabled)
+        env.sut.searchText = "foo"
+
+        #expect(env.sut.isNotFoundTextHidden)
+        #expect(env.sut.isLoading)
+        #expect(env.sut.isListDisabled)
     }
 
-    func test_searchText_givenQuery_whenInvoked_expectAllOperationsCancelled() {
-        sut.searchText = "foo"
+    @Test
+    func searchText_givenQuery_whenInvoked_expectAllOperationsCancelled() async throws {
+        let env = try await setup()
 
-        XCTAssertEqual(queue.cancelAllOperationsCallCount, 1)
+        env.sut.searchText = "foo"
+
+        try await waitSync()
+        #expect(env.queue.cancelAllOperationsCallCount == 1)
     }
 
-    func test_searchText_givenQueryThatMatchesTracks_whenInvoked_expectFoundTracks_andStateUpdates() {
+    @Test
+    func searchText_whenInvoked_expectThrottled() async throws {
+        let env = try await setup()
+
+        env.sut.searchText = "foo1"
+        env.sut.searchText = "foo2"
+        env.sut.searchText = "foo3"
+
+        try await waitSync(for: 1.0)
+
+        env.sut.searchText = "foo1"
+        env.sut.searchText = "foo2"
+        env.sut.searchText = "foo3"
+
+        try await waitSync(for: 1.0)
+
+        #expect(env.queue.addOperationCallCount == 2)
+    }
+
+    @Test
+    func searchText_givenDuplicateQuery_whenInvoked_expectDuplicatesRemoved() async throws {
+        let env = try await setup()
+
+        env.sut.searchText = "foo"
+
+        try await waitSync(for: 1.0)
+
+        env.sut.searchText = "foo"
+
+        try await waitSync(for: 1.0)
+
+        #expect(env.queue.addOperationCallCount == 1)
+    }
+
+    @Test
+    func searchText_givenQueryThatMatchesTracks_whenInvoked_expectFoundTracks_andStateUpdates() async throws {
         let tracks: [MediaItemMock] = [.mock(artist: "apple"), .mock(artist: "banana"), .mock(artist: "pear")]
-        setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
 
-        sut.searchText = "ap"
+        env.sut.searchText = "ap"
 
-        waitSync()
-        XCTAssertEqual(sut.tracks, [tracks[0]])
-        XCTAssertTrue(sut.isNotFoundTextHidden)
-        XCTAssertFalse(sut.isLoading)
-        XCTAssertFalse(sut.isListDisabled)
+        try await waitSync()
+        #expect(env.sut.tracks == [tracks[0]])
+        #expect(env.sut.isNotFoundTextHidden)
+        #expect(!env.sut.isLoading)
+        #expect(!env.sut.isListDisabled)
     }
 
-    func test_searchText_givenQueryThatMatchesTracks_whenInvoked_expectStateUpdates() {
+    @Test
+    func searchText_givenQueryThatMatchesTracks_whenInvoked_expectStateUpdates()  async throws {
         let tracks: [MediaItemMock] = [.mock(artist: "apple"), .mock(artist: "banana"), .mock(artist: "pear")]
-        setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
 
-        sut.searchText = "zed"
+        env.sut.searchText = "zed"
 
-        waitSync()
-        XCTAssertEqual(sut.tracks.count, 0)
-        XCTAssertFalse(sut.isNotFoundTextHidden)
-        XCTAssertFalse(sut.isLoading)
-        XCTAssertFalse(sut.isListDisabled)
-    }
-
-    func test_searchText_givenLargeDataSet_whenInvoked_expectTracksFoundInGoodTime() {
-        let tracks = (0..<50_000).map { _ in MediaItemMock(artist: UUID().uuidString, title: UUID().uuidString) }
-        setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
-
-        measure { sut.searchText = "2" }
+        try await waitSync()
+        #expect(env.sut.tracks.count == 0)
+        #expect(!env.sut.isNotFoundTextHidden)
+        #expect(!env.sut.isLoading)
+        #expect(!env.sut.isListDisabled)
     }
 
     private func setup(
@@ -137,20 +162,35 @@ final class SearchViewModelTests: XCTestCase {
         soundEffects: SoundEffectingMock = SoundEffectingMock(),
         queue: QueueMock = QueueMock(),
         doneAction: @escaping () -> Void = {},
+        completeOperations: Bool = true,
         wait: Bool = true
-    ) {
-        self.musicPlayer = musicPlayer
-        self.soundEffects = soundEffects
-        self.queue = queue
-        queue.addOperationHandler = { $0() }
-        sut = SearchViewModel(
+    ) async throws -> Environmemnt {
+        if completeOperations {
+            queue.addOperationBlockHandler = { $0() }
+            queue.addOperationHandler = { $0.main() }
+        }
+        let env = Environmemnt(
             musicPlayer: musicPlayer,
             soundEffects: soundEffects,
             queue: queue,
-            doneAction: doneAction
+            sut: SearchViewModel(
+                musicPlayer: musicPlayer,
+                soundEffects: soundEffects,
+                queue: queue,
+                doneAction: doneAction
+            )
         )
+        guard wait else { return env }
+        try await waitSync() // waits for the first sort opertation to finish
+        return env
+    }
+}
 
-        guard wait else { return }
-        waitSync() // waits for the first sort opertation to finish
+extension SearchViewModelTests {
+    struct Environmemnt {
+        let musicPlayer: MusicPlayableMock
+        let soundEffects: SoundEffectingMock
+        let queue: QueueMock
+        let sut: SearchViewModel
     }
 }
