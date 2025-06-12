@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.2 (05/06/2025)
+    Swift 6.0 migration
+
 ## 4.0.1 (05/07/2024)
     fix: library refresh bug
     fix: search selecting wrong track 
