@@ -1,3 +1,6 @@
+// copied from: 
+// https://github.com/SwiftGen/SwiftGen/issues/1110#issuecomment-2709039993
+
 // swiftlint:disable all
 import SwiftUI
 {% if catalogs %}
