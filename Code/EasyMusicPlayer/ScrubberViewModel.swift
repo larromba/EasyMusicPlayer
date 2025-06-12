@@ -38,7 +38,7 @@ final class ScrubberViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
-    func updateDrag(_ gesture: Draggable) {
+    func updateDrag(_ gesture: DragGestureValue) {
         isDragging = true
         let startPoint = gesture.startLocation
         let translation = gesture.translation
@@ -50,7 +50,7 @@ final class ScrubberViewModel: ObservableObject {
         musicPlayer.setClock(duration * percentage, isScrubbing: true)
     }
 
-    func finishDrag(_ gesture: Draggable) {
+    func finishDrag(_ gesture: DragGestureValue) {
         let absVelocity: Double = abs(gesture.velocity.width)
         var bounce = absVelocity.scale(rMin: 0, rMax: 1500, tMin: 0, tMax: 5) // scale velocity
         bounce = gesture.velocity.width < 0 ? (bounce * -1) : bounce // left is -, right is +
