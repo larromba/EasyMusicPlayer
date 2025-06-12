@@ -1,11 +1,12 @@
 import XCTest
 
 @MainActor
-final class EasyMusicPlayerUITests: XCTestCase {
+final class EasyMusicPlayerUITests: XCTestCase, Sendable {
     private var app: XCUIApplication!
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
+    override func setUp() async throws {
+        try await super.setUp()
+
         app = XCUIApplication()
         continueAfterFailure = false
         addUIInterruptionMonitor(withDescription: "permissions") { alert -> Bool in
@@ -15,11 +16,13 @@ final class EasyMusicPlayerUITests: XCTestCase {
         app.launch()
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         app = nil
+
+        try await super.tearDown()
     }
 
-    func test_whenTapAllButtons_expectFunctionsCorrectly() {
+    func test_givenHappyPath_forMainFeatures_whenTapAllButtons_expectNoErrors() {
         let playButton = app.buttons["Play"]
         let scrubberElement = app.otherElements["Scrubber"]
         let nextButton = app.buttons["Next"]
@@ -60,22 +63,30 @@ final class EasyMusicPlayerUITests: XCTestCase {
         // search
         searchButton.tap()
 
+        waitSync(for: 1.0)
+
         let searchNavigationBar = app.navigationBars["Search"]
         let searchSearchField = searchNavigationBar.searchFields["Search"]
+
         searchSearchField.tap()
         searchSearchField.tap()
 
+        // if these fail, make sure the keyboard is showing in the sim when
+        // you select the field with: cmd+k
         app.keys["A"].tap()
         app.keys["r"].tap()
 
         searchSearchField.buttons["Clear text"].tap()
         searchNavigationBar.buttons["Cancel"].tap()
-        
+
+        waitSync(for: 1.0)
+
         let cell = app.collectionViews.children(matching: .cell).element(boundBy: 0)
         cell.children(matching: .other)
             .element(boundBy: 1)
             .children(matching: .other).element
-            .children(matching: .other).element.tap()
+            .children(matching: .other).element
+            .tap()
 
         // stop
         stopButton.tap()
