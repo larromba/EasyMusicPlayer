@@ -12,6 +12,8 @@ If you want to learn iOS development, this project uses industry standard practi
 
 If you're new to programming, and want an introduction, please go [here](https://github.com/larromba/How-to-Code).
 
+If you're not ready for Swift 6.0, you can checkout [4.0.1](https://github.com/larromba/EasyMusicPlayer/releases/tag/4.0.1).
+
 ### Dependencies
 **SwiftGen**
 
@@ -111,7 +113,7 @@ _If you don't have the money to afford a university degree, and want to become a
 
 Have fun! This app is live in the app store, so your contributions will help people around the world enjoy their music.
 
-## Localizations
+## Localisations
 There's a number of things localised. You can find them in text files here: 
 
 `Code/EasyMusicPlayer/[LANGUAGE].lproj.`
@@ -138,6 +140,55 @@ I once worked with an old C programmer; he had around 15 years of experience. I 
 
 ## File Structure
 Please note the file structure is intentionally flat, and the the virtual folders in XCode are used for the organisation. From experience, once files start moving around or renamed, it gets messy with git. It also makes searching for files much easier in the code directory if the project gets more complicated.
+
+As of XCode 16, it seems virtual groups have been removed. To continue using them:
+1. Create a `New Group`
+2. Open `Code/EasyMusicPlayer.xcodeproj/project.pbxproj` and update the code:
+
+```
+7FC9D8E52DF99A5700328603 /* New Group */ = {
+    isa = PBXGroup;
+    children = (
+    );
+    name = MyName;  /* <-- Change path variable to: name = MyName */
+    sourceTree = "<group>";
+};
+```
+
+3. Delete the folder that was created
+
+## Swift 6.0
+This is my current opinion on how to migrate to Swift 6:
+
+### Toilet paper principles
+1. Make `ViewModels` -> `@MainActor` (because they touch the view)
+2. Make Services `Sendable`, but if they touch the view, make them `@MainActor`
+    - If the service only has `let` variables, make it a `Sendable` class
+    - If the service has `var` variables, either make it an `actor`, or a `Sendable` class with `[LockIsolated](https://github.com/pointfreeco/swift-concurrency-extras/blob/main/Sources/ConcurrencyExtras/LockIsolated.swift)` variables (from `ConcurrencyExtras` by point free), e.g:
+
+    ```
+    var myVariable = false                              // ❌ not Sendable
+    let myVariable = LockIsolated<Bool>(value: false)   // ✅ Sendable
+    ```
+
+__Please Note:__ `LockIsolated` has mostly been used in this project for the sake of speed, as I didn't want to propagate `Task` & `await / async` everywhere. Ideally it's better to convert everything to `await / async` and use `actors` etc, especially as the `LockIsolated` syntax is easy to use incorrectly, but `actors` can sometimes be problematic with libraries that have not yet migrated to Swift 6.0 (i.e. libraries that require `@preconcurrency import`).
+
+⚠️ When using `LockIsolated`, do not access the `value` directly unless you have a good reason. Use `withValue` to read or update it, and `setValue` to set a new value. To avoid unexpected behaviour with `withValue`, minimise the amount of logic inside the closure; just pull out the data you need.
+
+3. Make your data models `Sendable` when the compiler asks
+
+### Other thoughts
+- For small packages, Swift 6.0 migration is fairly straight-forward using these principles
+- For starting new projects, it's fairly easy to write Swift 6.0 code from scratch 
+- For large packages, it's an ass pain, and honestly quite an unfair change for legacy projects. The only way to do it, is to disable all the Swift 6.0 concurrency checks, and turn on the most important ones one at a time. If in doubt, ask `ChatGPT` where to start - maybe it's different for every project. Slowly migrate 1 flag at a time, and pray.
+
+### What NOT to do
+- Panic, and put `@MainActor` everywhere
+- Try to rush it - one mistake can propagate mistakes everywhere
+- Disregard the error. For each error that makes no sense - ask `ChatGPT` to explain it like you were five, and offer solutions as an inspiration. This way you can think logically about what the correct solution could be, and in time the errors / patterns become easier to understand.
+
+### Gotchyas
+- Sometimes errors appear somewhere, due to a problem somewhere else. This is quite confusing. If you're not sure what the error means, or why it's appearing, try inspecting the caller.
 
 ## Licence
 [![licensebuttons by-nc-sa](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0) 
