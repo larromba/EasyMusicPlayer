@@ -1,5 +1,5 @@
 import Combine
-import MediaPlayer
+@preconcurrency import MediaPlayer
 import UIKit
 
 @MainActor
@@ -29,21 +29,22 @@ final class InfoViewModel: ObservableObject {
         self.musicPlayer = musicPlayer
         self.remote = remote
 
-        musicPlayer.state.sink { [weak self] in
-            guard let self else { return }
-            switch $0 {
-            case .play:
-                updateTrack()
-            case .clock(let timeInterval):
-                updateClock(timeInterval)
-            case .stop:
-                stop()
-            case .reset:
-                reset()
-            default:
-                break
-            }
-        }.store(in: &cancellables)
+        musicPlayer.state
+            .sink { [weak self] in
+                guard let self else { return }
+                switch $0 {
+                case .play:
+                    updateTrack()
+                case .clock(let timeInterval):
+                    updateClock(timeInterval)
+                case .stop:
+                    stop()
+                case .reset:
+                    reset()
+                default:
+                    break
+                }
+            }.store(in: &cancellables)
     }
 
     private func updateTrack() {
@@ -83,10 +84,13 @@ final class InfoViewModel: ObservableObject {
     }
 
     private func updateRemoteTrack() {
+        // FIXME: swift bug - MPMediaItemArtwork() causes a data race
+        // warning: data race detected: @MainActor function at EasyMusicPlayer/InfoViewModel.swift:92 was not called on the main thread
+        let artwork = self.artwork
         remote.nowPlayingInfo = [
             MPMediaItemPropertyTitle: trackTitle,
             MPMediaItemPropertyArtist: artist,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: .artwork) { _ in self.artwork },
+            MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: .artwork) { _ in artwork },
             MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue
         ]
     }
