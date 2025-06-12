@@ -1,180 +1,179 @@
 import AVFoundation
 @testable import EasyMusicPlayer
+import Testing
 import XCTest
 
-final class MusicInterruptionTests: XCTestCase {
-    private var interruptionHandler: MusicInterruptionHandler!
-    private var session: AudioSessionMock!
-    private var previous: AudioSessionRouteDescriptionMock!
+@Suite(.serialized)
+struct MusicInterruptionTests: Waitable {
+    private let session: AudioSessionMock
+    private let previous = AudioSessionRouteDescriptionMock()
+    private let interruptionHandler: MusicInterruptionHandler
+    private let notificationCenter = NotificationCenter.default
 
-    override func setUpWithError() throws {
-        session = AudioSessionMock()
-        previous = AudioSessionRouteDescriptionMock()
+    init() {
+        let session = AudioSessionMock()
+        self.session = session
         interruptionHandler = MusicInterruptionHandler(session: session)
     }
 
-    override func tearDownWithError() throws {
-        interruptionHandler = nil
-        session = nil
-        previous = nil
-    }
+    @Test
+    func interruption_whenStarted_expectMusicPaused() async throws {
+        let action = LockIsolated<MusicInterruptionAction?>(nil)
 
-    func test_interruption_whenStarted_expectMusicPaused() {
-        let expectation = expectation(description: "wait for interruption to begin")
-       
         // interrupt
         interruptionHandler.isPlaying = true
-        interruptionHandler.callback = {
-            XCTAssertEqual($0, .pause)
-            expectation.fulfill()
+        interruptionHandler.setCallback {
+            action.setValue($0)
         }
-        interrupt()
-      
-        waitForExpectations(timeout: 1)
+        try await interrupt()
+
+        #expect(action.value == .pause)
     }
 
-    func test_interruption_whenEnded_expectMusicPlayed() {
-        let expectation = expectation(description: "wait for callback")
-     
+    @Test
+    func interruption_whenEnded_expectMusicPlayed() async throws {
+        let action = LockIsolated<MusicInterruptionAction?>(nil)
+
         // interrupt
         interruptionHandler.isPlaying = true
-        interrupt()
-        waitSync()
+        try await interrupt()
 
         // uninterrupt
         interruptionHandler.isPlaying = false
-        interruptionHandler.callback = {
-            XCTAssertEqual($0, .play)
-            expectation.fulfill()
+        interruptionHandler.setCallback {
+            action.setValue($0)
         }
-        uninterrupt()
-   
-        waitForExpectations(timeout: 1)
+        try await uninterrupt()
+
+        #expect(action.value == .play)
     }
 
-    func test_interruption_whenHeadphonesRemoved_expectPausesMusic() {
-        let expectation = expectation(description: "wait for interruption to begin")
-        
-        // interrupt
-        interruptionHandler.isPlaying = true
-        interruptionHandler.callback = {
-            XCTAssertEqual($0, .pause)
-            expectation.fulfill()
-        }
-        removeHeadphones()
-       
-        waitForExpectations(timeout: 1)
-    }
+    @Test
+    func interruption_whenHeadphonesRemoved_expectMusicPaused() async throws {
+        let action = LockIsolated<MusicInterruptionAction?>(nil)
 
-    func test_interruption_whenHeadphonesReattached_expectPlaysMusic() {
-        let expectation = expectation(description: "wait for callback")
-        
         // remove headphones
         interruptionHandler.isPlaying = true
-        removeHeadphones()
-        waitSync()
+        interruptionHandler.setCallback {
+            action.setValue($0)
+        }
+        try await removeHeadphones()
+
+        #expect(action.value == .pause)
+    }
+
+    @Test
+    func interruption_whenHeadphonesReattached_expectMusicPlayed() async throws {
+        let action = LockIsolated<MusicInterruptionAction?>(nil)
+
+        // remove headphones
+        interruptionHandler.isPlaying = true
+        try await removeHeadphones()
 
         // attach headphones
         interruptionHandler.isPlaying = false
-        interruptionHandler.callback = {
-            XCTAssertEqual($0, .play)
-            expectation.fulfill()
+        interruptionHandler.setCallback {
+            action.setValue($0)
         }
-        attachHeadphones()
+        try await attachHeadphones()
 
-        waitForExpectations(timeout: 1)
+        #expect(action.value == .play)
     }
 
-    func test_interruption_whenStoppedAndHeadphonesReattached_expectDoesNotPlayMusic() {
+    @Test
+    func interruption_whenStoppedAndHeadphonesReattached_expectDoesNotPlayMusic() async throws {
+        let action = LockIsolated<MusicInterruptionAction?>(nil)
+
         // remove headphones
         interruptionHandler.isPlaying = false
-        removeHeadphones()
-        waitSync()
+        try await removeHeadphones()
 
         // attach headphones
-        interruptionHandler.callback = { _ in
-            XCTFail("shouldn't be called")
+        interruptionHandler.setCallback {
+            action.setValue($0)
         }
-        attachHeadphones()
-        waitSync()
+        try await attachHeadphones()
+
+        #expect(action.value == nil)
     }
 
-    func test_interruption_whenDifferentOutputReattached_expectDoesNotPlayMusic() {
+    @Test
+    func interruption_whenDifferentOutputReattached_expectDoesNotPlayMusic() async throws {
+        let action = LockIsolated<MusicInterruptionAction?>(nil)
+
         // remove headphones
         interruptionHandler.isPlaying = true
-        removeHeadphones()
-        waitSync()
+        try await removeHeadphones()
 
         // attach different headphones
         interruptionHandler.isPlaying = false
-        interruptionHandler.callback = { _ in
-            XCTFail("shouldn't be called")
+        interruptionHandler.setCallback {
+            action.setValue($0)
         }
-        attachBluetoothHeadphones()
-        waitSync()
+        try await attachBluetoothHeadphones()
+
+        #expect(action.value == nil)
     }
 
-    func test_interruption_whenHeadphonesRemovedAndReattachedBeforeInterruptionFinishes_expectDoesNotTakePriority() {
-        let expectation = expectation(description: "wait for callback")
+    @Test
+    func interruption_whenHeadphonesRemovedAndReattachedBeforeInterruptionFinishes_expectDoesNotTakePriority() async throws {
+        let actionBeforeInterruptionFinishes = LockIsolated<MusicInterruptionAction?>(nil)
+        let actionAfterInterruptionFinishes = LockIsolated<MusicInterruptionAction?>(nil)
 
         // remove headphones
         interruptionHandler.isPlaying = true
-        removeHeadphones()
-        waitSync()
+        try await removeHeadphones()
 
         // interrupt
         interruptionHandler.isPlaying = false
-        interruptionHandler.callback = { _ in
-            XCTFail("shouldn't be called")
+        interruptionHandler.setCallback {
+            actionBeforeInterruptionFinishes.setValue($0)
         }
-        interrupt()
-        waitSync()
+        try await interrupt()
 
         // attach headphones
-        attachHeadphones()
-        waitSync()
+        try await attachHeadphones()
 
         // interrupt
-        interruptionHandler.callback = {
-            XCTAssertEqual($0, .play)
-            expectation.fulfill()
+        interruptionHandler.setCallback {
+            actionAfterInterruptionFinishes.setValue($0)
         }
-        uninterrupt()
+        try await uninterrupt()
 
-        waitForExpectations(timeout: 3)
+        #expect(actionBeforeInterruptionFinishes.value == nil)
+        #expect(actionAfterInterruptionFinishes.value == .play)
     }
 
-    func test_interruption_whenBeforeHeadphonesRemovedAndReattached_expectDoesNotTakePriority() {
-        let expectation = expectation(description: "wait for callback")
+    @Test
+    func test_interruption_whenHeadphonesRemovedAndReattachedAfterInterruptionFinishes_expectDoesNotTakePriority() async throws {
+        let actionBeforeInterruptionFinishes = LockIsolated<MusicInterruptionAction?>(nil)
+        let actionAfterInterruptionFinishes = LockIsolated<MusicInterruptionAction?>(nil)
 
         // interrupt
         interruptionHandler.isPlaying = true
-        interrupt()
-        waitSync()
+        try await interrupt()
 
         // remove headphones
         interruptionHandler.isPlaying = false
-        interruptionHandler.callback = { _ in
-            XCTFail("shouldn't be called")
+        interruptionHandler.setCallback {
+            actionBeforeInterruptionFinishes.setValue($0)
         }
-        removeHeadphones()
-        waitSync()
+        try await  removeHeadphones()
 
         // uninterrupt
-        uninterrupt()
-        waitSync()
+        try await uninterrupt()
 
         // attach headphones
-        interruptionHandler.callback = {
-            XCTAssertEqual($0, .play)
-            expectation.fulfill()
+        interruptionHandler.setCallback {
+            actionAfterInterruptionFinishes.setValue($0)
         }
-        attachHeadphones()
+        try await attachHeadphones()
 
-        waitForExpectations(timeout: 3)
+        #expect(actionBeforeInterruptionFinishes.value == nil)
+        #expect(actionAfterInterruptionFinishes.value == .play)
     }
 
-    private func interrupt() {
+    private func interrupt() async throws {
         let code = AVAudioSession.InterruptionType.began.rawValue
         let notification = Notification(
             name: AVAudioSession.interruptionNotification, 
@@ -184,10 +183,11 @@ final class MusicInterruptionTests: XCTestCase {
                 AVAudioSessionInterruptionReasonKey: NSNumber(value: 0)
             ]
         )
-        NotificationCenter.default.post(notification)
+        notificationCenter.post(notification)
+        try await waitSync()
     }
 
-    private func uninterrupt() {
+    private func uninterrupt() async throws {
         let code = AVAudioSession.InterruptionType.ended.rawValue
         let notification = Notification(
             name: AVAudioSession.interruptionNotification, 
@@ -197,10 +197,11 @@ final class MusicInterruptionTests: XCTestCase {
                 AVAudioSessionInterruptionReasonKey: NSNumber(value: 0)
             ]
         )
-        NotificationCenter.default.post(notification)
+        notificationCenter.post(notification)
+        try await waitSync()
     }
 
-    private func removeHeadphones() {
+    private func removeHeadphones() async throws {
         previous.outputRoutes = [AVAudioSession.Port.headphones]
         session.outputRoutes = [AVAudioSession.Port.builtInSpeaker]
         let code = AVAudioSession.RouteChangeReason.oldDeviceUnavailable.rawValue
@@ -209,13 +210,14 @@ final class MusicInterruptionTests: XCTestCase {
             object: nil,
             userInfo: [
                 AVAudioSessionRouteChangeReasonKey: NSNumber(value: code),
-                AVAudioSessionRouteChangePreviousRouteKey: previous!
+                AVAudioSessionRouteChangePreviousRouteKey: previous
             ]
         )
         NotificationCenter.default.post(notification)
+        try await waitSync()
     }
 
-    private func attachHeadphones() {
+    private func attachHeadphones() async throws {
         session.outputRoutes = [AVAudioSession.Port.headphones]
         let code = AVAudioSession.RouteChangeReason.newDeviceAvailable.rawValue
         let notification = Notification(
@@ -223,14 +225,15 @@ final class MusicInterruptionTests: XCTestCase {
             object: nil,
             userInfo: [
                 AVAudioSessionRouteChangeReasonKey: NSNumber(value: code),
-                AVAudioSessionRouteChangePreviousRouteKey: previous!
+                AVAudioSessionRouteChangePreviousRouteKey: previous
             ]
         )
-        NotificationCenter.default.post(notification)
+        notificationCenter.post(notification)
         previous.outputRoutes = [AVAudioSession.Port.headphones]
+        try await waitSync()
     }
 
-    private func attachBluetoothHeadphones() {
+    private func attachBluetoothHeadphones() async throws {
         session.outputRoutes = [AVAudioSession.Port.bluetoothA2DP]
         let code = AVAudioSession.RouteChangeReason.newDeviceAvailable.rawValue
         let notification = Notification(
@@ -238,9 +241,10 @@ final class MusicInterruptionTests: XCTestCase {
             object: nil,
             userInfo: [
                 AVAudioSessionRouteChangeReasonKey: NSNumber(value: code),
-                AVAudioSessionRouteChangePreviousRouteKey: previous!
+                AVAudioSessionRouteChangePreviousRouteKey: previous
             ]
         )
-        NotificationCenter.default.post(notification)
+        notificationCenter.post(notification)
+        try await waitSync()
     }
 }
