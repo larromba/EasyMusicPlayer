@@ -1,7 +1,7 @@
-import AVFoundation
-import Combine
+@preconcurrency import AVFoundation
+@preconcurrency import Combine
 import Foundation
-import MediaPlayer
+@preconcurrency import MediaPlayer
 
 // switlint:disable type_body_length
 /// see: `SimlatorMusicLibary` to change the library on the simulator
@@ -12,14 +12,17 @@ final class MusicPlayer: NSObject, MusicPlayable {
             .eraseToAnyPublisher()
     }
     var info: MusicPlayerInformation {
-        MusicPlayerInformation(
+        let (currentTime, isPlaying) = audioPlayer.withValue {
+            ($0?.currentTime ?? 0, $0?.isPlaying ?? false)
+        }
+        return MusicPlayerInformation(
             track: CurrentTrackInformation(
                 track: queue.currentTrack,
                 index: queue.currentTrackIndex
             ),
             tracks: queue.tracks,
-            time: audioPlayer?.currentTime ?? 0,
-            isPlaying: audioPlayer?.isPlaying ?? false,
+            time: currentTime,
+            isPlaying: isPlaying,
             repeatMode: queue.repeatMode
         )
     }
@@ -37,8 +40,8 @@ final class MusicPlayer: NSObject, MusicPlayable {
 
     // local
     private let statePublisher = CurrentValueSubject<MusicPlayerState, Never>(.stop)
-    private var audioPlayer: AVAudioPlayer?
-    private var cancellables = [AnyCancellable]()
+    private let audioPlayer = LockIsolated<AVAudioPlayer?>(nil)
+    private let cancellables = LockIsolated<[AnyCancellable]>([])
 
     init(
         notificationCenter: NotificationCenter = .default,
@@ -72,6 +75,7 @@ final class MusicPlayer: NSObject, MusicPlayable {
 
     deinit {
         tearDownRemote()
+        tearDownMediaLibraryDidChangeNotification()
     }
 
     func authorize() {
@@ -83,6 +87,7 @@ final class MusicPlayer: NSObject, MusicPlayable {
             }
             setupMediaLibraryDidChangeNotification()
             queue.load()
+            statePublisher.send(.loaded)
         }
     }
 
@@ -93,7 +98,8 @@ final class MusicPlayer: NSObject, MusicPlayable {
     }
 
     func play(_ position: MusicQueueTrackPosition = .current) {
-        if let audioPlayer, audioPlayer.isPaused {
+        let shouldStart = audioPlayer.withValue { $0?.isPaused ?? false }
+        if shouldStart {
             start()
             return
         }
@@ -116,7 +122,7 @@ final class MusicPlayer: NSObject, MusicPlayable {
         do {
             let audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer.delegate = self
-            self.audioPlayer = audioPlayer
+            self.audioPlayer.setValue(audioPlayer)
             start()
         } catch {
             logError("play error: \(String(describing: error))")
@@ -126,13 +132,14 @@ final class MusicPlayer: NSObject, MusicPlayable {
 
     func pause() {
         seeker.stop()
-        audioPlayer?.pause()
+        audioPlayer.withValue { $0?.pause() }
         audioClock.stop()
         statePublisher.send(.pause)
     }
 
     func togglePlayPause() {
-        if let audioPlayer, audioPlayer.isPlaying {
+        let isPlaying = audioPlayer.withValue { $0?.isPlaying ?? false }
+        if isPlaying {
             pause()
         } else {
             play()
@@ -141,9 +148,12 @@ final class MusicPlayer: NSObject, MusicPlayable {
 
     func stop() {
         seeker.stop()
-        audioPlayer?.stop()
-        audioPlayer = nil
         audioClock.stop()
+        audioPlayer.withValue {
+            $0?.delegate = nil
+            $0?.stop()
+        }
+        audioPlayer.setValue(nil)
         statePublisher.send(.stop)
     }
 
@@ -178,7 +188,7 @@ final class MusicPlayer: NSObject, MusicPlayable {
         statePublisher.send(.clock(timeInterval))
 
         guard !isScrubbing else { return }
-        audioPlayer?.currentTime = timeInterval
+        audioPlayer.withValue { $0?.currentTime = timeInterval }
         audioClock.start()
     }
 
@@ -192,16 +202,20 @@ final class MusicPlayer: NSObject, MusicPlayable {
     }
 
     private func start() {
-        guard let audioPlayer else { return }
         do {
             try session.setCategory(.playback)
             try session.setActive(true)
-            guard audioPlayer.play() else {
+
+            let didPlay = audioPlayer.withValue { $0?.play() ?? false }
+            guard didPlay else {
                 throw MusicPlayerError.play
             }
+
             audioClock.start()
             statePublisher.send(.play)
-            statePublisher.send(.clock(audioPlayer.currentTime))
+
+            let currentTime = audioPlayer.withValue { $0?.currentTime ?? 0 }
+            statePublisher.send(.clock(currentTime))
         } catch {
             stop()
             logError("start error: \(String(describing: error))")
@@ -224,19 +238,31 @@ final class MusicPlayer: NSObject, MusicPlayable {
         }
     }
 
-    private func setupInterruptionHandler() {
-        state.sink { [interruptionHandler] in
-            switch $0 {
-            case .play:
-                interruptionHandler.isPlaying = true
-            case .pause, .stop:
-                interruptionHandler.isPlaying = false
-            default:
-                break
-            }
-        }.store(in: &cancellables)
+    private func tearDownMediaLibraryDidChangeNotification() {
+        mediaLibrary.endGeneratingLibraryChangeNotifications()
 
-        interruptionHandler.callback = { [weak self] action in
+        notificationCenter.removeObserver(
+            self,
+            name: .MPMediaLibraryDidChange,
+            object: nil
+        )
+    }
+
+    private func setupInterruptionHandler() {
+        cancellables.withValue {
+            state.sink { [interruptionHandler] in
+                switch $0 {
+                case .play:
+                    interruptionHandler.isPlaying = true
+                case .pause, .stop:
+                    interruptionHandler.isPlaying = false
+                default:
+                    break
+                }
+            }.store(in: &$0)
+        }
+
+        interruptionHandler.setCallback { [weak self] action in
             guard let self else { return }
             switch action {
             case .pause:
@@ -248,9 +274,11 @@ final class MusicPlayer: NSObject, MusicPlayable {
     }
 
     private func setupAudioClock() {
-        audioClock.callback = { [weak self] in
-            guard let self, let audioPlayer else { return }
-            statePublisher.send(.clock(audioPlayer.currentTime))
+        audioClock.setCallback { [weak self] in
+            guard let self, let currentTime = audioPlayer.withValue({ $0?.currentTime }) else {
+                return
+            }
+            statePublisher.send(.clock(currentTime))
         }
     }
 
@@ -260,10 +288,12 @@ final class MusicPlayer: NSObject, MusicPlayable {
     }
 
     private func setupSeeker() {
-        seeker.seek = { [weak self] time in
-            guard let self, let audioPlayer else { return }
-            let time = audioPlayer.currentTime + time
-            setClock(time > 0 ? time : 0)
+        seeker.setSeekCallback { [weak self] time in
+            guard let self, let newTime = audioPlayer.withValue({ player -> TimeInterval? in
+                guard let player else { return nil }
+                return player.currentTime + time
+            }) else { return }
+            setClock(newTime > 0 ? newTime : 0)
         }
     }
 }

@@ -3,7 +3,7 @@ import Foundation
 import MediaPlayer
 
 /// @mockable(rx: state = CurrentValueSubject)
-protocol MusicPlayable {
+protocol MusicPlayable: Sendable {
     var state: AnyPublisher<MusicPlayerState, Never> { get }
     var info: MusicPlayerInformation { get }
 

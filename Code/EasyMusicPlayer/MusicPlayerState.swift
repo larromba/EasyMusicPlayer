@@ -1,6 +1,7 @@
 import Foundation
 
 enum MusicPlayerState {
+    case loaded
     case play
     case pause
     case stop
