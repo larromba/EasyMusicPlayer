@@ -1,36 +1,43 @@
 import Foundation
 
-/// @mockable
-protocol AudioClocking: AnyObject {
-    var callback: (() -> Void)? { get set }
+typealias AudioClockCallback = (@Sendable () -> Void)?
 
+/// @mockable
+protocol AudioClocking: AnyObject, Sendable {
     func start()
     func stop()
+    func setCallback(_ callback: AudioClockCallback)
 }
 
 // simple clock that ticks every second
 final class AudioClock: AudioClocking {
-    private var timer: Timer?
+    private let timer = LockIsolated<Timer?>(nil)
     private let tickInterval: TimeInterval
-    var callback: (() -> Void)?
+    private let callback = LockIsolated<AudioClockCallback>(nil)
 
     init(tickInterval: TimeInterval = 1.0) {
         self.tickInterval = tickInterval
     }
 
     func start() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(
-            withTimeInterval: 1.0,
-            repeats: true,
-            block: { [weak self] _ in
-                self?.callback?()
-            }
+        timer.withValue { $0?.invalidate() }
+        timer.setValue(
+            Timer.scheduledTimer(
+                withTimeInterval: 1.0,
+                repeats: true,
+                block: { [callback] _ in
+                    callback.withValue { $0?() }
+                }
+            )
         )
     }
 
     func stop() {
-        timer?.invalidate()
-        timer = nil
+        timer.withValue { $0?.invalidate() }
+        timer.setValue(nil)
+    }
+
+    func setCallback(_ callback: AudioClockCallback) {
+        self.callback.setValue(callback)
     }
 }

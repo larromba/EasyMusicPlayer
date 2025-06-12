@@ -15,13 +15,7 @@ struct PlayerView: View {
             SearchView(viewModel: viewModel.searchViewModel)
                 .padding(.top, 10)
         }
-        .alert(isPresented: $viewModel.alert.isPresented) {
-            Alert(
-                title: Text(viewModel.alert.title),
-                message: Text(viewModel.alert.text),
-                dismissButton: .cancel(Text(viewModel.alert.buttonTitle))
-            )
-        }
+        .alert(for: $viewModel.alert)
         .onAppear {
             viewModel.authorize()
         }

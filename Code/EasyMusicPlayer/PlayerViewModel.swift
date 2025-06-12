@@ -4,7 +4,7 @@ import SwiftUI
 @MainActor
 final class PlayerViewModel: ObservableObject {
     @Published var openSearch = false
-    @Published var alert = AlertData(title: "", text: "", buttonTitle: "", isPresented: false)
+    @Published var alert: AlertModel = .empty
 
     let version = Bundle.appVersion
 
@@ -45,35 +45,35 @@ final class PlayerViewModel: ObservableObject {
             case .error(let type):
                 switch type {
                 case .finished:
-                    alert = AlertData(
+                    alert = AlertModel(
                         title: L10n.finishedAlertTitle,
                         text: L10n.finishedAlertMsg,
                         buttonTitle: L10n.finishedAlertButton
                     )
                     soundEffects.play(.finished)
                 case .noMusic:
-                    alert = AlertData(
+                    alert = AlertModel(
                         title: L10n.noMusicErrorTitle,
                         text: L10n.noMusicErrorMsg,
                         buttonTitle: L10n.noMusicErrorButton
                     )
                     soundEffects.play(.error)
                 case .auth:
-                    alert = AlertData(
+                    alert = AlertModel(
                         title: L10n.authorizationErrorTitle,
                         text: L10n.authorizationErrorMessage,
                         buttonTitle: L10n.authorizationErrorButton
                     )
                     soundEffects.play(.error)
                 case .play:
-                    alert = AlertData(
+                    alert = AlertModel(
                         title: L10n.playErrorTitle,
                         text: L10n.playErrorMessage,
                         buttonTitle: L10n.playErrorButton
                     )
                     soundEffects.play(.error)
                 case .volume:
-                    alert = AlertData(
+                    alert = AlertModel(
                         title: L10n.noVolumeErrorTitle,
                         text: L10n.noVolumeErrorMsg,
                         buttonTitle: L10n.noVolumeErrorButton
