@@ -1,5 +1,6 @@
+import SwiftUI
 @testable import EasyMusicPlayer
-import MediaPlayer
+@preconcurrency import MediaPlayer
 
 // MARK: - MediaItemMock
 
@@ -94,7 +95,7 @@ extension MusicPlayerInformation {
 
 // MARK: - DragGestureMock
 
-final class DragGestureMock: Draggable {
+final class DragGestureValueMock: DragGestureValue {
     var _startLocation: CGPoint
     var startLocation: CGPoint { return _startLocation }
 
@@ -119,3 +120,4 @@ final class DragGestureMock: Draggable {
         _predictedEndTranslation = predictedEndTranslation
     }
 }
+
