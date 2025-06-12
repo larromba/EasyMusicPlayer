@@ -1,5 +1,5 @@
 import Combine
-import MediaPlayer
+@preconcurrency import MediaPlayer
 import SwiftUI
 
 @MainActor
@@ -11,10 +11,10 @@ final class SearchViewModel: ObservableObject {
     }
     @Published var isProgressViewHidden = false
     @Published var isSearchDisabled = true
-    @Published var isListDisabled = true
     @Published var isNotFoundTextHidden = true
     @Published var notFoundTextColor: Color = .clear
 
+    var isListDisabled: Bool { isLoading }
     let searchPrompt = L10n.searchViewTitle
     let notFoundText = L10n.searchViewEmptyText
 
@@ -53,12 +53,11 @@ final class SearchViewModel: ObservableObject {
         queue.addOperation { [weak self] in
             guard let self else { return }
             let tracks = musicPlayer.info.tracks.sorted(by: { $0.sortID < $1.sortID })
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self.allTracks = tracks
                 self.tracks = tracks
                 self.isLoading = false
                 self.isSearchDisabled = false
-                self.isListDisabled = false
             }
         }
     }
@@ -68,6 +67,8 @@ final class SearchViewModel: ObservableObject {
 
         $searchText
             .dropFirst()
+            .removeDuplicates()
+            .throttle(for: 0.5, scheduler: RunLoop.main, latest: true)
             .sink { [weak self] in
                 self?.search($0)
             }
@@ -75,31 +76,29 @@ final class SearchViewModel: ObservableObject {
     }
 
     private func search(_ query: String) {
+        queue.cancelAllOperations()
+
         isNotFoundTextHidden = true
 
         guard !query.isEmpty else {
-            tracks = allTracks
+            queue.addOperation { [weak self] in
+                guard let self else { return }
+                Task { @MainActor in
+                    self.tracks = self.allTracks
+                }
+            }
             return
         }
 
         isLoading = true
-        isListDisabled = true
 
-        queue.cancelAllOperations()
-
-        let allTracks = self.allTracks
-        queue.addOperation { [weak self] in
-            guard let self else { return }
-            // swiftlint:disable line_length
-            let predicate = NSPredicate(format: "title contains[cd] %@ OR artist contains[cd] %@ OR albumTitle contains[cd] %@ OR genre contains[cd] %@", query, query, query, query)
-            let tracks = NSArray(array: allTracks).filtered(using: predicate) as! [MPMediaItem]
-
-            DispatchQueue.main.async {
-                self.tracks = tracks
-                self.isNotFoundTextHidden = !tracks.isEmpty
-                self.isLoading = false
-                self.isListDisabled = false
+        queue.addOperation(
+            SearchOperation(query: query, allTracks: allTracks) { [weak self] in
+                guard let self else { return }
+                tracks = $0
+                isNotFoundTextHidden = !$0.isEmpty
+                isLoading = false
             }
-        }
+        )
     }
 }
