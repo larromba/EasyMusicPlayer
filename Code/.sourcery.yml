@@ -1,6 +1,0 @@
-sources:
-  - ./EasyMusicPlayer
-templates:
-  - ./Sourcery
-output:
-  ./EasyMusicPlayerTests
