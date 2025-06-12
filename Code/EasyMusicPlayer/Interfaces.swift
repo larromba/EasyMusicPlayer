@@ -2,7 +2,7 @@ import AVFoundation
 import Foundation
 
 /// @mockable
-protocol AudioSessionRouteDescription: OutputRouteConvertible {
+protocol AudioSessionRouteDescription: OutputRouteConvertible, Sendable {
     var inputs: [AVAudioSessionPortDescription] { get }
     var outputs: [AVAudioSessionPortDescription] { get }
 }
@@ -13,12 +13,12 @@ extension AVAudioSessionRouteDescription: AudioSessionRouteDescription {
 }
 
 /// @mockable
-protocol AudioSession: OutputRouteConvertible {
+protocol AudioSession: OutputRouteConvertible, Sendable {
     var currentRoute: AVAudioSessionRouteDescription { get }
 }
 extension AVAudioSession: AudioSession {
     var outputRoutes: [AVAudioSession.Port] {
-        return currentRoute.outputs.map { $0.portType }
+        currentRoute.outputs.map { $0.portType }
     }
 }
 
