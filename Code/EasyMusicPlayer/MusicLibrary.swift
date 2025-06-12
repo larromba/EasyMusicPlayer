@@ -2,7 +2,7 @@ import Foundation
 import MediaPlayer
 
 /// @mockable
-protocol MusicLibraryable {
+protocol MusicLibraryable: Sendable {
     func makePlaylist(isShuffled: Bool) -> [MPMediaItem]
     func findTracks(with ids: [MPMediaEntityPersistentID]) -> [MPMediaItem]
     func areTrackIDsValid(_ ids: [MPMediaEntityPersistentID]) -> Bool

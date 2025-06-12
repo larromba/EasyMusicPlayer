@@ -1,14 +1,13 @@
 #if DEBUG && targetEnvironment(simulator)
-import MediaPlayer
+@preconcurrency import MediaPlayer
 
 // MARK: - MPMediaQuery
 
 extension MPMediaQuery {
-    // CHANGE THIS TO TEST DIFFERENT LIBRARIES ON THE SIMULATOR
+    /// **CHANGE THIS TO TEST DIFFERENT LIBRARIES ON THE SIMULATOR**
     static func songs() -> MPMediaQuery {
 //        SimulatorMediaQuery(tracks: smallLibary)
         SimulatorMediaQuery(tracks: largeLibrary)
-//        SimulatorMediaQuery(tracks: uiTestLibrary)
     }
 
     private static let smallLibary = [
@@ -26,7 +25,7 @@ extension MPMediaQuery {
 
 // MARK: - SimulatorMediaItem
 
-final class SimulatorMediaItem: MPMediaItem {
+final class SimulatorMediaItem: MPMediaItem, @unchecked Sendable {
     enum MediaAsset: Int {
         case track1
         case track2
@@ -88,7 +87,7 @@ final class SimulatorMediaItem: MPMediaItem {
         artist: String = "Arkist",
         title: String = "Fill Your Coffee",
         id: MPMediaEntityPersistentID = 0,
-        image: UIImage? = Asset.PreviewAssets.arkistRendezvousFillYourCoffee.image
+        image: UIImage? = .arkistRendezvousFillYourCoffee
     ) {
         _assetUrl = asset.url
         _artist = artist
