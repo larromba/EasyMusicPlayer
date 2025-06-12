@@ -1,33 +1,37 @@
 @testable import EasyMusicPlayer
 import MediaPlayer
-import XCTest
+import Testing
 
-final class MPMediaItemExtensionTests: XCTestCase {
-    func test_track_whenDashFormat_expectArtistAndTitleValues() {
+struct MPMediaItemExtensionTests {
+    @Test
+    func track_whenDashFormat_expectArtistAndTitleValues() {
         let sut = MediaItemMock(artist: "", title: "   arkist   -   fill my coffee  ")
 
-        XCTAssertEqual(sut.resolvedArtist, "arkist")
-        XCTAssertEqual(sut.resolvedTitle, "fill my coffee")
+        #expect(sut.resolvedArtist == "arkist")
+        #expect(sut.resolvedTitle == "fill my coffee")
     }
 
-    func test_track_whenDashInArtistAndTitle_expectArtistAndTitleValues() {
+    @Test
+    func track_whenDashInArtistAndTitle_expectArtistAndTitleValues() {
         let sut = MediaItemMock(artist: "", title: "   ark-ist   -   fi-ll my coffee  ")
 
-        XCTAssertEqual(sut.resolvedArtist, "ark-ist")
-        XCTAssertEqual(sut.resolvedTitle, "fi-ll my coffee")
+        #expect(sut.resolvedArtist == "ark-ist")
+        #expect(sut.resolvedTitle == "fi-ll my coffee")
     }
 
-    func test_track_whenNotDashFormat_expectArtistAndTitleValues() {
+    @Test
+    func track_whenNotDashFormat_expectArtistAndTitleValues() {
         let sut = MediaItemMock(artist: "", title: "   arkist   -   fill my - coffee  ")
 
-        XCTAssertEqual(sut.resolvedArtist, L10n.unknownArtist)
-        XCTAssertEqual(sut.resolvedTitle, "   arkist   -   fill my - coffee  ")
+        #expect(sut.resolvedArtist == L10n.unknownArtist)
+        #expect(sut.resolvedTitle == "   arkist   -   fill my - coffee  ")
     }
 
-    func test_track_whenEmpty_expectDefaultValues() {
+    @Test
+    func track_whenEmpty_expectDefaultValues() {
         let sut = MediaItemMock(artist: "", title: "")
 
-        XCTAssertEqual(sut.resolvedArtist, L10n.unknownArtist)
-        XCTAssertEqual(sut.resolvedTitle, L10n.unknownTrack)
+        #expect(sut.resolvedArtist == L10n.unknownArtist)
+        #expect(sut.resolvedTitle == L10n.unknownTrack)
     }
 }
