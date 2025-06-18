@@ -40,7 +40,7 @@
 		7F7E39442B2E0C2D0099DBA9 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E39432B2E0C2D0099DBA9 /* Queue.swift */; };
 		7F7E39492B2E19770099DBA9 /* MPMediaItemExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E39482B2E19770099DBA9 /* MPMediaItemExtensionTests.swift */; };
 		7F7E394C2B2E1A330099DBA9 /* MusicInterruptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E394B2B2E1A330099DBA9 /* MusicInterruptionTests.swift */; };
-		7F7E394F2B2E1BF80099DBA9 /* Interfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E394E2B2E1BF80099DBA9 /* Interfaces.swift */; };
+		7F7E394F2B2E1BF80099DBA9 /* AudioSessionInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E394E2B2E1BF80099DBA9 /* AudioSessionInterfaces.swift */; };
 		7F7E397A2B2E515C0099DBA9 /* SnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E395B2B2E4E940099DBA9 /* SnapshotTests.swift */; };
 		7F7E397B2B2E515F0099DBA9 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E39662B2E4F230099DBA9 /* SnapshotHelper.swift */; };
 		7F7E397D2B2E63F70099DBA9 /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7E397C2B2E63F70099DBA9 /* UserServiceTests.swift */; };
@@ -158,7 +158,7 @@
 		7F7E39432B2E0C2D0099DBA9 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		7F7E39482B2E19770099DBA9 /* MPMediaItemExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MPMediaItemExtensionTests.swift; sourceTree = "<group>"; };
 		7F7E394B2B2E1A330099DBA9 /* MusicInterruptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicInterruptionTests.swift; sourceTree = "<group>"; };
-		7F7E394E2B2E1BF80099DBA9 /* Interfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interfaces.swift; sourceTree = "<group>"; };
+		7F7E394E2B2E1BF80099DBA9 /* AudioSessionInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionInterfaces.swift; sourceTree = "<group>"; };
 		7F7E395B2B2E4E940099DBA9 /* SnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTests.swift; sourceTree = "<group>"; };
 		7F7E39662B2E4F230099DBA9 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		7F7E396E2B2E4F5C0099DBA9 /* EasyMusicPlayerSnapshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyMusicPlayerSnapshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -439,7 +439,7 @@
 				7F9DC91E2B2A5FFE005CBF37 /* MusicInterruptionStage.swift */,
 				7F9DC9362B2A6269005CBF37 /* MusicInterruptionAction.swift */,
 				7F9DC91C2B2A5FEA005CBF37 /* MusicInterruption.swift */,
-				7F7E394E2B2E1BF80099DBA9 /* Interfaces.swift */,
+				7F7E394E2B2E1BF80099DBA9 /* AudioSessionInterfaces.swift */,
 			);
 			name = MusicInterruptionHandler;
 			sourceTree = "<group>";
@@ -878,7 +878,7 @@
 				7F7E39382B2DCF240099DBA9 /* CollectionExtensions.swift in Sources */,
 				7FD1FF9F2B29D26D001F56DF /* Strings.swift in Sources */,
 				7F9DC9662B2CA4E4005CBF37 /* AVAudioPlayerExtensions.swift in Sources */,
-				7F7E394F2B2E1BF80099DBA9 /* Interfaces.swift in Sources */,
+				7F7E394F2B2E1BF80099DBA9 /* AudioSessionInterfaces.swift in Sources */,
 				7F7E39232B2DB5870099DBA9 /* URLSharable.swift in Sources */,
 				7F9DC9212B2A601C005CBF37 /* SimulatorMusicLibrary.swift in Sources */,
 				7F9DC8E22B2A1445005CBF37 /* ScrubberView.swift in Sources */,
