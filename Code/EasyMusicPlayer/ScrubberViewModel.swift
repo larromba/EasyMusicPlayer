@@ -44,7 +44,7 @@ final class ScrubberViewModel: ObservableObject {
         let translation = gesture.translation
         width = min(maxWidth, max(startPoint.x + translation.width, 0))
 
-        let duration = musicPlayer.info.track.duration
+        let duration = musicPlayer.info.trackInfo.duration
         guard duration > 0, maxWidth > 0 else { return }
         let percentage = width / maxWidth
         musicPlayer.setClock(duration * percentage, isScrubbing: true)
@@ -56,7 +56,7 @@ final class ScrubberViewModel: ObservableObject {
         bounce = gesture.velocity.width < 0 ? (bounce * -1) : bounce // left is -, right is +
         width = min(maxWidth, max(width + bounce, 0))
 
-        let duration = musicPlayer.info.track.duration
+        let duration = musicPlayer.info.trackInfo.duration
         guard duration > 0, maxWidth > 0 else { return }
         let percentage = width / maxWidth
         musicPlayer.setClock(duration * percentage, isScrubbing: false)
@@ -65,7 +65,7 @@ final class ScrubberViewModel: ObservableObject {
 
     private func updateClock(_ timeInterval: TimeInterval) {
         guard !isDragging else { return }
-        let duration = musicPlayer.info.track.duration
+        let duration = musicPlayer.info.trackInfo.duration
         guard duration > 0 else {
             width = 0
             return

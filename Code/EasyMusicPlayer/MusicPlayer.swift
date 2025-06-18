@@ -16,7 +16,7 @@ final class MusicPlayer: NSObject, MusicPlayable {
             ($0?.currentTime ?? 0, $0?.isPlaying ?? false)
         }
         return MusicPlayerInformation(
-            track: CurrentTrackInformation(
+            trackInfo: CurrentTrackInformation(
                 track: queue.currentTrack,
                 index: queue.currentTrackIndex
             ),

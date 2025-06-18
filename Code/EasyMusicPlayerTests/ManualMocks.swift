@@ -66,7 +66,9 @@ extension MPMediaItem {
 // MARK: - MPMediaItemArtwork
 
 extension MPMediaItemArtwork {
-    static let mock = MPMediaItemArtwork(boundsSize: .zero) { _ in return UIImage() }
+    static func mock(image: UIImage = UIImage()) -> MPMediaItemArtwork {
+        MPMediaItemArtwork(boundsSize: .zero) { _ in image }
+    }
 }
 
 // MARK: - MusicPlayerInformation
@@ -81,7 +83,7 @@ extension MusicPlayerInformation {
         repeatMode: RepeatMode = .none
     ) -> MusicPlayerInformation {
         MusicPlayerInformation(
-            track: CurrentTrackInformation(
+            trackInfo: CurrentTrackInformation(
                 track: track,
                 index: index
             ),

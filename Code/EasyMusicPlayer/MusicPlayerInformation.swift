@@ -1,7 +1,7 @@
 import MediaPlayer
 
 struct MusicPlayerInformation {
-    let track: CurrentTrackInformation
+    let trackInfo: CurrentTrackInformation
     let tracks: [MPMediaItem]
     let time: TimeInterval // seconds
     let isPlaying: Bool

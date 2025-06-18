@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F29748A2E0340CA00788D22 /* CGSizeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2974892E0340C700788D22 /* CGSizeExtensions.swift */; };
 		7F2AE6822B29CACA00B627AA /* EasyMusicPlayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2AE6812B29CACA00B627AA /* EasyMusicPlayerApp.swift */; };
 		7F2AE6842B29CACA00B627AA /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2AE6832B29CACA00B627AA /* PlayerView.swift */; };
 		7F2AE6862B29CACB00B627AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F2AE6852B29CACB00B627AA /* Assets.xcassets */; };
@@ -121,6 +122,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7F2974892E0340C700788D22 /* CGSizeExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSizeExtensions.swift; sourceTree = "<group>"; };
 		7F2AE67E2B29CACA00B627AA /* EasyMusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyMusicPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F2AE6812B29CACA00B627AA /* EasyMusicPlayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyMusicPlayerApp.swift; sourceTree = "<group>"; };
 		7F2AE6832B29CACA00B627AA /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
@@ -556,6 +558,7 @@
 				7F9DC9262B2A60AA005CBF37 /* BundleExtensions.swift */,
 				7F9DC9652B2CA4E4005CBF37 /* AVAudioPlayerExtensions.swift */,
 				7F8698552B2CC5FB00435247 /* MPMediaItemExtensions.swift */,
+				7F2974892E0340C700788D22 /* CGSizeExtensions.swift */,
 				7F7E39372B2DCF240099DBA9 /* CollectionExtensions.swift */,
 			);
 			name = Extensions;
@@ -845,6 +848,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F29748A2E0340CA00788D22 /* CGSizeExtensions.swift in Sources */,
 				7F9DC9372B2A6269005CBF37 /* MusicInterruptionAction.swift in Sources */,
 				7F9DC8E72B2A3653005CBF37 /* PlayerViewModel.swift in Sources */,
 				7F9DC9442B2B272F005CBF37 /* AudioClock.swift in Sources */,

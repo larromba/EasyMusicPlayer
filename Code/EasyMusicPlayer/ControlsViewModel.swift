@@ -33,17 +33,19 @@ final class ControlsViewModel: ObservableObject {
     private var cancellables = [AnyCancellable]()
 
     private var isPreviousButtonDisabled: Bool {
-        switch musicPlayer.info.repeatMode {
+        let musicPlayerInfo = musicPlayer.info
+        switch musicPlayerInfo.repeatMode {
         case .none:
-            return musicPlayer.info.track.index - 1 < 0
+            return musicPlayerInfo.trackInfo.index - 1 < 0
         default:
             return false
         }
     }
     private var isNextButtonDisabled: Bool {
-        switch musicPlayer.info.repeatMode {
+        let musicPlayerInfo = musicPlayer.info
+        switch musicPlayerInfo.repeatMode {
         case .none:
-            return musicPlayer.info.track.index + 1 >= musicPlayer.info.tracks.count
+            return musicPlayerInfo.trackInfo.index + 1 >= musicPlayerInfo.tracks.count
         default:
             return false
         }

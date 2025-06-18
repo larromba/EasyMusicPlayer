@@ -31,6 +31,16 @@ extension MPMediaItem {
         return trackComponents.track
     }
 
+    func resolvedArtwork() async -> UIImage {
+        if let artwork = artwork?.image(at: .artworkSize) {
+            return artwork
+        }
+        if let artwork = await embeddedArtwork() {
+            return artwork
+        }
+        return .artworkPlaceholder
+    }
+
     var isDashFormat: Bool {
         guard let title = title else {
             return false
@@ -71,5 +81,20 @@ extension MPMediaItem {
             artist: components[0].trimmingCharacters(in: .whitespacesAndNewlines),
             track: components[1].trimmingCharacters(in: .whitespacesAndNewlines)
         )
+    }
+
+    private func embeddedArtwork() async -> UIImage? {
+        guard let url = assetURL else {
+            return nil
+        }
+        let asset = AVAsset(url: url)
+        // TODO: use new async load() function
+        guard
+            let metadataItem = try? await asset.load(.metadata).first(where: {
+                $0.commonKey == .commonKeyArtwork
+            }),
+            let data = try? await metadataItem.load(.dataValue),
+            let image = UIImage(data: data) else { return nil }
+        return image
     }
 }
