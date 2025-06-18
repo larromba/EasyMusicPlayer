@@ -33,7 +33,7 @@ final class EasyMusicPlayerUITests: XCTestCase, Sendable {
         // this didn't help:
         // https://discuss.bitrise.io/t/how-to-create-a-virtual-audio-output-device-on-mac-os-stacks/1119/10
         //
-        if ProcessInfo.processInfo.environment["BITRISE_IO"] == "true" {
+        guard ProcessInfo.processInfo.environment["BITRISE_IO"] == nil else {
             throw XCTSkip("Skipping UI tests in CI")
         }
 
