@@ -15,7 +15,7 @@ final class InfoViewModel: ObservableObject {
         track?.resolvedTitle ?? ""
     }
     var artwork: UIImage {
-        track?.artwork?.image(at: .artwork) ?? .imagePlaceholder
+        track?.artwork?.image(at: .artworkSize) ?? track?.embeddedArtwork ?? .imagePlaceholder
     }
 
     private let musicPlayer: MusicPlayable
@@ -86,11 +86,12 @@ final class InfoViewModel: ObservableObject {
     private func updateRemoteTrack() {
         // FIXME: swift bug - MPMediaItemArtwork() causes a data race
         // warning: data race detected: @MainActor function at EasyMusicPlayer/InfoViewModel.swift:92 was not called on the main thread
-        let artwork = self.artwork
+        // see: https://stackoverflow.com/questions/78989543/swift-data-race-with-appkit-mpmediaitemartwork-function
+        let artwork = self.artwork.copy() as! UIImage
         remote.nowPlayingInfo = [
             MPMediaItemPropertyTitle: trackTitle,
             MPMediaItemPropertyArtist: artist,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: .artwork) { _ in artwork },
+            MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: .artworkSize) { @Sendable _ in artwork },
             MPNowPlayingInfoPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue
         ]
     }
@@ -104,5 +105,19 @@ final class InfoViewModel: ObservableObject {
 }
 
 private extension CGSize {
-    static let artwork = CGSize(width: 500, height: 500)
+    static let artworkSize = CGSize(width: 500, height: 500)
+}
+
+private extension MPMediaItem {
+    var embeddedArtwork: UIImage? {
+        guard let url = assetURL else {
+            return nil
+        }
+        let asset = AVAsset(url: url)
+        // TODO: use new async load() function
+        guard let metadataItem = asset.commonMetadata.first(where: { $0.commonKey == .commonKeyArtwork }),
+              let data = metadataItem.dataValue,
+              let image = UIImage(data: data) else { return nil }
+        return image
+    }
 }
