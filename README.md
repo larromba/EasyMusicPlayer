@@ -2,7 +2,7 @@
 
 | main  | develop |
 | ------------- | ------------- |
-| [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=main)](https://travis-ci.com/larromba/EasyMusicPlayer) | [![Build Status](https://travis-ci.com/larromba/EasyMusicPlayer.svg?branch=dev)](https://travis-ci.com/larromba/EasyMusicPlayer) |
+| [![Build Status][![Build Status](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2/status.svg?token=SMkt8YQrKTeL5jh-E6VAkg&branch=main)](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2) | [![Build Status](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2/status.svg?token=SMkt8YQrKTeL5jh-E6VAkg&branch=develop)](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2) |
 
 ## About
 [Easy Music Player](https://itunes.apple.com/app/id1067558718?mt=8) is a simple app designed to play and shuffle music on your device. It's a music player without the faff.
