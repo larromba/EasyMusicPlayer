@@ -52,7 +52,12 @@ final class SearchViewModel: ObservableObject {
 
         queue.addOperation { [weak self] in
             guard let self else { return }
-            let tracks = musicPlayer.info.tracks.sorted(by: { $0.sortID < $1.sortID })
+            let tracks = musicPlayer.info.tracks.sorted {
+                $0.sortID.localizedCaseInsensitiveCompare($1.sortID) == .orderedAscending
+            }
+
+            print(tracks.map { $0.title })
+
             Task { @MainActor in
                 self.allTracks = tracks
                 self.tracks = tracks

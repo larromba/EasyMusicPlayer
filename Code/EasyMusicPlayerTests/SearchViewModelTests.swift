@@ -23,7 +23,7 @@ struct SearchViewModelTests: Waitable {
 
     @Test
     func init_whenInvoked_expectTracksSorted() async throws {
-        let tracks: [MediaItemMock] = [.mock(artist: "c"), .mock(artist: "b"), .mock(artist: "a")]
+        let tracks: [MediaItemMock] = [.mock(title: "c"), .mock(title: "b"), .mock(title: "a")]
         let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
 
         #expect(env.sut.tracks == tracks.reversed())
@@ -46,6 +46,7 @@ struct SearchViewModelTests: Waitable {
     @Test
     func select_whenInvoked_expectPlay() async throws {
         let env = try await setup()
+
         env.sut.select(.mock())
 
         #expect(env.musicPlayer.playCallCount == 1)
@@ -144,7 +145,7 @@ struct SearchViewModelTests: Waitable {
     }
 
     @Test
-    func searchText_givenQueryThatMatchesTracks_whenInvoked_expectStateUpdates()  async throws {
+    func searchText_givenQueryThatMatchesNoTracks_whenInvoked_expectNoTracks_andStateUpdates()  async throws {
         let tracks: [MediaItemMock] = [.mock(artist: "apple"), .mock(artist: "banana"), .mock(artist: "pear")]
         let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
 
@@ -155,6 +156,50 @@ struct SearchViewModelTests: Waitable {
         #expect(!env.sut.isNotFoundTextHidden)
         #expect(!env.sut.isLoading)
         #expect(!env.sut.isListDisabled)
+    }
+
+    @Test
+    func searchText_givenQueryThatMatchesTitle_whenInvoked_expectFoundTracks()  async throws {
+        let tracks: [MediaItemMock] = [.mock(title: "apple")]
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+
+        env.sut.searchText = "ap"
+
+        try await waitSync()
+        #expect(env.sut.tracks == [tracks[0]])
+    }
+
+    @Test
+    func searchText_givenQueryThatMatchesArtist_whenInvoked_expectFoundTracks()  async throws {
+        let tracks: [MediaItemMock] = [.mock(artist: "apple")]
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+
+        env.sut.searchText = "ap"
+
+        try await waitSync()
+        #expect(env.sut.tracks == [tracks[0]])
+    }
+
+    @Test
+    func searchText_givenQueryThatMatchesAlbumTitle_whenInvoked_expectFoundTracks()  async throws {
+        let tracks: [MediaItemMock] = [.mock(albumTitle: "apple")]
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+
+        env.sut.searchText = "ap"
+
+        try await waitSync()
+        #expect(env.sut.tracks == [tracks[0]])
+    }
+
+    @Test
+    func searchText_givenQueryThatMatchesGenre_whenInvoked_expectFoundTracks()  async throws {
+        let tracks: [MediaItemMock] = [.mock(genre: "apple")]
+        let env = try await setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: tracks)))
+
+        env.sut.searchText = "ap"
+
+        try await waitSync()
+        #expect(env.sut.tracks == [tracks[0]])
     }
 
     private func setup(

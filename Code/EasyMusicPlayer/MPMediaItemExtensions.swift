@@ -8,7 +8,7 @@ extension MPMediaItem: @retroactive Identifiable {
 
 extension MPMediaItem {
     var sortID: String {
-        "\(artist ?? L10n.unknownArtist) - \(title ?? L10n.unknownTrack)"
+        title ?? ""
     }
 
     var resolvedArtist: String {
