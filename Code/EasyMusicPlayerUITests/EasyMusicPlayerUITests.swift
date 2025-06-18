@@ -7,12 +7,13 @@ final class EasyMusicPlayerUITests: XCTestCase, Sendable {
     override func setUp() async throws {
         try await super.setUp()
 
-        app = XCUIApplication()
         continueAfterFailure = false
-        addUIInterruptionMonitor(withDescription: "permissions") { alert -> Bool in
-            alert.buttons["Allow"].tap()
-            return true
-        }
+
+        app = XCUIApplication()
+
+        setUpTestAudio()
+        setUpPermissions()
+
         app.launch()
     }
 
@@ -90,5 +91,21 @@ final class EasyMusicPlayerUITests: XCTestCase, Sendable {
 
         // stop
         stopButton.tap()
+    }
+
+    private func setUpTestAudio() {
+        guard let fileURL = Bundle(for: type(of: self)).url(forResource: "empty", withExtension: "mp3") else {
+            XCTFail("couldn't set test audio")
+            return
+        }
+        app.launchEnvironment["audio"] = fileURL.path
+    }
+
+    private func setUpPermissions() {
+        // music library permissions
+        addUIInterruptionMonitor(withDescription: "permissions") { alert -> Bool in
+            alert.buttons["Allow"].tap()
+            return true
+        }
     }
 }

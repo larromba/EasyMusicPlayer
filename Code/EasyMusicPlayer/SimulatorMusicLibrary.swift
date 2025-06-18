@@ -36,25 +36,36 @@ final class SimulatorMediaItem: MPMediaItem, @unchecked Sendable {
         }
 
         var url: URL {
-            let tracks = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
+            // if it's the ci, use the test bundle's audio track (else the ci fails)
+            guard !ProcessInfo.isCI else {
+                guard let audioPath = ProcessInfo.processInfo.environment["audio"] else { return .empty }
+                return URL(fileURLWithPath: audioPath)
+            }
+
+            // if it's not the ci, use the audio specified in the info dictionary
+            guard let trackPaths = Bundle.safeMain.infoDictionary?["Track Paths"] as? [String: String] else { return .empty }
             switch self {
             case .track1:
-                return URL(fileURLWithPath: tracks["Track #1"]!)
+                guard let trackPath = trackPaths["Track #1"] as String? else { return .empty }
+                return URL(fileURLWithPath: trackPath)
             case .track2:
-                return URL(fileURLWithPath: tracks["Track #2"]!)
+                guard let trackPath = trackPaths["Track #2"] as String? else { return .empty }
+                return URL(fileURLWithPath: trackPath)
             case .track3:
-                return URL(fileURLWithPath: tracks["Track #3"]!)
+                guard let trackPath = trackPaths["Track #3"] as String? else { return .empty }
+                return URL(fileURLWithPath: trackPath)
             }
         }
 
         var playbackDuration: TimeInterval {
+            // if it's the ci, use the test bundle's audio track length
+            guard !ProcessInfo.isCI else { return 40 }
+
+            // if it's not the ci, return the track lengths for the audio specified in the info dictionary
             switch self {
-            case .track1:
-                return 32
-            case .track2:
-                return 31
-            case .track3:
-                return 34
+            case .track1: return 32
+            case .track2: return 31
+            case .track3: return 34
             }
         }
     }
@@ -143,6 +154,16 @@ final class SimulatorMediaQuery: MPMediaQuery {
 
     override func removeFilterPredicate(_ predicate: MPMediaPredicate) {
         id = nil
+    }
+}
+
+private extension URL {
+    static let empty = URL(fileURLWithPath: "")
+}
+
+private extension ProcessInfo {
+    static var isCI: Bool {
+        ProcessInfo.processInfo.environment["TRAVIS"] == "1"
     }
 }
 #endif
