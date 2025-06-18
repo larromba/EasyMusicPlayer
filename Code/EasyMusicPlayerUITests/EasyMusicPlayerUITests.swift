@@ -8,15 +8,6 @@ final class EasyMusicPlayerUITests: XCTestCase, Sendable {
     override func setUp() async throws {
         try await super.setUp()
 
-        // FIXME: Bitrise is failing when the play button is pressed, but it's not clear why
-        //
-        // this didn't help:
-        // https://discuss.bitrise.io/t/how-to-create-a-virtual-audio-output-device-on-mac-os-stacks/1119/10
-        //
-        if ProcessInfo.processInfo.environment["BITRISE_IO"] == "true" {
-            throw XCTSkip("Skipping UI tests in CI")
-        }
-
         continueAfterFailure = false
 
         app = XCUIApplication()
@@ -36,7 +27,16 @@ final class EasyMusicPlayerUITests: XCTestCase, Sendable {
         try await super.tearDown()
     }
 
-    func test_givenHappyPath_forMainFeatures_whenTapAllButtons_expectNoErrors() {
+    func test_givenHappyPath_forMainFeatures_whenTapAllButtons_expectNoErrors() throws {
+        // FIXME: Bitrise is failing when the play button is pressed, but it's not clear why
+        //
+        // this didn't help:
+        // https://discuss.bitrise.io/t/how-to-create-a-virtual-audio-output-device-on-mac-os-stacks/1119/10
+        //
+        if ProcessInfo.processInfo.environment["BITRISE_IO"] == "true" {
+            throw XCTSkip("Skipping UI tests in CI")
+        }
+
         let playButton = app.buttons["Play"]
         let scrubberElement = app.otherElements["Scrubber"]
         let nextButton = app.buttons["Next"]
