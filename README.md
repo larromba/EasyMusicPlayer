@@ -21,10 +21,9 @@
 10. [Architecture](#architecture)
 11. [File Structure](#file-structure)
 12. [Swift 6.0](#swift-60)
-    - [Toilet paper principles](#toilet-paper-principles)
-      - [ViewModels](#viewmodels)
-      - [Services](#services)
-      - [Data Models](#data-models)
+    - [ViewModels](#viewmodels)
+    - [Services](#services)
+    - [Data Models](#data-models)
     - [Other thoughts](#other-thoughts)
     - [What NOT to do](#what-not-to-do)
     - [Gotchyas](#gotchyas)
@@ -187,11 +186,10 @@ As of XCode 16, it seems virtual groups have been removed. To continue using the
 ## Swift 6.0
 This is my current opinion on how to migrate to Swift 6:
 
-### Toilet paper principles
-#### ViewModels
+### ViewModels
 Make `ViewModels` -> `@MainActor` (because they touch the view)
 
-#### Services
+### Services
 Make Services `Sendable`, but if they touch the view, make them `@MainActor`
 
 - If the service only has `let` variables, make it a `Sendable` class
@@ -206,7 +204,7 @@ __Please Note:__ `LockIsolated` has mostly been used in this project for the sak
 
 ⚠️ When using `LockIsolated`, do not access the `value` directly unless you have a good reason. Use `withValue` to read or update it, and `setValue` to set a new value. To avoid unexpected behaviour with `withValue`, minimise the amount of logic inside the closure; just pull out the data you need.
 
-#### Data Models
+### Data Models
 Make your data models `Sendable` only when the compiler asks
 
 ### Other thoughts
