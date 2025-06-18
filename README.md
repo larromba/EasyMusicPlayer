@@ -151,19 +151,19 @@ Most of them were Google translated, so please feel welcome to make corrections,
 There are number of scripts to automatically run the dependencies described above. None of them are malicious. It's always good practise to check yourself to avoid spyware. They are kept here: `Code/Scripts`, and ran from the `Build Phases` tab on the `EasyMusicPlayer` and `EasyMusicPlayerTests` targets.
 
 ## Testing
-- `ViewModels` are unit tested. When injecting objects, please reference them over an interface (protocol). Use `ing` or `able` as the extension of your interface's name (e.g. `MusicPlayer` -> `MusicPlaying`). This is inspired by the [Swift API Guidelines](https://www.swift.org/documentation/api-design-guidelines/)).
+- `ViewModels` are unit tested with `Swift Testing`, but `XCTest` is still used for performance measurement. When injecting objects, please reference them over an interface (protocol). Use `ing` or `able` as the extension of your interface's name (e.g. `MusicPlayer` -> `MusicPlaying`). This is inspired by the [Swift API Guidelines](https://www.swift.org/documentation/api-design-guidelines/)).
 - The service objects are mostly covered by QA tests.
-- The QA steps are loosely replicated in the UI tests (however the framework hasn't always been stable).
+- The QA steps are loosely replicated in the UI tests (however Apple's UI testing framework hasn't always been stable).
 
 ## CI
-`Travis CI` is used to run the unit tests remotely on each branch. The badges on the top of this page show the status of the main branches.
+`Bitrise` is used to run the unit tests remotely on each branch. The badges on the top of this page show the status of the main branches.
 
 ## Architecture
 Architecture will make you go crazy, it really will. It's human nature to try and find a repeatable pattern that can be applied to every situation. However, at least in my experience, that's not really possible, or natural! Conceptually it feels possible, but after trying to invent an architecture, and from using various architectures professionally, it seems a slippery slope whereby you either fight the ecosystem, or over-engineer things.
 
 I once worked with an old C programmer; he had around 15 years of experience. I remember seeing his iOS code and thinking, is that is? I expected more! There's lots of stuff going on in this function, where's all the abstractions, etc. It's taken me some years to realise we often think 'complex' means 'better'. It's not. Simple is better. This is what his 15 years of experience showed; sure - it wasn't pretty, but anyone could have read it, and this is important when working with others. Whilst there's good practises to follow, code should always remain accessible - it's just a tool; a hammer - why overcomplicate that?
 
-`ViewModels` make sense for this project, as we want to test the logic, and practise a common design pattern found in professional projects. People will disagree, and that's ok, because there's not one correct way to do things. The aim is to keep things simple; we're creating: complexity stifles it; play encourages it.
+`ViewModels` make sense for this project, as we want to test the logic, and practise a common design pattern found in professional projects. The guys at [Point-Free](https://www.pointfree.co/) do a great job inventing cool new things, but I feel their TCA architecutre is a bit too opinionated and over-engineered. People will disagree, and that's ok, because there's no one correct way to do things. The aim here is just to keep things simple; we're creating: complexity stifles it; play encourages it.
 
 ## File Structure
 Please note the file structure is intentionally flat, and the the virtual folders in XCode are used for the organisation. From experience, once files start moving around or renamed, it gets messy with git. It also makes searching for files much easier in the code directory if the project gets more complicated.
