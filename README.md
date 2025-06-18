@@ -161,8 +161,11 @@ As of XCode 16, it seems virtual groups have been removed. To continue using the
 This is my current opinion on how to migrate to Swift 6:
 
 ### Toilet paper principles
-1. Make `ViewModels` -> `@MainActor` (because they touch the view)
-2. Make Services `Sendable`, but if they touch the view, make them `@MainActor`
+#### ViewModels
+Make `ViewModels` -> `@MainActor` (because they touch the view)
+
+#### Services
+Make Services `Sendable`, but if they touch the view, make them `@MainActor`
     - If the service only has `let` variables, make it a `Sendable` class
     - If the service has `var` variables, either make it an `actor`, or a `Sendable` class with `[LockIsolated](https://github.com/pointfreeco/swift-concurrency-extras/blob/main/Sources/ConcurrencyExtras/LockIsolated.swift)` variables (from `ConcurrencyExtras` by point free), e.g:
 
@@ -175,7 +178,8 @@ __Please Note:__ `LockIsolated` has mostly been used in this project for the sak
 
 ⚠️ When using `LockIsolated`, do not access the `value` directly unless you have a good reason. Use `withValue` to read or update it, and `setValue` to set a new value. To avoid unexpected behaviour with `withValue`, minimise the amount of logic inside the closure; just pull out the data you need.
 
-3. Make your data models `Sendable` when the compiler asks
+#### Data Models
+Make your data models `Sendable` only when the compiler asks
 
 ### Other thoughts
 - For small packages, Swift 6.0 migration is fairly straight-forward using these principles
