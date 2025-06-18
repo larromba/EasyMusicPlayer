@@ -17,7 +17,7 @@ extension MPMediaQuery {
     ]
 
     private static let largeLibrary: [MPMediaItem] = {
-        return (0..<50_000).map {
+        (0..<50_000).map {
             SimulatorMediaItem(asset: .random, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
         }
     }()

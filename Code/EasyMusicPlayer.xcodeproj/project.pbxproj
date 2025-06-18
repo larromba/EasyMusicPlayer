@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7F2974882E030A9500788D22 /* empty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7F2974872E030A9500788D22 /* empty.mp3 */; };
 		7F2AE6822B29CACA00B627AA /* EasyMusicPlayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2AE6812B29CACA00B627AA /* EasyMusicPlayerApp.swift */; };
 		7F2AE6842B29CACA00B627AA /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2AE6832B29CACA00B627AA /* PlayerView.swift */; };
 		7F2AE6862B29CACB00B627AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F2AE6852B29CACB00B627AA /* Assets.xcassets */; };
@@ -122,7 +121,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7F2974872E030A9500788D22 /* empty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = empty.mp3; sourceTree = "<group>"; };
 		7F2AE67E2B29CACA00B627AA /* EasyMusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyMusicPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F2AE6812B29CACA00B627AA /* EasyMusicPlayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyMusicPlayerApp.swift; sourceTree = "<group>"; };
 		7F2AE6832B29CACA00B627AA /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
@@ -325,7 +323,6 @@
 			isa = PBXGroup;
 			children = (
 				7F2AE69C2B29CACB00B627AA /* EasyMusicPlayerUITests.swift */,
-				7F2974872E030A9500788D22 /* empty.mp3 */,
 				7FC9D8E52DF99A5700328603 /* Utilities */,
 			);
 			path = EasyMusicPlayerUITests;
@@ -772,7 +769,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F2974882E030A9500788D22 /* empty.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
