@@ -37,29 +37,25 @@ final class SimulatorMediaItem: MPMediaItem, @unchecked Sendable {
 
         var url: URL {
             // if it's the ci, use the test bundle's audio track (else the ci fails)
-            guard !ProcessInfo.isCI else {
-                guard let audioPath = ProcessInfo.processInfo.environment["audio"] else { return .empty }
+            if let audioPath = ProcessInfo.processInfo.environment["audio"] {
                 return URL(fileURLWithPath: audioPath)
             }
 
             // if it's not the ci, use the audio specified in the info dictionary
-            guard let trackPaths = Bundle.safeMain.infoDictionary?["Track Paths"] as? [String: String] else { return .empty }
+            let trackPaths = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
             switch self {
             case .track1:
-                guard let trackPath = trackPaths["Track #1"] as String? else { return .empty }
-                return URL(fileURLWithPath: trackPath)
+                return URL(fileURLWithPath: trackPaths["Track #1"]!)
             case .track2:
-                guard let trackPath = trackPaths["Track #2"] as String? else { return .empty }
-                return URL(fileURLWithPath: trackPath)
+                return URL(fileURLWithPath: trackPaths["Track #2"]!)
             case .track3:
-                guard let trackPath = trackPaths["Track #3"] as String? else { return .empty }
-                return URL(fileURLWithPath: trackPath)
+                return URL(fileURLWithPath: trackPaths["Track #3"]!)
             }
         }
 
         var playbackDuration: TimeInterval {
             // if it's the ci, use the test bundle's audio track length
-            guard !ProcessInfo.isCI else { return 40 }
+            guard ProcessInfo.processInfo.environment["audio"] == nil else { return 40 }
 
             // if it's not the ci, return the track lengths for the audio specified in the info dictionary
             switch self {
@@ -159,11 +155,5 @@ final class SimulatorMediaQuery: MPMediaQuery {
 
 private extension URL {
     static let empty = URL(fileURLWithPath: "")
-}
-
-private extension ProcessInfo {
-    static var isCI: Bool {
-        ProcessInfo.processInfo.environment["TRAVIS"] == "1"
-    }
 }
 #endif
