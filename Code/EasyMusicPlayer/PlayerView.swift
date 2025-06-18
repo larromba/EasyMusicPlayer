@@ -2,7 +2,7 @@ import MediaPlayer
 import SwiftUI
 
 struct PlayerView: View {
-    @StateObject var viewModel = PlayerViewModel(urlSharer: UIApplication.shared)
+    @StateObject var viewModel = PlayerViewModel()
 
     var body: some View {
         GeometryReader { geometry in

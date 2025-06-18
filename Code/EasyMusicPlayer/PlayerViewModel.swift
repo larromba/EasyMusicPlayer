@@ -15,7 +15,7 @@ final class PlayerViewModel: ObservableObject {
 
     init(
         musicPlayer: MusicPlayable = MusicPlayer(),
-        urlSharer: URLSharable,
+        urlSharer: URLSharable = UIApplication.shared,
         soundEffects: SoundEffects = SoundEffects()
     ) {
         self.musicPlayer = musicPlayer
