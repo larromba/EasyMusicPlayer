@@ -4,6 +4,33 @@
 | ------------- | ------------- |
 | [![Build Status](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2/status.svg?token=SMkt8YQrKTeL5jh-E6VAkg&branch=main)](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2) | [![Build Status](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2/status.svg?token=SMkt8YQrKTeL5jh-E6VAkg&branch=develop)](https://app.bitrise.io/app/95937f04-4c8f-4649-868f-35198af458d2) |
 
+## 📚 Table of Contents
+
+1. [About](#about)
+2. [Installation from Source](#installation-from-source)
+   - [Dependencies](#dependencies)
+   - [Build Instructions](#build-instructions)
+   - [Generating snapshots](#generating-snapshots)
+3. [How it works](#how-it-works)
+4. [Intention](#intention)
+5. [Contributing](#contributing)
+6. [Localisations](#localisations)
+7. [Scripts](#scripts)
+8. [Testing](#testing)
+9. [CI](#ci)
+10. [Architecture](#architecture)
+11. [File Structure](#file-structure)
+12. [Swift 6.0](#swift-60)
+    - [Toilet paper principles](#toilet-paper-principles)
+      - [ViewModels](#viewmodels)
+      - [Services](#services)
+      - [Data Models](#data-models)
+    - [Other thoughts](#other-thoughts)
+    - [What NOT to do](#what-not-to-do)
+    - [Gotchyas](#gotchyas)
+13. [Licence](#licence)
+14. [Contact](#contact)
+
 ## About
 [Easy Music Player](https://itunes.apple.com/app/id1067558718?mt=8) is a simple app designed to play and shuffle music on your device. It's a music player without the faff.
 
