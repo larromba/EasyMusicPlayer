@@ -802,7 +802,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nsh Scripts/mockolo.sh\n";
+			shellScript = "if [ \"${BITRISE_IO}\" = \"1\" ]; then\n    exit 0\nfi\nsh Scripts/mockolo.sh\n";
 		};
 		7FD1FF962B29CF98001F56DF /* Setup Base Localizations */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -821,7 +821,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nsh Scripts/base_localization.sh\n";
+			shellScript = "if [ \"${BITRISE_IO}\" = \"1\" ]; then\n    exit 0\nfi\nsh Scripts/base_localization.sh\n";
 		};
 		7FD1FF972B29CFB8001F56DF /* Generate Localizations & Assets */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -840,7 +840,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"${TRAVIS}\" = \"1\" ]; then\n    exit 0\nfi\nsh Scripts/generate_assets.sh\n";
+			shellScript = "if [ \"${BITRISE_IO}\" = \"1\" ]; then\n    exit 0\nfi\nsh Scripts/generate_assets.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
