@@ -168,7 +168,7 @@ Make `ViewModels` -> `@MainActor` (because they touch the view)
 Make Services `Sendable`, but if they touch the view, make them `@MainActor`
 
 - If the service only has `let` variables, make it a `Sendable` class
-- If the service has `var` variables, either make it an `actor`, or a `Sendable` class with `[LockIsolated](https://github.com/pointfreeco/swift-concurrency-extras/blob/main/Sources/ConcurrencyExtras/LockIsolated.swift)` variables (from `ConcurrencyExtras` by point free), e.g:
+- If the service has `var` variables, either make it an `actor`, or a `Sendable` class with [`LockIsolated`](https://github.com/pointfreeco/swift-concurrency-extras/blob/main/Sources/ConcurrencyExtras/LockIsolated.swift) variables (from `ConcurrencyExtras` by point free), e.g:
 
 ```
 var myVariable = false                              // ❌ not Sendable
