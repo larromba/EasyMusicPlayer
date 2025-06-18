@@ -30,11 +30,7 @@ final class PlayerViewModel: ObservableObject {
     }
 
     func openAbout() {
-        urlSharer.open(
-            URL(string: "https://github.com/larromba/easymusicplayer")!,
-            options: [:],
-            completionHandler: { _ in }
-        )
+        urlSharer.open(.about, options: [:], completionHandler: { _ in })
     }
 
     private func setupAlert() {
@@ -112,4 +108,8 @@ extension PlayerViewModel {
             }
         )
     }
+}
+
+private extension URL {
+    static let about = URL(string: "https://github.com/larromba/easymusicplayer")!
 }
