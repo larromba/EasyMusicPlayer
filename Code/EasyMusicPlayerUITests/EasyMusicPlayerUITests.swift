@@ -33,13 +33,10 @@ final class EasyMusicPlayerUITests: XCTestCase, Sendable {
         // this didn't help:
         // https://discuss.bitrise.io/t/how-to-create-a-virtual-audio-output-device-on-mac-os-stacks/1119/10
         //
-
-        print("CI TEST")
-        print(ProcessInfo.processInfo.environment)
-
-        guard ProcessInfo.processInfo.environment["BITRISE_IO"] == nil else {
-            throw XCTSkip("Skipping UI tests in CI")
-        }
+        #if BITRISE_CI
+        throw XCTSkip("Skipping UI tests in CI")
+        return
+        #endif
 
         let playButton = app.buttons["Play"]
         let scrubberElement = app.otherElements["Scrubber"]
