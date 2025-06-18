@@ -88,11 +88,8 @@ extension MPMediaItem {
             return nil
         }
         let asset = AVAsset(url: url)
-        // TODO: use new async load() function
         guard
-            let metadataItem = try? await asset.load(.metadata).first(where: {
-                $0.commonKey == .commonKeyArtwork
-            }),
+            let metadataItem = try? await asset.load(.metadata).first(where: { $0.commonKey == .commonKeyArtwork }),
             let data = try? await metadataItem.load(.dataValue),
             let image = UIImage(data: data) else { return nil }
         return image
