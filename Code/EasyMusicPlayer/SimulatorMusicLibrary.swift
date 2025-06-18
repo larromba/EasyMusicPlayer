@@ -36,12 +36,6 @@ final class SimulatorMediaItem: MPMediaItem, @unchecked Sendable {
         }
 
         var url: URL {
-            // if it's the ci, use the test bundle's audio track (else the ci fails)
-            if let audioPath = ProcessInfo.processInfo.environment["audio"] {
-                return URL(fileURLWithPath: audioPath)
-            }
-
-            // if it's not the ci, use the audio specified in the info dictionary
             let trackPaths = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
             switch self {
             case .track1:
@@ -54,10 +48,6 @@ final class SimulatorMediaItem: MPMediaItem, @unchecked Sendable {
         }
 
         var playbackDuration: TimeInterval {
-            // if it's the ci, use the test bundle's audio track length
-            guard ProcessInfo.processInfo.environment["audio"] == nil else { return 40 }
-
-            // if it's not the ci, return the track lengths for the audio specified in the info dictionary
             switch self {
             case .track1: return 32
             case .track2: return 31
