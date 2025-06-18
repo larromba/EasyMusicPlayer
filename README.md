@@ -166,13 +166,14 @@ Make `ViewModels` -> `@MainActor` (because they touch the view)
 
 #### Services
 Make Services `Sendable`, but if they touch the view, make them `@MainActor`
-    - If the service only has `let` variables, make it a `Sendable` class
-    - If the service has `var` variables, either make it an `actor`, or a `Sendable` class with `[LockIsolated](https://github.com/pointfreeco/swift-concurrency-extras/blob/main/Sources/ConcurrencyExtras/LockIsolated.swift)` variables (from `ConcurrencyExtras` by point free), e.g:
 
-    ```
-    var myVariable = false                              // ❌ not Sendable
-    let myVariable = LockIsolated<Bool>(value: false)   // ✅ Sendable
-    ```
+- If the service only has `let` variables, make it a `Sendable` class
+- If the service has `var` variables, either make it an `actor`, or a `Sendable` class with `[LockIsolated](https://github.com/pointfreeco/swift-concurrency-extras/blob/main/Sources/ConcurrencyExtras/LockIsolated.swift)` variables (from `ConcurrencyExtras` by point free), e.g:
+
+```
+var myVariable = false                              // ❌ not Sendable
+let myVariable = LockIsolated<Bool>(value: false)   // ✅ Sendable
+```
 
 __Please Note:__ `LockIsolated` has mostly been used in this project for the sake of speed, as I didn't want to propagate `Task` & `await / async` everywhere. Ideally it's better to convert everything to `await / async` and use `actors` etc, especially as the `LockIsolated` syntax is easy to use incorrectly, but `actors` can sometimes be problematic with libraries that have not yet migrated to Swift 6.0 (i.e. libraries that require `@preconcurrency import`).
 
