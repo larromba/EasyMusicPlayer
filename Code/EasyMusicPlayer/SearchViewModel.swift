@@ -6,15 +6,13 @@ import SwiftUI
 final class SearchViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var tracks = [MPMediaItem]()
-    @Published var isLoading = false {
-        didSet { isProgressViewHidden = !isLoading }
-    }
-    @Published var isProgressViewHidden = false
+    @Published var isLoading = false
     @Published var isSearchDisabled = true
     @Published var isNotFoundTextHidden = true
     @Published var notFoundTextColor: Color = .clear
 
     var isListDisabled: Bool { isLoading }
+    var isProgressViewHidden: Bool { !isLoading }
     let searchPrompt = L10n.searchViewTitle
     let notFoundText = L10n.searchViewEmptyText
 

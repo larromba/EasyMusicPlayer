@@ -12,12 +12,14 @@ struct SearchViewModelTests: Waitable {
 
         #expect(env.sut.isLoading)
         #expect(env.sut.isListDisabled)
+        #expect(!env.sut.isProgressViewHidden)
         #expect(env.sut.isSearchDisabled)
 
         try await waitSync()
 
         #expect(!env.sut.isLoading)
         #expect(!env.sut.isListDisabled)
+        #expect(env.sut.isProgressViewHidden)
         #expect(!env.sut.isSearchDisabled)
     }
 
