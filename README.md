@@ -215,6 +215,7 @@ Make your data models `Sendable` only when the compiler asks
 
 ### What NOT to do
 - Panic, and put `@MainActor` everywhere
+- Make everything `@unchecked Sendable`
 - Try to rush it - one mistake can propagate mistakes everywhere
 - Disregard the error. For each error that makes no sense - ask `ChatGPT` to explain it like you were five, and offer solutions as an inspiration. This way you can think logically about what the correct solution could be, and in time the errors / patterns become easier to understand.
 
