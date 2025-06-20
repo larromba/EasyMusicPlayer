@@ -1,7 +1,8 @@
 # Changelog
 
-## 4.1.0 (18/06/2025)
+## 5.0.0 (20/06/2025)
     Swift 6.0 migration
+    LoFi & Distortion music fx
 
 ## 4.0.1 (05/07/2024)
     fix: library refresh bug
