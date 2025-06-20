@@ -6,4 +6,6 @@ struct MusicPlayerInformation {
     let time: TimeInterval // seconds
     let isPlaying: Bool
     let repeatMode: RepeatMode
+    let isLofiEnabled: Bool
+    let isDistortionEnabled: Bool
 }

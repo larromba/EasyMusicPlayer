@@ -17,25 +17,7 @@ final class ScrubberViewModel: ObservableObject {
     init(musicPlayer: MusicPlayable) {
         self.musicPlayer = musicPlayer
 
-        musicPlayer.state.sink { [weak self] in
-            guard let self else { return }
-            switch $0 {
-            case .play:
-                opacity = 0.5
-                isDisabled = false
-            case .pause:
-                opacity = 0.2
-                isDisabled = true
-            case .stop:
-                opacity = 0.2
-                width = 0
-                isDisabled = true
-            case .clock(let timeInterval):
-                updateClock(timeInterval)
-            default:
-                break
-            }
-        }.store(in: &cancellables)
+        setupBindings()
     }
 
     func updateDrag(_ gesture: DragGestureValue) {
@@ -61,6 +43,28 @@ final class ScrubberViewModel: ObservableObject {
         let percentage = width / maxWidth
         musicPlayer.setClock(duration * percentage, isScrubbing: false)
         isDragging = false
+    }
+
+    private func setupBindings() {
+        musicPlayer.state.sink { [weak self] in
+            guard let self else { return }
+            switch $0 {
+            case .play:
+                opacity = 0.5
+                isDisabled = false
+            case .pause:
+                opacity = 0.2
+                isDisabled = true
+            case .stop:
+                opacity = 0.2
+                width = 0
+                isDisabled = true
+            case .clock(let timeInterval):
+                updateClock(timeInterval)
+            default:
+                break
+            }
+        }.store(in: &cancellables)
     }
 
     private func updateClock(_ timeInterval: TimeInterval) {

@@ -17,6 +17,8 @@ protocol MusicPlayable: Sendable {
     func next()
     func shuffle()
     func toggleRepeatMode()
+    func toggleLofi()
+    func toggleDistortion()
     func setRepeatMode(_ repeatMode: RepeatMode)
     func setClock(_ timeInterval: TimeInterval, isScrubbing: Bool)
     func startSeeking(_ direction: SeekDirection)

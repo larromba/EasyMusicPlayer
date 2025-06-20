@@ -1,4 +1,3 @@
-import MediaPlayer
 import SwiftUI
 
 @main

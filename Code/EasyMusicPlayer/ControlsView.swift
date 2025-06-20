@@ -8,7 +8,7 @@ struct ControlsView: View {
             VStack(spacing: 0) {
                 topButtons
                     .frame(width: geometry.size.width, height: geometry.size.height * 0.33)
-                middleButton
+                middleButtons
                     .frame(width: geometry.size.width, height: geometry.size.height * 0.34)
                 bottomButtons
                     .frame(width: geometry.size.width, height: geometry.size.height * 0.33)
@@ -18,12 +18,33 @@ struct ControlsView: View {
 
     private var topButtons: some View {
         GeometryReader { geometry in
-            HStack {
+            HStack(alignment: .center) {
+                // FIXME: see comment in AudioEngineAdaptor -> setup()
+                #if !targetEnvironment(simulator)
+                button(viewModel.lofiButton) {
+                    animate(.lofiButton)
+                    viewModel.toggleLofi()
+                }
+                .frame(width: geometry.size.height * 0.5)
+                .frame(maxWidth: .infinity)
+                #endif
+
                 button(viewModel.stopButton) {
                     animate(.stopButton)
                     viewModel.stop()
                 }
                 .frame(width: geometry.size.height * 0.6)
+                .frame(maxWidth: .infinity)
+
+                // FIXME: see comment in AudioEngineAdaptor -> setup()
+                #if !targetEnvironment(simulator)
+                button(viewModel.distortionButton) {
+                    animate(.distortionButton)
+                    viewModel.toggleDistortion()
+                }
+                .frame(width: geometry.size.height * 0.5)
+                .frame(maxWidth: .infinity)
+                #endif
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -31,7 +52,7 @@ struct ControlsView: View {
         }
     }
 
-    private var middleButton: some View {
+    private var middleButtons: some View {
         GeometryReader { geometry in
             HStack {
                 button(viewModel.previousButton) {}
@@ -110,7 +131,7 @@ struct ControlsView: View {
     }
 
     private func button(
-        _ button: MusicPlayerButton,
+        _ button: MusicPlayerControl,
         _ action: @escaping (() -> Void)
     ) -> some View {
         Button(
@@ -137,6 +158,8 @@ struct ControlsView: View {
         case repeatButton
         case searchButton
         case shuffleButton
+        case lofiButton
+        case distortionButton
     }
 
     private func animate(_ button: ButtonType) {
@@ -149,6 +172,8 @@ struct ControlsView: View {
             case .repeatButton: viewModel.repeatButton.animate()
             case .shuffleButton: viewModel.shuffleButton.animate()
             case .searchButton: viewModel.searchButton.animate()
+            case .lofiButton: viewModel.lofiButton.animate()
+            case .distortionButton: viewModel.distortionButton.animate()
             }
         }, completion: {
             animateOut(button)
@@ -165,6 +190,8 @@ struct ControlsView: View {
             case .repeatButton: viewModel.repeatButton.reset()
             case .shuffleButton: viewModel.shuffleButton.reset()
             case .searchButton: viewModel.searchButton.reset()
+            case .lofiButton: viewModel.lofiButton.reset()
+            case .distortionButton: viewModel.distortionButton.reset()
             }
         })
     }

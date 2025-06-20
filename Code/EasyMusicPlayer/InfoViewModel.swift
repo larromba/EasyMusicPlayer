@@ -23,6 +23,10 @@ final class InfoViewModel: ObservableObject {
         self.musicPlayer = musicPlayer
         self.remote = remote
 
+        setupBindings()
+    }
+
+    private func setupBindings() {
         musicPlayer.state
             .sink { [weak self] in
                 guard let self else { return }

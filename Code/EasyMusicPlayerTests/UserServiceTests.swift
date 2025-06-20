@@ -28,4 +28,20 @@ struct UserServiceTests {
         sut.trackIDs = [0, 1, 2]
         #expect(sut.trackIDs == [0, 1, 2])
     }
+
+    // MARK: - isLofiEnabled
+
+    @Test
+    func isLofiEnabled_whenSet_expectCanBeFetched() {
+        sut.isLofiEnabled = true
+        #expect(sut.isLofiEnabled)
+    }
+
+    // MARK: - isDistortionEnabled
+
+    @Test
+    func isDistortionEnabled_whenSet_expectCanBeFetched() {
+        sut.isDistortionEnabled = true
+        #expect(sut.isDistortionEnabled)
+    }
 }

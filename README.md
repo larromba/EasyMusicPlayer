@@ -108,12 +108,13 @@ fastlane frameit silver
 ```
 
 ## How it works
-It's essentially just a ui wrapper around Apple's `MediaPlayer` framework. 
+It's essentially just a ui wrapper around Apple's `MediaPlayer` framework, using `AVAudioEngine` to play the music.
 - The top bar shows the track information and lets the user scrub the time
 - The bottom section contains some usual controls: 
-    - the usual: play, pause, previous, next, repeat 
-    - a shuffle button: this might seem pointless, as the tracks are initially in a random order, however over time, the order gets learned and is predictable
-    - a search button: simple search to play a tune you're looking for
+    - play, pause, previous, next, repeat 
+    - a shuffle button: this might seem pointless, as the tracks are initially in a random order, however over time, the order gets learned and becomes predictable
+    - a search button: opens a simple search to find a tune you're looking for
+    - some fx buttons to change the sound of the music 🦄
 
 ## Intention
 The primary intention is to maintain a simple app that quickly plays on your device. Even though music is mostly listened to online nowadays, sometimes devices run out of data, or there's no internet. Apple's Music app is a bit complex, so this is an alternative way to quickly get some music playing.
