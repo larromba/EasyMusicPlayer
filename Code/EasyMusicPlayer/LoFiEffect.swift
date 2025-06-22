@@ -47,36 +47,35 @@ final class LoFiEffect: Effect {
     }
 
     private func setupEQ() {
-        let lowBoost = eq.bands[0]
-        lowBoost.filterType = .parametric
-        lowBoost.frequency = 100
-        lowBoost.bandwidth = 0.75
-        lowBoost.gain = 5
-        lowBoost.bypass = false
+        let lowCut = eq.bands[0]
+        lowCut.filterType = .lowShelf
+        lowCut.frequency = 100
+        lowCut.gain = 3
+        lowCut.bypass = false
 
-        let midBoost = eq.bands[1]
-        midBoost.filterType = .parametric
-        midBoost.frequency = 400
-        midBoost.bandwidth = 1.0
-        midBoost.gain = 2
-        midBoost.bypass = false
+        let lowMidBoost = eq.bands[1]
+        lowMidBoost.filterType = .parametric
+        lowMidBoost.frequency = 400
+        lowMidBoost.bandwidth = 1.0
+        lowMidBoost.gain = 2
+        lowMidBoost.bypass = false
 
-        let resonantHighCut = eq.bands[2]
-        resonantHighCut.filterType = .resonantLowPass
-        resonantHighCut.frequency = 6000
-        resonantHighCut.bandwidth = 0.5
-        resonantHighCut.bypass = false
+        let highCut = eq.bands[2]
+        highCut.filterType = .resonantLowPass
+        highCut.frequency = 6000
+        highCut.bandwidth = 0.5
+        highCut.bypass = false
     }
 
     private func setupDistortion() {
         distortion.loadFactoryPreset(.speechWaves)
         distortion.preGain = -6
-        distortion.wetDryMix = 35
+        distortion.wetDryMix = 25
     }
 
     private func setupReverb() {
         reverb.loadFactoryPreset(.mediumRoom)
-        reverb.wetDryMix = 30
+        reverb.wetDryMix = 20
     }
 
     private func setupVarispeed() {

@@ -8,16 +8,16 @@ final class DistortionEffect: Effect {
         set {
             eq.bypass = !newValue
             distortion.bypass = !newValue
-            wowFlutter.bypass = !newValue
+            reverb.bypass = !newValue
         }
     }
     var lastNode: AVAudioNode {
-        wowFlutter
+        reverb
     }
 
     private let eq = AVAudioUnitEQ(numberOfBands: 3)
     private let distortion = AVAudioUnitDistortion()
-    private let wowFlutter = AVAudioUnitDelay()
+    private let reverb = AVAudioUnitReverb()
 
     init() {
         setup()
@@ -26,33 +26,33 @@ final class DistortionEffect: Effect {
     func attach(to engine: AVAudioEngine) {
         engine.attach(eq)
         engine.attach(distortion)
-        engine.attach(wowFlutter)
+        engine.attach(reverb)
     }
 
     func connect(engine: AVAudioEngine, to audioUnit: AVAudioNode, format: AVAudioFormat?) {
         engine.connect(audioUnit, to: eq, format: format)
         engine.connect(eq, to: distortion, format: format)
-        engine.connect(distortion, to: wowFlutter, format: format)
+        engine.connect(distortion, to: reverb, format: format)
     }
 
     private func setupEQ() {
-        let lowBoost = eq.bands[0]
-        lowBoost.filterType = .parametric
-        lowBoost.frequency = 150
-        lowBoost.bandwidth = 1.0
-        lowBoost.gain = 3
-        lowBoost.bypass = false
+        let lowCut = eq.bands[0]
+        lowCut.filterType = .resonantLowShelf
+        lowCut.frequency = 150
+        lowCut.bandwidth = 1.0
+        lowCut.gain = 3
+        lowCut.bypass = false
 
         let midBoost = eq.bands[1]
         midBoost.filterType = .parametric
-        midBoost.frequency = 700
+        midBoost.frequency = 800
         midBoost.bandwidth = 1.0
         midBoost.gain = 2
         midBoost.bypass = false
 
         let highCut = eq.bands[2]
         highCut.filterType = .resonantLowPass
-        highCut.frequency = 10000
+        highCut.frequency = 8000
         highCut.bandwidth = 0.5
         highCut.bypass = false
     }
@@ -60,19 +60,17 @@ final class DistortionEffect: Effect {
     private func setup() {
         setupEQ()
         setupDistortion()
-        setupWowFlutter()
+        setupReverb()
     }
 
     private func setupDistortion() {
-        distortion.loadFactoryPreset(.multiEcho1)
-        distortion.preGain = 2.75
-        distortion.wetDryMix = 90
+        distortion.loadFactoryPreset(.multiDistortedCubed)
+        distortion.preGain = -5
+        distortion.wetDryMix = 30
     }
 
-    private func setupWowFlutter() {
-        wowFlutter.delayTime = 0.01
-        wowFlutter.feedback = 10
-        wowFlutter.lowPassCutoff = 1000
-        wowFlutter.wetDryMix = 15
+    private func setupReverb() {
+        reverb.loadFactoryPreset(.smallRoom)
+        reverb.wetDryMix = 5
     }
 }
