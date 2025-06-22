@@ -28,10 +28,10 @@ final class ControlsViewModel: ObservableObject {
         image: .shuffleButton, accessibilityLabel: "Shuffle", isDisabled: false, maxRotation: 360
     )
     @Published var lofiButton = MusicPlayerFXButton(
-        image: .lofiButton, accessibilityLabel: "Lo-Fi", isFXEnabled: false, maxRotation: 360
+        image: .lofiButton, accessibilityLabel: "Lo-Fi", isFXEnabled: false
     )
     @Published var distortionButton = MusicPlayerFXButton(
-        image: .distortionButton, accessibilityLabel: "Distortion", isFXEnabled: false, maxRotation: 360
+        image: .distortionButton, accessibilityLabel: "Distortion", isFXEnabled: false
     )
 
     private let musicPlayer: MusicPlayable

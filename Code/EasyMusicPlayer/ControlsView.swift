@@ -27,6 +27,7 @@ struct ControlsView: View {
                 }
                 .frame(width: geometry.size.height * 0.5)
                 .frame(maxWidth: .infinity)
+                .rotationEffect(.degrees(-15))
                 #endif
 
                 button(viewModel.stopButton) {
@@ -44,6 +45,7 @@ struct ControlsView: View {
                 }
                 .frame(width: geometry.size.height * 0.5)
                 .frame(maxWidth: .infinity)
+                .rotationEffect(.degrees(15))
                 #endif
             }
             .padding()
