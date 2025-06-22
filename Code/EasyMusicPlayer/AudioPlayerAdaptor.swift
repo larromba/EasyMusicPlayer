@@ -1,7 +1,7 @@
 import AVFoundation
 
 /// wrapper around `AVAudioPlayer`
-final class AudioPlayerAdaptor: NSObject, AudioPlayer {
+final class AudioPlayerAdaptor: NSObject, AudioPlayer, @unchecked Sendable {
     var isPlaying: Bool { audioPlayer.isPlaying }
     var isPaused: Bool { audioPlayer.isPaused }
     var currentTime: TimeInterval {
@@ -16,6 +16,7 @@ final class AudioPlayerAdaptor: NSObject, AudioPlayer {
 
     private let audioPlayer: AVAudioPlayer
 
+    @available(*, deprecated, message: "Use AudioEngineAdaptor(url:) instead")
     init(contentsOf url: URL) throws {
         audioPlayer = try AVAudioPlayer(contentsOf: url)
     }
