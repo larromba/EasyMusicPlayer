@@ -265,6 +265,26 @@ class MusicPlayableMock: MusicPlayable, @unchecked Sendable {
         
     }
 
+    private(set) var toggleLofiCallCount = 0
+    var toggleLofiHandler: (() -> ())?
+    func toggleLofi() {
+        toggleLofiCallCount += 1
+        if let toggleLofiHandler = toggleLofiHandler {
+            toggleLofiHandler()
+        }
+        
+    }
+
+    private(set) var toggleDistortionCallCount = 0
+    var toggleDistortionHandler: (() -> ())?
+    func toggleDistortion() {
+        toggleDistortionCallCount += 1
+        if let toggleDistortionHandler = toggleDistortionHandler {
+            toggleDistortionHandler()
+        }
+        
+    }
+
     private(set) var setRepeatModeCallCount = 0
     var setRepeatModeHandler: ((RepeatMode) -> ())?
     func setRepeatMode(_ repeatMode: RepeatMode) {

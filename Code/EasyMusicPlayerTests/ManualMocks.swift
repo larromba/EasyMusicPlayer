@@ -95,7 +95,9 @@ extension MusicPlayerInformation {
         tracks: [MPMediaItem] = [],
         time: TimeInterval = 0,
         isPlaying: Bool = false,
-        repeatMode: RepeatMode = .none
+        repeatMode: RepeatMode = .none,
+        isLofiEnabled: Bool = false,
+        isDistortionEnabled: Bool = false
     ) -> MusicPlayerInformation {
         MusicPlayerInformation(
             trackInfo: CurrentTrackInformation(
@@ -105,7 +107,9 @@ extension MusicPlayerInformation {
             tracks: tracks,
             time: time,
             isPlaying: isPlaying,
-            repeatMode: repeatMode
+            repeatMode: repeatMode,
+            isLofiEnabled: isLofiEnabled,
+            isDistortionEnabled: isDistortionEnabled
         )
     }
 }

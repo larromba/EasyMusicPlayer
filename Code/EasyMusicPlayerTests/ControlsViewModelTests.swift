@@ -75,9 +75,9 @@ struct ControlsViewModelTests {
     @Test
     func next_givenIsDisabled_whenInvoked_expectNothing() {
         let env = setup()
-        env.sut.previousButton.isDisabled = true
+        env.sut.nextButton.isDisabled = true
 
-        env.sut.previous()
+        env.sut.next()
 
         #expect(env.soundEffects.playCallCount == 0)
         #expect(env.musicPlayer.previousCallCount == 0)
@@ -128,7 +128,7 @@ struct ControlsViewModelTests {
         #expect(soundEffect == .shuffle)
     }
 
-    // MARK: - repeatMode
+    // MARK: - toggleRepeatMode
 
     @Test
     func toggleRepeatMode_whenInvoked_expectSoundEffect_andToggleRepeatMode() {
@@ -142,7 +142,29 @@ struct ControlsViewModelTests {
         #expect(env.musicPlayer.toggleRepeatModeCallCount == 1)
         #expect(soundEffect == .repeat)
     }
-    
+
+    // MARK: - toggleLofi
+
+    @Test
+    func toggleLofi_whenInvoked_expectLofiToggled() {
+        let env = setup()
+
+        env.sut.toggleLofi()
+
+        #expect(env.musicPlayer.toggleLofiCallCount == 1)
+    }
+
+    // MARK: - toggleDistortion
+
+    @Test
+    func toggleDistortion_whenInvoked_expectLofiToggled() {
+        let env = setup()
+
+        env.sut.toggleDistortion()
+
+        #expect(env.musicPlayer.toggleDistortionCallCount == 1)
+    }
+
     // MARK: - startSeeking
 
     @Test
@@ -335,12 +357,48 @@ struct ControlsViewModelTests {
     }
 
     @Test
-    func state_givenNoTracks_whenReceivedReceived_expectSearchButtonIsDisabled() {
+    func state_givenNoTracks_whenLoadedReceived_expectSearchButtonIsDisabled() {
         let env = setup()
 
         env.musicPlayer.stateSubject.send(.loaded)
 
         #expect(env.sut.searchButton.isDisabled)
+    }
+
+    // MARK: - lofi
+
+    func state_whenLofiReceived_expectLofiIsDisabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.lofi(false))
+
+        #expect(env.sut.lofiButton.isDisabled)
+    }
+
+    func state_whenLofiReceived_expectLofiIsEnabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.lofi(true))
+
+        #expect(!env.sut.lofiButton.isDisabled)
+    }
+
+    // MARK: - distortion
+
+    func state_whenDistortionReceived_expectLofiIsDisabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.distortion(false))
+
+        #expect(env.sut.distortionButton.isDisabled)
+    }
+
+    func state_whenDistortionReceived_expectLofiIsEnabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.distortion(true))
+
+        #expect(!env.sut.distortionButton.isDisabled)
     }
 
     private func setup(
