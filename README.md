@@ -209,9 +209,9 @@ __Please Note:__ `LockIsolated` has mostly been used in this project for the sak
 Make your data models `Sendable` only when the compiler asks
 
 ### Other thoughts
-- For small packages, Swift 6.0 migration is fairly straight-forward using these principles
+- For small projects, Swift 6.0 migration is fairly straight-forward using these principles
 - For starting new projects, it's fairly easy to write Swift 6.0 code from scratch 
-- For large packages, it's very difficult. The only way to do it, is to disable all the Swift 6.0 concurrency checks, and turn on the most important ones one at a time. If in doubt, ask `ChatGPT` where to start - maybe it's different for every project. Slowly migrate 1 flag at a time.
+- For large projects, it's very difficult. The only way to do it, is to disable all the Swift 6.0 concurrency checks, and turn on the most important ones one at a time. If in doubt, ask `ChatGPT` where to start - maybe it's different for every project. Slowly migrate 1 flag at a time.
 
 ### What NOT to do
 - Panic, and put `@MainActor` everywhere
