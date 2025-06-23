@@ -20,14 +20,12 @@ struct ControlsView: View {
         GeometryReader { geometry in
             HStack(alignment: .center) {
                 // FIXME: see comment in AudioEngineAdaptor -> setup()
+                // only show lofi button on device, or simulator during snapshot
                 #if !targetEnvironment(simulator)
-                button(viewModel.lofiButton) {
-                    animate(.lofiButton)
-                    viewModel.toggleLofi()
-                }
-                .frame(width: geometry.size.height * 0.5)
-                .frame(maxWidth: .infinity)
-                .rotationEffect(.degrees(-15))
+                lofiButton(geometry: geometry)
+                #endif
+                #if DEBUG
+                if __isSnapshot { lofiButton(geometry: geometry) }
                 #endif
 
                 button(viewModel.stopButton) {
@@ -38,20 +36,38 @@ struct ControlsView: View {
                 .frame(maxWidth: .infinity)
 
                 // FIXME: see comment in AudioEngineAdaptor -> setup()
+                // only show distortion button on device, or simulator during snapshot
                 #if !targetEnvironment(simulator)
-                button(viewModel.distortionButton) {
-                    animate(.distortionButton)
-                    viewModel.toggleDistortion()
-                }
-                .frame(width: geometry.size.height * 0.5)
-                .frame(maxWidth: .infinity)
-                .rotationEffect(.degrees(15))
+                distortionButton(geometry: geometry)
+                #endif
+                #if DEBUG
+                if __isSnapshot { distortionButton(geometry: geometry) }
                 #endif
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.controlsTopRow)
         }
+    }
+
+    private func lofiButton(geometry: GeometryProxy) -> some View {
+        button(viewModel.lofiButton) {
+            animate(.lofiButton)
+            viewModel.toggleLofi()
+        }
+        .frame(width: geometry.size.height * 0.5)
+        .frame(maxWidth: .infinity)
+        .rotationEffect(.degrees(-15))
+    }
+
+    private func distortionButton(geometry: GeometryProxy) -> some View {
+        button(viewModel.distortionButton) {
+            animate(.distortionButton)
+            viewModel.toggleDistortion()
+        }
+        .frame(width: geometry.size.height * 0.5)
+        .frame(maxWidth: .infinity)
+        .rotationEffect(.degrees(15))
     }
 
     private var middleButtons: some View {

@@ -9,15 +9,12 @@ final class EasyMusicPlayerUITests: XCTestCase, Sendable {
         try await super.setUp()
 
         continueAfterFailure = false
-
         app = XCUIApplication()
-
         // music library permissions
         addUIInterruptionMonitor(withDescription: "permissions") { alert -> Bool in
             alert.buttons["Allow"].tap()
             return true
         }
-
         app.launch()
     }
 

@@ -83,7 +83,11 @@ final class MusicQueue: MusicQueuable {
     }
 
     func create() {
+        #if DEBUG
+        if __isSnapshot { tracks = musicLibrary.makePlaylist(isShuffled: false) }
+        #else
         tracks = musicLibrary.makePlaylist(isShuffled: true)
+        #endif
         currentTrackIndex = 0
     }
 

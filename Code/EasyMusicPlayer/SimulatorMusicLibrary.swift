@@ -6,8 +6,11 @@
 extension MPMediaQuery {
     /// **CHANGE THIS TO TEST DIFFERENT LIBRARIES ON THE SIMULATOR**
     static func songs() -> MPMediaQuery {
-//        SimulatorMediaQuery(tracks: smallLibary)
-        SimulatorMediaQuery(tracks: largeLibrary)
+        if __isSnapshot {
+            return SimulatorMediaQuery(tracks: snapshotLibrary)
+        }
+//        return SimulatorMediaQuery(tracks: smallLibary)
+        return SimulatorMediaQuery(tracks: largeLibrary)
     }
 
     private static let smallLibary = [
@@ -20,6 +23,12 @@ extension MPMediaQuery {
         (0..<50_000).map {
             SimulatorMediaItem(asset: .random, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
         }
+    }()
+
+    private static let snapshotLibrary: [MPMediaItem] = {
+        var library = largeLibrary
+        library[0] = SimulatorMediaItem(asset: .track1, id: 0)
+        return library
     }()
 }
 
