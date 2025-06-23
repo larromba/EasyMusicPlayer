@@ -1,15 +1,22 @@
+import SwiftUI
 @testable import EasyMusicPlayer
-import MediaPlayer
+@preconcurrency import MediaPlayer
 
 // MARK: - MediaItemMock
 
 // swiftlint:disable identifier_name
 final class MediaItemMock: MPMediaItem {
-    var _artist = ""
-    override var artist: String { return _artist }
-
     var _title = ""
-    override var title: String { return _title }
+    override var title: String? { return _title }
+
+    var _artist = ""
+    override var artist: String? { return _artist }
+
+    var _albumTitle = ""
+    override var albumTitle: String? { return _albumTitle }
+
+    var _genre = ""
+    override var genre: String? { return _genre }
 
     var _playbackDuration: TimeInterval = 0
     override var playbackDuration: TimeInterval { return _playbackDuration }
@@ -31,13 +38,18 @@ final class MediaItemMock: MPMediaItem {
     init(
         artist: String = "",
         title: String = "",
+        albumTitle: String = "",
+        genre: String = "",
         artwork: MPMediaItemArtwork? = nil,
         playbackDuration: TimeInterval = 0
     ) {
         _artist = artist
         _title = title
+        _albumTitle = albumTitle
+        _genre = genre
         _artwork = artwork
         _playbackDuration = playbackDuration
+
         super.init()
     }
 
@@ -50,12 +62,16 @@ extension MPMediaItem {
     static func mock(
         artist: String = "",
         title: String = "",
+        albumTitle: String = "",
+        genre: String = "",
         artwork: MPMediaItemArtwork? = nil,
         playbackDuration: TimeInterval = 0
     ) -> MediaItemMock {
         MediaItemMock(
             artist: artist,
             title: title,
+            albumTitle: albumTitle,
+            genre: genre,
             artwork: artwork,
             playbackDuration: playbackDuration
         )
@@ -65,7 +81,9 @@ extension MPMediaItem {
 // MARK: - MPMediaItemArtwork
 
 extension MPMediaItemArtwork {
-    static let mock = MPMediaItemArtwork(boundsSize: .zero) { _ in return UIImage() }
+    static func mock(image: UIImage = UIImage()) -> MPMediaItemArtwork {
+        MPMediaItemArtwork(boundsSize: .zero) { _ in image }
+    }
 }
 
 // MARK: - MusicPlayerInformation
@@ -77,24 +95,28 @@ extension MusicPlayerInformation {
         tracks: [MPMediaItem] = [],
         time: TimeInterval = 0,
         isPlaying: Bool = false,
-        repeatMode: RepeatMode = .none
+        repeatMode: RepeatMode = .none,
+        isLofiEnabled: Bool = false,
+        isDistortionEnabled: Bool = false
     ) -> MusicPlayerInformation {
         MusicPlayerInformation(
-            track: CurrentTrackInformation(
+            trackInfo: CurrentTrackInformation(
                 track: track,
                 index: index
             ),
             tracks: tracks,
             time: time,
             isPlaying: isPlaying,
-            repeatMode: repeatMode
+            repeatMode: repeatMode,
+            isLofiEnabled: isLofiEnabled,
+            isDistortionEnabled: isDistortionEnabled
         )
     }
 }
 
 // MARK: - DragGestureMock
 
-final class DragGestureMock: Draggable {
+final class DragGestureValueMock: DragGestureValue {
     var _startLocation: CGPoint
     var startLocation: CGPoint { return _startLocation }
 
@@ -119,3 +141,4 @@ final class DragGestureMock: Draggable {
         _predictedEndTranslation = predictedEndTranslation
     }
 }
+

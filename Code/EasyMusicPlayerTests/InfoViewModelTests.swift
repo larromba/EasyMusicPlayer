@@ -1,142 +1,230 @@
 @testable import EasyMusicPlayer
 import MediaPlayer
-import XCTest
+import Testing
 
 @MainActor
-final class InfoViewModelTests: XCTestCase {
-    private var musicPlayer: MusicPlayableMock!
-    private var remote: NowPlayingInfoCenterMock!
-    private var sut: InfoViewModel!
+struct InfoViewModelTests: Waitable {
+    // MARK: - state (play)
 
-    override func setUpWithError() throws {
-        setup()
+    @Test
+    func state_whenPlayReceived_expectViewUpdates() {
+        let track = MediaItemMock(title: "title")
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: track)))
+
+        env.musicPlayer.stateSubject.send(.play)
+
+        #expect(env.sut.title == "title")
     }
 
-    override func tearDownWithError() throws {
-        musicPlayer = nil
-        remote = nil
-        sut = nil
+    @Test
+    func state_whenPlayReceived_expectRemoteTitleUpdate() {
+        let track = MediaItemMock(title: "title")
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: track)))
+
+        env.musicPlayer.stateSubject.send(.play)
+
+        #expect(env.remote.nowPlayingInfo?[MPMediaItemPropertyTitle] as? String == "title")
     }
 
-    // MARK: - state
+    @Test
+    func state_whenPlayReceived_expectArtistUpdate() {
+        let track = MediaItemMock(artist: "artist")
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: track)))
 
-    func test_state_whenPlayReceived_expectItemUpdate() {
-        let item = MediaItemMock()
-        setup(musicPlayer: MusicPlayableMock(info: .mock(track: item)))
+        env.musicPlayer.stateSubject.send(.play)
 
-        musicPlayer.stateSubject.send(.play)
-
-        XCTAssertEqual(sut.track, item)
+        #expect(env.sut.artist == "artist")
     }
 
-    func test_state_whenPlayReceived_expectTimeUpdate() {
-        setup(musicPlayer: MusicPlayableMock(info: .mock(time: 60)))
+    @Test
+    func state_whenPlayReceived_expectRemoteArtistUpdate() {
+        let track = MediaItemMock(artist: "artist")
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: track)))
 
-        musicPlayer.stateSubject.send(.play)
+        env.musicPlayer.stateSubject.send(.play)
 
-        XCTAssertEqual(sut.time, "00:01:00")
+        #expect(env.remote.nowPlayingInfo?[MPMediaItemPropertyArtist] as? String == "artist")
     }
 
-    func test_state_whenPlayReceived_expectPositionUpdate() {
-        setup(musicPlayer: MusicPlayableMock(info: .mock(index: 0, tracks: [.mock(), .mock()])))
+    @Test
+    func state_whenPlayReceived_expectArtworkUpdate() async throws {
+        let artwork = UIImage()
+        let track = MediaItemMock(artwork: .mock(image: artwork))
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: track)))
 
-        musicPlayer.stateSubject.send(.play)
+        env.musicPlayer.stateSubject.send(.play)
 
-        XCTAssertEqual(sut.position, "1 of 2")
+        try await waitSync(for: 1.0)
+        #expect(env.sut.artwork == artwork)
     }
 
-    func test_state_whenPlayReceived_expectRemoteUpdate() {
-        let item = MediaItemMock(artist: "artist", title: "title", artwork: .mock, playbackDuration: 100)
-        setup(musicPlayer: MusicPlayableMock(info: .mock(track: item, time: 10)))
+    @Test
+    func state_whenPlayReceived_expectRemoteArtworkUpdate() async throws {
+        let track = MediaItemMock(artwork: .mock())
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: track)))
 
-        musicPlayer.stateSubject.send(.play)
+        env.musicPlayer.stateSubject.send(.play)
 
-        let info = remote.nowPlayingInfo
-        XCTAssertEqual(info?[MPMediaItemPropertyArtist] as? String, "artist")
-        XCTAssertEqual(info?[MPMediaItemPropertyTitle] as? String, "title")
-        XCTAssertNotNil(info?[MPMediaItemPropertyArtwork])
-        XCTAssertEqual(info?[MPNowPlayingInfoPropertyMediaType] as? UInt, MPNowPlayingInfoMediaType.audio.rawValue)
-        XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 10)
-        XCTAssertEqual(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval, 100)
+        try await waitSync()
+        #expect(env.remote.nowPlayingInfo?[MPMediaItemPropertyArtwork] != nil)
     }
 
-    func test_state_whenResetReceived_expectItemUpdate() {
-        musicPlayer.stateSubject.send(.reset)
+    @Test
+    func state_whenPlayReceived_expectTimeUpdate() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: .mock(), time: 60)))
 
-        XCTAssertEqual(sut.track, nil)
+        env.musicPlayer.stateSubject.send(.play)
+
+        #expect(env.sut.time == "00:01:00")
     }
 
-    func test_state_whenResetReceived_expectTimeUpdate() {
-        musicPlayer.stateSubject.send(.reset)
+    @Test
+    func state_whenPlayReceived_expectRemoteTimeUpdate() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: .mock(), time: 10)))
 
-        XCTAssertEqual(sut.time, "")
+        env.musicPlayer.stateSubject.send(.play)
+
+        #expect(env.remote.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval == 10)
     }
 
-    func test_state_whenResetReceived_expectPositionUpdate() {
-        musicPlayer.stateSubject.send(.reset)
+    @Test
+    func state_whenPlayReceived_expectPositionUpdate() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: .mock(), index: 0, tracks: [.mock(), .mock()])))
 
-        XCTAssertEqual(sut.position, "")
+        env.musicPlayer.stateSubject.send(.play)
+
+        #expect(env.sut.position == "1 of 2")
     }
 
-    func test_state_whenResetReceived_expectRemoteUpdate() {
-        remote.nowPlayingInfo = [MPNowPlayingInfoPropertyElapsedPlaybackTime: 60]
+    @Test
+    func state_whenPlayReceived_expectRemoteDurationUpdate() {
+        let track = MediaItemMock(playbackDuration: 100)
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: track)))
 
-        musicPlayer.stateSubject.send(.reset)
+        env.musicPlayer.stateSubject.send(.play)
 
-        let info = remote.nowPlayingInfo
-        XCTAssertTrue(info?.keys.isEmpty ?? false)
+        #expect(env.remote.nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval == 100)
     }
 
-    func test_state_whenStopReceived_expectTimeUpdate() {
-        musicPlayer.stateSubject.send(.stop)
+    @Test
+    func state_whenPlayReceived_expectRemoteMediaTypeUpdate() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: .mock())))
 
-        XCTAssertEqual(sut.time, "00:00:00")
+        env.musicPlayer.stateSubject.send(.play)
+
+        #expect(env.remote.nowPlayingInfo?[MPNowPlayingInfoPropertyMediaType] as? UInt == MPNowPlayingInfoMediaType.audio.rawValue)
     }
 
-    func test_state_whenStopReceived_expectRemoteUpdate() {
-        remote.nowPlayingInfo = [:]
-        sut.track = MediaItemMock()
+    // MARK: - state (reset)
 
-        musicPlayer.stateSubject.send(.stop)
+    @Test
+    func state_whenResetReceived_expectViewReset() {
+        let env = setup()
 
-        let info = remote.nowPlayingInfo
-        XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 0.0)
+        env.musicPlayer.stateSubject.send(.reset)
+
+        #expect(env.sut.title == "")
+        #expect(env.sut.artist == "")
+        #expect(env.sut.artwork == .artworkPlaceholder)
+        #expect(env.sut.time == "")
+        #expect(env.sut.position == "")
     }
 
-    func test_state_whenClockReceived_expecTimeUpdate() {
-        musicPlayer.stateSubject.send(.clock(60))
+    @Test
+    func state_whenResetReceived_expectRemoteReset() {
+        let env = setup()
 
-        XCTAssertEqual(sut.time, "00:01:00")
+        env.musicPlayer.stateSubject.send(.reset)
+
+        #expect(env.remote.nowPlayingInfo?.keys.isEmpty == true)
     }
 
-    func test_state_whenClockReceived_expectRemoteUpdate() {
-        remote.nowPlayingInfo = [:]
-        sut.track = MediaItemMock(playbackDuration: 100)
+    // MARK: - state (stop)
 
-        musicPlayer.stateSubject.send(.clock(60))
+    @Test
+    func state_whenStopReceived_expectTimeUpdate() {
+        let env = setup()
 
-        let info = remote.nowPlayingInfo
-        XCTAssertEqual(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval, 60.0)
-        XCTAssertEqual(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval, 100)
+        env.musicPlayer.stateSubject.send(.stop)
+
+        #expect(env.sut.time == "00:00:00")
     }
 
-    func test_state_whenClockReceived_expectCorrectTimeFormats() {
-        musicPlayer.stateSubject.send(.clock(60))
-        XCTAssertEqual(sut.time, "00:01:00")
+    @Test
+    func state_whenStopReceived_expectRemoteUpdate() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: MediaItemMock())))
 
-        musicPlayer.stateSubject.send(.clock(60 * 10))
-        XCTAssertEqual(sut.time, "00:10:00")
+        env.musicPlayer.stateSubject.send(.stop)
 
-        musicPlayer.stateSubject.send(.clock(60 * 60 * 1))
-        XCTAssertEqual(sut.time, "01:00:00")
+        #expect(env.remote.nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval == 0.0)
+    }
+
+    // MARK: - state (clock)
+
+    @Test
+    func state_whenClockReceived_expecTimeUpdate() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.clock(60))
+
+        #expect(env.sut.time == "00:01:00")
+    }
+
+    @Test
+    func state_whenClockReceived_expectRemoteUpdate() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(track: MediaItemMock(playbackDuration: 100))))
+
+        env.musicPlayer.stateSubject.send(.play)
+        env.musicPlayer.stateSubject.send(.clock(60))
+
+        let info = env.remote.nowPlayingInfo
+        #expect(info?[MPNowPlayingInfoPropertyElapsedPlaybackTime] as? TimeInterval == 60.0)
+        #expect(info?[MPMediaItemPropertyPlaybackDuration] as? TimeInterval == 100)
+    }
+
+    @Test
+    func state_whenClockIsMinute_expectMinuteFormat() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.clock(60))
+
+        #expect(env.sut.time == "00:01:00")
+    }
+
+    @Test
+    func state_whenClockIsTenMinutes_expectTenMinuteFormat() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.clock(60 * 10))
+
+        #expect(env.sut.time == "00:10:00")
+    }
+
+    @Test
+    func state_whenClockIsHour_expectHourFormat() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.clock(60 * 60 * 1))
+
+        #expect(env.sut.time == "01:00:00")
     }
 
     private func setup(
         musicPlayer: MusicPlayableMock = MusicPlayableMock(),
         remote: NowPlayingInfoCenterMock =  NowPlayingInfoCenterMock()
-    ) {
-        self.musicPlayer = musicPlayer
-        self.remote = remote
-        sut = InfoViewModel(musicPlayer: musicPlayer, remote: remote)
+    ) -> Environmemnt {
+        Environmemnt(
+            musicPlayer: musicPlayer,
+            remote: remote,
+            sut: InfoViewModel(musicPlayer: musicPlayer, remote: remote)
+        )
+    }
+}
+
+private extension InfoViewModelTests {
+    struct Environmemnt {
+        let musicPlayer: MusicPlayableMock
+        let remote: NowPlayingInfoCenterMock
+        let sut: InfoViewModel
     }
 }

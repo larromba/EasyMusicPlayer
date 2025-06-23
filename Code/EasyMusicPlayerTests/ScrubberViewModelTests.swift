@@ -1,133 +1,145 @@
 @testable import EasyMusicPlayer
 import MediaPlayer
-import XCTest
+import Testing
 
 @MainActor
-final class ScrubberViewModelTests: XCTestCase {
-    private var musicPlayer: MusicPlayableMock!
-    private var sut: ScrubberViewModel!
+@Suite(.serialized)
+struct ScrubberViewModelTests: Waitable {
+    private let musicPlayer: MusicPlayableMock
+    private let sut: ScrubberViewModel
 
-    override func setUpWithError() throws {
+    init() {
         musicPlayer = MusicPlayableMock(info: .mock(track: .mock(playbackDuration: 60)))
         sut = ScrubberViewModel(musicPlayer: musicPlayer)
         sut.maxWidth = 100
     }
 
-    override func tearDownWithError() throws {
-        musicPlayer = nil
-        sut = nil
-    }
-
     // MARK: - state
 
-    func test_state_whenPlayReceived_expectIsEnabled() {
+    @Test
+    func state_whenPlayReceived_expectIsEnabled() {
         musicPlayer.stateSubject.send(.play)
 
-        XCTAssertFalse(sut.isDisabled)
-        XCTAssertEqual(sut.opacity, 0.5)
+        #expect(!sut.isDisabled)
+        #expect(sut.opacity == 0.5)
     }
 
-    func test_state_whenPauseReceived_expectIsDisabled() {
+    @Test
+    func state_whenPauseReceived_expectIsDisabled() {
         musicPlayer.stateSubject.send(.pause)
 
-        XCTAssertTrue(sut.isDisabled)
-        XCTAssertEqual(sut.opacity, 0.2)
+        #expect(sut.isDisabled)
+        #expect(sut.opacity == 0.2)
     }
 
-    func test_state_whenStopReceived_expectReset() {
+    @Test
+    func state_whenStopReceived_expectReset() {
         musicPlayer.stateSubject.send(.stop)
 
-        XCTAssertTrue(sut.isDisabled)
-        XCTAssertEqual(sut.opacity, 0.2)
-        XCTAssertEqual(sut.width, 0)
+        #expect(sut.isDisabled)
+        #expect(sut.opacity == 0.2)
+        #expect(sut.width == 0)
     }
 
-    func test_state_givenDragging_whenClockReceived_expectReset() {
+    @Test
+    func state_givenDragging_whenClockReceived_expectReset() {
         musicPlayer.stateSubject.send(.clock(30))
 
-        XCTAssertEqual(sut.width, 50)
+        #expect(sut.width == 50)
     }
 
-    func test_state_givenNotDragging_whenClockReceived_expectNoChange() {
-        sut.updateDrag(DragGestureMock())
+    @Test
+    func state_givenNotDragging_whenClockReceived_expectNoChange() {
+        sut.updateDrag(DragGestureValueMock())
 
         musicPlayer.stateSubject.send(.clock(30))
 
-        XCTAssertEqual(sut.width, 0)
+        #expect(sut.width == 0)
     }
 
     // MARK: - updateDrag
 
-    func test_updateDrag_whenInvoked_expectWidth() {
-        sut.updateDrag(DragGestureMock(startLocation: .zero, translation: CGSize(width: 50, height: 0)))
+    @Test
+    func updateDrag_whenInvoked_expectWidth() {
+        sut.updateDrag(DragGestureValueMock(startLocation: .zero, translation: CGSize(width: 50, height: 0)))
 
-        XCTAssertEqual(sut.width, 50)
+        #expect(sut.width == 50)
     }
 
-    func test_updateDrag_whenInvoked_expectNoGreaterThanMaxWidth() {
-        sut.updateDrag(DragGestureMock(startLocation: .zero, translation: CGSize(width: 200, height: 0)))
+    @Test
+    func updateDrag_whenInvoked_expectNoGreaterThanMaxWidth() {
+        sut.updateDrag(DragGestureValueMock(startLocation: .zero, translation: CGSize(width: 200, height: 0)))
 
-        XCTAssertEqual(sut.width, 100)
+        #expect(sut.width == 100)
     }
 
-    func test_updateDrag_whenInvoked_expectNoLessThan0() {
-        sut.updateDrag(DragGestureMock(startLocation: .zero, translation: CGSize(width: -200, height: 0)))
+    @Test
+    func updateDrag_whenInvoked_expectNoLessThan0() {
+        sut.updateDrag(DragGestureValueMock(startLocation: .zero, translation: CGSize(width: -200, height: 0)))
 
-        XCTAssertEqual(sut.width, 0)
+        #expect(sut.width == 0)
     }
 
-    func test_updateDrag_whenInvoked_expectMusicPlayerClockUpdated() {
-        musicPlayer.setClockHandler = { (time, isScrubbing) in
-            XCTAssertEqual(time, 30)
-            XCTAssertTrue(isScrubbing)
-        }
+    @Test
+    func updateDrag_whenInvoked_expectMusicPlayerClockUpdated() {
+        var time: TimeInterval?
+        var isScrubbing: Bool?
+        musicPlayer.setClockHandler = { time = $0; isScrubbing = $1 }
 
-        sut.updateDrag(DragGestureMock(startLocation: .zero, translation: CGSize(width: 50, height: 0)))
+        sut.updateDrag(DragGestureValueMock(startLocation: .zero, translation: CGSize(width: 50, height: 0)))
 
-        XCTAssertEqual(musicPlayer.setClockCallCount, 1)
+        #expect(musicPlayer.setClockCallCount == 1)
+        #expect(time == 30)
+        #expect(isScrubbing == true)
     }
 
     // MARK: - finishedDrag
 
-    func test_finishedDrag_givenNoVelocity_whenInvoked_expectSameWidth() {
+    @Test
+    func finishedDrag_givenNoVelocity_whenInvoked_expectSameWidth() {
         sut.width = 50
 
-        sut.finishDrag(DragGestureMock(startLocation: CGPoint(x: 50, y: 0), velocity: .zero))
+        sut.finishDrag(DragGestureValueMock(startLocation: CGPoint(x: 50, y: 0), velocity: .zero))
 
-        XCTAssertEqual(sut.width, 50)
+        #expect(sut.width == 50)
     }
 
-    func test_finishedDrag_givenHighPositiveVelocity_whenInvoked_expectNoGreaterThanMaxWidth() {
+    @Test
+    func finishedDrag_givenHighPositiveVelocity_whenInvoked_expectNoGreaterThanMaxWidth() {
         sut.width = 99
 
-        sut.finishDrag(DragGestureMock(velocity: CGSize(width: 1500, height: 0)))
+        sut.finishDrag(DragGestureValueMock(velocity: CGSize(width: 1500, height: 0)))
 
-        XCTAssertEqual(sut.width, 100)
+        #expect(sut.width == 100)
     }
 
-    func test_finishedDrag_givenHighPositiveVelocity_whenInvoked_expectMaxChange() {
-        sut.finishDrag(DragGestureMock(velocity: CGSize(width: 2000, height: 0)))
+    @Test
+    func finishedDrag_givenHighPositiveVelocity_whenInvoked_expectMaxChange() {
+        sut.finishDrag(DragGestureValueMock(velocity: CGSize(width: 2000, height: 0)))
 
-        XCTAssertEqual(sut.width, 5)
+        #expect(sut.width == 5)
     }
 
-    func test_finishedDrag_givenHighNegativeVelocity_whenInvoked_expectMaxChange() {
+    @Test
+    func finishedDrag_givenHighNegativeVelocity_whenInvoked_expectMaxChange() {
         sut.width = 50
 
-        sut.finishDrag(DragGestureMock(velocity: CGSize(width: -2000, height: 0)))
+        sut.finishDrag(DragGestureValueMock(velocity: CGSize(width: -2000, height: 0)))
 
-        XCTAssertEqual(sut.width, 45)
+        #expect(sut.width == 45)
     }
 
-    func test_finishedDrag_whenInvoked_expectMusicPlayerClockUpdated() {
+    @Test
+    func finishedDrag_whenInvoked_expectMusicPlayerClockUpdated() {
         sut.width = 50
-        musicPlayer.setClockHandler = { (time, isScrubbing) in
-            XCTAssertEqual(time, 30)
-            XCTAssertFalse(isScrubbing)
-        }
+        var time: TimeInterval?
+        var isScrubbing: Bool?
+        musicPlayer.setClockHandler = { time = $0; isScrubbing = $1 }
 
-        sut.finishDrag(DragGestureMock())
+        sut.finishDrag(DragGestureValueMock())
 
-        XCTAssertEqual(musicPlayer.setClockCallCount, 1)
+        #expect(musicPlayer.setClockCallCount == 1)
+        #expect(time == 30)
+        #expect(isScrubbing == false)
     }
 }

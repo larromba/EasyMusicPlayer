@@ -1,29 +1,34 @@
 import AVFoundation
 import UIKit
 
+typealias MusicInterruptionHandlerCallback = (@Sendable (MusicInterruptionAction) -> Void)?
+
 /// @mockable
-protocol MusicInterruptionHandling: AnyObject {
-    var callback: ((MusicInterruptionAction) -> Void)? { get set }
+protocol MusicInterruptionHandling: AnyObject, Sendable {
     var isPlaying: Bool { get set }
+
+    func setCallback(_ callback: MusicInterruptionHandlerCallback)
 }
 
-// stops the music when something got disconnected
-// starts the music when it's reconnected
-// it's suprisingly complicated
+/// stops the music when something got disconnected
+/// starts the music when it's reconnected
+/// ...it's suprisingly complicated
 final class MusicInterruptionHandler: MusicInterruptionHandling {
-    var callback: ((MusicInterruptionAction) -> Void)?
     var isPlaying: Bool {
-        get { state.isPlaying }
-        set { state.isPlaying = newValue }
+        get { state.withValue { $0.isPlaying } }
+        set { state.withValue { $0.isPlaying = newValue } }
     }
 
     private let session: AudioSession
     private let notificationCenter: NotificationCenter
-    private var state = MusicInterruptionState(
-        routeChangeInterruption: RouteChangeInterruption(),
-        audioSessionInterruption: AudioSessionInterruption(),
-        isPlaying: false,
-        isPlayingInBackground: false
+    private let callback = LockIsolated<MusicInterruptionHandlerCallback>(nil)
+    private let state = LockIsolated<MusicInterruptionState>(
+        MusicInterruptionState(
+            routeChangeInterruption: RouteChangeInterruption(),
+            audioSessionInterruption: AudioSessionInterruption(),
+            isPlaying: false,
+            isPlayingInBackground: false
+        )
     ) // { didSet { log(state) } }
 
     init(
@@ -35,24 +40,33 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
         setup()
     }
 
+    func setCallback(_ callback: MusicInterruptionHandlerCallback) {
+        self.callback.setValue(callback)
+    }
+
     private func setup() {
-        state.routeChangeInterruption.currentOutputRoutes = session.outputRoutes
+        state.withValue {
+            $0.routeChangeInterruption.currentOutputRoutes = session.outputRoutes
+        }
 
         notificationCenter.addObserver(
             forName: UIApplication.willResignActiveNotification,
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            guard let self else { return }
-            guard state.isPlaying else { return }
-            state.isPlayingInBackground = true
+            self?.state.withValue {
+                guard $0.isPlaying else { return }
+                $0.isPlayingInBackground = true
+            }
         }
         notificationCenter.addObserver(
             forName: UIApplication.didBecomeActiveNotification,
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.state.isPlayingInBackground = false
+            self?.state.withValue {
+                $0.isPlayingInBackground = false
+            }
         }
         notificationCenter.addObserver(
             forName: AVAudioSession.routeChangeNotification,
@@ -80,26 +94,28 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
             let reason = AVAudioSession.RouteChangeReason(rawValue: rawValue) else {
                 return
         }
-        switch reason {
-        case .oldDeviceUnavailable:
-            state.routeChangeInterruption.stage = .start
-            state.routeChangeInterruption.disconnectedOutputRoutes += previous.outputRoutes
-            state.routeChangeInterruption.currentOutputRoutes = session.outputRoutes
-            if state.isPlaying {
-                state.routeChangeInterruption.isAudioInterrupted = true
-                notify(.pause)
+        state.withValue {
+            switch reason {
+            case .oldDeviceUnavailable:
+                $0.routeChangeInterruption.stage = .start
+                $0.routeChangeInterruption.disconnectedOutputRoutes += previous.outputRoutes
+                $0.routeChangeInterruption.currentOutputRoutes = session.outputRoutes
+                if $0.isPlaying {
+                    $0.routeChangeInterruption.isAudioInterrupted = true
+                    notify(.pause)
+                }
+            case .newDeviceAvailable:
+                $0.routeChangeInterruption.stage = .end
+                let outputRoutes = session.outputRoutes
+                if $0.isExpectedToContinue && $0.routeChangeInterruption.didReattachDevice(outputRoutes) {
+                    $0.finish()
+                    notify(.play)
+                }
+                $0.routeChangeInterruption.disconnectedOutputRoutes = []
+                $0.routeChangeInterruption.currentOutputRoutes = outputRoutes
+            default:
+                break
             }
-        case .newDeviceAvailable:
-            state.routeChangeInterruption.stage = .end
-            let outputRoutes = session.outputRoutes
-            if state.isExpectedToContinue && state.routeChangeInterruption.didReattachDevice(outputRoutes) {
-                state.finish()
-                notify(.play)
-            }
-            state.routeChangeInterruption.disconnectedOutputRoutes = []
-            state.routeChangeInterruption.currentOutputRoutes = outputRoutes
-        default:
-            break
         }
     }
 
@@ -119,28 +135,30 @@ final class MusicInterruptionHandler: MusicInterruptionHandling {
 
         logWarning("found reason: \(interruptionReason)")
 
-        switch interruptionType {
-        case .began:
-            state.audioSessionInterruption.stage = .start
-            if state.isPlaying {
-                state.audioSessionInterruption.isAudioInterrupted = true
-                notify(.pause)
+        state.withValue {
+            switch interruptionType {
+            case .began:
+                $0.audioSessionInterruption.stage = .start
+                if $0.isPlaying {
+                    $0.audioSessionInterruption.isAudioInterrupted = true
+                    notify(.pause)
+                }
+            case .ended:
+                $0.audioSessionInterruption.stage = .end
+                if $0.isExpectedToContinue {
+                    $0.finish()
+                    notify(.play)
+                }
+            default:
+                assertionFailure("unhandled: \(AVAudioSession.InterruptionType.self)")
             }
-        case .ended:
-            state.audioSessionInterruption.stage = .end
-            if state.isExpectedToContinue {
-                state.finish()
-                notify(.play)
-            }
-        default:
-            assertionFailure("unhandled: \(AVAudioSession.InterruptionType.self)")
         }
     }
 
     private func notify(_ action: MusicInterruptionAction) {
-        DispatchQueue.main.async {
+        Task { @MainActor in
             log("**** notifying interruption action: \(action) ****")
-            self.callback?(action)
+            self.callback.withValue { $0?(action) }
         }
     }
 }

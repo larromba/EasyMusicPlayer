@@ -1,303 +1,404 @@
 @testable import EasyMusicPlayer
 import MediaPlayer
-import XCTest
+import Testing
 
 @MainActor
-final class ControlsViewModelTests: XCTestCase {
-    private var musicPlayer: MusicPlayableMock!
-    private var soundEffects: SoundEffectingMock!
-    private var remote: MPRemoteCommandCenter!
-    private var sut: ControlsViewModel!
-
-    override func setUpWithError() throws {
-        setup()
-    }
-
-    override func tearDownWithError() throws {
-        musicPlayer = nil
-        soundEffects = nil
-        remote = nil
-        sut = nil
-    }
-
+struct ControlsViewModelTests {
     // MARK: - play
 
-    func test_play_givenIsPlaying_whenInvoked_expectNoSoundEffect() {
-        setup(musicPlayer: MusicPlayableMock(info: .mock(isPlaying: true)))
-        
-        sut.play()
+    @Test
+    func play_givenIsPlaying_whenInvoked_expectNoSoundEffect() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(isPlaying: true)))
 
-        XCTAssertEqual(soundEffects.playCallCount, 0)
+        env.sut.play()
+
+        #expect(env.soundEffects.playCallCount == 0)
     }
 
-    func test_play_givenIsPlaying_whenInvoked_expectSoundEffect_andTogglePlayPause() {
-        sut.play()
+    @Test
+    func play_givenIsPlaying_whenInvoked_expectSoundEffect_andTogglePlayPause() {
+        let env = setup()
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
 
-        soundEffects.playHandler = { XCTAssertEqual($0, .play) }
-        XCTAssertEqual(soundEffects.playCallCount, 1)
-        XCTAssertEqual(musicPlayer.togglePlayPauseCallCount, 1)
+        env.sut.play()
+
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(env.musicPlayer.togglePlayPauseCallCount == 1)
+        #expect(soundEffect == .play)
     }
 
     // MARK: - stop
 
-    func test_stop_whenInvoked_expectSoundEffect_andStop() {
-        sut.stop()
+    @Test
+    func stop_whenInvoked_expectSoundEffect_andStop() {
+        let env = setup()
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
 
-        soundEffects.playHandler = { XCTAssertEqual($0, .stop) }
-        XCTAssertEqual(soundEffects.playCallCount, 1)
-        XCTAssertEqual(musicPlayer.stopCallCount, 1)
+        env.sut.stop()
+
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(env.musicPlayer.stopCallCount == 1)
+        #expect(soundEffect == .stop)
     }
 
     // MARK: - previous
 
-    func test_previous_givenIsDisabled_whenInvoked_expectNothing() {
-        sut.previousButton.isDisabled = true
+    @Test
+    func previous_givenIsDisabled_whenInvoked_expectNothing() {
+        let env = setup()
+        env.sut.previousButton.isDisabled = true
 
-        sut.previous()
+        env.sut.previous()
 
-        XCTAssertEqual(soundEffects.playCallCount, 0)
-        XCTAssertEqual(musicPlayer.previousCallCount, 0)
+        #expect(env.soundEffects.playCallCount == 0)
+        #expect(env.musicPlayer.previousCallCount == 0)
     }
 
-    func test_previous_givenIsEnabled_whenInvoked_expectSoundEffect_andStop() {
-        sut.previousButton.isDisabled = false
+    @Test
+    func previous_givenIsEnabled_whenInvoked_expectSoundEffect_andStop() {
+        let env = setup()
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
+        env.sut.previousButton.isDisabled = false
 
-        sut.previous()
+        env.sut.previous()
 
-        soundEffects.playHandler = { XCTAssertEqual($0, .prev) }
-        XCTAssertEqual(soundEffects.playCallCount, 1)
-        XCTAssertEqual(musicPlayer.previousCallCount, 1)
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(env.musicPlayer.previousCallCount == 1)
+        #expect(soundEffect == .prev)
     }
 
     // MARK: - next
 
-    func test_next_givenIsDisabled_whenInvoked_expectNothing() {
-        sut.previousButton.isDisabled = true
+    @Test
+    func next_givenIsDisabled_whenInvoked_expectNothing() {
+        let env = setup()
+        env.sut.nextButton.isDisabled = true
 
-        sut.previous()
+        env.sut.next()
 
-        XCTAssertEqual(soundEffects.playCallCount, 0)
-        XCTAssertEqual(musicPlayer.previousCallCount, 0)
+        #expect(env.soundEffects.playCallCount == 0)
+        #expect(env.musicPlayer.previousCallCount == 0)
     }
 
-    func test_next_givenIsEnabled_whenInvoked_expectSoundEffect_andStop() {
-        sut.nextButton.isDisabled = false
+    @Test
+    func next_givenIsEnabled_whenInvoked_expectSoundEffect_andStop() {
+        let env = setup()
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
+        env.sut.nextButton.isDisabled = false
 
-        sut.next()
+        env.sut.next()
 
-        soundEffects.playHandler = { XCTAssertEqual($0, .next) }
-        XCTAssertEqual(soundEffects.playCallCount, 1)
-        XCTAssertEqual(musicPlayer.nextCallCount, 1)
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(env.musicPlayer.nextCallCount == 1)
+        #expect(soundEffect == .next)
     }
 
     // MARK: - search
 
-    func test_search_whenInvoked_expectSoundEffect_andSearch() {
-        let expetation = expectation(description: "searchAction invoked")
-        setup { expetation.fulfill() }
+    @Test
+    func search_whenInvoked_expectSoundEffect_andSearch() {
+        var didSearch = false
+        let env = setup { didSearch = true }
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
 
-        sut.search()
+        env.sut.search()
 
-        soundEffects.playHandler = { XCTAssertEqual($0, .search) }
-        XCTAssertEqual(soundEffects.playCallCount, 1)
-        waitForExpectations(timeout: 1)
+        #expect(didSearch)
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(soundEffect == .search)
     }
 
     // MARK: - shuffle
 
-    func test_shuffle_whenInvoked_expectSoundEffect_andShuffle() {
-        sut.shuffle()
+    @Test
+    func shuffle_whenInvoked_expectSoundEffect_andShuffle() {
+        let env = setup()
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
 
-        soundEffects.playHandler = { XCTAssertEqual($0, .shuffle) }
-        XCTAssertEqual(soundEffects.playCallCount, 1)
-        XCTAssertEqual(musicPlayer.shuffleCallCount, 1)
+        env.sut.shuffle()
+
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(env.musicPlayer.shuffleCallCount == 1)
+        #expect(soundEffect == .shuffle)
     }
 
-    // MARK: - repeatMode
+    // MARK: - toggleRepeatMode
 
-    func test_toggleRepeatMode_whenInvoked_expectSoundEffect_andToggleRepeatMode() {
-        sut.toggleRepeatMode()
+    @Test
+    func toggleRepeatMode_whenInvoked_expectSoundEffect_andToggleRepeatMode() {
+        let env = setup()
+        var soundEffect: SoundEffect?
+        env.soundEffects.playHandler = { soundEffect = $0 }
 
-        soundEffects.playHandler = { XCTAssertEqual($0, .toggle) }
-        XCTAssertEqual(soundEffects.playCallCount, 1)
-        XCTAssertEqual(musicPlayer.toggleRepeatModeCallCount, 1)
+        env.sut.toggleRepeatMode()
+
+        #expect(env.soundEffects.playCallCount == 1)
+        #expect(env.musicPlayer.toggleRepeatModeCallCount == 1)
+        #expect(soundEffect == .repeat)
     }
-    
+
+    // MARK: - toggleLofi
+
+    @Test
+    func toggleLofi_whenInvoked_expectLofiToggled() {
+        let env = setup()
+
+        env.sut.toggleLofi()
+
+        #expect(env.musicPlayer.toggleLofiCallCount == 1)
+    }
+
+    // MARK: - toggleDistortion
+
+    @Test
+    func toggleDistortion_whenInvoked_expectLofiToggled() {
+        let env = setup()
+
+        env.sut.toggleDistortion()
+
+        #expect(env.musicPlayer.toggleDistortionCallCount == 1)
+    }
+
     // MARK: - startSeeking
 
-    func test_startSeeking_whenInvoked_expectSoundEffect_andStartSeeking() {
-        sut.startSeeking(.forward)
+    @Test
+    func startSeeking_whenInvoked_expectSoundEffect_andStartSeeking() {
+        let env = setup()
 
-        XCTAssertEqual(musicPlayer.startSeekingCallCount, 1)
+        env.sut.startSeeking(.forward)
+
+        #expect(env.musicPlayer.startSeekingCallCount == 1)
     }
 
     // MARK: - stopSeeking
 
-    func test_stopSeeking_whenInvoked_expectSoundEffect_andStartSeeking() {
-        sut.stopSeeking()
+    @Test
+    func stopSeeking_whenInvoked_expectSoundEffect_andStartSeeking() {
+        let env = setup()
 
-        XCTAssertEqual(musicPlayer.stopSeekingCallCount, 1)
+        env.sut.stopSeeking()
+
+        #expect(env.musicPlayer.stopSeekingCallCount == 1)
     }
 
     // MARK: - state 
     // MARK: prev buttons
 
-    func test_state_whenInvoked_expectPrevButtonUpdated() {
-        setup(musicPlayer: MusicPlayableMock(info: .mock(repeatMode: .one)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.one)]
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .reset, .repeatMode(.one)])
+    func state_whenReceived_expectPrevButtonUpdated(for state: MusicPlayerState) {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(repeatMode: .one)))
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertFalse(sut.previousButton.isDisabled, "\($0)")
-            XCTAssertTrue(remote.previousTrackCommand.isEnabled, "\($0)")
-        }
+        #expect(!env.sut.previousButton.isDisabled, "\(state)")
+        #expect(env.remote.previousTrackCommand.isEnabled, "\(state)")
     }
 
-    func test_state_givenNoRepeatMode_andIndexGT0_whenInvoked_expectPrevButtonUpdated() {
-        setup(musicPlayer: MusicPlayableMock(info: .mock(index: 5, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .reset, .repeatMode(.none)])
+    func state_givenNoRepeatMode_andIndexMax_whenReceived_expectPrevButtonUpdated(for state: MusicPlayerState) {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(index: 5, repeatMode: .none)))
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertFalse(sut.previousButton.isDisabled, "\($0)")
-            XCTAssertTrue(remote.previousTrackCommand.isEnabled, "\($0)")
-        }
+        #expect(!env.sut.previousButton.isDisabled, "\(state)")
+        #expect(env.remote.previousTrackCommand.isEnabled, "\(state)")
     }
 
-    func test_state_givenNoRepeatMode_andIndexLT0_whenInvoked_expectPrevButtonUpdated() {
-        setup(musicPlayer: MusicPlayableMock(info: .mock(index: 0, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .reset, .repeatMode(.none)])
+    func state_givenNoRepeatMode_andIndexMin_whenReceived_expectPrevButtonUpdated(for state: MusicPlayerState) {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(index: 0, repeatMode: .none)))
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertTrue(sut.previousButton.isDisabled, "\($0)")
-            XCTAssertFalse(remote.previousTrackCommand.isEnabled, "\($0)")
-        }
+        #expect(env.sut.previousButton.isDisabled, "\(state)")
+        #expect(!env.remote.previousTrackCommand.isEnabled, "\(state)")
     }
 
     // MARK: next buttons
 
-    func test_state_whenInvoked_expectNextButtonUpdated() {
-        setup(musicPlayer: MusicPlayableMock(info: .mock(repeatMode: .one)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.one)]
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .reset, .repeatMode(.one)])
+    func state_whenReceived_expectNextButtonUpdated(for state: MusicPlayerState) {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(repeatMode: .one)))
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertFalse(sut.nextButton.isDisabled, "\($0)")
-            XCTAssertTrue(remote.nextTrackCommand.isEnabled, "\($0)")
-        }
+        #expect(!env.sut.nextButton.isDisabled, "\(state)")
+        #expect(env.remote.nextTrackCommand.isEnabled, "\(state)")
     }
 
-    func test_state_givenNoRepeatMode_andIndexGTEAll_whenInvoked_expectPrevButtonUpdated() {
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .reset, .repeatMode(.none)])
+    func state_givenNoRepeatMode_andIndexMax_whenReceived_expectNextButtonUpdated(for state: MusicPlayerState) {
         let tracks = Array(repeating: MediaItemMock(), count: 5)
-        setup(musicPlayer: MusicPlayableMock(info: .mock(index: 4, tracks: tracks, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(index: 4, tracks: tracks, repeatMode: .none)))
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertTrue(sut.nextButton.isDisabled, "\($0)")
-            XCTAssertFalse(remote.nextTrackCommand.isEnabled, "\($0)")
-        }
+        #expect(env.sut.nextButton.isDisabled, "\(state)")
+        #expect(!env.remote.nextTrackCommand.isEnabled, "\(state)")
     }
 
-    func test_state_givenNoRepeatMode_andIndexLTAll_whenInvoked_expectPrevButtonUpdated() {
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .reset, .repeatMode(.none)])
+    func state_givenNoRepeatMode_andIndexMin_whenReceived_expectNextButtonUpdated(for state: MusicPlayerState) {
         let tracks = Array(repeating: MediaItemMock(), count: 5)
-        setup(musicPlayer: MusicPlayableMock(info: .mock(index: 0, tracks: tracks, repeatMode: .none)))
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .reset, .repeatMode(.none)]
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(index: 0, tracks: tracks, repeatMode: .none)))
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertFalse(sut.nextButton.isDisabled, "\($0)")
-            XCTAssertTrue(remote.nextTrackCommand.isEnabled, "\($0)")
-        }
+        #expect(!env.sut.nextButton.isDisabled, "\(state)")
+        #expect(env.remote.nextTrackCommand.isEnabled, "\(state)")
     }
 
     // MARK: play
 
-    func test_state_whenPlayReceived_expectUpdates() {
-        musicPlayer.stateSubject.send(.play)
+    @Test
+    func state_whenPlayReceived_expectUpdates() {
+        let env = setup()
 
-        XCTAssertEqual(sut.playButton.image, .pauseButton)
-        XCTAssertFalse(sut.stopButton.isDisabled)
-        XCTAssertTrue(remote.stopCommand.isEnabled)
+        env.musicPlayer.stateSubject.send(.play)
+
+        #expect(env.sut.playButton.image == .pauseButton)
+        #expect(!env.sut.stopButton.isDisabled)
+        #expect(env.remote.stopCommand.isEnabled)
     }
 
     // MARK: pause
 
-    func test_state_whenPauseReceived_expectUpdates() {
-        musicPlayer.stateSubject.send(.pause)
+    @Test
+    func state_whenPauseReceived_expectUpdates() {
+        let env = setup()
 
-        XCTAssertEqual(sut.playButton.image, .playButton)
-        XCTAssertFalse(sut.stopButton.isDisabled)
-        XCTAssertTrue(remote.stopCommand.isEnabled)
+        env.musicPlayer.stateSubject.send(.pause)
+
+        #expect(env.sut.playButton.image == .playButton)
+        #expect(!env.sut.stopButton.isDisabled)
+        #expect(env.remote.stopCommand.isEnabled)
     }
 
     // MARK: stop
 
-    func test_state_whenStopReceived_expectUpdates() {
-        musicPlayer.stateSubject.send(.stop)
+    @Test
+    func state_whenStopReceived_expectUpdates() {
+        let env = setup()
 
-        XCTAssertEqual(sut.playButton.image, .playButton)
-        XCTAssertTrue(sut.stopButton.isDisabled)
-        XCTAssertFalse(remote.stopCommand.isEnabled)
+        env.musicPlayer.stateSubject.send(.stop)
+
+        #expect(env.sut.playButton.image == .playButton)
+        #expect(env.sut.stopButton.isDisabled)
+        #expect(!env.remote.stopCommand.isEnabled)
     }
 
-    func test_state_whenResetReceived_expectUpdates() {
-        musicPlayer.stateSubject.send(.reset)
+    @Test
+    func state_whenResetReceived_expectUpdates() {
+        let env = setup()
 
-        XCTAssertEqual(sut.playButton.image, .playButton)
-        XCTAssertTrue(sut.stopButton.isDisabled)
-        XCTAssertFalse(remote.stopCommand.isEnabled)
+        env.musicPlayer.stateSubject.send(.reset)
+
+        #expect(env.sut.playButton.image == .playButton)
+        #expect(env.sut.stopButton.isDisabled)
+        #expect(!env.remote.stopCommand.isEnabled)
     }
 
     // MARK: repeatMode
 
-    func test_state_whenRepeatModeReceived_expectUpdates() {
-        struct TestData {
-            let mode: RepeatMode
-            let image: UIImage
-        }
-        let testData = [
-            TestData(mode: .all, image: .repeatAllButton),
-            TestData(mode: .one, image: .repeatOneButton),
-            TestData(mode: .none, image: .repeatButton)
-        ]
+    struct RepeatModeTestData {
+        let mode: RepeatMode
+        let image: UIImage
+    }
 
-        testData.forEach {
-            musicPlayer.stateSubject.send(.repeatMode($0.mode))
+    @Test(arguments: [
+        RepeatModeTestData(mode: .all, image: .repeatAllButton),
+        RepeatModeTestData(mode: .one, image: .repeatOneButton),
+        RepeatModeTestData(mode: .none, image: .repeatButton)
+    ])
+    func state_whenRepeatModeReceived_expectUpdates(for data: RepeatModeTestData) {
+        let env = setup()
 
-            XCTAssertEqual(sut.repeatButton.image, $0.image, "image: \($0.mode)")
-            XCTAssertEqual(remote.changeRepeatModeCommand.currentRepeatType, $0.mode.remote, "remote: \($0.mode)")
-        }
+        env.musicPlayer.stateSubject.send(.repeatMode(data.mode))
+
+        #expect(env.sut.repeatButton.image == data.image, "image: \(data.mode)")
+        #expect(env.remote.changeRepeatModeCommand.currentRepeatType == data.mode.remote, "remote: \(data.mode)")
     }
 
     // MARK: search buton
 
-    func test_state_givenTracks_whenInvoked_expectSearchButtonIsEnabled() {
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.none)]
-        setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: [.mock()])))
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .repeatMode(.none)])
+    func state_givenTracks_whenReceived_expectSearchButtonIsEnabled(for state: MusicPlayerState) {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: [.mock()])))
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertFalse(sut.searchButton.isDisabled, "\($0)")
-        }
+        #expect(!env.sut.searchButton.isDisabled, "\(state)")
     }
 
-    func test_state_givenTracks_whenInvoked_expectSearchButtonIsDisabled() {
-        let states: [MusicPlayerState] = [.play, .pause, .stop, .repeatMode(.none)]
+    @Test(arguments: [MusicPlayerState.play, .pause, .stop, .repeatMode(.none)])
+    func state_givenNoTracks_whenReceived_expectSearchButtonIsDisabled(for state: MusicPlayerState) {
+        let env = setup()
 
-        states.forEach {
-            musicPlayer.stateSubject.send($0)
+        env.musicPlayer.stateSubject.send(state)
 
-            XCTAssertTrue(sut.searchButton.isDisabled, "\($0)")
-        }
+        #expect(env.sut.searchButton.isDisabled, "\(state)")
+    }
+
+    // MARK: - loaded
+
+    @Test
+    func state_givenTracks_whenLoadedReceived_expectSearchButtonIsEnabled() {
+        let env = setup(musicPlayer: MusicPlayableMock(info: .mock(tracks: [.mock()])))
+
+        env.musicPlayer.stateSubject.send(.loaded)
+
+        #expect(!env.sut.searchButton.isDisabled)
+    }
+
+    @Test
+    func state_givenNoTracks_whenLoadedReceived_expectSearchButtonIsDisabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.loaded)
+
+        #expect(env.sut.searchButton.isDisabled)
+    }
+
+    // MARK: - lofi
+
+    func state_whenLofiReceived_expectLofiIsDisabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.lofi(false))
+
+        #expect(env.sut.lofiButton.isDisabled)
+    }
+
+    func state_whenLofiReceived_expectLofiIsEnabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.lofi(true))
+
+        #expect(!env.sut.lofiButton.isDisabled)
+    }
+
+    // MARK: - distortion
+
+    func state_whenDistortionReceived_expectLofiIsDisabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.distortion(false))
+
+        #expect(env.sut.distortionButton.isDisabled)
+    }
+
+    func state_whenDistortionReceived_expectLofiIsEnabled() {
+        let env = setup()
+
+        env.musicPlayer.stateSubject.send(.distortion(true))
+
+        #expect(!env.sut.distortionButton.isDisabled)
     }
 
     private func setup(
@@ -305,15 +406,26 @@ final class ControlsViewModelTests: XCTestCase {
         soundEffects: SoundEffectingMock = SoundEffectingMock(),
         remote: MPRemoteCommandCenter = MPRemoteCommandCenter.shared(),
         searchAction: @escaping () -> Void = {}
-    ) {
-        self.musicPlayer = musicPlayer
-        self.soundEffects = soundEffects
-        self.remote = remote
-        sut = ControlsViewModel(
-            musicPlayer: musicPlayer, 
-            remote: remote,
+    ) -> Environmemnt {
+        Environmemnt(
+            musicPlayer: musicPlayer,
             soundEffects: soundEffects,
-            searchAction: searchAction
+            remote: remote,
+            sut: ControlsViewModel(
+                musicPlayer: musicPlayer,
+                remote: remote,
+                soundEffects: soundEffects,
+                searchAction: searchAction
+            )
         )
+    }
+}
+
+private extension ControlsViewModelTests {
+    struct Environmemnt {
+        let musicPlayer: MusicPlayableMock
+        let soundEffects: SoundEffectingMock
+        let remote: MPRemoteCommandCenter
+        let sut: ControlsViewModel
     }
 }

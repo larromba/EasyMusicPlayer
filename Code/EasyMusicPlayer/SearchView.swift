@@ -31,10 +31,7 @@ struct SearchView: View {
         List {
             ForEach(viewModel.tracks) { track in
                 VStack(alignment: .leading) {
-                    Text(track.resolvedArtist)
-                        .font(.system(size: 20, weight: .light))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Text(track.resolvedTitle)
+                    Text(track.sortID)
                         .font(.system(size: 20, weight: .light))
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

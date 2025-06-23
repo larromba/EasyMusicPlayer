@@ -3,7 +3,7 @@ import Foundation
 import MediaPlayer
 
 /// @mockable(rx: state = CurrentValueSubject)
-protocol MusicPlayable {
+protocol MusicPlayable: Sendable {
     var state: AnyPublisher<MusicPlayerState, Never> { get }
     var info: MusicPlayerInformation { get }
 
@@ -17,6 +17,8 @@ protocol MusicPlayable {
     func next()
     func shuffle()
     func toggleRepeatMode()
+    func toggleLofi()
+    func toggleDistortion()
     func setRepeatMode(_ repeatMode: RepeatMode)
     func setClock(_ timeInterval: TimeInterval, isScrubbing: Bool)
     func startSeeking(_ direction: SeekDirection)

@@ -1,12 +1,14 @@
 import Foundation
 import MediaPlayer
 
+typealias MusicAuthorizationCompletion = (@Sendable (_ success: Bool) -> Void)
+
 /// @mockable
-protocol MusicAuthorizable {
+protocol MusicAuthorizable: Sendable {
     // sourcery: value = true
     var isAuthorized: Bool { get }
 
-    func authorize(_ completion: @escaping ((_ success: Bool) -> Void))
+    func authorize(_ completion: @escaping MusicAuthorizationCompletion)
 }
 
 final class MusicAuthorization: MusicAuthorizable {
@@ -20,13 +22,13 @@ final class MusicAuthorization: MusicAuthorizable {
         return MPMediaLibrary.authorizationStatus() == .authorized
     }
 
-    func authorize(_ completion: @escaping ((_ success: Bool) -> Void)) {
+    func authorize(_ completion: @escaping MusicAuthorizationCompletion) {
         guard !isAuthorized else {
             completion(true)
             return
         }
         MPMediaLibrary.requestAuthorization { status in
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 completion(status == .authorized)
             }
         }
