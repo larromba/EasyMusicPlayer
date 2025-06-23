@@ -1,7 +1,7 @@
 import Foundation
 import MediaPlayer
 
-enum RepeatMode: String {
+enum RepeatMode: String, Sendable {
     case none
     case one
     case all

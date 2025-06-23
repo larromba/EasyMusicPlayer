@@ -10,5 +10,5 @@ xcassets:
     - EasyMusicPlayer/Preview Assets.xcassets
     - EasyMusicPlayer/Colors.xcassets
   outputs:
-    - templateName: swift5
+    - templatePath: Templates/swift6.stencil
       output: EasyMusicPlayer/Assets.swift

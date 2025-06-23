@@ -1,14 +1,16 @@
 #if DEBUG && targetEnvironment(simulator)
-import MediaPlayer
+@preconcurrency import MediaPlayer
 
 // MARK: - MPMediaQuery
 
 extension MPMediaQuery {
-    // CHANGE THIS TO TEST DIFFERENT LIBRARIES ON THE SIMULATOR
+    /// **CHANGE THIS TO TEST DIFFERENT LIBRARIES ON THE SIMULATOR**
     static func songs() -> MPMediaQuery {
-//        SimulatorMediaQuery(tracks: smallLibary)
-        SimulatorMediaQuery(tracks: largeLibrary)
-//        SimulatorMediaQuery(tracks: uiTestLibrary)
+        if __isSnapshot {
+            return SimulatorMediaQuery(tracks: snapshotLibrary)
+        }
+//        return SimulatorMediaQuery(tracks: smallLibary)
+        return SimulatorMediaQuery(tracks: largeLibrary)
     }
 
     private static let smallLibary = [
@@ -18,15 +20,21 @@ extension MPMediaQuery {
     ]
 
     private static let largeLibrary: [MPMediaItem] = {
-        return (0..<50_000).map {
+        (0..<50_000).map {
             SimulatorMediaItem(asset: .random, artist: UUID().uuidString, title: UUID().uuidString, id: $0)
         }
+    }()
+
+    private static let snapshotLibrary: [MPMediaItem] = {
+        var library = largeLibrary
+        library[0] = SimulatorMediaItem(asset: .track1, id: 0)
+        return library
     }()
 }
 
 // MARK: - SimulatorMediaItem
 
-final class SimulatorMediaItem: MPMediaItem {
+final class SimulatorMediaItem: MPMediaItem, @unchecked Sendable {
     enum MediaAsset: Int {
         case track1
         case track2
@@ -37,25 +45,22 @@ final class SimulatorMediaItem: MPMediaItem {
         }
 
         var url: URL {
-            let tracks = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
+            let trackPaths = Bundle.safeMain.infoDictionary!["Track Paths"] as! [String: String]
             switch self {
             case .track1:
-                return URL(fileURLWithPath: tracks["Track #1"]!)
+                return URL(fileURLWithPath: trackPaths["Track #1"]!)
             case .track2:
-                return URL(fileURLWithPath: tracks["Track #2"]!)
+                return URL(fileURLWithPath: trackPaths["Track #2"]!)
             case .track3:
-                return URL(fileURLWithPath: tracks["Track #3"]!)
+                return URL(fileURLWithPath: trackPaths["Track #3"]!)
             }
         }
 
         var playbackDuration: TimeInterval {
             switch self {
-            case .track1:
-                return 32
-            case .track2:
-                return 31
-            case .track3:
-                return 34
+            case .track1: return 32
+            case .track2: return 31
+            case .track3: return 34
             }
         }
     }
@@ -88,7 +93,7 @@ final class SimulatorMediaItem: MPMediaItem {
         artist: String = "Arkist",
         title: String = "Fill Your Coffee",
         id: MPMediaEntityPersistentID = 0,
-        image: UIImage? = Asset.PreviewAssets.arkistRendezvousFillYourCoffee.image
+        image: UIImage? = .arkistRendezvousFillYourCoffee
     ) {
         _assetUrl = asset.url
         _artist = artist
@@ -145,5 +150,9 @@ final class SimulatorMediaQuery: MPMediaQuery {
     override func removeFilterPredicate(_ predicate: MPMediaPredicate) {
         id = nil
     }
+}
+
+private extension URL {
+    static let empty = URL(fileURLWithPath: "")
 }
 #endif

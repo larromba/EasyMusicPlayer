@@ -1,27 +1,32 @@
 import XCTest
 
 @MainActor
-final class SnapshotTests: XCTestCase {
+final class SnapshotTests: XCTestCase, Sendable {
     private var app: XCUIApplication!
 
-    override func setUpWithError() throws {
+    override func setUp() async throws {
+        try await super.setUp()
+
+        continueAfterFailure = false
         app = XCUIApplication()
+        // music library permissions
         addUIInterruptionMonitor(withDescription: "permissions") { alert -> Bool in
             alert.buttons["Allow"].tap()
             return true
         }
         setupSnapshot(app)
-        continueAfterFailure = false
+        app.launch()
     }
 
-    override func tearDownWithError() throws {
+    override func tearDown() async throws {
         app = nil
+
+        try await super.tearDown()
     }
 
     func test_whenLaunchApp_expectGenerateSnapshots() throws {
-        app.launch()
-
         app.tap()
+
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
         let allowButton = springboard.buttons["Allow"]
         if allowButton.waitForExistence(timeout: 2) {
@@ -29,14 +34,9 @@ final class SnapshotTests: XCTestCase {
         }
 
         let playButton = app.buttons["Play"]
-        let scrubberElement = app.otherElements["Scrubber"]
-        let repeatButton = app.buttons["Repeat"]
-
-        repeatButton.tap()
-        repeatButton.tap()
-
         playButton.tap()
 
+        let scrubberElement = app.otherElements["Scrubber"]
         scrubberElement.swipeRight()
 
         snapshot("Main")

@@ -2,6 +2,8 @@ import Combine
 import MediaPlayer
 import SwiftUI
 
+// TODO: Localize button accessibility
+
 @MainActor
 final class ControlsViewModel: ObservableObject {
     @Published var playButton = MusicPlayerButton(
@@ -25,6 +27,12 @@ final class ControlsViewModel: ObservableObject {
     @Published var shuffleButton = MusicPlayerButton(
         image: .shuffleButton, accessibilityLabel: "Shuffle", isDisabled: false, maxRotation: 360
     )
+    @Published var lofiButton = MusicPlayerFXButton(
+        image: .lofiButton, accessibilityLabel: "Lo-Fi", isFXEnabled: false
+    )
+    @Published var distortionButton = MusicPlayerFXButton(
+        image: .distortionButton, accessibilityLabel: "Distortion", isFXEnabled: false
+    )
 
     private let musicPlayer: MusicPlayable
     private let soundEffects: SoundEffecting
@@ -33,17 +41,19 @@ final class ControlsViewModel: ObservableObject {
     private var cancellables = [AnyCancellable]()
 
     private var isPreviousButtonDisabled: Bool {
-        switch musicPlayer.info.repeatMode {
+        let musicPlayerInfo = musicPlayer.info
+        switch musicPlayerInfo.repeatMode {
         case .none:
-            return musicPlayer.info.track.index - 1 < 0
+            return musicPlayerInfo.trackInfo.index - 1 < 0
         default:
             return false
         }
     }
     private var isNextButtonDisabled: Bool {
-        switch musicPlayer.info.repeatMode {
+        let musicPlayerInfo = musicPlayer.info
+        switch musicPlayerInfo.repeatMode {
         case .none:
-            return musicPlayer.info.track.index + 1 >= musicPlayer.info.tracks.count
+            return musicPlayerInfo.trackInfo.index + 1 >= musicPlayerInfo.tracks.count
         default:
             return false
         }
@@ -60,9 +70,7 @@ final class ControlsViewModel: ObservableObject {
         self.remote = remote
         self.searchAction = searchAction
 
-        musicPlayer.state.sink { [weak self] in
-            self?.update($0)
-        }.store(in: &cancellables)
+        setupBindings()
     }
 
     func play() {
@@ -118,6 +126,20 @@ final class ControlsViewModel: ObservableObject {
         playButton.image = .toggle
     }
 
+    func toggleLofi() {
+        musicPlayer.toggleLofi()
+    }
+
+    func toggleDistortion() {
+        musicPlayer.toggleDistortion()
+    }
+
+    private func setupBindings() {
+        musicPlayer.state.sink { [weak self] in
+            self?.update($0)
+        }.store(in: &cancellables)
+    }
+
     private func update(_ state: MusicPlayerState) {
         searchButton.isDisabled = musicPlayer.info.tracks.count == 0
 
@@ -148,6 +170,10 @@ final class ControlsViewModel: ObservableObject {
             case .one:
                 repeatButton.image = .repeatOneButton
             }
+        case .lofi(let isEnabled):
+            lofiButton.isFXEnabled = isEnabled
+        case .distortion(let isEnabled):
+            distortionButton.isFXEnabled = isEnabled
         default:
             break
         }

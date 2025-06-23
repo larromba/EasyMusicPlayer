@@ -1,6 +1,6 @@
 import MediaPlayer
 
-extension MPMediaItem: Identifiable {
+extension MPMediaItem: @retroactive Identifiable {
     public var id: MPMediaEntityPersistentID {
         persistentID
     }
@@ -8,7 +8,7 @@ extension MPMediaItem: Identifiable {
 
 extension MPMediaItem {
     var sortID: String {
-        "\(artist ?? L10n.unknownArtist) - \(title ?? L10n.unknownTrack)"
+        title ?? ""
     }
 
     var resolvedArtist: String {
@@ -29,6 +29,16 @@ extension MPMediaItem {
             return title
         }
         return trackComponents.track
+    }
+
+    func resolvedArtwork() async -> UIImage {
+        if let artwork = artwork?.image(at: .artworkSize) {
+            return artwork
+        }
+        if let artwork = await embeddedArtwork() {
+            return artwork
+        }
+        return .artworkPlaceholder
     }
 
     var isDashFormat: Bool {
@@ -71,5 +81,17 @@ extension MPMediaItem {
             artist: components[0].trimmingCharacters(in: .whitespacesAndNewlines),
             track: components[1].trimmingCharacters(in: .whitespacesAndNewlines)
         )
+    }
+
+    private func embeddedArtwork() async -> UIImage? {
+        guard let url = assetURL else {
+            return nil
+        }
+        let asset = AVAsset(url: url)
+        guard
+            let metadataItem = try? await asset.load(.metadata).first(where: { $0.commonKey == .commonKeyArtwork }),
+            let data = try? await metadataItem.load(.dataValue),
+            let image = UIImage(data: data) else { return nil }
+        return image
     }
 }

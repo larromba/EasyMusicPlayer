@@ -17,39 +17,11 @@ class URLSharableMock: URLSharable {
 
 
     private(set) var openCallCount = 0
-    var openHandler: ((URL, [UIApplication.OpenExternalURLOptionsKey : Any], ((Bool) -> Void)?) -> ())?
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: ((Bool) -> Void)?)  {
+    var openHandler: ((URL, [UIApplication.OpenExternalURLOptionsKey : Any], (@MainActor @Sendable (Bool) -> Void)?) -> ())?
+    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey : Any], completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?) {
         openCallCount += 1
         if let openHandler = openHandler {
             openHandler(url, options, completion)
-        }
-        
-    }
-}
-
-class AudioClockingMock: AudioClocking {
-    init() { }
-
-
-    private(set) var callbackSetCallCount = 0
-    var callback: (() -> Void)? = nil { didSet { callbackSetCallCount += 1 } }
-
-    private(set) var startCallCount = 0
-    var startHandler: (() -> ())?
-    func start()  {
-        startCallCount += 1
-        if let startHandler = startHandler {
-            startHandler()
-        }
-        
-    }
-
-    private(set) var stopCallCount = 0
-    var stopHandler: (() -> ())?
-    func stop()  {
-        stopCallCount += 1
-        if let stopHandler = stopHandler {
-            stopHandler()
         }
         
     }
@@ -66,49 +38,31 @@ class QueueMock: Queue {
     var maxConcurrentOperationCount: Int = 0 { didSet { maxConcurrentOperationCountSetCallCount += 1 } }
 
     private(set) var addOperationCallCount = 0
-    var addOperationHandler: ((@escaping @Sendable () -> Void) -> ())?
-    func addOperation(_ block: @escaping @Sendable () -> Void)  {
+    var addOperationHandler: ((Operation) -> ())?
+    func addOperation(_ op: Operation) {
         addOperationCallCount += 1
         if let addOperationHandler = addOperationHandler {
-            addOperationHandler(block)
+            addOperationHandler(op)
+        }
+        
+    }
+
+    private(set) var addOperationBlockCallCount = 0
+    var addOperationBlockHandler: ((@escaping @Sendable () -> Void) -> ())?
+    func addOperation(_ block: @escaping @Sendable () -> Void) {
+        addOperationBlockCallCount += 1
+        if let addOperationBlockHandler = addOperationBlockHandler {
+            addOperationBlockHandler(block)
         }
         
     }
 
     private(set) var cancelAllOperationsCallCount = 0
     var cancelAllOperationsHandler: (() -> ())?
-    func cancelAllOperations()  {
+    func cancelAllOperations() {
         cancelAllOperationsCallCount += 1
         if let cancelAllOperationsHandler = cancelAllOperationsHandler {
             cancelAllOperationsHandler()
-        }
-        
-    }
-}
-
-class SeekableMock: Seekable {
-    init() { }
-
-
-    private(set) var seekSetCallCount = 0
-    var seek: ((TimeInterval) -> Void)? = nil { didSet { seekSetCallCount += 1 } }
-
-    private(set) var seekActionCallCount = 0
-    var seekActionHandler: ((SeekDirection) -> ())?
-    func seek(_ action: SeekDirection)  {
-        seekActionCallCount += 1
-        if let seekActionHandler = seekActionHandler {
-            seekActionHandler(action)
-        }
-        
-    }
-
-    private(set) var stopCallCount = 0
-    var stopHandler: (() -> ())?
-    func stop()  {
-        stopCallCount += 1
-        if let stopHandler = stopHandler {
-            stopHandler()
         }
         
     }
@@ -131,7 +85,7 @@ class SoundEffectingMock: SoundEffecting {
 
     private(set) var playCallCount = 0
     var playHandler: ((SoundEffect) -> ())?
-    func play(_ sound: SoundEffect)  {
+    func play(_ sound: SoundEffect) {
         playCallCount += 1
         if let playHandler = playHandler {
             playHandler(sound)
@@ -140,47 +94,12 @@ class SoundEffectingMock: SoundEffecting {
     }
 }
 
-class MusicInterruptionHandlingMock: MusicInterruptionHandling {
-    init() { }
-    init(isPlaying: Bool = false) {
-        self.isPlaying = isPlaying
-    }
-
-
-    private(set) var callbackSetCallCount = 0
-    var callback: ((MusicInterruptionAction) -> Void)? = nil { didSet { callbackSetCallCount += 1 } }
-
-    private(set) var isPlayingSetCallCount = 0
-    var isPlaying: Bool = false { didSet { isPlayingSetCallCount += 1 } }
-}
-
-class MusicAuthorizableMock: MusicAuthorizable {
-    init() { }
-    init(isAuthorized: Bool = false) {
-        self.isAuthorized = isAuthorized
-    }
-
-
-    private(set) var isAuthorizedSetCallCount = 0
-    var isAuthorized: Bool = false { didSet { isAuthorizedSetCallCount += 1 } }
-
-    private(set) var authorizeCallCount = 0
-    var authorizeHandler: ((@escaping ((_ success: Bool) -> Void)) -> ())?
-    func authorize(_ completion: @escaping ((_ success: Bool) -> Void))  {
-        authorizeCallCount += 1
-        if let authorizeHandler = authorizeHandler {
-            authorizeHandler(completion)
-        }
-        
-    }
-}
-
-class MusicLibraryableMock: MusicLibraryable {
+class MusicLibraryableMock: MusicLibraryable, @unchecked Sendable {
     init() { }
 
 
     private(set) var makePlaylistCallCount = 0
-    var makePlaylistHandler: ((Bool) -> ([MPMediaItem]))?
+    var makePlaylistHandler: ((Bool) -> [MPMediaItem])?
     func makePlaylist(isShuffled: Bool) -> [MPMediaItem] {
         makePlaylistCallCount += 1
         if let makePlaylistHandler = makePlaylistHandler {
@@ -190,7 +109,7 @@ class MusicLibraryableMock: MusicLibraryable {
     }
 
     private(set) var findTracksCallCount = 0
-    var findTracksHandler: (([MPMediaEntityPersistentID]) -> ([MPMediaItem]))?
+    var findTracksHandler: (([MPMediaEntityPersistentID]) -> [MPMediaItem])?
     func findTracks(with ids: [MPMediaEntityPersistentID]) -> [MPMediaItem] {
         findTracksCallCount += 1
         if let findTracksHandler = findTracksHandler {
@@ -200,7 +119,7 @@ class MusicLibraryableMock: MusicLibraryable {
     }
 
     private(set) var areTrackIDsValidCallCount = 0
-    var areTrackIDsValidHandler: (([MPMediaEntityPersistentID]) -> (Bool))?
+    var areTrackIDsValidHandler: (([MPMediaEntityPersistentID]) -> Bool)?
     func areTrackIDsValid(_ ids: [MPMediaEntityPersistentID]) -> Bool {
         areTrackIDsValidCallCount += 1
         if let areTrackIDsValidHandler = areTrackIDsValidHandler {
@@ -210,26 +129,7 @@ class MusicLibraryableMock: MusicLibraryable {
     }
 }
 
-class UserServicingMock: UserServicing {
-    init() { }
-    init(repeatMode: RepeatMode? = nil, currentTrackID: MPMediaEntityPersistentID? = nil, trackIDs: [MPMediaEntityPersistentID]? = nil) {
-        self.repeatMode = repeatMode
-        self.currentTrackID = currentTrackID
-        self.trackIDs = trackIDs
-    }
-
-
-    private(set) var repeatModeSetCallCount = 0
-    var repeatMode: RepeatMode? = nil { didSet { repeatModeSetCallCount += 1 } }
-
-    private(set) var currentTrackIDSetCallCount = 0
-    var currentTrackID: MPMediaEntityPersistentID? = nil { didSet { currentTrackIDSetCallCount += 1 } }
-
-    private(set) var trackIDsSetCallCount = 0
-    var trackIDs: [MPMediaEntityPersistentID]? = nil { didSet { trackIDsSetCallCount += 1 } }
-}
-
-class AudioSessionRouteDescriptionMock: AudioSessionRouteDescription {
+class AudioSessionRouteDescriptionMock: AudioSessionRouteDescription, @unchecked Sendable {
     init() { }
     init(inputs: [AVAudioSessionPortDescription] = [AVAudioSessionPortDescription](), outputs: [AVAudioSessionPortDescription] = [AVAudioSessionPortDescription](), outputRoutes: [AVAudioSession.Port] = [AVAudioSession.Port]()) {
         self.inputs = inputs
@@ -238,17 +138,17 @@ class AudioSessionRouteDescriptionMock: AudioSessionRouteDescription {
     }
 
 
-    private(set) var inputsSetCallCount = 0
-    var inputs: [AVAudioSessionPortDescription] = [AVAudioSessionPortDescription]() { didSet { inputsSetCallCount += 1 } }
 
-    private(set) var outputsSetCallCount = 0
-    var outputs: [AVAudioSessionPortDescription] = [AVAudioSessionPortDescription]() { didSet { outputsSetCallCount += 1 } }
+    var inputs: [AVAudioSessionPortDescription] = [AVAudioSessionPortDescription]()
 
-    private(set) var outputRoutesSetCallCount = 0
-    var outputRoutes: [AVAudioSession.Port] = [AVAudioSession.Port]() { didSet { outputRoutesSetCallCount += 1 } }
+
+    var outputs: [AVAudioSessionPortDescription] = [AVAudioSessionPortDescription]()
+
+
+    var outputRoutes: [AVAudioSession.Port] = [AVAudioSession.Port]()
 }
 
-class MusicPlayableMock: MusicPlayable {
+class MusicPlayableMock: MusicPlayable, @unchecked Sendable {
     init() { }
     init(info: MusicPlayerInformation) {
         self._info = info
@@ -258,8 +158,8 @@ class MusicPlayableMock: MusicPlayable {
     var state: AnyPublisher<MusicPlayerState, Never> { return self.stateSubject.eraseToAnyPublisher() }
     private(set) var stateSubject = PassthroughSubject<MusicPlayerState, Never>()
 
-    private(set) var infoSetCallCount = 0
-    private var _info: MusicPlayerInformation!  { didSet { infoSetCallCount += 1 } }
+
+    private var _info: MusicPlayerInformation! 
     var info: MusicPlayerInformation {
         get { return _info }
         set { _info = newValue }
@@ -267,7 +167,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var authorizeCallCount = 0
     var authorizeHandler: (() -> ())?
-    func authorize()  {
+    func authorize() {
         authorizeCallCount += 1
         if let authorizeHandler = authorizeHandler {
             authorizeHandler()
@@ -277,7 +177,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var playCallCount = 0
     var playHandler: ((MPMediaItem) -> ())?
-    func play(_ track: MPMediaItem)  {
+    func play(_ track: MPMediaItem) {
         playCallCount += 1
         if let playHandler = playHandler {
             playHandler(track)
@@ -287,7 +187,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var playPositionCallCount = 0
     var playPositionHandler: ((MusicQueueTrackPosition) -> ())?
-    func play(_ position: MusicQueueTrackPosition)  {
+    func play(_ position: MusicQueueTrackPosition) {
         playPositionCallCount += 1
         if let playPositionHandler = playPositionHandler {
             playPositionHandler(position)
@@ -297,7 +197,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var pauseCallCount = 0
     var pauseHandler: (() -> ())?
-    func pause()  {
+    func pause() {
         pauseCallCount += 1
         if let pauseHandler = pauseHandler {
             pauseHandler()
@@ -307,7 +207,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var togglePlayPauseCallCount = 0
     var togglePlayPauseHandler: (() -> ())?
-    func togglePlayPause()  {
+    func togglePlayPause() {
         togglePlayPauseCallCount += 1
         if let togglePlayPauseHandler = togglePlayPauseHandler {
             togglePlayPauseHandler()
@@ -317,7 +217,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var stopCallCount = 0
     var stopHandler: (() -> ())?
-    func stop()  {
+    func stop() {
         stopCallCount += 1
         if let stopHandler = stopHandler {
             stopHandler()
@@ -327,7 +227,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var previousCallCount = 0
     var previousHandler: (() -> ())?
-    func previous()  {
+    func previous() {
         previousCallCount += 1
         if let previousHandler = previousHandler {
             previousHandler()
@@ -337,7 +237,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var nextCallCount = 0
     var nextHandler: (() -> ())?
-    func next()  {
+    func next() {
         nextCallCount += 1
         if let nextHandler = nextHandler {
             nextHandler()
@@ -347,7 +247,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var shuffleCallCount = 0
     var shuffleHandler: (() -> ())?
-    func shuffle()  {
+    func shuffle() {
         shuffleCallCount += 1
         if let shuffleHandler = shuffleHandler {
             shuffleHandler()
@@ -357,7 +257,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var toggleRepeatModeCallCount = 0
     var toggleRepeatModeHandler: (() -> ())?
-    func toggleRepeatMode()  {
+    func toggleRepeatMode() {
         toggleRepeatModeCallCount += 1
         if let toggleRepeatModeHandler = toggleRepeatModeHandler {
             toggleRepeatModeHandler()
@@ -365,9 +265,29 @@ class MusicPlayableMock: MusicPlayable {
         
     }
 
+    private(set) var toggleLofiCallCount = 0
+    var toggleLofiHandler: (() -> ())?
+    func toggleLofi() {
+        toggleLofiCallCount += 1
+        if let toggleLofiHandler = toggleLofiHandler {
+            toggleLofiHandler()
+        }
+        
+    }
+
+    private(set) var toggleDistortionCallCount = 0
+    var toggleDistortionHandler: (() -> ())?
+    func toggleDistortion() {
+        toggleDistortionCallCount += 1
+        if let toggleDistortionHandler = toggleDistortionHandler {
+            toggleDistortionHandler()
+        }
+        
+    }
+
     private(set) var setRepeatModeCallCount = 0
     var setRepeatModeHandler: ((RepeatMode) -> ())?
-    func setRepeatMode(_ repeatMode: RepeatMode)  {
+    func setRepeatMode(_ repeatMode: RepeatMode) {
         setRepeatModeCallCount += 1
         if let setRepeatModeHandler = setRepeatModeHandler {
             setRepeatModeHandler(repeatMode)
@@ -377,7 +297,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var setClockCallCount = 0
     var setClockHandler: ((TimeInterval, Bool) -> ())?
-    func setClock(_ timeInterval: TimeInterval, isScrubbing: Bool)  {
+    func setClock(_ timeInterval: TimeInterval, isScrubbing: Bool) {
         setClockCallCount += 1
         if let setClockHandler = setClockHandler {
             setClockHandler(timeInterval, isScrubbing)
@@ -387,7 +307,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var startSeekingCallCount = 0
     var startSeekingHandler: ((SeekDirection) -> ())?
-    func startSeeking(_ direction: SeekDirection)  {
+    func startSeeking(_ direction: SeekDirection) {
         startSeekingCallCount += 1
         if let startSeekingHandler = startSeekingHandler {
             startSeekingHandler(direction)
@@ -397,7 +317,7 @@ class MusicPlayableMock: MusicPlayable {
 
     private(set) var stopSeekingCallCount = 0
     var stopSeekingHandler: (() -> ())?
-    func stopSeeking()  {
+    func stopSeeking() {
         stopSeekingCallCount += 1
         if let stopSeekingHandler = stopSeekingHandler {
             stopSeekingHandler()
@@ -406,7 +326,7 @@ class MusicPlayableMock: MusicPlayable {
     }
 }
 
-class MusicQueuableMock: MusicQueuable {
+class MusicQueuableMock: MusicQueuable, @unchecked Sendable {
     init() { }
     init(currentTrack: MPMediaItem? = nil, repeatMode: RepeatMode, currentTrackIndex: Int = 0, tracks: [MPMediaItem] = [MPMediaItem]()) {
         self.currentTrack = currentTrack
@@ -416,8 +336,8 @@ class MusicQueuableMock: MusicQueuable {
     }
 
 
-    private(set) var currentTrackSetCallCount = 0
-    var currentTrack: MPMediaItem? = nil { didSet { currentTrackSetCallCount += 1 } }
+
+    var currentTrack: MPMediaItem? = nil
 
     private(set) var repeatModeSetCallCount = 0
     private var _repeatMode: RepeatMode!  { didSet { repeatModeSetCallCount += 1 } }
@@ -426,15 +346,15 @@ class MusicQueuableMock: MusicQueuable {
         set { _repeatMode = newValue }
     }
 
-    private(set) var currentTrackIndexSetCallCount = 0
-    var currentTrackIndex: Int = 0 { didSet { currentTrackIndexSetCallCount += 1 } }
 
-    private(set) var tracksSetCallCount = 0
-    var tracks: [MPMediaItem] = [MPMediaItem]() { didSet { tracksSetCallCount += 1 } }
+    var currentTrackIndex: Int = 0
+
+
+    var tracks: [MPMediaItem] = [MPMediaItem]()
 
     private(set) var primeCallCount = 0
     var primeHandler: ((MPMediaItem) -> ())?
-    func prime(_ track: MPMediaItem)  {
+    func prime(_ track: MPMediaItem) {
         primeCallCount += 1
         if let primeHandler = primeHandler {
             primeHandler(track)
@@ -443,7 +363,7 @@ class MusicQueuableMock: MusicQueuable {
     }
 
     private(set) var trackCallCount = 0
-    var trackHandler: ((MusicQueueTrackPosition) -> (MPMediaItem?))?
+    var trackHandler: ((MusicQueueTrackPosition) -> MPMediaItem?)?
     func track(for position: MusicQueueTrackPosition) -> MPMediaItem? {
         trackCallCount += 1
         if let trackHandler = trackHandler {
@@ -454,7 +374,7 @@ class MusicQueuableMock: MusicQueuable {
 
     private(set) var loadCallCount = 0
     var loadHandler: (() -> ())?
-    func load()  {
+    func load() {
         loadCallCount += 1
         if let loadHandler = loadHandler {
             loadHandler()
@@ -464,7 +384,7 @@ class MusicQueuableMock: MusicQueuable {
 
     private(set) var createCallCount = 0
     var createHandler: (() -> ())?
-    func create()  {
+    func create() {
         createCallCount += 1
         if let createHandler = createHandler {
             createHandler()
@@ -473,7 +393,7 @@ class MusicQueuableMock: MusicQueuable {
     }
 
     private(set) var hasUpdatesCallCount = 0
-    var hasUpdatesHandler: (() -> (Bool))?
+    var hasUpdatesHandler: (() -> Bool)?
     func hasUpdates() -> Bool {
         hasUpdatesCallCount += 1
         if let hasUpdatesHandler = hasUpdatesHandler {
@@ -484,7 +404,7 @@ class MusicQueuableMock: MusicQueuable {
 
     private(set) var toggleRepeatModeCallCount = 0
     var toggleRepeatModeHandler: (() -> ())?
-    func toggleRepeatMode()  {
+    func toggleRepeatMode() {
         toggleRepeatModeCallCount += 1
         if let toggleRepeatModeHandler = toggleRepeatModeHandler {
             toggleRepeatModeHandler()
@@ -493,7 +413,119 @@ class MusicQueuableMock: MusicQueuable {
     }
 }
 
-class AudioSessionMock: AudioSession {
+class AudioClockingMock: AudioClocking, @unchecked Sendable {
+    init() { }
+
+
+    private(set) var startCallCount = 0
+    var startHandler: (() -> ())?
+    func start() {
+        startCallCount += 1
+        if let startHandler = startHandler {
+            startHandler()
+        }
+        
+    }
+
+    private(set) var stopCallCount = 0
+    var stopHandler: (() -> ())?
+    func stop() {
+        stopCallCount += 1
+        if let stopHandler = stopHandler {
+            stopHandler()
+        }
+        
+    }
+
+    private(set) var setCallbackCallCount = 0
+    var setCallbackHandler: ((AudioClockCallback) -> ())?
+    func setCallback(_ callback: AudioClockCallback) {
+        setCallbackCallCount += 1
+        if let setCallbackHandler = setCallbackHandler {
+            setCallbackHandler(callback)
+        }
+        
+    }
+}
+
+class SeekableMock: Seekable, @unchecked Sendable {
+    init() { }
+
+
+    private(set) var setSeekCallbackCallCount = 0
+    var setSeekCallbackHandler: ((SeekCallback) -> ())?
+    func setSeekCallback(_ seekCallback: SeekCallback) {
+        setSeekCallbackCallCount += 1
+        if let setSeekCallbackHandler = setSeekCallbackHandler {
+            setSeekCallbackHandler(seekCallback)
+        }
+        
+    }
+
+    private(set) var seekCallCount = 0
+    var seekHandler: ((SeekDirection) -> ())?
+    func seek(_ action: SeekDirection) {
+        seekCallCount += 1
+        if let seekHandler = seekHandler {
+            seekHandler(action)
+        }
+        
+    }
+
+    private(set) var stopCallCount = 0
+    var stopHandler: (() -> ())?
+    func stop() {
+        stopCallCount += 1
+        if let stopHandler = stopHandler {
+            stopHandler()
+        }
+        
+    }
+}
+
+class MusicAuthorizableMock: MusicAuthorizable, @unchecked Sendable {
+    init() { }
+    init(isAuthorized: Bool = false) {
+        self.isAuthorized = isAuthorized
+    }
+
+
+
+    var isAuthorized: Bool = false
+
+    private(set) var authorizeCallCount = 0
+    var authorizeHandler: ((@escaping MusicAuthorizationCompletion) -> ())?
+    func authorize(_ completion: @escaping MusicAuthorizationCompletion) {
+        authorizeCallCount += 1
+        if let authorizeHandler = authorizeHandler {
+            authorizeHandler(completion)
+        }
+        
+    }
+}
+
+class MusicInterruptionHandlingMock: MusicInterruptionHandling, @unchecked Sendable {
+    init() { }
+    init(isPlaying: Bool = false) {
+        self.isPlaying = isPlaying
+    }
+
+
+    private(set) var isPlayingSetCallCount = 0
+    var isPlaying: Bool = false { didSet { isPlayingSetCallCount += 1 } }
+
+    private(set) var setCallbackCallCount = 0
+    var setCallbackHandler: ((MusicInterruptionHandlerCallback) -> ())?
+    func setCallback(_ callback: MusicInterruptionHandlerCallback) {
+        setCallbackCallCount += 1
+        if let setCallbackHandler = setCallbackHandler {
+            setCallbackHandler(callback)
+        }
+        
+    }
+}
+
+class AudioSessionMock: AudioSession, @unchecked Sendable {
     init() { }
     init(currentRoute: AVAudioSessionRouteDescription, outputRoutes: [AVAudioSession.Port] = [AVAudioSession.Port]()) {
         self._currentRoute = currentRoute
@@ -501,14 +533,14 @@ class AudioSessionMock: AudioSession {
     }
 
 
-    private(set) var currentRouteSetCallCount = 0
-    private var _currentRoute: AVAudioSessionRouteDescription!  { didSet { currentRouteSetCallCount += 1 } }
+
+    private var _currentRoute: AVAudioSessionRouteDescription! 
     var currentRoute: AVAudioSessionRouteDescription {
         get { return _currentRoute }
         set { _currentRoute = newValue }
     }
 
-    private(set) var outputRoutesSetCallCount = 0
-    var outputRoutes: [AVAudioSession.Port] = [AVAudioSession.Port]() { didSet { outputRoutesSetCallCount += 1 } }
+
+    var outputRoutes: [AVAudioSession.Port] = [AVAudioSession.Port]()
 }
 

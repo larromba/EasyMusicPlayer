@@ -17,6 +17,35 @@ final class ScrubberViewModel: ObservableObject {
     init(musicPlayer: MusicPlayable) {
         self.musicPlayer = musicPlayer
 
+        setupBindings()
+    }
+
+    func updateDrag(_ gesture: DragGestureValue) {
+        isDragging = true
+        let startPoint = gesture.startLocation
+        let translation = gesture.translation
+        width = min(maxWidth, max(startPoint.x + translation.width, 0))
+
+        let duration = musicPlayer.info.trackInfo.duration
+        guard duration > 0, maxWidth > 0 else { return }
+        let percentage = width / maxWidth
+        musicPlayer.setClock(duration * percentage, isScrubbing: true)
+    }
+
+    func finishDrag(_ gesture: DragGestureValue) {
+        let absVelocity: Double = abs(gesture.velocity.width)
+        var bounce = absVelocity.scale(rMin: 0, rMax: 1500, tMin: 0, tMax: 5) // scale velocity
+        bounce = gesture.velocity.width < 0 ? (bounce * -1) : bounce // left is -, right is +
+        width = min(maxWidth, max(width + bounce, 0))
+
+        let duration = musicPlayer.info.trackInfo.duration
+        guard duration > 0, maxWidth > 0 else { return }
+        let percentage = width / maxWidth
+        musicPlayer.setClock(duration * percentage, isScrubbing: false)
+        isDragging = false
+    }
+
+    private func setupBindings() {
         musicPlayer.state.sink { [weak self] in
             guard let self else { return }
             switch $0 {
@@ -38,34 +67,9 @@ final class ScrubberViewModel: ObservableObject {
         }.store(in: &cancellables)
     }
 
-    func updateDrag(_ gesture: Draggable) {
-        isDragging = true
-        let startPoint = gesture.startLocation
-        let translation = gesture.translation
-        width = min(maxWidth, max(startPoint.x + translation.width, 0))
-
-        let duration = musicPlayer.info.track.duration
-        guard duration > 0, maxWidth > 0 else { return }
-        let percentage = width / maxWidth
-        musicPlayer.setClock(duration * percentage, isScrubbing: true)
-    }
-
-    func finishDrag(_ gesture: Draggable) {
-        let absVelocity: Double = abs(gesture.velocity.width)
-        var bounce = absVelocity.scale(rMin: 0, rMax: 1500, tMin: 0, tMax: 5) // scale velocity
-        bounce = gesture.velocity.width < 0 ? (bounce * -1) : bounce // left is -, right is +
-        width = min(maxWidth, max(width + bounce, 0))
-
-        let duration = musicPlayer.info.track.duration
-        guard duration > 0, maxWidth > 0 else { return }
-        let percentage = width / maxWidth
-        musicPlayer.setClock(duration * percentage, isScrubbing: false)
-        isDragging = false
-    }
-
     private func updateClock(_ timeInterval: TimeInterval) {
         guard !isDragging else { return }
-        let duration = musicPlayer.info.track.duration
+        let duration = musicPlayer.info.trackInfo.duration
         guard duration > 0 else {
             width = 0
             return

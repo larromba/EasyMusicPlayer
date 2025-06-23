@@ -35,7 +35,11 @@ final class SoundEffects: NSObject, SoundEffecting {
     }
 
     func play(_ sound: SoundEffect) {
-        play(Bundle.safeMain.url(forResource: sound.rawValue, withExtension: sound.ext)!)
+        guard let resource = Bundle.safeMain.url(forResource: sound.rawValue, withExtension: sound.ext) else {
+            assertionFailure("expected resource for \(sound.rawValue)")
+            return
+        }
+        play(resource)
     }
 
     private func play(_ url: URL) {

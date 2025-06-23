@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.0 (20/06/2025)
+    Swift 6.0 migration
+    LoFi & Distortion music fx
+    Search improvements
+
 ## 4.0.1 (05/07/2024)
     fix: library refresh bug
     fix: search selecting wrong track 
